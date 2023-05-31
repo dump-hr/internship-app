@@ -12,6 +12,7 @@ function App() {
   return (
     <div>
       <nav>
+        <h1>Dev ispit</h1>
         <select value={language} onChange={(e) => setLanguage(e.target.value)}>
           {supportedLanguages.map((language) => (
             <option key={language} value={language}>
@@ -21,10 +22,9 @@ function App() {
         </select>
       </nav>
 
-      <div className="split">
+      <div className="layout">
         <Editor
-          height="95vh"
-          width="50vw"
+          height="calc(100vh - 3 * 24px - 28px)"
           theme="vs-dark"
           language={language}
           defaultValue={`
@@ -35,12 +35,15 @@ def a():
 a()
 a()
 a()
-print('success')`}
+print('the end')`}
           onMount={(editor) => (editorRef.current = editor)}
         />
-        <CodeRunner
-          getCode={() => editorRef.current?.getValue().trim() ?? ""}
-        />
+        <div className="sidebar">
+          <div className="content">zadatak</div>
+          <CodeRunner
+            getCode={() => editorRef.current?.getValue().trim() ?? ""}
+          />
+        </div>
       </div>
     </div>
   );
