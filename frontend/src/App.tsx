@@ -1,35 +1,47 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import Editor from "@monaco-editor/react";
+import { useRef, useState } from "react";
+import { editor } from "monaco-editor";
+
+const supportedLanguages = ["javascript", "typescript", "python", "csharp"];
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [language, setLanguage] = useState(supportedLanguages[2]);
+  const editorRef = useRef<editor.IStandaloneCodeEditor | null>(null);
+
+  function showValue() {
+    alert(editorRef.current?.getValue());
+  }
 
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <div>
+      <nav>
+        <select value={language} onChange={(e) => setLanguage(e.target.value)}>
+          {supportedLanguages.map((language) => (
+            <option key={language} value={language}>
+              {language}
+            </option>
+          ))}
+        </select>
+        <button onClick={showValue}>Show value</button>
+      </nav>
+      <Editor
+        height="95vh"
+        width="50vw"
+        theme="vs-dark"
+        language={language}
+        defaultValue={`
+def a():
+    b = input('hi:')
+    print('echo:'+b)
+
+a()
+a()
+a()
+print('success')`}
+        onMount={(editor) => (editorRef.current = editor)}
+      />
+    </div>
+  );
 }
 
-export default App
+export default App;
