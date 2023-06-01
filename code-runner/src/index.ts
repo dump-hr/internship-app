@@ -30,7 +30,7 @@ app.post("/run/:uuid", async (req: Request, res: Response) => {
     return res.status(400).json({ error: "No uuid provided" });
   }
 
-  if (!code) {
+  if (!code.trim()) {
     return res.status(400).json({ error: "No code provided" });
   }
 
@@ -65,10 +65,17 @@ app.post("/run/:uuid", async (req: Request, res: Response) => {
   });
 
   proc.on("exit", (code) => {
-    stream.emit("exit", `Process exited with code ${code}`);
+    stream.emit(
+      "exit",
+      code !== null ? `Process exited with code ${code}` : "Process killed"
+    );
     streams.delete(uuid);
     fs.rm(dir, { recursive: true, force: true });
   });
+
+  setTimeout(() => {
+    proc.kill();
+  }, 10 * 60 * 1000);
 
   return res.sendStatus(200);
 });

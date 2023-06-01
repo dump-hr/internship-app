@@ -3,7 +3,7 @@ import { Terminal } from "xterm";
 import "xterm/css/xterm.css";
 
 type Props = {
-  getCode: () => string;
+  code: string;
 };
 
 const COLORS = {
@@ -16,7 +16,7 @@ const COLORS = {
 const messages = {
   processExited: (data: string) => {
     const color = data.match(/code 0$/) ? COLORS.GREEN : COLORS.RED;
-    return `${color}${data}${COLORS.RESET}\n`;
+    return `\n${color}${data}${COLORS.RESET}\n`;
   },
   placeholder: `${COLORS.GRAY}Run program to see output${COLORS.RESET}\n`,
 };
@@ -28,34 +28,29 @@ enum ProcessState {
 
 const uuid = crypto.randomUUID(); // TODO use user id or smth
 
-const CodeRunner: React.FC<Props> = ({ getCode }) => {
+const CodeRunner: React.FC<Props> = ({ code }) => {
   const [process, setProcess] = useState<ProcessState | null>(null);
 
   const run = async () => {
-    const code = getCode();
-    if (!code) {
-      alert("no code");
-    }
-
     terminal.current?.reset();
-
     const stdout = new EventSource(`http://localhost:3000/stdout/${uuid}`);
     stdout.onmessage = (e) => {
       const { event, data } = JSON.parse(e.data);
 
-      if (!["stdout", "stderr", "exit"].includes(event)) {
-        console.error("Unknown stream event", event);
-        return;
-      }
+      switch (event) {
+        case "stdout":
+          terminal.current?.write(data);
+          break;
 
-      if (event === "exit") {
-        setProcess(ProcessState.Exited);
-        terminal.current?.write(messages.processExited(data));
-        stdout.close();
-        return;
-      }
+        case "exit":
+          setProcess(ProcessState.Exited);
+          terminal.current?.write(messages.processExited(data));
+          stdout.close();
+          break;
 
-      terminal.current?.write(data);
+        default:
+          console.error("Unknown stream event", event);
+      }
     };
 
     await fetch(`http://localhost:3000/run/${uuid}`, {
@@ -65,6 +60,7 @@ const CodeRunner: React.FC<Props> = ({ getCode }) => {
     });
 
     setProcess(ProcessState.Running);
+    terminal.current?.focus();
   };
 
   const terminal = useRef<Terminal | null>(null);
@@ -114,7 +110,10 @@ const CodeRunner: React.FC<Props> = ({ getCode }) => {
 
   return (
     <div>
-      <button onClick={run} disabled={process === ProcessState.Running}>
+      <button
+        onClick={run}
+        disabled={process === ProcessState.Running || !code.trim()}
+      >
         Run
       </button>
       <div id="xterm"></div>
