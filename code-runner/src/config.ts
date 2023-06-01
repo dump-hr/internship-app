@@ -1,4 +1,4 @@
 export const languageConfig = [
-  { language: "python", command: "python3 {file}" },
-  { language: "csharp", command: "dotnet {file}" },
+  { language: "python", extension: "py", command: "python3 {file}" },
+  { language: "csharp", extension: "cs", command: "dotnet {file}" },
 ];

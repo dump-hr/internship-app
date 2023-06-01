@@ -13,15 +13,23 @@ const COLORS = {
   GRAY: "\x1B[37m",
 };
 
-const terminalPlaceholder = `${COLORS.GRAY}Run program to see output${COLORS.RESET}\n`;
-const procesExitedMessage = (code: number) => {
-  const color = code > 0 ? COLORS.RED : COLORS.GREEN;
-  return `${color}Process exited with code ${code}${COLORS.RESET}\n`;
+const messages = {
+  processExited: (data: string) => {
+    const color = data.match(/code 0$/) ? COLORS.GREEN : COLORS.RED;
+    return `${color}${data}${COLORS.RESET}\n`;
+  },
+  placeholder: `${COLORS.GRAY}Run program to see output${COLORS.RESET}\n`,
 };
 
+enum ProcessState {
+  Running,
+  Exited,
+}
+
+const uuid = crypto.randomUUID(); // TODO use user id or smth
+
 const CodeRunner: React.FC<Props> = ({ getCode }) => {
-  const [pid, setPid] = useState<string | null>(null);
-  const [statusCode, setStatusCode] = useState<number | null>(null);
+  const [process, setProcess] = useState<ProcessState | null>(null);
 
   const run = async () => {
     const code = getCode();
@@ -31,39 +39,39 @@ const CodeRunner: React.FC<Props> = ({ getCode }) => {
 
     terminal.current?.reset();
 
-    const response = await fetch("http://localhost:3000/run", {
+    const stdout = new EventSource(`http://localhost:3000/stdout/${uuid}`);
+    stdout.onmessage = (e) => {
+      const { event, data } = JSON.parse(e.data);
+
+      if (!["stdout", "stderr", "exit"].includes(event)) {
+        console.error("Unknown stream event", event);
+        return;
+      }
+
+      if (event === "exit") {
+        setProcess(ProcessState.Exited);
+        terminal.current?.write(messages.processExited(data));
+        stdout.close();
+        return;
+      }
+
+      terminal.current?.write(data);
+    };
+
+    await fetch(`http://localhost:3000/run/${uuid}`, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ code, language: "python" }),
     });
-    const { pid } = await response.json();
 
-    setPid(pid);
-
-    const stdout = new EventSource(`http://localhost:3000/stdout/${pid}`);
-    stdout.onmessage = (e) => {
-      const { type, data } = JSON.parse(e.data);
-
-      if (type === "exit") {
-        setStatusCode(+data);
-        terminal.current?.write(procesExitedMessage(+data));
-        stdout.close();
-        setPid(null);
-      }
-
-      if (["stdout", "stderr"].includes(type)) {
-        terminal.current?.write(data);
-      }
-    };
+    setProcess(ProcessState.Running);
   };
 
   const terminal = useRef<Terminal | null>(null);
 
   useEffect(() => {
     terminal.current = new Terminal({ convertEol: true });
-    terminal.current.write(terminalPlaceholder);
+    terminal.current.write(messages.placeholder);
 
     const el = document.getElementById("xterm");
     if (el) {
@@ -78,22 +86,21 @@ const CodeRunner: React.FC<Props> = ({ getCode }) => {
 
   useEffect(() => {
     const writer = terminal.current?.onData((key) => {
-      if (statusCode !== null && pid === null) {
-        console.log({ statusCode, key, pid });
-        terminal.current?.reset();
-        terminal.current?.write(terminalPlaceholder);
-        setStatusCode(null);
+      if (process === null) {
         return;
       }
 
-      if (pid === null) {
+      if (process === ProcessState.Exited) {
+        terminal.current?.reset();
+        terminal.current?.write(messages.placeholder);
+        setProcess(null);
         return;
       }
 
       const data = key.charCodeAt(0) === 13 ? "\n" : key;
       terminal.current?.write(data);
 
-      fetch(`http://localhost:3000/stdin/${pid}`, {
+      fetch(`http://localhost:3000/stdin/${uuid}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ data }),
@@ -103,11 +110,11 @@ const CodeRunner: React.FC<Props> = ({ getCode }) => {
     return () => {
       writer?.dispose();
     };
-  }, [pid, statusCode]);
+  }, [process]);
 
   return (
     <div>
-      <button onClick={run} disabled={pid !== null}>
+      <button onClick={run} disabled={process === ProcessState.Running}>
         Run
       </button>
       <div id="xterm"></div>

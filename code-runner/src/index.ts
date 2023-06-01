@@ -1,9 +1,12 @@
-import express, { Request, Response } from "express";
-import cors from "cors";
 import fs from "node:fs/promises";
 import path from "node:path";
 import { tmpdir } from "node:os";
-import { spawn, ChildProcessWithoutNullStreams } from "node:child_process";
+import { spawn } from "node:child_process";
+import { EventEmitter } from "node:events";
+
+import express, { Request, Response } from "express";
+import cors from "cors";
+
 import { languageConfig } from "./config";
 
 const app = express();
@@ -11,11 +14,21 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-const processes = new Map<number, ChildProcessWithoutNullStreams>();
+const streams = new Map<string, EventEmitter>();
+const getStream = (uuid: string) => {
+  if (!streams.has(uuid)) {
+    streams.set(uuid, new EventEmitter());
+  }
+  return streams.get(uuid)!;
+};
 
-app.post("/run", async (req: Request, res: Response) => {
-  const { language } = req.body;
-  const code = req.body.code.trim();
+app.post("/run/:uuid", async (req: Request, res: Response) => {
+  const { code, language } = req.body;
+  const { uuid } = req.params;
+
+  if (!uuid) {
+    return res.status(400).json({ error: "No uuid provided" });
+  }
 
   if (!code) {
     return res.status(400).json({ error: "No code provided" });
@@ -27,34 +40,45 @@ app.post("/run", async (req: Request, res: Response) => {
     return res.status(400).json({ error: "Invalid language" });
   }
 
-  const file = `${await fs.mkdtemp(path.join(tmpdir(), "code-"))}/file`;
+  const dir = path.join(tmpdir(), `code-runner-${uuid}`);
+  const file = `${dir}/file.${config.extension}`;
+  await fs.mkdir(dir);
   await fs.writeFile(file, code);
 
   const [cmd, ...args] = config.command.replace("{file}", file).split(" ");
-  const proc = spawn(cmd, args);
-  const pid = proc.pid;
+  const proc = spawn(cmd, args, { cwd: dir });
 
-  if (!pid) {
+  if (!proc.pid) {
     return res.status(500).json({ error: "Failed to spawn process" });
   }
 
-  processes.set(pid, proc);
+  const stream = getStream(uuid);
 
-  proc.on("exit", () => {
-    fs.rm(path.dirname(file), { recursive: true, force: true });
+  proc.stdout.on("data", (data) => {
+    stream.emit("stdout", data);
+  });
+  proc.stderr.on("data", (data) => {
+    stream.emit("stdout", data);
+  });
+  stream.on("stdin", (data) => {
+    proc.stdin.write(data);
   });
 
-  return res.json({ pid });
+  proc.on("exit", (code) => {
+    stream.emit("exit", `Process exited with code ${code}`);
+    streams.delete(uuid);
+    fs.rm(dir, { recursive: true, force: true });
+  });
+
+  return res.sendStatus(200);
 });
 
-app.get("/stdout/:pid", async (req: Request, res: Response) => {
-  const pid = +req.params.pid;
+app.get("/stdout/:uuid", async (req: Request, res: Response) => {
+  const { uuid } = req.params;
 
-  if (!processes.has(pid)) {
-    return res.status(404).json({ error: "Process not found" });
+  if (!uuid) {
+    return res.status(400).json({ error: "No uuid provided" });
   }
-
-  const proc = processes.get(pid)!;
 
   res.set({
     "Cache-Control": "no-cache",
@@ -62,41 +86,36 @@ app.get("/stdout/:pid", async (req: Request, res: Response) => {
     Connection: "keep-alive",
   });
   res.flushHeaders();
-
   res.write("retry: 10000\n\n");
 
-  proc.stdout.on("data", (data) => {
-    const message = { type: "stdout", data: data.toString() };
+  const stream = getStream(uuid);
+
+  stream.on("stdout", (data) => {
+    const message = { event: "stdout", data: data.toString() };
     res.write(`data: ${JSON.stringify(message)}\n\n`);
   });
 
-  proc.stderr.on("data", (data) => {
-    const message = { type: "stderr", data: data.toString() };
+  stream.on("exit", (data) => {
+    const message = { event: "exit", data: data.toString() };
     res.write(`data: ${JSON.stringify(message)}\n\n`);
-  });
-
-  proc.on("exit", (code) => {
-    const message = { type: "exit", data: code };
-    res.write(`data: ${JSON.stringify(message)}\n\n`);
-    processes.delete(pid);
   });
 });
 
-app.post("/stdin/:pid", async (req: Request, res: Response) => {
+app.post("/stdin/:uuid", async (req: Request, res: Response) => {
   const { data } = req.body;
-  const pid = +req.params.pid;
+  const { uuid } = req.params;
 
   if (!data) {
     return res.status(400).json({ error: "No data provided" });
   }
 
-  if (!processes.has(pid)) {
-    return res.status(404).json({ error: "Process not found" });
+  if (!uuid) {
+    return res.status(400).json({ error: "No uuid provided" });
   }
 
-  const proc = processes.get(pid)!;
+  const stream = getStream(uuid);
 
-  proc.stdin.write(data);
+  stream.emit("stdin", data);
 
   return res.sendStatus(200);
 });
