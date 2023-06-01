@@ -12,7 +12,7 @@ function App() {
   return (
     <div>
       <nav>
-        <h1>Dev ispit</h1>
+        <h1>DUMP Dev ispit</h1>
         <select value={language} onChange={(e) => setLanguage(e.target.value)}>
           {supportedLanguages.map((language) => (
             <option key={language} value={language}>
@@ -24,7 +24,7 @@ function App() {
 
       <div className="layout">
         <Editor
-          height="calc(100vh - 3 * 24px - 28px)"
+          height="calc(100vh - 4 * 24px)"
           theme="vs-dark"
           language={language}
           defaultValue={`

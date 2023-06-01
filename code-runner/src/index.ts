@@ -41,7 +41,6 @@ app.post("/run", async (req: Request, res: Response) => {
   processes.set(pid, proc);
 
   proc.on("exit", () => {
-    processes.delete(pid);
     fs.rm(path.dirname(file), { recursive: true, force: true });
   });
 
@@ -77,8 +76,9 @@ app.get("/stdout/:pid", async (req: Request, res: Response) => {
   });
 
   proc.on("exit", (code) => {
-    const message = { type: "exit", data: `Process exited with code ${code}` };
+    const message = { type: "exit", data: code };
     res.write(`data: ${JSON.stringify(message)}\n\n`);
+    processes.delete(pid);
   });
 });
 
