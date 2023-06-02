@@ -1,21 +1,29 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Editor from "@monaco-editor/react";
 
-import CodeRunner from "./components/codeRunner";
+import { CodeRunner } from "./components/CodeRunner";
 
-const supportedLanguages = ["javascript", "typescript", "python", "csharp"];
+const supportedLanguages = ["python", "csharp", "javascript"];
+const defaultPrograms = {
+  python: `
+print("sretno na ispitu!")
+text = input("input: ")
+print("echo: " + text)
+`,
+  csharp: `
+Console.WriteLine("sretno na ispitu!");
+Console.Write("input: ");
+var text = Console.ReadLine();
+Console.WriteLine("echo: " + text);`,
+};
 
 function App() {
-  const [code, setCode] = useState(`
-def a():
-    b = input('hi:')
-    print('echo:'+b)
+  const [code, setCode] = useState(defaultPrograms["python"]);
+  const [language, setLanguage] = useState("python");
 
-a()
-a()
-a()
-print('the end')`);
-  const [language, setLanguage] = useState(supportedLanguages[2]);
+  useEffect(() => {
+    setCode(defaultPrograms[language as keyof typeof defaultPrograms] ?? "");
+  }, [language]);
 
   return (
     <div>
@@ -40,7 +48,7 @@ print('the end')`);
         />
         <div className="sidebar">
           <div className="content">zadatak</div>
-          <CodeRunner code={code} />
+          <CodeRunner code={code} language={language} />
         </div>
       </div>
     </div>
