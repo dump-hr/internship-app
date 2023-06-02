@@ -92,10 +92,31 @@ export const CodeRunner: React.FC<Props> = ({ code, language }) => {
     };
   }, [process]);
 
+  const runJS = () => {
+    terminal.current?.reset();
+
+    const log = console.log;
+    console.log = (...data) => {
+      terminal.current?.write(data.join(" ") + "\n");
+    };
+
+    (() => {
+      try {
+        eval(code);
+        terminal.current?.write(messages.processExited("Process exited", true));
+      } catch (err) {
+        terminal.current?.write(`${COLORS.RED}${err}${COLORS.RESET}\n`);
+      }
+    })();
+
+    console.log = log;
+    setProcess(ProcessState.Exited);
+  };
+
   return (
     <div>
       <button
-        onClick={run}
+        onClick={language === "javascript" ? runJS : run}
         disabled={process === ProcessState.Running || !code.trim()}
       >
         Run
@@ -106,8 +127,8 @@ export const CodeRunner: React.FC<Props> = ({ code, language }) => {
 };
 
 const messages = {
-  processExited: (data: string) => {
-    const color = data.match(/code 0$/) ? COLORS.GREEN : COLORS.RED;
+  processExited: (data: string, success?: boolean) => {
+    const color = data.match(/code 0$/) || success ? COLORS.GREEN : COLORS.RED;
     return `\n${color}${data}${COLORS.RESET}\n`;
   },
   placeholder: `${COLORS.GRAY}Run program to see output${COLORS.RESET}\n`,

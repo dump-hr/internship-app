@@ -14,7 +14,13 @@ print("echo: " + text)
 Console.WriteLine("sretno na ispitu!");
 Console.Write("input: ");
 var text = Console.ReadLine();
-Console.WriteLine("echo: " + text);`,
+Console.WriteLine("echo: " + text);
+`,
+  javascript: `
+console.log("sretno na ispitu!");
+const text = prompt("input: ");
+console.log("echo: " + text);
+`,
 };
 
 function App() {
