@@ -3,7 +3,14 @@ import Editor from "@monaco-editor/react";
 
 import { CodeRunner } from "./components/CodeRunner";
 
-const supportedLanguages = ["python", "csharp", "javascript", "java", "c"];
+const supportedLanguages = [
+  "python",
+  "csharp",
+  "javascript",
+  "java",
+  "c",
+  "cpp",
+];
 const defaultPrograms = {
   python: `
 print("sretno na ispitu!")
@@ -48,6 +55,22 @@ int main() {
   scanf("%s", text);
 
   printf("echo: %s\\n", text);
+
+  return 0;
+}
+`,
+  cpp: `
+#include <iostream>
+using namespace std;
+
+int main() {
+  string text;
+
+  cout << "sretno na ispitu!" << endl;
+
+  cout << "input: ";
+  cin >> text;
+  cout << "echo: " << text << endl; 
 
   return 0;
 }

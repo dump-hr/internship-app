@@ -1,6 +1,7 @@
 export const languageConfig = [
   { language: "python", extension: "py", command: "python3 {file}" },
   { language: "java", extension: "java", command: "java {file}" },
+  { language: "cpp", extension: "cpp", command: "g++ {file} && ./a.out" },
   {
     language: "csharp",
     extension: "cs",
