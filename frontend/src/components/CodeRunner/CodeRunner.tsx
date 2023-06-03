@@ -2,33 +2,17 @@ import { useEffect, useRef, useState } from "react";
 import { Terminal } from "xterm";
 import "xterm/css/xterm.css";
 
+import { ProcessState } from "./types";
+import { COLORS, keyMapper } from "./constants";
+
 type Props = {
   code: string;
+  language: string;
 };
-
-const COLORS = {
-  RESET: "\x1B[0m",
-  RED: "\x1B[31m",
-  GREEN: "\x1B[32m",
-  GRAY: "\x1B[37m",
-};
-
-const messages = {
-  processExited: (data: string) => {
-    const color = data.match(/code 0$/) ? COLORS.GREEN : COLORS.RED;
-    return `\n${color}${data}${COLORS.RESET}\n`;
-  },
-  placeholder: `${COLORS.GRAY}Run program to see output${COLORS.RESET}\n`,
-};
-
-enum ProcessState {
-  Running,
-  Exited,
-}
 
 const uuid = crypto.randomUUID(); // TODO use user id or smth
 
-const CodeRunner: React.FC<Props> = ({ code }) => {
+export const CodeRunner: React.FC<Props> = ({ code, language }) => {
   const [process, setProcess] = useState<ProcessState | null>(null);
 
   const run = async () => {
@@ -56,7 +40,7 @@ const CodeRunner: React.FC<Props> = ({ code }) => {
     await fetch(`http://localhost:3000/run/${uuid}`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ code, language: "python" }),
+      body: JSON.stringify({ code, language }),
     });
 
     setProcess(ProcessState.Running);
@@ -93,7 +77,7 @@ const CodeRunner: React.FC<Props> = ({ code }) => {
         return;
       }
 
-      const data = key.charCodeAt(0) === 13 ? "\n" : key;
+      const data = keyMapper.get(key.charCodeAt(0)) ?? key;
       terminal.current?.write(data);
 
       fetch(`http://localhost:3000/stdin/${uuid}`, {
@@ -108,10 +92,32 @@ const CodeRunner: React.FC<Props> = ({ code }) => {
     };
   }, [process]);
 
+  const runJS = () => {
+    terminal.current?.reset();
+
+    const log = console.log;
+    console.log = (...data) => {
+      terminal.current?.writeln(data.join(" "));
+    };
+
+    (() => {
+      try {
+        setProcess(ProcessState.Running);
+        eval(code);
+        terminal.current?.write(messages.processExited("Process exited", true));
+      } catch (err) {
+        terminal.current?.writeln(`${COLORS.RED}${err}${COLORS.RESET}`);
+      }
+    })();
+
+    console.log = log;
+    setProcess(ProcessState.Exited);
+  };
+
   return (
     <div>
       <button
-        onClick={run}
+        onClick={language === "javascript" ? runJS : run}
         disabled={process === ProcessState.Running || !code.trim()}
       >
         Run
@@ -121,4 +127,10 @@ const CodeRunner: React.FC<Props> = ({ code }) => {
   );
 };
 
-export default CodeRunner;
+const messages = {
+  processExited: (data: string, success?: boolean) => {
+    const color = data.match(/code 0$/) || success ? COLORS.GREEN : COLORS.RED;
+    return `\n${color}${data}${COLORS.RESET}\n`;
+  },
+  placeholder: `${COLORS.GRAY}Run program to see output${COLORS.RESET}\n`,
+};

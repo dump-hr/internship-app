@@ -45,8 +45,8 @@ app.post("/run/:uuid", async (req: Request, res: Response) => {
   await fs.mkdir(dir);
   await fs.writeFile(file, code);
 
-  const [cmd, ...args] = config.command.replace("{file}", file).split(" ");
-  const proc = spawn(cmd, args, { cwd: dir });
+  const cmd = config.command.replace("{file}", file);
+  const proc = spawn("sh", ["-c", cmd], { cwd: dir });
 
   if (!proc.pid) {
     return res.status(500).json({ error: "Failed to spawn process" });
