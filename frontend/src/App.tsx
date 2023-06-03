@@ -3,7 +3,7 @@ import Editor from "@monaco-editor/react";
 
 import { CodeRunner } from "./components/CodeRunner";
 
-const supportedLanguages = ["python", "csharp", "javascript"];
+const supportedLanguages = ["python", "csharp", "javascript", "java"];
 const defaultPrograms = {
   python: `
 print("sretno na ispitu!")
@@ -20,6 +20,21 @@ Console.WriteLine("echo: " + text);
 console.log("sretno na ispitu!");
 const text = prompt("input: ");
 console.log("echo: " + text);
+`,
+  java: `
+import java.util.Scanner;
+
+class Program {
+  public static void main(String[] args) {
+    System.out.println("sretno na ispitu!"); 
+
+    Scanner scanner = new Scanner(System.in);
+    System.out.print("input: ");
+    String text = scanner.nextLine();
+
+    System.out.println("echo: " + text); 
+  }
+}
 `,
 };
 

@@ -3,6 +3,7 @@ export const languageConfig = [
   {
     language: "csharp",
     extension: "cs",
-    command: `echo '<Project Sdk="Microsoft.NET.Sdk"><PropertyGroup><OutputType>Exe</OutputType><TargetFramework>net7.0</TargetFramework><ImplicitUsings>enable</ImplicitUsings><Nullable>enable</Nullable></PropertyGroup></Project>' > tmp.csproj && dotnet run`,
+    command: `echo '<Project Sdk="Microsoft.NET.Sdk"><PropertyGroup><OutputType>Exe</OutputType><TargetFramework>net7.0</TargetFramework><ImplicitUsings>enable</ImplicitUsings><Nullable>enable</Nullable></PropertyGroup></Project>' > tmp.csproj && dotnet build && clear && ./bin/Debug/net7.0/tmp`,
   },
+  { language: "java", extension: "java", command: "java {file}" },
 ];
