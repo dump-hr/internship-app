@@ -3,7 +3,7 @@ import { Terminal } from "xterm";
 import "xterm/css/xterm.css";
 
 import { ProcessState } from "./types";
-import { COLORS } from "./constants";
+import { COLORS, keyMapper } from "./constants";
 
 type Props = {
   code: string;
@@ -77,7 +77,7 @@ export const CodeRunner: React.FC<Props> = ({ code, language }) => {
         return;
       }
 
-      const data = key.charCodeAt(0) === 13 ? "\n" : key;
+      const data = keyMapper.get(key.charCodeAt(0)) ?? key;
       terminal.current?.write(data);
 
       fetch(`http://localhost:3000/stdin/${uuid}`, {
@@ -97,15 +97,16 @@ export const CodeRunner: React.FC<Props> = ({ code, language }) => {
 
     const log = console.log;
     console.log = (...data) => {
-      terminal.current?.write(data.join(" ") + "\n");
+      terminal.current?.writeln(data.join(" "));
     };
 
     (() => {
       try {
+        setProcess(ProcessState.Running);
         eval(code);
         terminal.current?.write(messages.processExited("Process exited", true));
       } catch (err) {
-        terminal.current?.write(`${COLORS.RED}${err}${COLORS.RESET}\n`);
+        terminal.current?.writeln(`${COLORS.RED}${err}${COLORS.RESET}`);
       }
     })();
 
