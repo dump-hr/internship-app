@@ -10,6 +10,7 @@ const supportedLanguages = [
   "java",
   "c",
   "cpp",
+  "go",
 ];
 const defaultPrograms = {
   python: `
@@ -73,6 +74,23 @@ int main() {
   cout << "echo: " << text << endl; 
 
   return 0;
+}
+`,
+  go: `
+package main
+
+import (
+  "fmt"
+)
+
+func main() {
+  var text string
+
+  fmt.Println("sretno na ispitu!")
+
+  fmt.Print("input: ")
+  fmt.Scanf("%s", &text)
+  fmt.Println("echo:", text)
 }
 `,
 };
