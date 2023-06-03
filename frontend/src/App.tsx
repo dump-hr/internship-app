@@ -3,7 +3,7 @@ import Editor from "@monaco-editor/react";
 
 import { CodeRunner } from "./components/CodeRunner";
 
-const supportedLanguages = ["python", "csharp", "javascript", "java"];
+const supportedLanguages = ["python", "csharp", "javascript", "java", "c"];
 const defaultPrograms = {
   python: `
 print("sretno na ispitu!")
@@ -36,14 +36,32 @@ class Program {
   }
 }
 `,
+  c: `
+#include <stdio.h>
+
+int main() {
+  char text[100];
+
+  printf("sretno na ispitu!\\n");
+
+  printf("input: ");
+  scanf("%s", text);
+
+  printf("echo: %s\\n", text);
+
+  return 0;
+}
+`,
 };
 
 function App() {
-  const [code, setCode] = useState(defaultPrograms["python"]);
+  const [code, setCode] = useState(defaultPrograms["python"].trim());
   const [language, setLanguage] = useState("python");
 
   useEffect(() => {
-    setCode(defaultPrograms[language as keyof typeof defaultPrograms] ?? "");
+    setCode(
+      defaultPrograms[language as keyof typeof defaultPrograms].trim() ?? ""
+    );
   }, [language]);
 
   return (
