@@ -17,6 +17,7 @@
     "seed": "ts-node prisma/seed.ts"
   },
   "dependencies": {
+    "@internship-app/types": "*",
     "@nestjs/common": "^9.0.0",
     "@nestjs/core": "^9.0.0",
     "@nestjs/platform-express": "^9.0.0",
