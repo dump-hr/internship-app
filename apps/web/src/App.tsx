@@ -1,7 +1,8 @@
-import { Route, Switch } from "wouter";
-import { Path } from "./constants/paths";
-import { HomePage } from "./pages/HomePage";
-import { NotFoundPage } from "./pages/NotFoundPage";
+import { Route, Switch } from 'wouter';
+
+import { Path } from './constants/paths';
+import { HomePage } from './pages/HomePage';
+import { NotFoundPage } from './pages/NotFoundPage';
 
 export const App = () => {
   return (

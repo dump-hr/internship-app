@@ -1,9 +1,9 @@
-import { Button } from "@mui/material";
+import { Typography } from '@mui/material';
 
 export const HomePage = () => {
   return (
     <div>
-      <Button variant="contained">Click me</Button>
+      <Typography>internship-app</Typography>
     </div>
   );
 };
