@@ -10,7 +10,6 @@ type ErrorResponse = AxiosError & {
 };
 
 api.interceptors.response.use(
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-return
   (response) => response.data,
 
   (error: ErrorResponse) =>
