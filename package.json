@@ -1,0 +1,17 @@
+{
+  "name": "internship-app",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "turbo run dev",
+    "build": "turbo run build",
+    "start": "yarn workspace api run start",
+    "prisma": "yarn workspace api run prisma"
+  },
+  "devDependencies": {
+    "turbo": "^1.10.13"
+  }
+}
