@@ -5,6 +5,7 @@ import { Route, Switch } from 'wouter';
 import { Path } from './constants/paths';
 import { ApplicationFormPage } from './pages/ApplicationFormPage/ApplicationFormPage';
 import { HomePage } from './pages/HomePage';
+import InterviewPage from './pages/InterviewPage';
 import { NotFoundPage } from './pages/NotFoundPage';
 
 const queryClient = new QueryClient();
@@ -20,6 +21,7 @@ export const App = () => {
             component={ApplicationFormPage}
           />
           <Route path={Path.CatchAll} component={NotFoundPage} />
+          <Route path={Path.Interview} component={InterviewPage} />
         </Switch>
         <Toaster />
       </QueryClientProvider>
