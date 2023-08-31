@@ -1,1 +1,2 @@
-export * from "./intern";
+export * from './intern';
+export * from './question';
