@@ -1,51 +1,24 @@
-import { useForm } from 'react-hook-form';
+import { Box } from '@mui/material';
+import { FieldValues, useForm } from 'react-hook-form';
 
-import MultistepForm from './MultistepForm';
-import QuestionHandler from './QuestionHandler';
-
-// tip: question (za intervju)
-// questioncategory
-
-enum QuestionCategory {
-  Personal = 'Personal',
-  General = 'General',
-  Dev = 'Dev',
-  Design = 'Design',
-  Marketing = 'Marketing',
-  Multimedia = 'Multimedia',
-  Final = 'Final',
-}
-
-type Question = { id: string; category: QuestionCategory; title: string } & (
-  | { type: 'field' }
-  | { type: 'select'; options: string[] }
-);
-
-const interviewQuestions: Array<Question> = [
-  {
-    title: 'Kako si?',
-    type: 'field',
-    category: QuestionCategory.General,
-    id: 'alal',
-  },
-];
-
-const steps = [
-  { label: 'aa', category: QuestionCategory.General },
-  { label: 'dev', category: QuestionCategory.Dev },
-  { label: 'zadnja', category: QuestionCategory.Final },
-];
+import MultistepForm from '../../components/MultistepForm';
+import { defaultInterviewValues, interviewQuestions, steps } from './data';
+import InterviewQuestionHandler from './InterviewQuestionHandler';
 
 const InterviewPage = () => {
-  const { control } = useForm({ defaultValues: { alal: '2' } });
+  const form = useForm<FieldValues>({
+    defaultValues: defaultInterviewValues,
+  });
 
   return (
-    <MultistepForm
-      questions={interviewQuestions}
-      control={control}
-      steps={steps}
-      Handler={QuestionHandler}
-    />
+    <Box maxWidth="1080px" margin="auto">
+      <MultistepForm
+        questions={interviewQuestions}
+        form={form}
+        steps={steps}
+        Handler={InterviewQuestionHandler}
+      />
+    </Box>
   );
 };
 

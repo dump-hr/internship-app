@@ -1,3 +1,4 @@
+import { MultistepQuestion, Question } from '@internship-app/types';
 import { Box, Button, Step, StepLabel, Stepper } from '@mui/material';
 import { useState } from 'react';
 
@@ -6,34 +7,30 @@ interface Step<T> {
   category: T;
 }
 
-interface MultistepQuestion<T> {
-  category: T;
-}
-
-type HandlerProps<Q, FH> = {
-  question: Q;
+type HandlerProps<FH> = {
+  question: Question;
   form: FH;
 };
 
-type MultistepFormProps<T, Q extends MultistepQuestion<T>, FH> = {
+type MultistepFormProps<T, FH> = {
   steps: Step<T>[];
-  questions: Q[];
+  questions: MultistepQuestion<T>[];
   form: FH;
-  Handler: React.FC<HandlerProps<Q, FH>>;
+  Handler: React.FC<HandlerProps<FH>>;
 };
 
-const MultistepForm = <T, Q extends MultistepQuestion<T>, FH>({
+const MultistepForm = <T, FH>({
   steps,
   questions,
   form,
   Handler,
-}: MultistepFormProps<T, Q, FH>) => {
+}: MultistepFormProps<T, FH>) => {
   const [currentStep, setCurrentStep] = useState(0);
   const currentCategory = steps[currentStep].category;
 
   return (
-    <>
-      <Stepper>
+    <Box>
+      <Stepper activeStep={currentStep} nonLinear>
         {steps.map((s, i) => (
           <Step key={i} onClick={() => setCurrentStep(i)}>
             <StepLabel>{s.label}</StepLabel>
@@ -41,11 +38,13 @@ const MultistepForm = <T, Q extends MultistepQuestion<T>, FH>({
         ))}
       </Stepper>
 
-      {questions
-        .filter((q) => q.category === currentCategory)
-        .map((q) => (
-          <Handler form={form} question={q} />
-        ))}
+      <Box display="flex" flexDirection="column" gap="20px">
+        {questions
+          .filter((q) => q.category === currentCategory)
+          .map((q) => (
+            <Handler form={form} question={q} key={q.id} />
+          ))}
+      </Box>
 
       <Box>
         <Button
@@ -61,7 +60,7 @@ const MultistepForm = <T, Q extends MultistepQuestion<T>, FH>({
           Naprijed
         </Button>
       </Box>
-    </>
+    </Box>
   );
 };
 
