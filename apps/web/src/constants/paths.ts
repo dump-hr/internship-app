@@ -3,6 +3,6 @@ export enum Path {
   ApplicationFormPage = '/application-form',
   Login = '/login',
   Logout = '/logout',
+  Interview = '/interview/:internId',
   CatchAll = '/:path*',
-  Interview = '/interview',
 }

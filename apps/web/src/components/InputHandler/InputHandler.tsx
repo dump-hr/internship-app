@@ -15,7 +15,7 @@ import {
   UseFormReturn,
 } from 'react-hook-form';
 
-type QuestionHandlerProps = {
+type InputHandlerProps = {
   question: Question;
   form: UseFormReturn<FieldValues>;
 };
@@ -65,7 +65,7 @@ const getInputComponent = (
   }
 };
 
-const QuestionHandler = ({ question, form }: QuestionHandlerProps) => {
+const InputHandler = ({ question, form }: InputHandlerProps) => {
   const { control } = form;
 
   return (
@@ -80,4 +80,4 @@ const QuestionHandler = ({ question, form }: QuestionHandlerProps) => {
   );
 };
 
-export default QuestionHandler;
+export default InputHandler;

@@ -2,7 +2,7 @@ import { Question, QuestionType } from '@internship-app/types';
 import { Box, Typography } from '@mui/material';
 import { FieldValues, UseFormReturn } from 'react-hook-form';
 
-import QuestionHandler from '../../../components/QuestionHandler';
+import InputHandler from '../../../components/InputHandler';
 
 type InterviewQuestionHandlerProps = {
   question: Question;
@@ -27,8 +27,8 @@ const InterviewQuestionHandler = ({
     <Box display="flex" flexDirection="column">
       <Typography>{question.title}</Typography>
       <Box display="flex">
-        <QuestionHandler question={questionForValue} form={form} />
-        <QuestionHandler question={questionForTick} form={form} />
+        <InputHandler question={questionForValue} form={form} />
+        <InputHandler question={questionForTick} form={form} />
       </Box>
     </Box>
   );
