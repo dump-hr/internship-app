@@ -8,10 +8,14 @@ export class InternService {
   async get(id: string) {
     const intern = await this.prisma.intern.findUnique({
       where: { id: id },
-  });
-
-  console.log(intern);
+      });
 
     return intern;
+  }
+
+  async getAll() {
+    const interns = await this.prisma.intern.findMany();
+
+    return interns;
   }
 }
