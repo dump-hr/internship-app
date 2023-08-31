@@ -5,6 +5,7 @@ import { join } from 'path';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { PrismaService } from './prisma.service';
+import { InternModule } from './intern/intern.module';
 
 @Module({
   imports: [
@@ -12,6 +13,7 @@ import { PrismaService } from './prisma.service';
       rootPath: join(__dirname, '..', '..', '..', 'client', 'dist'),
       exclude: ['/api/(.*)'],
     }),
+    InternModule,
   ],
   controllers: [AppController],
   providers: [AppService, PrismaService],
