@@ -16,14 +16,16 @@ type MultistepFormProps<T, FH> = {
   steps: Step<T>[];
   questions: MultistepQuestion<T>[];
   form: FH;
-  Handler: React.FC<HandlerProps<FH>>;
+  onSubmit: () => void;
+  InputHandler: React.FC<HandlerProps<FH>>;
 };
 
 const MultistepForm = <T, FH>({
   steps,
   questions,
   form,
-  Handler,
+  onSubmit,
+  InputHandler,
 }: MultistepFormProps<T, FH>) => {
   const [currentStep, setCurrentStep] = useState(0);
   const currentCategory = steps[currentStep].category;
@@ -42,7 +44,7 @@ const MultistepForm = <T, FH>({
         {questions
           .filter((q) => q.category === currentCategory)
           .map((q) => (
-            <Handler form={form} question={q} key={q.id} />
+            <InputHandler form={form} question={q} key={q.id} />
           ))}
       </Box>
 
@@ -58,6 +60,9 @@ const MultistepForm = <T, FH>({
           disabled={currentStep === steps.length - 1}
         >
           Naprijed
+        </Button>
+        <Button onClick={onSubmit} disabled={currentStep !== steps.length - 1}>
+          Završi
         </Button>
       </Box>
     </Box>

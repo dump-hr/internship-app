@@ -25,6 +25,7 @@ model Intern {
   email     String   @unique
   fields    Field[]
   data      Json
+  interview Json
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
