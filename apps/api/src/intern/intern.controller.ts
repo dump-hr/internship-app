@@ -18,7 +18,7 @@ export class InternController {
   @Get(':id')
   async get(@Param('id') id: string) {
     const intern = await this.internService.get(id);
-
+ 
     if(!intern){
       throw new NotFoundException();
     }
