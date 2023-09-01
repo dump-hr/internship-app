@@ -1,10 +1,11 @@
-import { useQuery } from "react-query"
-import { api } from "."
+import { useQuery } from 'react-query';
+
+import { api } from '.';
 
 const fetchCount = () => {
-  return api.get<never, number>('/counter')
-}
+  return api.get<never, number>('/counter');
+};
 
 export const useFetchCount = () => {
-  return useQuery(['count'], fetchCount)
-}
+  return useQuery(['count'], fetchCount);
+};

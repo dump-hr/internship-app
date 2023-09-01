@@ -1,6 +1,7 @@
 import { useMutation } from 'react-query';
-import { api } from '.';
+
 import { FormValues } from '../pages/ApplicationFormPage/ApplicationFormPage';
+import { api } from '.';
 
 const addIntern = async (newIntern: FormValues) => {
   const newInternToAdd = {
