@@ -7,6 +7,7 @@ import {
 import {
   EducationOrEmploymentStatus,
   Field,
+  FieldInCroatian,
   FoundOutAboutInternshipBy,
 } from '@internship-app/types';
 import { Checkbox, FormControl, RadioGroup } from '@mui/joy';
@@ -227,7 +228,7 @@ export const ApplicationFormPage = () => {
           <div>
             <Checkbox
               value={Field.Development}
-              label="Programiranje"
+              label={FieldInCroatian.Development}
               {...register('fields', { required: 'Field is required' })}
               onChange={(e) => handleCheckboxChange(e)}
             />
@@ -235,7 +236,7 @@ export const ApplicationFormPage = () => {
           <div>
             <Checkbox
               value={Field.Design}
-              label="Dizajn"
+              label={FieldInCroatian.Design}
               {...register('fields')}
               onChange={(e) => handleCheckboxChange(e)}
             />
@@ -243,7 +244,7 @@ export const ApplicationFormPage = () => {
           <div>
             <Checkbox
               value={Field.Marketing}
-              label="Marketing"
+              label={FieldInCroatian.Marketing}
               {...register('fields')}
               onChange={(e) => handleCheckboxChange(e)}
             />
@@ -251,7 +252,7 @@ export const ApplicationFormPage = () => {
           <div>
             <Checkbox
               value={Field.Multimedia}
-              label="Multimediju"
+              label={FieldInCroatian.Multimedia}
               {...register('fields')}
               onChange={(e) => handleCheckboxChange(e)}
             />

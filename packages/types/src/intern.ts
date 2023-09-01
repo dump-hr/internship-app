@@ -5,6 +5,13 @@ export enum Field {
   Marketing = "Marketing",
 }
 
+export enum FieldInCroatian {
+  Development = "Programiranje",
+  Design = "Dizajn",
+  Multimedia = "Multimedija",
+  Marketing = "Marketing",
+}
+
 export enum EducationOrEmploymentStatus{
   Pupil = "Pupil",
   Student = "Student",
@@ -20,3 +27,15 @@ export enum FoundOutAboutInternshipBy{
   Other = "Other",
 }
 
+export const mapFieldToCroatian = (field: Field) => {
+  switch (field) {
+    case Field.Development:
+      return FieldInCroatian.Development;
+    case Field.Design:
+      return FieldInCroatian.Design;
+    case Field.Multimedia:
+      return FieldInCroatian.Multimedia;
+    case Field.Marketing:
+      return FieldInCroatian.Marketing;
+  }
+}
