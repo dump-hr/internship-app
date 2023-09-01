@@ -13,7 +13,7 @@ import { Checkbox, FormControl, RadioGroup } from '@mui/joy';
 import Radio from '@mui/joy/Radio';
 import { Button, Input } from '@mui/material';
 import clsx from 'clsx';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { usePostIntern } from '../../api/usePostIntern';
@@ -34,74 +34,59 @@ export type FormValues = {
 };
 
 export const ApplicationFormPage = () => {
-  const [intern, setIntern] = useState<FormValues>({
-    firstName: '',
-    lastName: '',
-    email: '',
-    phoneNumber: 0,
-    dateOfBirth: '',
-    fields: [],
-    educationOrEmploymentStatus: EducationOrEmploymentStatus.Other,
-    highSchoolOrCollegeName: '',
-    foundOutAboutInternshipBy: FoundOutAboutInternshipBy.Friend,
-    reasonForApplying: '',
-  } as FormValues);
-
-  const [timesSubmitted, setTimesSubmitted] = useState(0);
+  const [internFields, setInternFields] = useState<Field[]>([]);
 
   const { mutate: createInternMutation } = usePostIntern();
 
-  const { register, handleSubmit, formState } = useForm<FormValues>();
+  const { register, handleSubmit, formState } = useForm<FormValues>({
+    defaultValues: {
+      firstName: '',
+      lastName: '',
+      email: '',
+      phoneNumber: 0,
+      dateOfBirth: '',
+      fields: [],
+      educationOrEmploymentStatus: EducationOrEmploymentStatus.Other,
+      highSchoolOrCollegeName: '',
+      foundOutAboutInternshipBy: FoundOutAboutInternshipBy.Friend,
+      reasonForApplying: '',
+    } as FormValues,
+  });
 
   const { errors } = formState;
 
-  useEffect(() => {
-    if (intern.firstName !== '') {
-      try {
-        createInternMutation(intern);
-      } catch (err) {
-        console.log(err);
-      }
-    }
-  }, [timesSubmitted, createInternMutation, intern]);
-
   const onSubmit = (data: FormValues) => {
-    setIntern((prev) => {
-      return {
-        ...prev,
-        firstName: data.firstName,
-        lastName: data.lastName,
-        email: data.email,
-        phoneNumber: data.phoneNumber,
-        dateOfBirth: data.dateOfBirth,
-        fields: prev.fields,
-        educationOrEmploymentStatus: data.educationOrEmploymentStatus,
-        highSchoolOrCollegeName: data.highSchoolOrCollegeName,
-        foundOutAboutInternshipBy: data.foundOutAboutInternshipBy,
-        reasonForApplying: data.reasonForApplying,
-      };
-    });
+    const internToAdd = {
+      firstName: data.firstName,
+      lastName: data.lastName,
+      email: data.email,
+      phoneNumber: data.phoneNumber,
+      dateOfBirth: data.dateOfBirth,
+      fields: internFields,
+      educationOrEmploymentStatus: data.educationOrEmploymentStatus,
+      highSchoolOrCollegeName: data.highSchoolOrCollegeName,
+      foundOutAboutInternshipBy: data.foundOutAboutInternshipBy,
+      reasonForApplying: data.reasonForApplying,
+    };
 
-    setTimesSubmitted((prev) => prev + 1);
+    try {
+      createInternMutation(internToAdd);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.checked) {
-      if (intern.fields?.includes(event.target.value as Field)) {
+      if (internFields.includes(event.target.value as Field)) {
         return;
       }
-      setIntern((intern) => {
-        return {
-          ...intern,
-          fields: [...intern.fields, event.target.value as Field],
-        };
+      setInternFields((prev) => {
+        return [...prev, event.target.value as Field];
       });
     } else {
-      setIntern((intern) => {
-        return {
-          ...intern,
-          fields: intern.fields.filter((field) => field !== event.target.value),
-        };
+      setInternFields((prev) => {
+        return [...prev.filter((field) => field !== event.target.value)];
       });
     }
   };
@@ -112,13 +97,10 @@ export const ApplicationFormPage = () => {
       return;
     }
 
-    setIntern((prev) => {
-      const oldIndex = prev.fields.findIndex((field) => field === active.id);
-      const newIndex = prev.fields.findIndex((field) => field === over?.id);
-      return {
-        ...prev,
-        fields: arrayMove(prev.fields, oldIndex, newIndex),
-      };
+    setInternFields((prev) => {
+      const oldIndex = prev.findIndex((field) => field === active.id);
+      const newIndex = prev.findIndex((field) => field === over?.id);
+      return arrayMove(prev, oldIndex, newIndex);
     });
   };
 
@@ -282,7 +264,7 @@ export const ApplicationFormPage = () => {
           )}
         </div>
 
-        {intern.fields.length > 1 && (
+        {internFields.length > 1 && (
           <div className={classes.formQuestionWrapper}>
             <p className={classes.formQuestionSubtitleText}>
               Ovdje možeš posložiti prioritete
@@ -293,10 +275,10 @@ export const ApplicationFormPage = () => {
                 onDragEnd={onDragEnd}
               >
                 <SortableContext
-                  items={intern.fields}
+                  items={internFields}
                   strategy={verticalListSortingStrategy}
                 >
-                  {intern.fields?.map((field) => (
+                  {internFields.map((field) => (
                     <SortableField key={field} field={field} />
                   ))}
                 </SortableContext>
