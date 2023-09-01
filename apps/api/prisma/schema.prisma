@@ -30,9 +30,9 @@ model Intern {
 }
 
 enum Field {
-  Development
-  Design
-  Multimedia
+  Programiranje
+  Dizajn
+  Multimedija
   Marketing
 }
 

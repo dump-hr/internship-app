@@ -1,6 +1,7 @@
-import { Controller, Get, NotFoundException, Param, } from '@nestjs/common';
+import { Body, Controller, Get, NotFoundException, Param, Post} from '@nestjs/common';
 import { InternService } from './intern.service';
 import { ApiTags } from '@nestjs/swagger';
+import { CreateInternDto } from './dto/createIntern.dto';
 
 @Controller('intern')
 @ApiTags('intern')
@@ -14,7 +15,6 @@ export class InternController {
     return interns;
   }
 
-
   @Get(':id')
   async get(@Param('id') id: string) {
     const intern = await this.internService.get(id);
@@ -24,5 +24,12 @@ export class InternController {
     }
 
     return intern;
+  }
+
+  @Post()
+  async create(@Body() intern: CreateInternDto) {
+    const newIntern = await this.internService.create(intern);
+
+    return newIntern;
   }
 }

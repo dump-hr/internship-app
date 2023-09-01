@@ -20,9 +20,3 @@ export enum FoundOutAboutInternshipBy{
   Other = "Other",
 }
 
-type FieldOption = {
-  value: Field;
-  label: string;
-}
-
-export const FieldOptions = [Field.Design, Field.Development, Field.Marketing, Field.Multimedia];

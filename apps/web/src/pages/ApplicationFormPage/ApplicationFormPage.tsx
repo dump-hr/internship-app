@@ -1,6 +1,5 @@
 import { Input, Button } from '@mui/material';
 import classes from './index.module.css';
-
 import { useForm } from 'react-hook-form';
 import {
   EducationOrEmploymentStatus,
@@ -9,19 +8,18 @@ import {
 } from '@internship-app/types';
 import Radio from '@mui/joy/Radio';
 import { FormControl, Checkbox, RadioGroup } from '@mui/joy';
-import { useState } from 'react';
-
+import { useState, useEffect } from 'react';
 import { DndContext, DragEndEvent, closestCenter } from '@dnd-kit/core';
 import {
   SortableContext,
   arrayMove,
-  useSortable,
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
-import { CSS } from '@dnd-kit/utilities';
+import { SortableField } from '../../components/SortableField';
 import clsx from 'clsx';
+import { usePostIntern } from '../../api/usePostIntern';
 
-type FormValues = {
+export type FormValues = {
   firstName: string;
   lastName: string;
   email: string;
@@ -32,21 +30,6 @@ type FormValues = {
   highSchoolOrCollegeName: string;
   foundOutAboutInternshipBy: FoundOutAboutInternshipBy;
   reasonForApplying: string;
-};
-
-const SortableField = ({ field }: any) => {
-  const { attributes, listeners, setNodeRef, transform, transition } =
-    useSortable({ id: field });
-
-  const style = {
-    transform: CSS.Transform.toString(transform),
-    transition,
-  };
-  return (
-    <div ref={setNodeRef} {...attributes} {...listeners} style={style}>
-      {field}
-    </div>
-  );
 };
 
 export const ApplicationFormPage = () => {
@@ -63,9 +46,23 @@ export const ApplicationFormPage = () => {
     reasonForApplying: '',
   } as FormValues);
 
+  const [timesSubmitted, setTimesSubmitted] = useState(0);
+
+  const { mutate: createInternMutation } = usePostIntern();
+
   const { register, handleSubmit, formState } = useForm<FormValues>();
 
   const { errors } = formState;
+
+  useEffect(() => {
+    if (intern.firstName !== '') {
+      try {
+        createInternMutation(intern);
+      } catch (err) {
+        console.log(err);
+      }
+    }
+  }, [timesSubmitted]);
 
   const onSubmit = (data: FormValues) => {
     setIntern((prev) => {
@@ -84,7 +81,7 @@ export const ApplicationFormPage = () => {
       };
     });
 
-    console.log(intern);
+    setTimesSubmitted((prev) => prev + 1);
   };
 
   const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
