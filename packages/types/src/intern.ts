@@ -1,7 +1,7 @@
 export enum Field {
-  Development = "Programiranje",
-  Design = "Dizajn",
-  Multimedia = "Multimedija",
+  Development = "Development",
+  Design = "Design",
+  Multimedia = "Multimedia",
   Marketing = "Marketing",
 }
 

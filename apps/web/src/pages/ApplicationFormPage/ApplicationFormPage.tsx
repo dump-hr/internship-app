@@ -1,23 +1,24 @@
-import { Input, Button } from '@mui/material';
-import classes from './index.module.css';
-import { useForm } from 'react-hook-form';
+import { closestCenter, DndContext, DragEndEvent } from '@dnd-kit/core';
+import {
+  arrayMove,
+  SortableContext,
+  verticalListSortingStrategy,
+} from '@dnd-kit/sortable';
 import {
   EducationOrEmploymentStatus,
   Field,
   FoundOutAboutInternshipBy,
 } from '@internship-app/types';
+import { Checkbox, FormControl, RadioGroup } from '@mui/joy';
 import Radio from '@mui/joy/Radio';
-import { FormControl, Checkbox, RadioGroup } from '@mui/joy';
-import { useState, useEffect } from 'react';
-import { DndContext, DragEndEvent, closestCenter } from '@dnd-kit/core';
-import {
-  SortableContext,
-  arrayMove,
-  verticalListSortingStrategy,
-} from '@dnd-kit/sortable';
-import { SortableField } from '../../components/SortableField';
+import { Button, Input } from '@mui/material';
 import clsx from 'clsx';
+import { useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
+
 import { usePostIntern } from '../../api/usePostIntern';
+import { SortableField } from '../../components/SortableField';
+import classes from './index.module.css';
 
 export type FormValues = {
   firstName: string;

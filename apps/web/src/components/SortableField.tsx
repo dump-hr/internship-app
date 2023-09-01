@@ -1,7 +1,8 @@
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
+import { Field } from '@internship-app/types';
 
-export const SortableField = ({ field }: any) => {
+export const SortableField = (field: Field) => {
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id: field });
 
