@@ -13,14 +13,6 @@ async function main() {
       },
     ],
   });
-
-  await prisma.counter.create(
-    {
-      data: {
-        id: 'counter',
-        count: 0,
-    }
-  });
 }
 
 main()

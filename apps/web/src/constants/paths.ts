@@ -4,5 +4,4 @@ export enum Path {
   Login = '/login',
   Logout = '/logout',
   CatchAll = '/:path*',
-  Count = '/count',
 }

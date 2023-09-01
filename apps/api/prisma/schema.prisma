@@ -35,10 +35,3 @@ enum Field {
   Multimedia
   Marketing
 }
-
-model Counter {
-  id        String   @id @default(uuid())
-  count     Int      @default(0)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}

@@ -1,12 +1,11 @@
 import { Toaster } from 'react-hot-toast';
-import { Route, Switch } from 'wouter';
 import { QueryClient, QueryClientProvider } from 'react-query';
+import { Route, Switch } from 'wouter';
 
 import { Path } from './constants/paths';
+import { ApplicationFormPage } from './pages/ApplicationFormPage/ApplicationFormPage';
 import { HomePage } from './pages/HomePage';
 import { NotFoundPage } from './pages/NotFoundPage';
-import { CounterPage } from './pages/CounterPage';
-import { ApplicationFormPage } from './pages/ApplicationFormPage/ApplicationFormPage';
 
 const queryClient = new QueryClient();
 
@@ -16,7 +15,6 @@ export const App = () => {
       <QueryClientProvider client={queryClient}>
         <Switch>
           <Route path={Path.Home} component={HomePage} />
-          <Route path={Path.Count} component={CounterPage} />
           <Route
             path={Path.ApplicationFormPage}
             component={ApplicationFormPage}
