@@ -63,7 +63,7 @@ export const ApplicationFormPage = () => {
         console.log(err);
       }
     }
-  }, [timesSubmitted]);
+  }, [timesSubmitted, createInternMutation, intern]);
 
   const onSubmit = (data: FormValues) => {
     setIntern((prev) => {
