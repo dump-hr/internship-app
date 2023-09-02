@@ -1,5 +1,6 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
+
 import { CreateInternDto } from './dto/createIntern.dto';
 
 @Injectable()
@@ -9,7 +10,7 @@ export class InternService {
   async get(id: string) {
     const intern = await this.prisma.intern.findUnique({
       where: { id: id },
-      });
+    });
 
     return intern;
   }
@@ -21,17 +22,24 @@ export class InternService {
   }
 
   async create(internToCreate: CreateInternDto) {
-    const internExists = await this.prisma.intern.findUnique({
-      where: { email: internToCreate.email },
-      });
+    const internsWithTheSameEmail = await this.prisma.intern.findMany({
+      where: {
+        email: {
+          startsWith: internToCreate.email,
+          mode: 'insensitive',
+        },
+      },
+    });
 
-    if (internExists) {
-      throw new BadRequestException("Intern with the same email already exists");
+    if (internsWithTheSameEmail.length) {
+      throw new BadRequestException(
+        'Intern with the same email already exists',
+      );
     }
 
     const newIntern = await this.prisma.intern.create({
       data: internToCreate,
-      });
+    });
 
     return newIntern;
   }
