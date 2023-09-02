@@ -105,3 +105,9 @@ input {
 .cursorGrab {
   cursor: grab;
 }
+
+.formActionsWrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}

@@ -19,12 +19,27 @@ export enum EducationOrEmploymentStatus{
   Other = "Other",
 }
 
+export enum EducationOrEmploymentStatusInCroatian{
+  Pupil = "Učenik",
+  Student = "Student",
+  Employed = "Zaposlen",
+  Other = "Ostalo",
+}
+
 export enum FoundOutAboutInternshipBy{
   SocialMedia = "Social Media",
   Presentation = "Presentation",
   Media = "Media",
   Friend = "Friend",
   Other = "Other",
+}
+
+export enum FoundOutAboutInternshipByInCroatian{
+  SocialMedia = "Društvenih mreža",
+  Presentation = "Predstavljanja na fakultetima/školama",
+  Media = "Medija",
+  Friend = "Prijatelja ili poznanika",
+  Other = "Ostalo",
 }
 
 export const mapFieldToCroatian = (field: Field) => {
@@ -37,5 +52,33 @@ export const mapFieldToCroatian = (field: Field) => {
       return FieldInCroatian.Multimedia;
     case Field.Marketing:
       return FieldInCroatian.Marketing;
+  }
+}
+
+export const mapEducationOrEmploymentStatusToCroatian = (status: EducationOrEmploymentStatus) => {
+  switch (status) {
+    case EducationOrEmploymentStatus.Pupil:
+      return EducationOrEmploymentStatusInCroatian.Pupil;
+    case EducationOrEmploymentStatus.Student:
+      return EducationOrEmploymentStatusInCroatian.Student;
+    case EducationOrEmploymentStatus.Employed:
+      return EducationOrEmploymentStatusInCroatian.Employed;
+    case EducationOrEmploymentStatus.Other:
+      return EducationOrEmploymentStatusInCroatian.Other;
+  }
+}
+
+export const mapFoundOutAboutInternshipByToCroatian = (foundOutBy: FoundOutAboutInternshipBy) => {
+  switch (foundOutBy) {
+    case FoundOutAboutInternshipBy.SocialMedia:
+      return FoundOutAboutInternshipByInCroatian.SocialMedia;
+    case FoundOutAboutInternshipBy.Presentation:
+      return FoundOutAboutInternshipByInCroatian.Presentation;
+    case FoundOutAboutInternshipBy.Media:
+      return FoundOutAboutInternshipByInCroatian.Media;
+    case FoundOutAboutInternshipBy.Friend:
+      return FoundOutAboutInternshipByInCroatian.Friend;
+    case FoundOutAboutInternshipBy.Other:
+      return FoundOutAboutInternshipByInCroatian.Other;
   }
 }

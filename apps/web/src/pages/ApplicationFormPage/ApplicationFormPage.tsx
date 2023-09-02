@@ -7,8 +7,10 @@ import {
 import {
   EducationOrEmploymentStatus,
   Field,
-  FieldInCroatian,
   FoundOutAboutInternshipBy,
+  mapEducationOrEmploymentStatusToCroatian,
+  mapFieldToCroatian,
+  mapFoundOutAboutInternshipByToCroatian,
 } from '@internship-app/types';
 import { Checkbox, FormControl, RadioGroup } from '@mui/joy';
 import Radio from '@mui/joy/Radio';
@@ -37,24 +39,43 @@ export type FormValues = {
 export const ApplicationFormPage = () => {
   const [internFields, setInternFields] = useState<Field[]>([]);
 
+  const fieldEnumKeys = Object.keys(Field);
+  const fieldEnumValues = Object.values(Field);
+  const educationOrEmploymentStatusEnumKeys = Object.keys(
+    EducationOrEmploymentStatus,
+  );
+  const educationOrEmploymentStatusEnumValues = Object.values(
+    EducationOrEmploymentStatus,
+  );
+  const foundOutAboutInternshipByEnumKeys = Object.keys(
+    FoundOutAboutInternshipBy,
+  );
+  const foundOutAboutInternshipByEnumValues = Object.values(
+    FoundOutAboutInternshipBy,
+  );
+
   const { mutate: createInternMutation } = usePostIntern();
 
-  const { register, handleSubmit, formState } = useForm<FormValues>({
-    defaultValues: {
-      firstName: '',
-      lastName: '',
-      email: '',
-      phoneNumber: 0,
-      dateOfBirth: '',
-      fields: [],
-      educationOrEmploymentStatus: EducationOrEmploymentStatus.Other,
-      highSchoolOrCollegeName: '',
-      foundOutAboutInternshipBy: FoundOutAboutInternshipBy.Friend,
-      reasonForApplying: '',
-    } as FormValues,
-  });
+  const { register, handleSubmit, formState, reset, watch } =
+    useForm<FormValues>({
+      defaultValues: {
+        firstName: '',
+        lastName: '',
+        email: '',
+        phoneNumber: 0,
+        dateOfBirth: '',
+        fields: [],
+        educationOrEmploymentStatus: EducationOrEmploymentStatus.Other,
+        highSchoolOrCollegeName: '',
+        foundOutAboutInternshipBy: FoundOutAboutInternshipBy.Other,
+        reasonForApplying: '',
+      } as FormValues,
+    });
 
   const { errors } = formState;
+
+  const watchEmploymentOrEducationStatus = watch('educationOrEmploymentStatus');
+  const watchFoundOutAboutInternshipBy = watch('foundOutAboutInternshipBy');
 
   const onSubmit = (data: FormValues) => {
     const internToAdd = {
@@ -103,6 +124,11 @@ export const ApplicationFormPage = () => {
       const newIndex = prev.findIndex((field) => field === over?.id);
       return arrayMove(prev, oldIndex, newIndex);
     });
+  };
+
+  const handleReset = () => {
+    reset();
+    setInternFields([]);
   };
 
   return (
@@ -225,38 +251,18 @@ export const ApplicationFormPage = () => {
             </p>
           </div>
 
-          <div>
-            <Checkbox
-              value={Field.Development}
-              label={FieldInCroatian.Development}
-              {...register('fields', { required: 'Field is required' })}
-              onChange={(e) => handleCheckboxChange(e)}
-            />
-          </div>
-          <div>
-            <Checkbox
-              value={Field.Design}
-              label={FieldInCroatian.Design}
-              {...register('fields')}
-              onChange={(e) => handleCheckboxChange(e)}
-            />
-          </div>
-          <div>
-            <Checkbox
-              value={Field.Marketing}
-              label={FieldInCroatian.Marketing}
-              {...register('fields')}
-              onChange={(e) => handleCheckboxChange(e)}
-            />
-          </div>
-          <div>
-            <Checkbox
-              value={Field.Multimedia}
-              label={FieldInCroatian.Multimedia}
-              {...register('fields')}
-              onChange={(e) => handleCheckboxChange(e)}
-            />
-          </div>
+          {fieldEnumKeys.map((field, index) => (
+            <div key={field}>
+              <Checkbox
+                value={fieldEnumValues[index]}
+                label={mapFieldToCroatian(fieldEnumValues[index])}
+                {...register('fields')}
+                onChange={(e) => handleCheckboxChange(e)}
+                name="fields"
+                checked={internFields.includes(fieldEnumValues[index])}
+              />
+            </div>
+          ))}
 
           {errors.fields ? (
             <p className={classes.warningText}>{errors.fields?.message}</p>
@@ -294,28 +300,19 @@ export const ApplicationFormPage = () => {
 
           <FormControl>
             <RadioGroup defaultValue="medium" name="radio-buttons-group">
-              <Radio
-                value={EducationOrEmploymentStatus.Pupil}
-                label="Učenik"
-                {...register('educationOrEmploymentStatus', {
-                  required: 'This field is required',
-                })}
-              />
-              <Radio
-                value={EducationOrEmploymentStatus.Student}
-                label="Student"
-                {...register('educationOrEmploymentStatus')}
-              />
-              <Radio
-                value={EducationOrEmploymentStatus.Employed}
-                label="Zaposlen"
-                {...register('educationOrEmploymentStatus')}
-              />
-              <Radio
-                value={EducationOrEmploymentStatus.Other}
-                label="Ostalo"
-                {...register('educationOrEmploymentStatus')}
-              />
+              {educationOrEmploymentStatusEnumKeys.map((status, index) => (
+                <Radio
+                  checked={watchEmploymentOrEducationStatus === status}
+                  key={status}
+                  value={educationOrEmploymentStatusEnumValues[index]}
+                  label={mapEducationOrEmploymentStatusToCroatian(
+                    educationOrEmploymentStatusEnumValues[index],
+                  )}
+                  {...register('educationOrEmploymentStatus', {
+                    required: 'This field is required',
+                  })}
+                />
+              ))}
             </RadioGroup>
           </FormControl>
 
@@ -348,33 +345,19 @@ export const ApplicationFormPage = () => {
 
           <FormControl>
             <RadioGroup defaultValue="medium" name="radio-buttons-group">
-              <Radio
-                value={FoundOutAboutInternshipBy.Friend}
-                label="Prijatelja ili poznanika"
-                {...register('foundOutAboutInternshipBy', {
-                  required: 'This field is required',
-                })}
-              />
-              <Radio
-                value={FoundOutAboutInternshipBy.SocialMedia}
-                label="Društvenih mreža"
-                {...register('foundOutAboutInternshipBy')}
-              />
-              <Radio
-                value={FoundOutAboutInternshipBy.Presentation}
-                label="Predstavljanja na fakultetima/školama"
-                {...register('foundOutAboutInternshipBy')}
-              />
-              <Radio
-                value={FoundOutAboutInternshipBy.Media}
-                label="Medija"
-                {...register('foundOutAboutInternshipBy')}
-              />
-              <Radio
-                value={FoundOutAboutInternshipBy.Other}
-                label="Ostalo"
-                {...register('foundOutAboutInternshipBy')}
-              />
+              {foundOutAboutInternshipByEnumKeys.map((answer, index) => (
+                <Radio
+                  checked={watchFoundOutAboutInternshipBy === answer}
+                  key={answer}
+                  value={foundOutAboutInternshipByEnumValues[index]}
+                  label={mapFoundOutAboutInternshipByToCroatian(
+                    foundOutAboutInternshipByEnumValues[index],
+                  )}
+                  {...register('foundOutAboutInternshipBy', {
+                    required: 'This field is required',
+                  })}
+                />
+              ))}
             </RadioGroup>
           </FormControl>
 
@@ -411,13 +394,19 @@ export const ApplicationFormPage = () => {
           )}
         </div>
 
-        <Button
-          type="submit"
-          variant="contained"
-          className={classes.submitButton}
-        >
-          Submit
-        </Button>
+        <div className={classes.formActionsWrapper}>
+          <Button
+            type="submit"
+            variant="contained"
+            className={classes.submitButton}
+          >
+            Submit
+          </Button>
+
+          <Button type="button" variant="text" onClick={handleReset}>
+            Reset
+          </Button>
+        </div>
       </form>
       <h3 className={classes.applicationFooterText}>
         DUMP udruga mladih programera
