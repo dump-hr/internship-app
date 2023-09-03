@@ -1,16 +1,7 @@
-import { closestCenter, DndContext, DragEndEvent } from '@dnd-kit/core';
-import {
-  arrayMove,
-  SortableContext,
-  verticalListSortingStrategy,
-} from '@dnd-kit/sortable';
 import {
   EducationOrEmploymentStatus,
   Field,
   FoundOutAboutInternshipBy,
-  mapEducationOrEmploymentStatusToCroatian,
-  mapFieldToCroatian,
-  mapFoundOutAboutInternshipByToCroatian,
 } from '@internship-app/types';
 import { Checkbox, FormControl, RadioGroup } from '@mui/joy';
 import Radio from '@mui/joy/Radio';
@@ -20,7 +11,12 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { usePostIntern } from '../../api/usePostIntern';
-import { SortableField } from '../../components/SortableField';
+import { SortableFieldsContainer } from '../../components/SoratableFieldsContainer';
+import {
+  educationOrEmploymentStatusLabel,
+  fieldLabel,
+  foundOutAboutInternshipByLabel,
+} from '../../constants/internConstants';
 import classes from './index.module.css';
 
 export type FormValues = {
@@ -38,23 +34,23 @@ export type FormValues = {
   };
 };
 
+const fieldEnumKeys = Object.keys(Field);
+const fieldEnumValues = Object.values(Field);
+const educationOrEmploymentStatusEnumKeys = Object.keys(
+  EducationOrEmploymentStatus,
+);
+const educationOrEmploymentStatusEnumValues = Object.values(
+  EducationOrEmploymentStatus,
+);
+const foundOutAboutInternshipByEnumKeys = Object.keys(
+  FoundOutAboutInternshipBy,
+);
+const foundOutAboutInternshipByEnumValues = Object.values(
+  FoundOutAboutInternshipBy,
+);
+
 export const ApplicationFormPage = () => {
   const [internFields, setInternFields] = useState<Field[]>([]);
-
-  const fieldEnumKeys = Object.keys(Field);
-  const fieldEnumValues = Object.values(Field);
-  const educationOrEmploymentStatusEnumKeys = Object.keys(
-    EducationOrEmploymentStatus,
-  );
-  const educationOrEmploymentStatusEnumValues = Object.values(
-    EducationOrEmploymentStatus,
-  );
-  const foundOutAboutInternshipByEnumKeys = Object.keys(
-    FoundOutAboutInternshipBy,
-  );
-  const foundOutAboutInternshipByEnumValues = Object.values(
-    FoundOutAboutInternshipBy,
-  );
 
   const { mutate: createInternMutation } = usePostIntern();
 
@@ -84,11 +80,11 @@ export const ApplicationFormPage = () => {
   const watchFoundOutAboutInternshipBy = watch(
     'data.foundOutAboutInternshipBy',
   );
-  console.log(watchFoundOutAboutInternshipBy);
 
   const onSubmit = (data: FormValues) => {
+    const internToSend = { ...data, fields: internFields };
     try {
-      createInternMutation(data);
+      createInternMutation(internToSend);
     } catch (err) {
       console.log(err);
     }
@@ -109,23 +105,12 @@ export const ApplicationFormPage = () => {
     }
   };
 
-  const onDragEnd = (event: DragEndEvent) => {
-    const { active, over } = event;
-    if (active.id === over?.id) {
-      return;
-    }
-
-    setInternFields((prev) => {
-      const oldIndex = prev.findIndex((field) => field === active.id);
-      const newIndex = prev.findIndex((field) => field === over?.id);
-      return arrayMove(prev, oldIndex, newIndex);
-    });
-  };
-
   const handleReset = () => {
     reset();
     setInternFields([]);
   };
+
+  console.log(internFields);
 
   return (
     <div className={classes.applicationFormPageWrapper}>
@@ -255,7 +240,7 @@ export const ApplicationFormPage = () => {
             <div key={field}>
               <Checkbox
                 value={fieldEnumValues[index]}
-                label={mapFieldToCroatian(fieldEnumValues[index])}
+                label={fieldLabel[fieldEnumValues[index]]}
                 {...register('fields')}
                 onChange={(e) => handleCheckboxChange(e)}
                 name="fields"
@@ -272,26 +257,10 @@ export const ApplicationFormPage = () => {
         </div>
 
         {internFields.length > 1 && (
-          <div className={classes.formQuestionWrapper}>
-            <p className={classes.formQuestionSubtitleText}>
-              Ovdje možeš posložiti prioritete
-            </p>
-            <div className={classes.cursorGrab}>
-              <DndContext
-                collisionDetection={closestCenter}
-                onDragEnd={onDragEnd}
-              >
-                <SortableContext
-                  items={internFields}
-                  strategy={verticalListSortingStrategy}
-                >
-                  {internFields.map((field) => (
-                    <SortableField key={field} field={field} />
-                  ))}
-                </SortableContext>
-              </DndContext>
-            </div>
-          </div>
+          <SortableFieldsContainer
+            internFields={internFields}
+            setInternFields={setInternFields}
+          />
         )}
         <div className={classes.formQuestionWrapper}>
           <label className={classes.marginBottom30px}>
@@ -305,9 +274,11 @@ export const ApplicationFormPage = () => {
                   checked={watchEmploymentOrEducationStatus === status}
                   key={status}
                   value={educationOrEmploymentStatusEnumValues[index]}
-                  label={mapEducationOrEmploymentStatusToCroatian(
-                    educationOrEmploymentStatusEnumValues[index],
-                  )}
+                  label={
+                    educationOrEmploymentStatusLabel[
+                      educationOrEmploymentStatusEnumValues[index]
+                    ]
+                  }
                   {...register('data.educationOrEmploymentStatus', {
                     required: 'This field is required',
                   })}
@@ -350,9 +321,11 @@ export const ApplicationFormPage = () => {
                   checked={watchFoundOutAboutInternshipBy === answer}
                   key={answer}
                   value={foundOutAboutInternshipByEnumValues[index]}
-                  label={mapFoundOutAboutInternshipByToCroatian(
-                    foundOutAboutInternshipByEnumValues[index],
-                  )}
+                  label={
+                    foundOutAboutInternshipByLabel[
+                      foundOutAboutInternshipByEnumValues[index]
+                    ]
+                  }
                   {...register('data.foundOutAboutInternshipBy', {
                     required: 'This field is required',
                   })}
