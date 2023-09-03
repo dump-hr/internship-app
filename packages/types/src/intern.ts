@@ -28,17 +28,17 @@ export enum EducationOrEmploymentStatusInCroatian{
 
 export enum FoundOutAboutInternshipBy{
   Presentation = "Presentation",
-  SocialMedia = "Social Media",
   Media = "Media",
   Friend = "Friend",
+  SocialMedia = "SocialMedia",
   Other = "Other",
 }
 
 export enum FoundOutAboutInternshipByInCroatian{
   Presentation = "Predstavljanja na fakultetima/školama",
-  SocialMedia = "Društvenih mreža",
   Media = "Medija",
   Friend = "Prijatelja ili poznanika",
+  SocialMedia = "Društvenih mreža",
   Other = "Ostalo",
 }
 
