@@ -27,13 +27,15 @@ export type FormValues = {
   firstName: string;
   lastName: string;
   email: string;
-  phoneNumber: number;
-  dateOfBirth: string;
   fields: Field[];
-  educationOrEmploymentStatus: EducationOrEmploymentStatus;
-  highSchoolOrCollegeName: string;
-  foundOutAboutInternshipBy: FoundOutAboutInternshipBy;
-  reasonForApplying: string;
+  data: {
+    phoneNumber: number;
+    dateOfBirth: string;
+    educationOrEmploymentStatus: EducationOrEmploymentStatus;
+    highSchoolOrCollegeName: string;
+    foundOutAboutInternshipBy: FoundOutAboutInternshipBy;
+    reasonForApplying: string;
+  };
 };
 
 export const ApplicationFormPage = () => {
@@ -62,37 +64,31 @@ export const ApplicationFormPage = () => {
         firstName: '',
         lastName: '',
         email: '',
-        phoneNumber: 0,
-        dateOfBirth: '',
         fields: [],
-        educationOrEmploymentStatus: EducationOrEmploymentStatus.Other,
-        highSchoolOrCollegeName: '',
-        foundOutAboutInternshipBy: FoundOutAboutInternshipBy.Other,
-        reasonForApplying: '',
+        data: {
+          phoneNumber: 0,
+          dateOfBirth: '',
+          educationOrEmploymentStatus: EducationOrEmploymentStatus.Other,
+          highSchoolOrCollegeName: '',
+          foundOutAboutInternshipBy: FoundOutAboutInternshipBy.Other,
+          reasonForApplying: '',
+        },
       } as FormValues,
     });
 
   const { errors } = formState;
 
-  const watchEmploymentOrEducationStatus = watch('educationOrEmploymentStatus');
-  const watchFoundOutAboutInternshipBy = watch('foundOutAboutInternshipBy');
+  const watchEmploymentOrEducationStatus = watch(
+    'data.educationOrEmploymentStatus',
+  );
+  const watchFoundOutAboutInternshipBy = watch(
+    'data.foundOutAboutInternshipBy',
+  );
+  console.log(watchFoundOutAboutInternshipBy);
 
   const onSubmit = (data: FormValues) => {
-    const internToAdd = {
-      firstName: data.firstName,
-      lastName: data.lastName,
-      email: data.email,
-      phoneNumber: data.phoneNumber,
-      dateOfBirth: data.dateOfBirth,
-      fields: internFields,
-      educationOrEmploymentStatus: data.educationOrEmploymentStatus,
-      highSchoolOrCollegeName: data.highSchoolOrCollegeName,
-      foundOutAboutInternshipBy: data.foundOutAboutInternshipBy,
-      reasonForApplying: data.reasonForApplying,
-    };
-
     try {
-      createInternMutation(internToAdd);
+      createInternMutation(data);
     } catch (err) {
       console.log(err);
     }
@@ -209,13 +205,15 @@ export const ApplicationFormPage = () => {
           <Input
             type="date"
             id="dateOfBirth"
-            {...register('dateOfBirth', {
+            {...register('data.dateOfBirth', {
               required: 'Date of birth is required',
             })}
           />
 
-          {errors.dateOfBirth ? (
-            <p className={classes.warningText}>{errors.dateOfBirth?.message}</p>
+          {errors.data?.dateOfBirth ? (
+            <p className={classes.warningText}>
+              {errors.data?.dateOfBirth?.message}
+            </p>
           ) : (
             <div className={classes.warningTextPlaceholder}></div>
           )}
@@ -228,11 +226,13 @@ export const ApplicationFormPage = () => {
             placeholder="Your answer"
             type="number"
             id="phoneNumber"
-            {...register('phoneNumber')}
+            {...register('data.phoneNumber')}
           />
 
-          {errors.phoneNumber ? (
-            <p className={classes.warningText}>{errors.phoneNumber?.message}</p>
+          {errors.data?.phoneNumber ? (
+            <p className={classes.warningText}>
+              {errors.data?.phoneNumber.message}
+            </p>
           ) : (
             <div className={classes.warningTextPlaceholder}></div>
           )}
@@ -299,7 +299,7 @@ export const ApplicationFormPage = () => {
           </label>
 
           <FormControl>
-            <RadioGroup defaultValue="medium" name="radio-buttons-group">
+            <RadioGroup defaultValue="Other" name="radio-buttons-group">
               {educationOrEmploymentStatusEnumKeys.map((status, index) => (
                 <Radio
                   checked={watchEmploymentOrEducationStatus === status}
@@ -308,7 +308,7 @@ export const ApplicationFormPage = () => {
                   label={mapEducationOrEmploymentStatusToCroatian(
                     educationOrEmploymentStatusEnumValues[index],
                   )}
-                  {...register('educationOrEmploymentStatus', {
+                  {...register('data.educationOrEmploymentStatus', {
                     required: 'This field is required',
                   })}
                 />
@@ -316,9 +316,9 @@ export const ApplicationFormPage = () => {
             </RadioGroup>
           </FormControl>
 
-          {errors.educationOrEmploymentStatus ? (
+          {errors.data?.educationOrEmploymentStatus ? (
             <p className={classes.warningText}>
-              {errors.educationOrEmploymentStatus?.message}
+              {errors.data.educationOrEmploymentStatus?.message}
             </p>
           ) : (
             <div className={classes.warningTextPlaceholder}></div>
@@ -335,7 +335,7 @@ export const ApplicationFormPage = () => {
             placeholder="Your answer"
             type="text"
             id="highSchoolOrCollegeName"
-            {...register('highSchoolOrCollegeName')}
+            {...register('data.highSchoolOrCollegeName')}
           />
         </div>
         <div className={classes.formQuestionWrapper}>
@@ -344,7 +344,7 @@ export const ApplicationFormPage = () => {
           </label>
 
           <FormControl>
-            <RadioGroup defaultValue="medium" name="radio-buttons-group">
+            <RadioGroup defaultValue="Other" name="radio-buttons-group">
               {foundOutAboutInternshipByEnumKeys.map((answer, index) => (
                 <Radio
                   checked={watchFoundOutAboutInternshipBy === answer}
@@ -353,7 +353,7 @@ export const ApplicationFormPage = () => {
                   label={mapFoundOutAboutInternshipByToCroatian(
                     foundOutAboutInternshipByEnumValues[index],
                   )}
-                  {...register('foundOutAboutInternshipBy', {
+                  {...register('data.foundOutAboutInternshipBy', {
                     required: 'This field is required',
                   })}
                 />
@@ -361,9 +361,9 @@ export const ApplicationFormPage = () => {
             </RadioGroup>
           </FormControl>
 
-          {errors.foundOutAboutInternshipBy ? (
+          {errors.data?.foundOutAboutInternshipBy ? (
             <p className={classes.warningText}>
-              {errors.foundOutAboutInternshipBy?.message}
+              {errors.data.foundOutAboutInternshipBy.message}
             </p>
           ) : (
             <div className={classes.warningTextPlaceholder}></div>
@@ -380,14 +380,14 @@ export const ApplicationFormPage = () => {
             placeholder="Your answer"
             type="text"
             id="firstName"
-            {...register('reasonForApplying', {
+            {...register('data.reasonForApplying', {
               required: 'Reason for applying is required',
             })}
           />
 
-          {errors.reasonForApplying ? (
+          {errors.data?.reasonForApplying ? (
             <p className={classes.warningText}>
-              {errors.reasonForApplying?.message}
+              {errors.data.reasonForApplying.message}
             </p>
           ) : (
             <div className={classes.warningTextPlaceholder}></div>
