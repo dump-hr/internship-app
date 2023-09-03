@@ -110,8 +110,6 @@ export const ApplicationFormPage = () => {
     setInternFields([]);
   };
 
-  console.log(internFields);
-
   return (
     <div className={classes.applicationFormPageWrapper}>
       <h1 className={classes.applicationFormTitle}>
@@ -183,6 +181,7 @@ export const ApplicationFormPage = () => {
             <div className={classes.warningTextPlaceholder}></div>
           )}
         </div>
+        //data pitanje
         <div className={classes.formQuestionWrapper}>
           <label className={classes.marginBottom30px} htmlFor="dateOfBirth">
             Datum rođenja:
@@ -203,6 +202,7 @@ export const ApplicationFormPage = () => {
             <div className={classes.warningTextPlaceholder}></div>
           )}
         </div>
+        //data pitanje
         <div className={classes.formQuestionWrapper}>
           <label className={classes.marginBottom30px} htmlFor="phoneNumber">
             Broj mobitela:
@@ -222,7 +222,6 @@ export const ApplicationFormPage = () => {
             <div className={classes.warningTextPlaceholder}></div>
           )}
         </div>
-
         <div
           className={clsx(
             classes.formQuestionWrapper,
@@ -255,13 +254,13 @@ export const ApplicationFormPage = () => {
             <div className={classes.warningTextPlaceholder}></div>
           )}
         </div>
-
         {internFields.length > 1 && (
           <SortableFieldsContainer
             internFields={internFields}
             setInternFields={setInternFields}
           />
         )}
+        //data pitanje
         <div className={classes.formQuestionWrapper}>
           <label className={classes.marginBottom30px}>
             Status obrazovanja/zaposlenja:
@@ -295,6 +294,7 @@ export const ApplicationFormPage = () => {
             <div className={classes.warningTextPlaceholder}></div>
           )}
         </div>
+        //data pitanje
         <div className={classes.formQuestionWrapper}>
           <label
             className={classes.marginBottom30px}
@@ -309,6 +309,7 @@ export const ApplicationFormPage = () => {
             {...register('data.highSchoolOrCollegeName')}
           />
         </div>
+        //data pitanje
         <div className={classes.formQuestionWrapper}>
           <label className={classes.marginBottom30px} htmlFor="channel">
             Za DUMP internship si saznao/la putem:
@@ -342,6 +343,7 @@ export const ApplicationFormPage = () => {
             <div className={classes.warningTextPlaceholder}></div>
           )}
         </div>
+        //data pitanje
         <div className={classes.formQuestionWrapper}>
           <label
             className={classes.marginBottom30px}
@@ -366,7 +368,6 @@ export const ApplicationFormPage = () => {
             <div className={classes.warningTextPlaceholder}></div>
           )}
         </div>
-
         <div className={classes.formActionsWrapper}>
           <Button
             type="submit"
