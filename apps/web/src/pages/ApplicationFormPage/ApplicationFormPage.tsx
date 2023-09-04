@@ -3,51 +3,38 @@ import {
   Field,
   FoundOutAboutInternshipBy,
 } from '@internship-app/types';
-import { Checkbox, FormControl, RadioGroup } from '@mui/joy';
-import Radio from '@mui/joy/Radio';
+import { Checkbox } from '@mui/joy';
 import { Button, Input } from '@mui/material';
 import clsx from 'clsx';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { usePostIntern } from '../../api/usePostIntern';
+import { ApplicationFormInputHandler } from '../../components/ApplicationFormInputHandler/ApplicationFormInputHandler';
 import { SortableFieldsContainer } from '../../components/SoratableFieldsContainer';
-import {
-  educationOrEmploymentStatusLabel,
-  fieldLabel,
-  foundOutAboutInternshipByLabel,
-} from '../../constants/internConstants';
+import { fieldLabel } from '../../constants/internConstants';
+import { applicationFormDataQuestions } from './constants/ApplicationFormQuestions';
 import classes from './index.module.css';
+
+type ApplicationFormData = {
+  phoneNumber: number;
+  dateOfBirth: string;
+  educationOrEmploymentStatus: EducationOrEmploymentStatus;
+  highSchoolOrCollegeName: string;
+  foundOutAboutInternshipBy: FoundOutAboutInternshipBy;
+  reasonForApplying: string;
+};
 
 export type FormValues = {
   firstName: string;
   lastName: string;
   email: string;
   fields: Field[];
-  data: {
-    phoneNumber: number;
-    dateOfBirth: string;
-    educationOrEmploymentStatus: EducationOrEmploymentStatus;
-    highSchoolOrCollegeName: string;
-    foundOutAboutInternshipBy: FoundOutAboutInternshipBy;
-    reasonForApplying: string;
-  };
+  data: ApplicationFormData;
 };
 
 const fieldEnumKeys = Object.keys(Field);
 const fieldEnumValues = Object.values(Field);
-const educationOrEmploymentStatusEnumKeys = Object.keys(
-  EducationOrEmploymentStatus,
-);
-const educationOrEmploymentStatusEnumValues = Object.values(
-  EducationOrEmploymentStatus,
-);
-const foundOutAboutInternshipByEnumKeys = Object.keys(
-  FoundOutAboutInternshipBy,
-);
-const foundOutAboutInternshipByEnumValues = Object.values(
-  FoundOutAboutInternshipBy,
-);
 
 export const ApplicationFormPage = () => {
   const [internFields, setInternFields] = useState<Field[]>([]);
@@ -74,15 +61,11 @@ export const ApplicationFormPage = () => {
 
   const { errors } = formState;
 
-  const watchEmploymentOrEducationStatus = watch(
-    'data.educationOrEmploymentStatus',
-  );
-  const watchFoundOutAboutInternshipBy = watch(
-    'data.foundOutAboutInternshipBy',
-  );
-
   const onSubmit = (data: FormValues) => {
     const internToSend = { ...data, fields: internFields };
+
+    console.log(internToSend);
+
     try {
       createInternMutation(internToSend);
     } catch (err) {
@@ -181,47 +164,6 @@ export const ApplicationFormPage = () => {
             <div className={classes.warningTextPlaceholder}></div>
           )}
         </div>
-        //data pitanje
-        <div className={classes.formQuestionWrapper}>
-          <label className={classes.marginBottom30px} htmlFor="dateOfBirth">
-            Datum rođenja:
-          </label>
-          <Input
-            type="date"
-            id="dateOfBirth"
-            {...register('data.dateOfBirth', {
-              required: 'Date of birth is required',
-            })}
-          />
-
-          {errors.data?.dateOfBirth ? (
-            <p className={classes.warningText}>
-              {errors.data?.dateOfBirth?.message}
-            </p>
-          ) : (
-            <div className={classes.warningTextPlaceholder}></div>
-          )}
-        </div>
-        //data pitanje
-        <div className={classes.formQuestionWrapper}>
-          <label className={classes.marginBottom30px} htmlFor="phoneNumber">
-            Broj mobitela:
-          </label>
-          <Input
-            placeholder="Your answer"
-            type="number"
-            id="phoneNumber"
-            {...register('data.phoneNumber')}
-          />
-
-          {errors.data?.phoneNumber ? (
-            <p className={classes.warningText}>
-              {errors.data?.phoneNumber.message}
-            </p>
-          ) : (
-            <div className={classes.warningTextPlaceholder}></div>
-          )}
-        </div>
         <div
           className={clsx(
             classes.formQuestionWrapper,
@@ -240,7 +182,7 @@ export const ApplicationFormPage = () => {
               <Checkbox
                 value={fieldEnumValues[index]}
                 label={fieldLabel[fieldEnumValues[index]]}
-                {...register('fields')}
+                {...register('fields', { required: 'This field is required' })}
                 onChange={(e) => handleCheckboxChange(e)}
                 name="fields"
                 checked={internFields.includes(fieldEnumValues[index])}
@@ -260,114 +202,16 @@ export const ApplicationFormPage = () => {
             setInternFields={setInternFields}
           />
         )}
-        //data pitanje
-        <div className={classes.formQuestionWrapper}>
-          <label className={classes.marginBottom30px}>
-            Status obrazovanja/zaposlenja:
-          </label>
 
-          <FormControl>
-            <RadioGroup defaultValue="Other" name="radio-buttons-group">
-              {educationOrEmploymentStatusEnumKeys.map((status, index) => (
-                <Radio
-                  checked={watchEmploymentOrEducationStatus === status}
-                  key={status}
-                  value={educationOrEmploymentStatusEnumValues[index]}
-                  label={
-                    educationOrEmploymentStatusLabel[
-                      educationOrEmploymentStatusEnumValues[index]
-                    ]
-                  }
-                  {...register('data.educationOrEmploymentStatus', {
-                    required: 'This field is required',
-                  })}
-                />
-              ))}
-            </RadioGroup>
-          </FormControl>
-
-          {errors.data?.educationOrEmploymentStatus ? (
-            <p className={classes.warningText}>
-              {errors.data.educationOrEmploymentStatus?.message}
-            </p>
-          ) : (
-            <div className={classes.warningTextPlaceholder}></div>
-          )}
-        </div>
-        //data pitanje
-        <div className={classes.formQuestionWrapper}>
-          <label
-            className={classes.marginBottom30px}
-            htmlFor="highSchoolOrCollegeName"
-          >
-            Naziv srednje škole ili fakulteta koji trenutno pohađaš:
-          </label>
-          <Input
-            placeholder="Your answer"
-            type="text"
-            id="highSchoolOrCollegeName"
-            {...register('data.highSchoolOrCollegeName')}
+        {applicationFormDataQuestions.map((question) => (
+          <ApplicationFormInputHandler
+            key={question.id}
+            question={question}
+            register={register}
+            errors={errors}
+            watch={watch}
           />
-        </div>
-        //data pitanje
-        <div className={classes.formQuestionWrapper}>
-          <label className={classes.marginBottom30px} htmlFor="channel">
-            Za DUMP internship si saznao/la putem:
-          </label>
-
-          <FormControl>
-            <RadioGroup defaultValue="Other" name="radio-buttons-group">
-              {foundOutAboutInternshipByEnumKeys.map((answer, index) => (
-                <Radio
-                  checked={watchFoundOutAboutInternshipBy === answer}
-                  key={answer}
-                  value={foundOutAboutInternshipByEnumValues[index]}
-                  label={
-                    foundOutAboutInternshipByLabel[
-                      foundOutAboutInternshipByEnumValues[index]
-                    ]
-                  }
-                  {...register('data.foundOutAboutInternshipBy', {
-                    required: 'This field is required',
-                  })}
-                />
-              ))}
-            </RadioGroup>
-          </FormControl>
-
-          {errors.data?.foundOutAboutInternshipBy ? (
-            <p className={classes.warningText}>
-              {errors.data.foundOutAboutInternshipBy.message}
-            </p>
-          ) : (
-            <div className={classes.warningTextPlaceholder}></div>
-          )}
-        </div>
-        //data pitanje
-        <div className={classes.formQuestionWrapper}>
-          <label
-            className={classes.marginBottom30px}
-            htmlFor="reasonForApplying"
-          >
-            Zašto se prijavljuješ na DUMP internship?
-          </label>
-          <Input
-            placeholder="Your answer"
-            type="text"
-            id="firstName"
-            {...register('data.reasonForApplying', {
-              required: 'Reason for applying is required',
-            })}
-          />
-
-          {errors.data?.reasonForApplying ? (
-            <p className={classes.warningText}>
-              {errors.data.reasonForApplying.message}
-            </p>
-          ) : (
-            <div className={classes.warningTextPlaceholder}></div>
-          )}
-        </div>
+        ))}
         <div className={classes.formActionsWrapper}>
           <Button
             type="submit"

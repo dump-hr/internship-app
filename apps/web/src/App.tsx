@@ -20,8 +20,8 @@ export const App = () => {
             path={Path.ApplicationFormPage}
             component={ApplicationFormPage}
           />
-          <Route path={Path.CatchAll} component={NotFoundPage} />
           <Route path={Path.Interview} component={InterviewPage} />
+          <Route path={Path.CatchAll} component={NotFoundPage} />
         </Switch>
         <Toaster />
       </QueryClientProvider>
