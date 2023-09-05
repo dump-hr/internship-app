@@ -4,19 +4,19 @@ import {
   SortableContext,
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
-import { Field } from '@internship-app/types';
+import { Discipline } from '@internship-app/types';
 
 import classes from '../pages/ApplicationFormPage/index.module.css';
-import { SortableField } from './SortableField';
+import { SortableDiscipline } from './SortableDiscipline';
 
 type Props = {
-  internFields: Field[];
-  setInternFields: React.Dispatch<React.SetStateAction<Field[]>>;
+  internDisciplines: Discipline[];
+  setInternDisciplines: React.Dispatch<React.SetStateAction<Discipline[]>>;
 };
 
-export const SortableFieldsContainer: React.FC<Props> = ({
-  internFields,
-  setInternFields,
+export const SortableDisciplinesContainer: React.FC<Props> = ({
+  internDisciplines,
+  setInternDisciplines,
 }) => {
   const onDragEnd = (event: DragEndEvent) => {
     const { active, over } = event;
@@ -24,14 +24,12 @@ export const SortableFieldsContainer: React.FC<Props> = ({
       return;
     }
 
-    setInternFields((prev) => {
-      const oldIndex = prev.findIndex((field) => field === active.id);
-      const newIndex = prev.findIndex((field) => field === over?.id);
+    setInternDisciplines((prev) => {
+      const oldIndex = prev.findIndex((discipline) => discipline === active.id);
+      const newIndex = prev.findIndex((discipline) => discipline === over?.id);
       return arrayMove(prev, oldIndex, newIndex);
     });
   };
-
-  console.log(internFields);
 
   return (
     <div className={classes.formQuestionWrapper}>
@@ -41,11 +39,11 @@ export const SortableFieldsContainer: React.FC<Props> = ({
       <div className={classes.cursorGrab}>
         <DndContext collisionDetection={closestCenter} onDragEnd={onDragEnd}>
           <SortableContext
-            items={internFields}
+            items={internDisciplines}
             strategy={verticalListSortingStrategy}
           >
-            {internFields.map((field) => (
-              <SortableField key={field} field={field} />
+            {internDisciplines.map((discipline) => (
+              <SortableDiscipline key={discipline} discipline={discipline} />
             ))}
           </SortableContext>
         </DndContext>

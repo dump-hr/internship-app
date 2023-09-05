@@ -61,18 +61,8 @@ body {
   height: 26px;
 }
 
-.fieldsChoiceWrapper {
+.disciplinesChoiceWrapper {
   position: relative;
-}
-
-.fieldsPriorityDiv {
-  position: absolute;
-  box-shadow: #64646f33 0px 7px 29px 0px;
-  right: 20px;
-  top: 64px;
-  padding: 0px 10px 10px 10px;
-  background-color: #e5e5e5;
-  border-radius: 10px;
 }
 
 label {

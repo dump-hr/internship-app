@@ -1,16 +1,16 @@
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
-import { Field } from '@internship-app/types';
+import { Discipline } from '@internship-app/types';
 
-import { fieldLabel } from '../constants/internConstants';
+import { disciplineLabel } from '../constants/internConstants';
 
 type Props = {
-  field: Field;
+  discipline: Discipline;
 };
 
-export const SortableField: React.FC<Props> = ({ field }) => {
+export const SortableDiscipline: React.FC<Props> = ({ discipline }) => {
   const { attributes, listeners, setNodeRef, transform, transition } =
-    useSortable({ id: field });
+    useSortable({ id: discipline });
 
   const style = {
     transform: CSS.Transform.toString(transform),
@@ -18,7 +18,7 @@ export const SortableField: React.FC<Props> = ({ field }) => {
   };
   return (
     <div ref={setNodeRef} {...attributes} {...listeners} style={style}>
-      {fieldLabel[field]}
+      {disciplineLabel[discipline]}
     </div>
   );
 };

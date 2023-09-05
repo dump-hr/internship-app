@@ -1,6 +1,6 @@
 import {
+  Discipline,
   EducationOrEmploymentStatus,
-  Field,
   FoundOutAboutInternshipBy,
 } from '@internship-app/types';
 import { useMutation } from 'react-query';
@@ -11,7 +11,7 @@ type InternToCreate = {
   firstName: string;
   lastName: string;
   email: string;
-  fields: Field[];
+  disciplines: Discipline[];
   data: {
     phoneNumber: number;
     dateOfBirth: string;
