@@ -4,7 +4,6 @@ export enum QuestionType {
   Select = 'Select',
   Slider = 'Slider',
   Checkbox = 'Checkbox',
-<<<<<<< HEAD
   Date = 'Date',
   Radio = 'Radio',
   Number = 'Number',
@@ -19,16 +18,6 @@ export type Question = { id: string; title?: string, required?: boolean, registe
   | { type: QuestionType.Date }
   | { type: QuestionType.Radio; options: string[] }
   | { type: QuestionType.Number }
-=======
-}
-
-export type Question = { id: string; title?: string } & (
-  | { type: QuestionType.Field }
-  | { type: QuestionType.TextArea }
-  | { type: QuestionType.Checkbox }
-  | { type: QuestionType.Slider; min: number; max: number; step: number }
-  | { type: QuestionType.Select; options: string[] }
->>>>>>> main
 );
 
 export type MultistepQuestion<T> = Question & {
