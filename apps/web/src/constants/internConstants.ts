@@ -1,8 +1,8 @@
-import { Field } from '@internship-app/types';
+import { Discipline } from '@internship-app/types';
 
-export const fieldLabel = {
-  [Field.Design]: 'Dizajn',
-  [Field.Development]: 'Programiranje',
-  [Field.Marketing]: 'Marketing',
-  [Field.Multimedia]: 'Multimedija',
+export const disciplineLabel = {
+  [Discipline.Design]: 'Dizajn',
+  [Discipline.Development]: 'Programiranje',
+  [Discipline.Marketing]: 'Marketing',
+  [Discipline.Multimedia]: 'Multimedija',
 };

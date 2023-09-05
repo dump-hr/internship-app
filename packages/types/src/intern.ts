@@ -1,4 +1,4 @@
-export enum Field {
+export enum Discipline {
   Development = "Development",
   Design = "Design",
   Multimedia = "Multimedia",

@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Field, Prisma } from '@prisma/client';
+import { Discipline, Prisma } from '@prisma/client';
 import { IsEmail, IsString, MinLength } from 'class-validator';
 
 export class CreateInternDto {
@@ -19,7 +19,7 @@ export class CreateInternDto {
   email: string;
 
   @ApiProperty()
-  fields: Field[];
+  Disciplines: Discipline[];
 
   @ApiProperty()
   data: Prisma.JsonObject;

@@ -1,6 +1,6 @@
 import {
+  Discipline,
   EducationOrEmploymentStatus,
-  Field,
   FoundOutAboutInternshipBy,
 } from '@internship-app/types';
 import { Checkbox } from '@mui/joy';
@@ -11,8 +11,8 @@ import { useForm } from 'react-hook-form';
 
 import { usePostIntern } from '../../api/usePostIntern';
 import { ApplicationFormInputHandler } from '../../components/ApplicationFormInputHandler/ApplicationFormInputHandler';
-import { SortableFieldsContainer } from '../../components/SoratableFieldsContainer';
-import { fieldLabel } from '../../constants/internConstants';
+import { SortableDisciplinesContainer } from '../../components/SoratableDisciplinesContainer';
+import { disciplineLabel } from '../../constants/internConstants';
 import { applicationFormDataQuestions } from './constants/ApplicationFormQuestions';
 import classes from './index.module.css';
 
@@ -20,7 +20,7 @@ export type FormValues = {
   firstName: string;
   lastName: string;
   email: string;
-  fields: Field[];
+  disciplines: Discipline[];
   phoneNumber: number;
   dateOfBirth: string;
   educationOrEmploymentStatus: EducationOrEmploymentStatus;
@@ -29,11 +29,11 @@ export type FormValues = {
   reasonForApplying: string;
 };
 
-const fieldEnumKeys = Object.keys(Field);
-const fieldEnumValues = Object.values(Field);
+const disciplineEnumKeys = Object.keys(Discipline);
+const disciplineEnumValues = Object.values(Discipline);
 
 export const ApplicationFormPage = () => {
-  const [internFields, setInternFields] = useState<Field[]>([]);
+  const [internDisciplines, setInternDisciplines] = useState<Discipline[]>([]);
 
   const { mutate: createInternMutation } = usePostIntern();
 
@@ -43,7 +43,7 @@ export const ApplicationFormPage = () => {
         firstName: '',
         lastName: '',
         email: '',
-        fields: [],
+        disciplines: [],
         phoneNumber: 0,
         dateOfBirth: '',
         educationOrEmploymentStatus: EducationOrEmploymentStatus.Other,
@@ -60,7 +60,7 @@ export const ApplicationFormPage = () => {
       firstName: data.firstName,
       lastName: data.lastName,
       email: data.email,
-      fields: internFields,
+      disciplines: internDisciplines,
       data: {
         phoneNumber: data.phoneNumber,
         dateOfBirth: data.dateOfBirth,
@@ -80,22 +80,24 @@ export const ApplicationFormPage = () => {
 
   const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.checked) {
-      if (internFields.includes(event.target.value as Field)) {
+      if (internDisciplines.includes(event.target.value as Discipline)) {
         return;
       }
-      setInternFields((prev) => {
-        return [...prev, event.target.value as Field];
+      setInternDisciplines((prev) => {
+        return [...prev, event.target.value as Discipline];
       });
     } else {
-      setInternFields((prev) => {
-        return [...prev.filter((field) => field !== event.target.value)];
+      setInternDisciplines((prev) => {
+        return [
+          ...prev.filter((discipline) => discipline !== event.target.value),
+        ];
       });
     }
   };
 
   const handleReset = () => {
     reset();
-    setInternFields([]);
+    setInternDisciplines([]);
   };
 
   return (
@@ -172,7 +174,7 @@ export const ApplicationFormPage = () => {
         <div
           className={clsx(
             classes.formQuestionWrapper,
-            classes.fieldsChoiceWrapper,
+            classes.disciplinesChoiceWrapper,
           )}
         >
           <div className={classes.marginBottom30px}>
@@ -182,29 +184,33 @@ export const ApplicationFormPage = () => {
             </p>
           </div>
 
-          {fieldEnumKeys.map((field, index) => (
-            <div key={field}>
+          {disciplineEnumKeys.map((discipline, index) => (
+            <div key={discipline}>
               <Checkbox
-                value={fieldEnumValues[index]}
-                label={fieldLabel[fieldEnumValues[index]]}
-                {...register('fields', { required: 'This field is required' })}
+                value={disciplineEnumValues[index]}
+                label={disciplineLabel[disciplineEnumValues[index]]}
+                {...register('disciplines', {
+                  required: 'This field is required',
+                })}
                 onChange={(e) => handleCheckboxChange(e)}
-                name="fields"
-                checked={internFields.includes(fieldEnumValues[index])}
+                name="disciplines"
+                checked={internDisciplines.includes(
+                  disciplineEnumValues[index],
+                )}
               />
             </div>
           ))}
 
-          {errors.fields ? (
-            <p className={classes.warningText}>{errors.fields?.message}</p>
+          {errors.disciplines ? (
+            <p className={classes.warningText}>{errors.disciplines?.message}</p>
           ) : (
             <div className={classes.warningTextPlaceholder}></div>
           )}
         </div>
-        {internFields.length > 1 && (
-          <SortableFieldsContainer
-            internFields={internFields}
-            setInternFields={setInternFields}
+        {internDisciplines.length > 1 && (
+          <SortableDisciplinesContainer
+            internDisciplines={internDisciplines}
+            setInternDisciplines={setInternDisciplines}
           />
         )}
 
