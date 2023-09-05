@@ -1,3 +1,6 @@
+-- CreateEnum
+CREATE TYPE "Field" AS ENUM ('Development', 'Design', 'Multimedia', 'Marketing');
+
 -- CreateTable
 CREATE TABLE "Admin" (
     "id" TEXT NOT NULL,
@@ -12,8 +15,12 @@ CREATE TABLE "Admin" (
 -- CreateTable
 CREATE TABLE "Intern" (
     "id" TEXT NOT NULL,
+    "firstName" TEXT NOT NULL,
+    "lastName" TEXT NOT NULL,
     "email" TEXT NOT NULL,
+    "fields" "Field"[],
     "data" JSONB NOT NULL,
+    "interview" JSONB NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
