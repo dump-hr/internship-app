@@ -13,6 +13,7 @@ const queryClient = new QueryClient();
 export const App = () => {
   return (
     <>
+<<<<<<< HEAD
       <QueryClientProvider client={queryClient}>
         <Switch>
           <Route path={Path.Home} component={HomePage} />
@@ -22,6 +23,14 @@ export const App = () => {
         </Switch>
         <Toaster />
       </QueryClientProvider>
+=======
+      <Switch>
+        <Route path={Path.Home} component={HomePage} />
+        <Route path={Path.Interview} component={InterviewPage} />
+        <Route path={Path.CatchAll} component={NotFoundPage} />
+      </Switch>
+      <Toaster />
+>>>>>>> main
     </>
   );
 };
