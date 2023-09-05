@@ -22,16 +22,16 @@ export class InternService {
   }
 
   async create(internToCreate: CreateInternDto) {
-    const internsWithTheSameEmail = await this.prisma.intern.findMany({
+    const internWithTheSameEmail = await this.prisma.intern.findFirst({
       where: {
         email: {
-          startsWith: internToCreate.email,
+          equals: internToCreate.email,
           mode: 'insensitive',
         },
       },
     });
 
-    if (internsWithTheSameEmail.length) {
+    if (internWithTheSameEmail) {
       throw new BadRequestException(
         'Intern with the same email already exists',
       );

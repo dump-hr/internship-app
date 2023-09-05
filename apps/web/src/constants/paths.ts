@@ -1,6 +1,6 @@
 export enum Path {
   Home = '/',
-  ApplicationFormPage = '/application-form',
+  ApplicationForm = '/application-form',
   Login = '/login',
   Logout = '/logout',
   Interview = '/interview/:internId',
