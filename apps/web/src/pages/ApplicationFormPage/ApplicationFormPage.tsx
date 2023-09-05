@@ -16,21 +16,17 @@ import { fieldLabel } from '../../constants/internConstants';
 import { applicationFormDataQuestions } from './constants/ApplicationFormQuestions';
 import classes from './index.module.css';
 
-type ApplicationFormData = {
+export type FormValues = {
+  firstName: string;
+  lastName: string;
+  email: string;
+  fields: Field[];
   phoneNumber: number;
   dateOfBirth: string;
   educationOrEmploymentStatus: EducationOrEmploymentStatus;
   highSchoolOrCollegeName: string;
   foundOutAboutInternshipBy: FoundOutAboutInternshipBy;
   reasonForApplying: string;
-};
-
-export type FormValues = {
-  firstName: string;
-  lastName: string;
-  email: string;
-  fields: Field[];
-  data: ApplicationFormData;
 };
 
 const fieldEnumKeys = Object.keys(Field);
@@ -48,23 +44,32 @@ export const ApplicationFormPage = () => {
         lastName: '',
         email: '',
         fields: [],
-        data: {
-          phoneNumber: 0,
-          dateOfBirth: '',
-          educationOrEmploymentStatus: EducationOrEmploymentStatus.Other,
-          highSchoolOrCollegeName: '',
-          foundOutAboutInternshipBy: FoundOutAboutInternshipBy.Other,
-          reasonForApplying: '',
-        },
+        phoneNumber: 0,
+        dateOfBirth: '',
+        educationOrEmploymentStatus: EducationOrEmploymentStatus.Other,
+        highSchoolOrCollegeName: '',
+        foundOutAboutInternshipBy: FoundOutAboutInternshipBy.Other,
+        reasonForApplying: '',
       } as FormValues,
     });
 
   const { errors } = formState;
 
   const onSubmit = (data: FormValues) => {
-    const internToSend = { ...data, fields: internFields };
-
-    console.log(internToSend);
+    const internToSend = {
+      firstName: data.firstName,
+      lastName: data.lastName,
+      email: data.email,
+      fields: internFields,
+      data: {
+        phoneNumber: data.phoneNumber,
+        dateOfBirth: data.dateOfBirth,
+        educationOrEmploymentStatus: data.educationOrEmploymentStatus,
+        highSchoolOrCollegeName: data.highSchoolOrCollegeName,
+        foundOutAboutInternshipBy: data.foundOutAboutInternshipBy,
+        reasonForApplying: data.reasonForApplying,
+      },
+    };
 
     try {
       createInternMutation(internToSend);

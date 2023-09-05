@@ -5,25 +5,6 @@ import { FieldErrors, UseFormRegister, UseFormWatch } from 'react-hook-form';
 import { FormValues } from '../../pages/ApplicationFormPage/ApplicationFormPage';
 import classes from '../../pages/ApplicationFormPage/index.module.css';
 
-const getRegisterValue = (question: Question) => {
-  switch (question.registerValue) {
-    case 'dateOfBirth':
-      return 'data.dateOfBirth';
-    case 'phoneNumber':
-      return 'data.phoneNumber';
-    case 'educationOrEmploymentStatus':
-      return 'data.educationOrEmploymentStatus';
-    case 'highSchoolOrCollegeName':
-      return 'data.highSchoolOrCollegeName';
-    case 'foundOutAboutInternshipBy':
-      return 'data.foundOutAboutInternshipBy';
-    case 'reasonForApplying':
-      return 'data.reasonForApplying';
-    default:
-      return 'data';
-  }
-};
-
 type Props = {
   question: Question;
   register: UseFormRegister<FormValues>;
@@ -38,16 +19,12 @@ export const ApplicationFormInputHandler: React.FC<Props> = ({
   watch,
 }) => {
   const errorMessageExists = (keyString: string | undefined) => {
-    if (errors.data) {
-      const dataErrorKeys: Array<string | undefined> = Object.keys(errors.data);
-      if (dataErrorKeys.includes(keyString)) {
-        return true;
-      }
+    const dataErrorKeys: Array<string | undefined> = Object.keys(errors);
+    if (dataErrorKeys.includes(keyString)) {
+      return true;
     }
     return false;
   };
-
-  console.log(errors.data);
 
   const getInputComponent = () => {
     switch (question.type) {
@@ -61,7 +38,7 @@ export const ApplicationFormInputHandler: React.FC<Props> = ({
               id={question.id}
               type="text"
               placeholder="Your answer"
-              {...register(getRegisterValue(question), {
+              {...register(question.registerValue as keyof FormValues, {
                 required: question.required,
               })}
             />
@@ -83,7 +60,7 @@ export const ApplicationFormInputHandler: React.FC<Props> = ({
               id={question.id}
               type="number"
               placeholder="Your answer"
-              {...register(getRegisterValue(question), {
+              {...register(question.registerValue as keyof FormValues, {
                 required: question.required,
               })}
             />
@@ -105,7 +82,7 @@ export const ApplicationFormInputHandler: React.FC<Props> = ({
               id={question.id}
               type="date"
               placeholder="Your answer"
-              {...register(getRegisterValue(question), {
+              {...register(question.registerValue as keyof FormValues, {
                 required: question.required,
               })}
             />
@@ -118,7 +95,7 @@ export const ApplicationFormInputHandler: React.FC<Props> = ({
           </div>
         );
       case QuestionType.Radio: {
-        const watchValue = watch(getRegisterValue(question));
+        const watchValue = watch(question.registerValue as keyof FormValues);
 
         return (
           <div className={classes.formQuestionWrapper}>
@@ -131,7 +108,7 @@ export const ApplicationFormInputHandler: React.FC<Props> = ({
                   key={option}
                   value={option}
                   label={option}
-                  {...register(getRegisterValue(question), {
+                  {...register(question.registerValue as keyof FormValues, {
                     required: question.required,
                   })}
                   checked={watchValue === option}
