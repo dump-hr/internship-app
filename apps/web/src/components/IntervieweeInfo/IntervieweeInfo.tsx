@@ -4,6 +4,7 @@ import IconButton from "@mui/material/IconButton";
 import PhotoCamera from "@mui/icons-material/PhotoCamera";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useRef, useState } from "react";
+import styles from "../IntervieweeInfo/index.module.css" ;
 
 type Info = {
     fullName: string,
@@ -29,7 +30,7 @@ const IntervieweeInfo = ({ setUrl, info }: IntervieweeInfoProps) => {
         height: 365,
         aspectRatio: 16 / 9,
     }
-
+    
     const webRef = useRef<Webcam>(null);
     const [image, setImage] = useState<string | undefined>(undefined);
 
@@ -47,34 +48,20 @@ const IntervieweeInfo = ({ setUrl, info }: IntervieweeInfoProps) => {
     }, [webRef]);
 
     return (
-        <div
-            style={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                position: "relative",
-                width: "650px",
-                margin: "auto",
-                marginBottom: "50px",
-                fontFamily: '"Roboto","Helvetica","Arial"'
-            }}>
+        <div className={styles.container}>
 
-            <div style={{
-                width: "100%",
-                display: "flex",
-                flexDirection: "column",
-                padding: "10px 0px",
-                boxSizing: "border-box"
-            }}>
+            <div className={styles.interviewInfo}>
 
                 <h1>{info.fullName}</h1>
-                <div>
-                    <div>
+                <div className={styles.interviewInfoRow}>
+                    <div className={styles.interviewInfoCol}>
                         <div>Email: {info.email}</div>
                         <div>Mobitel: {info.phone} </div>
                         <div>Datum rođenja: {info.dateOfBirth}</div>
                         <div>{info.workingStatus}, {info.institutionName}, {info.yearOfStudy}</div>
+                    </div>
 
+                    <div className={styles.interviewInfoCol}>
                         <div>Područje: {info.field}
                         </div>
                         <div>Kako si saznao/la za internship: {info.referral}</div>
