@@ -4,17 +4,17 @@ import IconButton from "@mui/material/IconButton";
 import PhotoCamera from "@mui/icons-material/PhotoCamera";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useRef, useState } from "react";
-import styles from "../IntervieweeInfo/index.module.css" ;
+import styles from "../IntervieweeInfo/index.module.css";
 
 type Info = {
-    fullName: string,
-    email: string,
-    phone: string,
-    dateOfBirth: string,
-    workingStatus: "Učenik" | "Student" | "Nezaposlen" | "Zaposlen",
-    institutionName: string,
-    yearOfStudy: number,
-    field: "Dev" | "Design" | "Marketing" | "Multimedija",
+    fullName: string;
+    email: string;
+    phone: string;
+    dateOfBirth: string;
+    workingStatus: "Učenik" | "Student" | "Nezaposlen" | "Zaposlen";
+    institutionName: string;
+    yearOfStudy: number;
+    field: "Dev" | "Design" | "Marketing" | "Multimedija";
     referral: "Društvenih mreža" | "Predstavljanja na fakultetima/školama" | "Medija" | "Prijatelja ili poznanika" | "Ostalo"
     applicationMotivation: string
 }
@@ -30,7 +30,7 @@ const IntervieweeInfo = ({ setUrl, info }: IntervieweeInfoProps) => {
         height: 365,
         aspectRatio: 16 / 9,
     }
-    
+
     const webRef = useRef<Webcam>(null);
     const [image, setImage] = useState<string | undefined>(undefined);
 
