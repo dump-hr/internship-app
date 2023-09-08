@@ -9,19 +9,27 @@
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0"
   },
   "dependencies": {
+    "@dnd-kit/core": "^6.0.8",
+    "@dnd-kit/sortable": "^7.0.2",
+    "@dnd-kit/utilities": "^3.2.1",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
     "@fontsource/roboto": "^5.0.8",
+    "@hookform/resolvers": "^3.3.0",
     "@internship-app/types": "*",
     "@mui/icons-material": "^5.14.6",
+    "@mui/joy": "^5.0.0-beta.4",
     "@mui/material": "^5.14.6",
+    "@nestjs/swagger": "^7.1.10",
     "axios": "^1.5.0",
+    "clsx": "^2.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.45.4",
     "react-hot-toast": "^2.4.1",
     "react-query": "^3.39.3",
     "react-webcam": "^7.1.1",
+    "swagger-ui-express": "^5.0.0",
     "wouter": "^2.11.0"
   },
   "devDependencies": {
