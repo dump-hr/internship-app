@@ -53,11 +53,11 @@ const IntervieweeInfo = ({ setUrl, info }: IntervieweeInfoProps) => {
   }, [webRef]);
 
   return (
-    <div>
-      <div>
+    <div className={styles.container}>
+      <div className={styles.interviewInfo}>
         <h1>{info.fullName}</h1>
-        <div>
-          <div>
+        <div className={styles.interviewInfoRow}>
+          <div className={styles.interviewInfoCol}>
             <div>Email: {info.email}</div>
             <div>Mobitel: {info.phone} </div>
             <div>Datum rođenja: {info.dateOfBirth}</div>
@@ -66,7 +66,7 @@ const IntervieweeInfo = ({ setUrl, info }: IntervieweeInfoProps) => {
             </div>
           </div>
 
-          <div>
+          <div className={styles.interviewInfoCol}>
             <div>Područje: {info.field}</div>
             <div>Kako si saznao/la za internship: {info.referral}</div>
             <div>
