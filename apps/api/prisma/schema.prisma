@@ -19,18 +19,18 @@ model Admin {
 }
 
 model Intern {
-  id        String   @id @default(uuid())
-  firstName String
-  lastName  String
-  email     String   @unique
-  fields    Field[]
-  data      Json
-  interview Json
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id          String       @id @default(uuid())
+  firstName   String
+  lastName    String
+  email       String       @unique
+  disciplines Discipline[]
+  data        Json
+  interview   Json
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
 }
 
-enum Field {
+enum Discipline {
   Development
   Design
   Multimedia

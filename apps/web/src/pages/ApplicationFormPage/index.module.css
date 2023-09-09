@@ -1,0 +1,103 @@
+* {
+  font-family: 'Roboto', sans-serif;
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background-color: #e5e5e5;
+}
+
+.applicationFormPageWrapper {
+  padding: 20px;
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.applicationFormTitle {
+  font-size: 33px;
+  font-weight: 500;
+  color: #000;
+  margin-bottom: 20px;
+  margin-top: 20px;
+}
+
+.formClass {
+  display: flex;
+  flex-direction: column;
+}
+
+.formQuestionWrapper {
+  padding: 20px;
+  width: 100%;
+  background-color: #fff;
+  border-radius: 5px;
+  margin-bottom: 20px;
+}
+
+.formQuestionSubtitleText {
+  font-size: 14px;
+  font-weight: 500;
+  color: #000;
+  margin-bottom: 10px;
+  font-style: italic;
+  margin-top: 5 px;
+}
+
+.marginBottom30px {
+  margin-bottom: 30px;
+}
+
+.warningText {
+  font-size: 12px;
+  font-weight: 500;
+  color: #ff0000;
+  font-style: italic;
+  margin-bottom: 0px;
+}
+
+.warningTextPlaceholder {
+  height: 26px;
+}
+
+.disciplinesChoiceWrapper {
+  position: relative;
+}
+
+label {
+  display: block;
+}
+
+input {
+  display: block;
+}
+
+.submitButton {
+  width: 100px;
+  height: 30px;
+  background-color: #fff;
+  border: 1px solid #000;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 20px;
+}
+
+.applicationFooterText {
+  font-size: 14px;
+  font-weight: 700;
+  color: #444444;
+  margin-bottom: 10px;
+  font-style: italic;
+  margin-top: 5 px;
+}
+
+.cursorGrab {
+  cursor: grab;
+}
+
+.formActionsWrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
