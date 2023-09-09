@@ -6,11 +6,30 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { useRef, useState } from 'react';
 import styles from '../IntervieweeInfo/index.module.css';
 
-type IntervieweeInfoProps = {
-  setUrl: (image: string) => void;
+type Info = {
+  fullName: string;
+  email: string;
+  phone: string;
+  dateOfBirth: string;
+  workingStatus: 'Učenik' | 'Student' | 'Nezaposlen' | 'Zaposlen';
+  institutionName: string;
+  yearOfStudy: number;
+  field: 'Dev' | 'Design' | 'Marketing' | 'Multimedija';
+  referral:
+    | 'Društvenih mreža'
+    | 'Predstavljanja na fakultetima/školama'
+    | 'Medija'
+    | 'Prijatelja ili poznanika'
+    | 'Ostalo';
+  applicationMotivation: string;
 };
 
-const IntervieweeInfo = ({ setUrl }: IntervieweeInfoProps) => {
+type IntervieweeInfoProps = {
+  setUrl: (image: string) => void;
+  info: Info;
+};
+
+const IntervieweeInfo = ({ setUrl, info }: IntervieweeInfoProps) => {
   const videoConstraints = {
     width: 650,
     height: 365,
@@ -35,6 +54,28 @@ const IntervieweeInfo = ({ setUrl }: IntervieweeInfoProps) => {
 
   return (
     <div>
+      <div>
+        <h1>{info.fullName}</h1>
+        <div>
+          <div>
+            <div>Email: {info.email}</div>
+            <div>Mobitel: {info.phone} </div>
+            <div>Datum rođenja: {info.dateOfBirth}</div>
+            <div>
+              {info.workingStatus}, {info.institutionName}, {info.yearOfStudy}
+            </div>
+          </div>
+
+          <div>
+            <div>Područje: {info.field}</div>
+            <div>Kako si saznao/la za internship: {info.referral}</div>
+            <div>
+              Zašto se prijavljujes na internships: {info.applicationMotivation}
+            </div>
+          </div>
+        </div>
+      </div>
+
       <Webcam
         style={{ display: image ? 'none' : 'flex' }}
         width={650}
