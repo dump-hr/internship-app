@@ -7,6 +7,8 @@ import { Path } from '../../constants/paths';
 import { defaultInterviewValues, interviewQuestions, steps } from './data';
 import InterviewQuestionHandler from './InterviewQuestionHandler';
 
+import IntervieweeInfo from '../../components/IntervieweeInfo';
+
 const mapAnswersToQuestions = (answers: FieldValues) => {
   return interviewQuestions.map((q) => ({ ...q, ...answers[q.id] }));
 };
@@ -23,8 +25,16 @@ const InterviewPage = () => {
     console.log(internId, mapAnswersToQuestions(d)),
   );
 
+  const setUrl = (image: string) => {
+    console.log(image);
+  };
+
   return (
     <Box maxWidth="1280px" margin="auto">
+      <IntervieweeInfo
+        setUrl={setUrl}
+      />
+
       <MultistepForm
         questions={interviewQuestions}
         form={form}
