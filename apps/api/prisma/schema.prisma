@@ -19,13 +19,12 @@ model Admin {
 }
 
 model Interviewer {
-  id                           String                         @id @default(uuid())
-  name                         String
-  disciplines                  Discipline[]
-  interviewSlots               InterviewSlot[]
-  createdAt                    DateTime                       @default(now())
-  updatedAt                    DateTime                       @updatedAt
-  InterviewMemberParticipation InterviewMemberParticipation[]
+  id          String                         @id @default(uuid())
+  name        String
+  disciplines Discipline[]
+  createdAt   DateTime                       @default(now())
+  updatedAt   DateTime                       @updatedAt
+  interviews  InterviewMemberParticipation[]
 }
 
 model Intern {
@@ -69,18 +68,17 @@ model TestSlot {
 }
 
 model InterviewSlot {
-  id                           String                         @id @default(uuid())
-  intern                       Intern?                        @relation(fields: [internId], references: [id])
-  internId                     String?                        @unique
-  interviewers                 Interviewer[]
-  status                       InterviewStatus?
-  start                        DateTime
-  end                          DateTime
-  answers                      Json
-  score                        Int?
-  createdAt                    DateTime                       @default(now())
-  updatedAt                    DateTime                       @updatedAt
-  InterviewMemberParticipation InterviewMemberParticipation[]
+  id           String                         @id @default(uuid())
+  intern       Intern?                        @relation(fields: [internId], references: [id])
+  internId     String?                        @unique
+  status       InterviewStatus?
+  start        DateTime
+  end          DateTime
+  answers      Json
+  score        Int?
+  createdAt    DateTime                       @default(now())
+  updatedAt    DateTime                       @updatedAt
+  interviewers InterviewMemberParticipation[]
 }
 
 model InterviewMemberParticipation {
