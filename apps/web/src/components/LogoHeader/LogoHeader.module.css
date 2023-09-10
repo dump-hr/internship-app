@@ -1,0 +1,17 @@
+.header {
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  padding: 0 80px;
+  height: 100px;
+}
+
+.logo {
+  height: 30px;
+  margin-right: 20px;
+}
+
+.text {
+  font-size: 25px;
+  font-weight: 400;
+}
