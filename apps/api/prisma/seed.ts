@@ -10,7 +10,6 @@ async function main() {
         firstName: 'Ante',
         lastName: 'Roca',
         data: {},
-        interview: {},
       },
     ],
   });

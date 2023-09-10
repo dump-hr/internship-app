@@ -38,7 +38,7 @@ export class InternService {
     }
 
     const newIntern = await this.prisma.intern.create({
-      data: { ...internToCreate, interview: {} },
+      data: internToCreate,
     });
 
     return newIntern;
