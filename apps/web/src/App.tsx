@@ -4,6 +4,7 @@ import { Route, Switch } from 'wouter';
 
 import { Path } from './constants/paths';
 import { ApplicationFormPage } from './pages/ApplicationFormPage/ApplicationFormPage';
+import EmailPage from './pages/EmailPage';
 import { HomePage } from './pages/HomePage';
 import InterviewPage from './pages/InterviewPage';
 import { NotFoundPage } from './pages/NotFoundPage';
@@ -18,6 +19,7 @@ export const App = () => {
           <Route path={Path.Home} component={HomePage} />
           <Route path={Path.ApplicationForm} component={ApplicationFormPage} />
           <Route path={Path.Interview} component={InterviewPage} />
+          <Route path={Path.Email} component={EmailPage} />
           <Route path={Path.CatchAll} component={NotFoundPage} />
         </Switch>
         <Toaster />
