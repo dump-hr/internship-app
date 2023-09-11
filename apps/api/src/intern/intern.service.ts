@@ -21,6 +21,41 @@ export class InternService {
     return interns;
   }
 
+  async getApplicationProgress(id: string) {
+    const applicationInfo = await this.prisma.intern.findUnique({
+      where: { id },
+      select: {
+        firstName: true,
+        lastName: true,
+        email: true,
+        internDisciplines: {
+          select: {
+            discipline: true,
+            status: true,
+            testStatus: true,
+            testScore: true,
+            testSlot: {
+              select: {
+                start: true,
+                end: true,
+                maxPoints: true,
+              },
+            },
+          },
+        },
+        interviewSlot: {
+          select: {
+            start: true,
+            end: true,
+            status: true,
+          },
+        },
+      },
+    });
+
+    return applicationInfo;
+  }
+
   async create(internToCreate: CreateInternDto) {
     const internWithTheSameEmail = await this.prisma.intern.findFirst({
       where: {
@@ -38,7 +73,7 @@ export class InternService {
     }
 
     const newIntern = await this.prisma.intern.create({
-      data: internToCreate,
+      data: { ...internToCreate },
     });
 
     return newIntern;

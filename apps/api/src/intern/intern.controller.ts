@@ -34,6 +34,17 @@ export class InternController {
     return intern;
   }
 
+  @Get('progress/:id')
+  async getApplicationProgress(@Param('id') id: string) {
+    const progress = await this.internService.getApplicationProgress(id);
+
+    if (!progress) {
+      throw new NotFoundException();
+    }
+
+    return progress;
+  }
+
   @Post()
   async create(@Body() intern: CreateInternDto) {
     const newIntern = await this.internService.create(intern);
