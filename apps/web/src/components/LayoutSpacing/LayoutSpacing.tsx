@@ -5,7 +5,8 @@ type Props = {
 const LayoutSpacing: React.FC<Props> = ({ children, ...handlers }) => {
   const style = {
     maxWidth: '1000px',
-    margin: '0 auto',
+    marginLeft: 'auto',
+    marginRight: 'auto',
   };
 
   return (
