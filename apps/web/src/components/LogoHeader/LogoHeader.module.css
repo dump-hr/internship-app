@@ -1,8 +1,6 @@
-.header {
+.layout {
   display: flex;
   align-items: center;
-  box-sizing: border-box;
-  padding: 0 80px;
   height: 100px;
 }
 
