@@ -1,17 +1,6 @@
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { Button } from '@mui/material';
 
-type User = {
-  id: string;
-  discipline: string;
-  sentEmails: {
-    ['Prijava']: boolean;
-    ['Termin']: boolean;
-    ['Intervju']: boolean;
-    ['Ispit']: boolean;
-  };
-};
-
 const columns: GridColDef[] = [
   { field: 'firstName', headerName: 'Ime', width: 130 },
   { field: 'lastName', headerName: 'Prezime', width: 130 },
@@ -175,6 +164,7 @@ const UsersList = () => {
         }}
         pageSizeOptions={[5, 10]}
         checkboxSelection
+        disableRowSelectionOnClick
       />
     </div>
   );
