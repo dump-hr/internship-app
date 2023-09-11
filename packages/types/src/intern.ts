@@ -56,6 +56,7 @@ export type Intern = {
 
 export type InternDiscipline = {
   discipline: Discipline;
+  priority: number;
   status: DisciplineStatus;
   testStatus?: TestStatus;
   testScore?: number;
@@ -67,8 +68,8 @@ export type InternDiscipline = {
 export type TestSlot = {
   id: string;
   discipline: Discipline;
-  start: Date;
-  end: Date;
+  start: string;
+  end: string;
   location: string;
   capacity: number;
   maxPoints: number;
@@ -78,8 +79,8 @@ export type TestSlot = {
 export type InterviewSlot = {
   id: string;
   status?: InterviewStatus;
-  start: Date;
-  end: Date;
+  start: string;
+  end: string;
   answers: JSON;
   score?: number;
 };

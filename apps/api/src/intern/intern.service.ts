@@ -21,7 +21,7 @@ export class InternService {
     return interns;
   }
 
-  async getApplicationProgress(id: string) {
+  async getApplicationStatus(id: string) {
     const applicationInfo = await this.prisma.intern.findUnique({
       where: { id },
       select: {

@@ -7,6 +7,7 @@ import { ApplicationFormPage } from './pages/ApplicationFormPage/ApplicationForm
 import { HomePage } from './pages/HomePage';
 import InterviewPage from './pages/InterviewPage';
 import { NotFoundPage } from './pages/NotFoundPage';
+import StatusPage from './pages/StatusPage';
 
 const queryClient = new QueryClient();
 

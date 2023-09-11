@@ -43,6 +43,7 @@ model InternDiscipline {
   internId   String
   intern     Intern           @relation(fields: [internId], references: [id])
   discipline Discipline
+  priority   Int
   status     DisciplineStatus
   testSlot   TestSlot?        @relation(fields: [testSlotId], references: [id])
   testSlotId String?

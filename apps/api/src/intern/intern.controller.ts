@@ -34,15 +34,15 @@ export class InternController {
     return intern;
   }
 
-  @Get('progress/:id')
-  async getApplicationProgress(@Param('id') id: string) {
-    const progress = await this.internService.getApplicationProgress(id);
+  @Get('status/:id')
+  async getApplicationStatus(@Param('id') id: string) {
+    const status = await this.internService.getApplicationStatus(id);
 
-    if (!progress) {
+    if (!status) {
       throw new NotFoundException();
     }
 
-    return progress;
+    return status;
   }
 
   @Post()
