@@ -3,6 +3,7 @@ import { Grid, Button } from '@mui/material';
 
 import LayoutSpacing from '../../components/LayoutSpacing/LayoutSpacing';
 import LogoHeader from '../../components/LogoHeader';
+import UsersList from '../../components/UsersList';
 
 const DashboardPage = () => {
   return (
@@ -35,6 +36,7 @@ const DashboardPage = () => {
             </div>
           </Grid>
         </Grid>
+        <UsersList />
       </LayoutSpacing>
     </>
   );
