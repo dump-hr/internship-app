@@ -4,8 +4,9 @@ import { join } from 'path';
 
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { PrismaService } from './prisma.service';
+import { EmailModule } from './email/email.module';
 import { InternModule } from './intern/intern.module';
+import { PrismaService } from './prisma.service';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { InternModule } from './intern/intern.module';
       exclude: ['/api/(.*)'],
     }),
     InternModule,
+    EmailModule,
   ],
   controllers: [AppController],
   providers: [AppService, PrismaService],

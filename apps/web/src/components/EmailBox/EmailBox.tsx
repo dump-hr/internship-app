@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
 import { Box, Button, Textarea } from '@mui/joy';
+import React, { useState } from 'react';
 
 interface Props {
   sendEmail: (text: string) => void;

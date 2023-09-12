@@ -1,11 +1,11 @@
-import { Box, TextField } from '@mui/joy';
+import { Box } from '@mui/joy';
 
 import EmailBox from '../../components/EmailBox';
 import EmailList from '../../components/EmailList';
 
-interface Props {
-  emails?: string[];
-}
+// interface Props {
+//   emails?: string[];
+//}
 
 export const EmailPage = () => {
   const sendEmail = (text: string) => {
