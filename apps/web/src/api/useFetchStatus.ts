@@ -9,5 +9,6 @@ const fetchStatus = (id: string) =>
 export const useFetchStatus = (id: string) => {
   return useQuery(['status', id], () => fetchStatus(id), {
     staleTime: Infinity,
+    retry: false,
   });
 };
