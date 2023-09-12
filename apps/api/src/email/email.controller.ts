@@ -22,7 +22,7 @@ export class EmailController {
     const emailText = body.text;
 
     const templates = await this.emailService.makeEmail(emails, emailText);
-
+    console.log(templates);
     return templates;
   }
 }
