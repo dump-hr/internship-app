@@ -19,13 +19,10 @@ export class EmailController {
   @Post()
   async makeEmails(@Body() body: EmailsDto) {
     const emails = body.emails;
-    const emailText = 'Hello {{ user.name }}!';
+    const emailText = body.text;
 
-    const html = await this.emailService.makeEmail(emails[0], emailText); //example
-    for (const email of emails) {
-      console.log(await this.emailService.makeEmail(email, body.text));
-    }
+    const templates = await this.emailService.makeEmail(emails, emailText);
 
-    return html;
+    return templates;
   }
 }

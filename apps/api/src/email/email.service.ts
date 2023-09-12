@@ -10,12 +10,15 @@ export class EmailService {
     return 'Email sent!'; //TODO later
   }
 
-  async makeEmail(userEmail: string, emailText: string) {
-    const intern = await this.prisma.intern.findUnique({
-      where: { email: userEmail },
+  async makeEmail(emails: string[], emailText: string) {
+    const interns = await this.prisma.intern.findMany({
+      where: { email: { in: emails } },
     });
     const template = nunjucks.compile(emailText);
-    const html = template.render({ intern });
-    return html;
+    const htmls = [];
+    interns.forEach((intern) => {
+      htmls.push(template.render({ intern }));
+    });
+    return htmls;
   }
 }
