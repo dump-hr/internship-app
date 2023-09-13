@@ -34,6 +34,17 @@ export class InternController {
     return intern;
   }
 
+  @Get('status/:id')
+  async getApplicationStatus(@Param('id') id: string) {
+    const status = await this.internService.getApplicationStatus(id);
+
+    if (!status) {
+      throw new NotFoundException();
+    }
+
+    return status;
+  }
+
   @Post()
   async create(@Body() intern: CreateInternDto) {
     const newIntern = await this.internService.create(intern);

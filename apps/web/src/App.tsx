@@ -7,6 +7,7 @@ import { ApplicationFormPage } from './pages/ApplicationFormPage/ApplicationForm
 import { HomePage } from './pages/HomePage';
 import InterviewPage from './pages/InterviewPage';
 import { NotFoundPage } from './pages/NotFoundPage';
+import StatusPage from './pages/StatusPage';
 
 const queryClient = new QueryClient();
 
@@ -17,6 +18,7 @@ export const App = () => {
         <Switch>
           <Route path={Path.Home} component={HomePage} />
           <Route path={Path.ApplicationForm} component={ApplicationFormPage} />
+          <Route path={Path.Status} component={StatusPage} />
           <Route path={Path.Interview} component={InterviewPage} />
           <Route path={Path.CatchAll} component={NotFoundPage} />
         </Switch>
