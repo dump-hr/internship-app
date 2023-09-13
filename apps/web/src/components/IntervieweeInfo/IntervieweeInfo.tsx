@@ -1,6 +1,7 @@
-import styles from './index.module.css';
-import Webcamera from '../Webcamera';
 import { Discipline } from '@internship-app/types';
+
+import Webcamera from '../Webcamera';
+import styles from './index.module.css';
 
 type Info = {
   fullName: string;

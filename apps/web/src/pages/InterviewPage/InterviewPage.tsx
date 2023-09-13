@@ -1,14 +1,13 @@
+import { Discipline } from '@internship-app/types';
 import { Box } from '@mui/material';
 import { FieldValues, useForm } from 'react-hook-form';
 import { useRoute } from 'wouter';
 
+import IntervieweeInfo from '../../components/IntervieweeInfo';
 import MultistepForm from '../../components/MultistepForm';
 import { Path } from '../../constants/paths';
 import { defaultInterviewValues, interviewQuestions, steps } from './data';
 import InterviewQuestionHandler from './InterviewQuestionHandler';
-
-import IntervieweeInfo from '../../components/IntervieweeInfo';
-import { Discipline } from '@internship-app/types';
 
 const mapAnswersToQuestions = (answers: FieldValues) => {
   return interviewQuestions.map((q) => ({ ...q, ...answers[q.id] }));

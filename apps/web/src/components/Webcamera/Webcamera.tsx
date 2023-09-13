@@ -1,9 +1,10 @@
-import { useCallback } from 'react';
-import Webcam from 'react-webcam';
-import IconButton from '@mui/material/IconButton';
-import PhotoCamera from '@mui/icons-material/PhotoCamera';
 import DeleteIcon from '@mui/icons-material/Delete';
+import PhotoCamera from '@mui/icons-material/PhotoCamera';
+import IconButton from '@mui/material/IconButton';
+import { useCallback } from 'react';
 import { useRef, useState } from 'react';
+import Webcam from 'react-webcam';
+
 import styles from './index.module.css';
 
 type WebcameraProps = {
@@ -34,32 +35,32 @@ const Webcamera = ({ setUrl }: WebcameraProps) => {
   }, [webRef]);
 
   return (
-      <div className={styles.camera}>
-        <Webcam
-          style={{ display: image ? 'none' : 'flex' }}
-          width={650}
-          height={365}
-          audio={false}
-          screenshotFormat="image/jpeg"
-          videoConstraints={videoConstraints}
-          ref={webRef}
-        />
+    <div className={styles.camera}>
+      <Webcam
+        style={{ display: image ? 'none' : 'flex' }}
+        width={650}
+        height={365}
+        audio={false}
+        screenshotFormat="image/jpeg"
+        videoConstraints={videoConstraints}
+        ref={webRef}
+      />
 
-        <img src={image} style={{ display: image ? 'flex' : 'none' }} />
-        <IconButton
-          style={{
-            color: '#1976d2',
-            position: 'absolute',
-            bottom: '0',
-            marginLeft: 'auto',
-          }}
-          onClick={image ? deletePicture : capturePicture}
-          aria-label="delete"
-          size="large"
-        >
-          {image ? <DeleteIcon /> : <PhotoCamera />}
-        </IconButton>
-      </div>
+      <img src={image} style={{ display: image ? 'flex' : 'none' }} />
+      <IconButton
+        style={{
+          color: '#1976d2',
+          position: 'absolute',
+          bottom: '0',
+          marginLeft: 'auto',
+        }}
+        onClick={image ? deletePicture : capturePicture}
+        aria-label="delete"
+        size="large"
+      >
+        {image ? <DeleteIcon /> : <PhotoCamera />}
+      </IconButton>
+    </div>
   );
 };
 
