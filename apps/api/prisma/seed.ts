@@ -10,6 +10,17 @@ async function main() {
         firstName: 'Ante',
         lastName: 'Roca',
         data: {},
+        interview: {},
+      },
+    ],
+  });
+
+  await prisma.admin.createMany({
+    data: [
+      {
+        email: 'admin@dump.hr',
+        password:
+          '$2a$12$tCUVgcBjqQ.XDIepFQ4oZ.z47tmy5h8KnWH7xgXgUib8/Wn1E6bIW', //dump.1950
       },
     ],
   });
