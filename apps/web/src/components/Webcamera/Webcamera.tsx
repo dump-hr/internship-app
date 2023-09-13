@@ -27,12 +27,12 @@ const Webcamera = ({ setUrl }: WebcameraProps) => {
       setImage(imageSrc);
       setUrl(imageSrc);
     }
-  }, [webRef]);
+  }, [webRef, setUrl]);
 
   const deletePicture = useCallback(() => {
     setImage('');
     setUrl('');
-  }, [webRef]);
+  }, [setUrl]);
 
   return (
     <div className={styles.camera}>
