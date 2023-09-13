@@ -8,7 +8,7 @@ import { api } from '../../api';
 import { Path } from '../../constants/paths';
 
 const LoginForm = () => {
-  const [location, navigate] = useLocation();
+  const [, navigate] = useLocation();
 
   const [email, setEmail] = useState('');
   const [isValid, setIsValid] = useState(true);
