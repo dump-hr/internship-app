@@ -8,6 +8,7 @@ import { defaultInterviewValues, interviewQuestions, steps } from './data';
 import InterviewQuestionHandler from './InterviewQuestionHandler';
 
 import IntervieweeInfo from '../../components/IntervieweeInfo';
+import { Discipline } from '@internship-app/types';
 
 const mapAnswersToQuestions = (answers: FieldValues) => {
   return interviewQuestions.map((q) => ({ ...q, ...answers[q.id] }));
@@ -41,7 +42,7 @@ const InterviewPage = () => {
           workingStatus: 'Student',
           institutionName: 'Fakultet elektrotehnike i računarstva',
           yearOfStudy: 3,
-          field: 'Dev',
+          field: Discipline.Development,
           referral: 'Ostalo',
           applicationMotivation: 'Lorem ipsum dolor sit amet, consectetur.',
         }}
