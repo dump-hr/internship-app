@@ -8,7 +8,7 @@ import {
   ListItemText,
   Typography,
 } from '@mui/material';
-import { StaticDatePicker } from '@mui/x-date-pickers';
+import { StaticDatePicker } from '@mui/x-date-pickers/StaticDatePicker/';
 import { useState } from 'react';
 import { useRoute } from 'wouter';
 
@@ -39,7 +39,7 @@ const availableTimes = [
   '15:30',
 ];
 
-interface DateType extends Date {
+interface DateType {
   $D: number;
   $M: number;
   $y: number;
