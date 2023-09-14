@@ -8,11 +8,12 @@ export class InternService {
   constructor(private readonly prisma: PrismaService) {}
 
   async get(id: string) {
-    const intern = await this.prisma.intern.findUnique({
-      where: { id: id },
+    return await this.prisma.intern.findUnique({
+      where: { id },
+      include: {
+        internDisciplines: true,
+      },
     });
-
-    return intern;
   }
 
   async getAll() {

@@ -1,18 +1,23 @@
-import { PrismaClient } from '@prisma/client';
+import { Discipline, PrismaClient } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
 
 const prisma = new PrismaClient();
 
 async function main() {
-  await prisma.intern.createMany({
-    data: [
-      {
-        email: 'ante.roca@dump.hr',
-        firstName: 'Ante',
-        lastName: 'Roca',
-        data: {},
+  await prisma.intern.create({
+    data: {
+      email: 'ante.roca@dump.hr',
+      firstName: 'Ante',
+      lastName: 'Roca',
+      data: {},
+      internDisciplines: {
+        create: {
+          discipline: Discipline.Development,
+          priority: 1,
+          status: 'Pending',
+        },
       },
-    ],
+    },
   });
 
   await prisma.admin.createMany({

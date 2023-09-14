@@ -4,11 +4,7 @@ import { useMutation } from 'react-query';
 import { api } from '.';
 
 const addIntern = async (newIntern: Intern) => {
-  try {
-    await api.post('/intern', newIntern);
-  } catch (err) {
-    alert(err);
-  }
+  return await api.post('/intern', newIntern);
 };
 
 export const usePostIntern = () => {

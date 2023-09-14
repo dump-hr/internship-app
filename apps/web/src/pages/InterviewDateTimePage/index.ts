@@ -1,3 +1,3 @@
-import InterviewDateTimePage from './InterviewDateTimePage';
+import ScheduleInterviewPage from './ScheduleInterviewPage';
 
-export default InterviewDateTimePage;
+export default ScheduleInterviewPage;

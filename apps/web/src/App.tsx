@@ -7,7 +7,7 @@ import { Route, Switch } from 'wouter';
 import { Path } from './constants/paths';
 import { ApplicationFormPage } from './pages/ApplicationFormPage/ApplicationFormPage';
 import { HomePage } from './pages/HomePage';
-import InterviewDateTimePage from './pages/InterviewDateTimePage';
+import ScheduleInterviewPage from './pages/InterviewDateTimePage';
 import InterviewPage from './pages/InterviewPage';
 import LoginPage from './pages/LoginPage';
 import { NotFoundPage } from './pages/NotFoundPage';
@@ -29,8 +29,8 @@ export const App = () => {
             <Route path={Path.Status} component={StatusPage} />
             <Route path={Path.Interview} component={InterviewPage} />
             <Route
-              path={Path.InterviewDateTime}
-              component={InterviewDateTimePage}
+              path={Path.ScheduleInterview}
+              component={ScheduleInterviewPage}
             />
             <Route path={Path.Login} component={LoginPage} />
             <Route path={Path.CatchAll} component={NotFoundPage} />

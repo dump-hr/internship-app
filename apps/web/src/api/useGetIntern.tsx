@@ -3,15 +3,13 @@ import { useQuery } from 'react-query';
 
 import { api } from '.';
 
-const getIntern = async (id: string | undefined) => {
-  try {
-    const response = await api.get<string | undefined, Intern>(`/intern/${id}`);
-    return response;
-  } catch (err) {
-    alert(err);
-  }
+const getIntern = async (id: string) => {
+  return await api.get<never, Intern>(`/intern/${id}`);
 };
 
-export const useGetIntern = (id: string | undefined) => {
-  return useQuery(['intern'], () => getIntern(id));
+export const useGetIntern = (id?: string) => {
+  return useQuery(['intern'], () => getIntern(id!), {
+    enabled: !!id,
+    retry: false,
+  });
 };
