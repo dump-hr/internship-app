@@ -38,6 +38,16 @@ const ScheduleInterviewPage = () => {
     console.log(selectedSlot);
   };
 
+  const interviewSlotDateFormat =
+    selectedSlot?.toLocaleString('hr-HR', {
+      timeStyle: 'short',
+      dateStyle: 'short',
+    }) +
+    '-' +
+    selectedSlot?.toLocaleTimeString('hr-HR', {
+      timeStyle: 'short',
+    });
+
   if (isLoading) return <Layout title="Loading..." />;
 
   if (isError)
@@ -50,7 +60,7 @@ const ScheduleInterviewPage = () => {
       <Box
         sx={{
           display: 'flex',
-          alignItems: isMobile ? 'center' : 'flex-end',
+          alignItems: isMobile ? 'center' : 'flex-start',
           flexDirection: isMobile ? 'column' : 'row',
         }}
       >
@@ -81,12 +91,7 @@ const ScheduleInterviewPage = () => {
           setDialogOpen(false);
         }}
         title="Potvrdi odabir termina"
-        description={`Vaš termin bit će rezerviran za ${selectedSlot?.toLocaleString(
-          'hr-HR',
-          { timeStyle: 'short', dateStyle: 'short' },
-        )}-${selectedSlot?.toLocaleTimeString('hr-HR', {
-          timeStyle: 'short',
-        })}.`}
+        description={`Vaš termin bit će rezerviran za ${interviewSlotDateFormat}.`}
       />
     </Layout>
   );

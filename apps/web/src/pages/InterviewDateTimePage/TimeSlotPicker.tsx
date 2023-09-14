@@ -17,6 +17,7 @@ export const TimeSlotPicker: React.FC<Props> = ({
         flexGrow: 1,
         width: isMobile ? '100%' : 'auto',
         maxHeight: isMobile ? 'none' : '350px',
+        marginTop: isMobile ? 0 : '100px',
         overflowY: 'auto',
       }}
     >
