@@ -1,11 +1,14 @@
-import c from './DashboardPage.module.css';
-import { Grid, Button } from '@mui/material';
+import { Button, Grid } from '@mui/material';
 
+import { useFetchAllInterns } from '../../api/useFetchAllInterns';
 import LayoutSpacing from '../../components/LayoutSpacing/LayoutSpacing';
 import LogoHeader from '../../components/LogoHeader';
 import UsersList from '../../components/UsersList';
+import c from './DashboardPage.module.css';
 
 const DashboardPage = () => {
+  const { data: interns } = useFetchAllInterns();
+
   return (
     <>
       <LogoHeader text="Kandidati" />
@@ -13,7 +16,7 @@ const DashboardPage = () => {
         <Grid container spacing={2} xs={13}>
           <Grid item xs={12} md={2}>
             <div className={c.infoBox}>
-              <h3>500</h3>
+              <h3>{interns?.length}</h3>
               <p>Broj prijava</p>
             </div>
           </Grid>

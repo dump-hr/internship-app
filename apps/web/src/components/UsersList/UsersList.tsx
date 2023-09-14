@@ -1,5 +1,5 @@
-import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { Button } from '@mui/material';
+import { DataGrid, GridColDef } from '@mui/x-data-grid';
 
 const columns: GridColDef[] = [
   { field: 'firstName', headerName: 'Ime', width: 130 },
@@ -153,7 +153,14 @@ const rows = [
 
 const UsersList = () => {
   return (
-    <div style={{ height: 400, width: '100%', marginTop: '30px' }}>
+    <div
+      style={{
+        height: 400,
+        width: '100%',
+        marginTop: '30px',
+        marginBottom: '100px',
+      }}
+    >
       <DataGrid
         rows={rows}
         columns={columns}

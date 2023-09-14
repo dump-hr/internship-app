@@ -4,8 +4,8 @@ import { join } from 'path';
 
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { PrismaService } from './prisma.service';
 import { InternModule } from './intern/intern.module';
+import { PrismaService } from './prisma.service';
 
 @Module({
   imports: [
