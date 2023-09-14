@@ -65,6 +65,7 @@ export const DatePicker: React.FC<Props> = ({ availableDates, onChange }) => {
         shouldDisableDate={(d) => handleDisbleDate(d as MuiDate)}
         shouldDisableYear={(d) => handleDisableYear(d as MuiDate)}
         onMonthChange={({ $M }) => setCurrentMonth($M)}
+        disablePast
       />
       {!!prevMonthCount && (
         <Typography

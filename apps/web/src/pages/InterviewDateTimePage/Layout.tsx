@@ -5,7 +5,7 @@ import { Logo } from '../../components/Logo';
 
 type Props = {
   children?: ReactNode;
-  title: ReactNode | string;
+  title: string;
 };
 
 export const Layout: React.FC<Props> = ({ children, title }) => {
