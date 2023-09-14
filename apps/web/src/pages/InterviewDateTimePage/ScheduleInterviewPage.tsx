@@ -1,11 +1,11 @@
-import { Box, Typography, useMediaQuery } from '@mui/material';
+import { Box, useMediaQuery } from '@mui/material';
 import { useState } from 'react';
 import { useRoute } from 'wouter';
 
 import { useGetIntern } from '../../api/useGetIntern';
-import { Logo } from '../../components/Logo';
 import { Path } from '../../constants/paths';
 import { DatePicker, MuiDate } from './DatePicker';
+import { Layout } from './Layout';
 import { TimeSlotPicker } from './TimeSlotPicker';
 
 const availableDates = [
@@ -42,57 +42,47 @@ const ScheduleInterviewPage = () => {
 
   const [selectedDate, setSelectedDate] = useState<MuiDate | null>(null);
 
-  if (isLoading) return <div>loading...</div>;
+  if (isLoading) return <Layout title="Loading..." />;
 
-  if (isError) return <div>student not found</div>;
+  if (isError)
+    return (
+      <Layout
+        title={
+          <>
+            Intern not found. Please contact us at{' '}
+            <a href="mailto:info@dump.hr">info@dump.hr</a>
+          </>
+        }
+      />
+    );
 
   return (
-    <Box
-      sx={{
-        maxWidth: '650px',
-        width: 'calc(100% - 40px)',
-        margin: '0 auto',
-        padding: '20px',
-      }}
-    >
-      <Logo />
+    <Layout title={`Pozdrav ${intern?.firstName}, odaberi termin za intervju`}>
       <Box
         sx={{
-          backgroundColor: '#fff',
-          marginTop: '20px',
-          padding: '20px 0',
-          borderRadius: '20px',
+          display: 'flex',
+          alignItems: isMobile ? 'center' : 'flex-end',
+          flexDirection: isMobile ? 'column' : 'row',
         }}
       >
-        <Typography sx={{ margin: '0 20px' }} variant="h5">
-          Pozdrav {intern?.firstName}, odaberi termin za intervju
-        </Typography>
-        <Box
-          sx={{
-            display: 'flex',
-            alignItems: isMobile ? 'center' : 'flex-end',
-            flexDirection: isMobile ? 'column' : 'row',
-          }}
-        >
-          <DatePicker
-            availableDates={availableDates}
-            onChange={setSelectedDate}
+        <DatePicker
+          availableDates={availableDates}
+          onChange={setSelectedDate}
+        />
+        {!!selectedDate && (
+          <TimeSlotPicker
+            availableTimeSlots={availableSlots.filter(
+              (slot) =>
+                slot.getDate() === selectedDate.$D &&
+                slot.getMonth() === selectedDate.$M &&
+                slot.getFullYear() === selectedDate.$y,
+            )}
+            isMobile={isMobile}
+            onChange={(slot) => console.log(slot)}
           />
-          {!!selectedDate && (
-            <TimeSlotPicker
-              availableTimeSlots={availableSlots.filter(
-                (slot) =>
-                  slot.getDate() === selectedDate.$D &&
-                  slot.getMonth() === selectedDate.$M &&
-                  slot.getFullYear() === selectedDate.$y,
-              )}
-              isMobile={isMobile}
-              onChange={(slot) => console.log(slot)}
-            />
-          )}
-        </Box>
+        )}
       </Box>
-    </Box>
+    </Layout>
   );
 };
 
