@@ -1,5 +1,6 @@
 import { Button } from '@mui/material';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
+import { Intern } from '@prisma/client';
 
 const columns: GridColDef[] = [
   { field: 'firstName', headerName: 'Ime', width: 130 },
@@ -49,6 +50,7 @@ const columns: GridColDef[] = [
   },
 ];
 
+/*
 const rows = [
   {
     id: 1,
@@ -150,8 +152,25 @@ const rows = [
     emailExam: Math.random() < 0.5,
   },
 ];
+*/
 
-const UsersList = () => {
+type Props = {
+  data: Intern[] | undefined;
+};
+
+const UsersList: React.FC<Props> = ({ data = [] }) => {
+  const rows =
+    data.map((intern) => ({
+      id: intern.id,
+      lastName: intern.lastName,
+      firstName: intern.firstName,
+      discipline: '/' /* intern.data.discipline */,
+      emailApplication: Math.random() < 0.5,
+      emailAppointment: Math.random() < 0.5,
+      emailInterview: Math.random() < 0.5,
+      emailExam: Math.random() < 0.5,
+    })) || [];
+
   return (
     <div
       style={{

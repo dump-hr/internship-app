@@ -9,7 +9,9 @@ async function main() {
         email: 'ante.roca@dump.hr',
         firstName: 'Ante',
         lastName: 'Roca',
-        data: {},
+        data: {
+          discipline: 'Dev',
+        },
       },
     ],
   });

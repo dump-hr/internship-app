@@ -39,7 +39,7 @@ const DashboardPage = () => {
             </div>
           </Grid>
         </Grid>
-        <UsersList />
+        <UsersList data={interns} />
       </LayoutSpacing>
     </>
   );
