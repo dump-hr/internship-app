@@ -1,10 +1,8 @@
-import { JwtResponse } from '@internship-app/types/src/auth';
 import { Box, Button, TextField } from '@mui/material';
 import { useState } from 'react';
-import toast from 'react-hot-toast';
 import { useLocation } from 'wouter';
 
-import { api } from '../../api';
+import { useLogin } from '../../api/useLogin';
 import { Path } from '../../constants/paths';
 
 const LoginForm = () => {
@@ -12,6 +10,8 @@ const LoginForm = () => {
 
   const [email, setEmail] = useState('');
   const [isValid, setIsValid] = useState(true);
+
+  const login = useLogin(() => navigate(Path.Home, { replace: true }));
 
   const validateEmail = (email: string) => {
     const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
@@ -32,31 +32,16 @@ const LoginForm = () => {
       return;
     }
 
-    console.log('Valid email: ', email);
-
     const form = e.currentTarget;
     const formElements = form.elements as typeof form.elements & {
       email: HTMLInputElement;
       password: HTMLInputElement;
     };
 
-    await toast.promise(
-      api.post<never, JwtResponse>('/auth/login', {
-        email: formElements.email.value,
-        password: formElements.password.value,
-      }),
-      {
-        loading: 'Logging in...',
-        success: ({ access_token }) => {
-          localStorage.setItem('access_token', access_token);
-
-          navigate(Path.Home, { replace: true });
-
-          return 'Logged in successfully!';
-        },
-        error: (error) => error,
-      },
-    );
+    login.mutate({
+      email: formElements.email.value,
+      password: formElements.password.value,
+    });
   };
 
   return (

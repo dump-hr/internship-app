@@ -6,7 +6,6 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthController } from './auth/auth.controller';
 import { AuthModule } from './auth/auth.module';
-import { AuthService } from './auth/auth.service';
 import { InternModule } from './intern/intern.module';
 import { PrismaService } from './prisma.service';
 
@@ -20,6 +19,6 @@ import { PrismaService } from './prisma.service';
     AuthModule,
   ],
   controllers: [AppController, AuthController],
-  providers: [AppService, PrismaService, AuthService],
+  providers: [AppService, PrismaService],
 })
 export class AppModule {}
