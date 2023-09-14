@@ -1,4 +1,5 @@
 import { PrismaClient } from '@prisma/client';
+import * as bcrypt from 'bcrypt';
 
 const prisma = new PrismaClient();
 
@@ -10,6 +11,15 @@ async function main() {
         firstName: 'Ante',
         lastName: 'Roca',
         data: {},
+      },
+    ],
+  });
+
+  await prisma.admin.createMany({
+    data: [
+      {
+        email: 'admin@dump.hr',
+        password: await bcrypt.hash('dump.1950', 10),
       },
     ],
   });

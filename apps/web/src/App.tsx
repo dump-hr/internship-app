@@ -9,7 +9,9 @@ import { ApplicationFormPage } from './pages/ApplicationFormPage/ApplicationForm
 import { HomePage } from './pages/HomePage';
 import InterviewDateTimePage from './pages/InterviewDateTimePage';
 import InterviewPage from './pages/InterviewPage';
+import LoginPage from './pages/LoginPage';
 import { NotFoundPage } from './pages/NotFoundPage';
+import StatusPage from './pages/StatusPage';
 
 const queryClient = new QueryClient();
 
@@ -24,11 +26,13 @@ export const App = () => {
               path={Path.ApplicationForm}
               component={ApplicationFormPage}
             />
+            <Route path={Path.Status} component={StatusPage} />
             <Route path={Path.Interview} component={InterviewPage} />
             <Route
               path={Path.InterviewDateTime}
               component={InterviewDateTimePage}
             />
+            <Route path={Path.Login} component={LoginPage} />
             <Route path={Path.CatchAll} component={NotFoundPage} />
           </Switch>
           <Toaster />
