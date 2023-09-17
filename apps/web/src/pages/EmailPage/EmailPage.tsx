@@ -1,4 +1,4 @@
-import { Box } from '@mui/joy';
+import { Box, Button, Modal } from '@mui/joy';
 import { useEffect, useState } from 'react';
 
 import { api } from '../../api';
@@ -21,38 +21,52 @@ type Intern = {
   };
 };
 
-export const EmailPage = () => {
-  const [emailsToDisplay, setEmailsToDisplay] = useState<string[]>([]);
-  async function getEmails() {
-    const users = (await api.get('/intern')) as Intern[];
-    console.log(users);
-    const emails = users.map((user: Intern) => user.email);
+type Props = {
+  emails: string[];
+  on: boolean;
+  close?: () => void;
+};
 
-    if (emails) {
-      setEmailsToDisplay(emails as string[]);
-    }
-  }
-  useEffect(() => {
-    getEmails();
-  }, []);
-
+export const EmailPage = ({ emails, on, close }: Props) => {
   const { mutate: makeEmailsMutation } = useMakeEmails();
 
   const sendEmails = async (text: string) => {
-    await makeEmailsMutation({ emails: emailsToDisplay, text });
+    makeEmailsMutation({ emails: emails, text });
+    alert('emails sent, check logs	');
   };
 
   return (
-    <Box
-      display="flex"
-      flexDirection="column"
-      alignItems="center"
-      justifyContent="space-around"
-      padding={'1rem'}
-    >
-      Emails
-      <EmailBox sendEmail={sendEmails} />
-      <EmailList emails={emailsToDisplay} />
-    </Box>
+    <Modal open={on}>
+      <Box
+        display="flex"
+        flexDirection="column"
+        alignItems="center"
+        justifyContent="space-around"
+        padding={'1rem'}
+      >
+        Emails
+        <EmailBox sendEmail={sendEmails} />
+        <EmailList emails={emails} />
+        <Button
+          style={{
+            width: '200px',
+            backgroundColor: 'red',
+            color: 'white',
+            marginTop: '1rem',
+          }}
+          onMouseOver={(e) => {
+            e.currentTarget.style.backgroundColor = 'gray';
+            e.currentTarget.style.color = 'red';
+          }}
+          onMouseOut={(e) => {
+            e.currentTarget.style.backgroundColor = 'red';
+            e.currentTarget.style.color = 'white';
+          }}
+          onClick={close}
+        >
+          Close
+        </Button>
+      </Box>
+    </Modal>
   );
 };

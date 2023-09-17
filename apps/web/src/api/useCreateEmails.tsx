@@ -9,7 +9,9 @@ type EmailToCreate = {
 
 const makeEmails = async (request: EmailToCreate) => {
   try {
-    await api.post('/email', request);
+    const response = await api.post('/email', request);
+    console.log(response);
+    return response.data;
   } catch (err) {
     alert(err);
   }
