@@ -2,6 +2,8 @@ import { Button } from '@mui/material';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { Intern } from '@prisma/client';
 
+//import { useFetchInternDiscipline } from '../../api/useFetchInternDiscipline';
+
 const columns: GridColDef[] = [
   { field: 'firstName', headerName: 'Ime', width: 130 },
   { field: 'lastName', headerName: 'Prezime', width: 130 },
@@ -63,94 +65,6 @@ const rows = [
     emailInterview: Math.random() < 0.5,
     emailExam: Math.random() < 0.5,
   },
-  {
-    id: 2,
-    lastName: 'Lannister',
-    firstName: 'Cersei',
-    age: 42,
-    discipline: 'Marketing',
-    emailApplication: Math.random() < 0.5,
-    emailAppointment: Math.random() < 0.5,
-    emailInterview: Math.random() < 0.5,
-    emailExam: Math.random() < 0.5,
-  },
-  {
-    id: 3,
-    lastName: 'Lannister',
-    firstName: 'Jaime',
-    age: 45,
-    discipline: 'Dev',
-    emailApplication: Math.random() < 0.5,
-    emailAppointment: Math.random() < 0.5,
-    emailInterview: Math.random() < 0.5,
-    emailExam: Math.random() < 0.5,
-  },
-  {
-    id: 4,
-    lastName: 'Stark',
-    firstName: 'Arya',
-    age: 16,
-    discipline: 'Dev',
-    emailApplication: Math.random() < 0.5,
-    emailAppointment: Math.random() < 0.5,
-    emailInterview: Math.random() < 0.5,
-    emailExam: Math.random() < 0.5,
-  },
-  {
-    id: 5,
-    lastName: 'Targaryen',
-    firstName: 'Daenerys',
-    age: null,
-    discipline: 'Dev',
-    emailApplication: Math.random() < 0.5,
-    emailAppointment: Math.random() < 0.5,
-    emailInterview: Math.random() < 0.5,
-    emailExam: Math.random() < 0.5,
-  },
-  {
-    id: 6,
-    lastName: 'Melisandre',
-    firstName: 'Ivan',
-    age: 150,
-    discipline: 'Dev',
-    emailApplication: Math.random() < 0.5,
-    emailAppointment: Math.random() < 0.5,
-    emailInterview: Math.random() < 0.5,
-    emailExam: Math.random() < 0.5,
-  },
-  {
-    id: 7,
-    lastName: 'Clifford',
-    firstName: 'Ferrara',
-    age: 44,
-    discipline: 'Dizajn',
-    emailApplication: Math.random() < 0.5,
-    emailAppointment: Math.random() < 0.5,
-    emailInterview: Math.random() < 0.5,
-    emailExam: Math.random() < 0.5,
-  },
-  {
-    id: 8,
-    lastName: 'Frances',
-    firstName: 'Rossini',
-    age: 36,
-    discipline: 'Multimedija',
-    emailApplication: Math.random() < 0.5,
-    emailAppointment: Math.random() < 0.5,
-    emailInterview: Math.random() < 0.5,
-    emailExam: Math.random() < 0.5,
-  },
-  {
-    id: 9,
-    lastName: 'Roxie',
-    firstName: 'Harvey',
-    age: 65,
-    discipline: 'Dev',
-    emailApplication: Math.random() < 0.5,
-    emailAppointment: Math.random() < 0.5,
-    emailInterview: Math.random() < 0.5,
-    emailExam: Math.random() < 0.5,
-  },
 ];
 */
 
@@ -159,17 +73,32 @@ type Props = {
 };
 
 const UsersList: React.FC<Props> = ({ data = [] }) => {
-  const rows =
-    data.map((intern) => ({
+  const rows = data.map((intern) => {
+    //const { data: discipline } = useFetchInternDiscipline(intern.id);
+    return {
       id: intern.id,
       lastName: intern.lastName,
       firstName: intern.firstName,
-      discipline: '/' /* intern.data.discipline */,
+      discipline: 'Dev',
+      emailApplication: Math.random() < 0.5,
+      emailAppointment: Math.random() < 0.5,
+      emailInterview: Math.random() < 0.5,
+      emailExam: Math.random() < 0.5,
+    };
+  });
+
+  /*
+    data.map((intern) => return {
+      id: intern.id,
+      lastName: intern.lastName,
+      firstName: intern.firstName,
+      discipline: '/'  intern.data.discipline ,
       emailApplication: Math.random() < 0.5,
       emailAppointment: Math.random() < 0.5,
       emailInterview: Math.random() < 0.5,
       emailExam: Math.random() < 0.5,
     })) || [];
+    */
 
   return (
     <div

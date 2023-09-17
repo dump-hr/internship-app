@@ -16,6 +16,7 @@ export class InternService {
   }
 
   async getAll() {
+    console.log('getAll', this.prisma);
     const interns = await this.prisma.intern.findMany();
 
     return interns;

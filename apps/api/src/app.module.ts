@@ -5,10 +5,12 @@ import { join } from 'path';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { InternModule } from './intern/intern.module';
-import { PrismaService } from './prisma.service';
+import { InternDisciplineController } from './intern-discipline/intern-discipline.controller';
+import { InternDisciplineModule } from './intern-discipline/intern-discipline.module';
 import { InterviewSlotController } from './interview-slot/interview-slot.controller';
-import { InterviewSlotService } from './interview-slot/interview-slot.service';
 import { InterviewSlotModule } from './interview-slot/interview-slot.module';
+import { InterviewSlotService } from './interview-slot/interview-slot.service';
+import { PrismaService } from './prisma.service';
 
 @Module({
   imports: [
@@ -18,8 +20,9 @@ import { InterviewSlotModule } from './interview-slot/interview-slot.module';
     }),
     InternModule,
     InterviewSlotModule,
+    InternDisciplineModule,
   ],
-  controllers: [AppController, InterviewSlotController],
-  providers: [AppService, PrismaService, InterviewSlotService],
+  controllers: [AppController],
+  providers: [AppService, PrismaService],
 })
 export class AppModule {}

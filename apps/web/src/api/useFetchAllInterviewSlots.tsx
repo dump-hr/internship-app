@@ -3,7 +3,7 @@ import { useQuery } from 'react-query';
 
 import { api } from '.';
 
-const fetchALllInterviewSlots = () => {
+const fetchALllInterviewSlots = async () => {
   return api.get<never, InterviewSlot[]>('/interview-slot');
 };
 

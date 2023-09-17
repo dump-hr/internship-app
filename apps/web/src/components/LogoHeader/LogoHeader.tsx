@@ -1,7 +1,6 @@
-import c from './LogoHeader.module.css';
-
-import LayoutSpacing from '../LayoutSpacing/LayoutSpacing';
 import DUMPLogo from '../../assets/dump-logo.png';
+import LayoutSpacing from '../LayoutSpacing/LayoutSpacing';
+import c from './LogoHeader.module.css';
 
 type Props = {
   text: string;

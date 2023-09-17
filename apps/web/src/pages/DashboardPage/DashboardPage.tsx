@@ -15,7 +15,7 @@ const DashboardPage = () => {
     <>
       <LogoHeader text="Kandidati" />
       <LayoutSpacing className={c.content}>
-        <Grid container spacing={2} xs={13}>
+        <Grid container spacing={2}>
           <Grid item xs={12} md={2}>
             <div className={c.infoBox}>
               <h3>{interns?.length || '?'}</h3>
@@ -24,7 +24,7 @@ const DashboardPage = () => {
           </Grid>
           <Grid item xs={12} md={2}>
             <div className={c.infoBox}>
-              <h3>{interviewSlots?.length}</h3>
+              <h3>{interviewSlots?.length || '?'}</h3>
               <p>Broj intervjua</p>
             </div>
           </Grid>
