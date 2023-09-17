@@ -21,6 +21,7 @@
     "@mui/joy": "^5.0.0-beta.4",
     "@mui/material": "^5.14.6",
     "@nestjs/swagger": "^7.1.10",
+    "@types/react-big-calendar": "^1.6.4",
     "axios": "^1.5.0",
     "clsx": "^2.0.0",
     "date-fns": "^2.30.0",
