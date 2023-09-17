@@ -1,0 +1,15 @@
+.rbc-time-slot {
+    border-top: none !important;
+}
+
+.rbc-addons-dnd-row-body > .rbc-row {
+    display: none !important;
+}
+
+.rbc-header {
+    border-bottom: none !important;
+}
+
+.rbc-time-view {
+    background-color: white;
+}

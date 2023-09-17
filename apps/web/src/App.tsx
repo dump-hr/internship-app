@@ -1,3 +1,5 @@
+import './App.css';
+
 import { Toaster } from 'react-hot-toast';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { Route, Switch } from 'wouter';
