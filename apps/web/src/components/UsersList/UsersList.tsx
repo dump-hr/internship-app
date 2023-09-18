@@ -46,7 +46,7 @@ const columns: GridColDef[] = [
     headerName: '',
     width: 110,
     sortable: false,
-    renderCell: () => <Button>Pregledaj</Button>,
+    renderCell: () => <Button disabled>Pregledaj</Button>,
   },
   {
     field: 'buttonIntervju',

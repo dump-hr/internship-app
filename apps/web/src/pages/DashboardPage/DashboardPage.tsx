@@ -36,8 +36,8 @@ const DashboardPage = () => {
           </Grid>
           <Grid item xs={12} md={5}>
             <div className={c.buttonsWrapper}>
-              <Button>Pregledaj dev ispit</Button>
-              <Button>Pošalji mail</Button>
+              <Button disabled>Pregledaj dev ispit</Button>
+              <Button disabled>Pošalji mail</Button>
             </div>
           </Grid>
         </Grid>
