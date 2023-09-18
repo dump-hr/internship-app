@@ -4,10 +4,10 @@ import { Route, Switch } from 'wouter';
 
 import { Path } from './constants/paths';
 import { ApplicationFormPage } from './pages/ApplicationFormPage/ApplicationFormPage';
+import DashboardPage from './pages/DashboardPage';
 import { HomePage } from './pages/HomePage';
 import InterviewPage from './pages/InterviewPage';
 import { NotFoundPage } from './pages/NotFoundPage';
-import DashboardPage from './pages/DashboardPage';
 
 const queryClient = new QueryClient();
 
