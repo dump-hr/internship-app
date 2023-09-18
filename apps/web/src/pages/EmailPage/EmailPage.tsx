@@ -14,7 +14,7 @@ export const EmailPage = ({ emails, on, close }: Props) => {
   const { mutate: makeEmailsMutation } = useMakeEmails();
 
   const sendEmails = async (text: string) => {
-    makeEmailsMutation({ emails: emails, text });
+    makeEmailsMutation({ emails, text });
     alert('emails sent, check logs	');
   };
 
