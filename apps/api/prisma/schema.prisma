@@ -18,16 +18,77 @@ model Admin {
   updatedAt DateTime @updatedAt
 }
 
-model Intern {
-  id          String       @id @default(uuid())
-  firstName   String
-  lastName    String
-  email       String       @unique
+model Interviewer {
+  id          String                         @id @default(uuid())
+  name        String
   disciplines Discipline[]
-  data        Json
-  interview   Json
-  createdAt   DateTime     @default(now())
-  updatedAt   DateTime     @updatedAt
+  createdAt   DateTime                       @default(now())
+  updatedAt   DateTime                       @updatedAt
+  interviews  InterviewMemberParticipation[]
+}
+
+model Intern {
+  id                String             @id @default(uuid())
+  firstName         String
+  lastName          String
+  email             String             @unique
+  data              Json
+  interviewSlot     InterviewSlot?
+  internDisciplines InternDiscipline[]
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @updatedAt
+}
+
+model InternDiscipline {
+  internId   String
+  intern     Intern           @relation(fields: [internId], references: [id])
+  discipline Discipline
+  priority   Int
+  status     DisciplineStatus
+  testSlot   TestSlot?        @relation(fields: [testSlotId], references: [id])
+  testSlotId String?
+  testStatus TestStatus?
+  testScore  Int?
+  createdAt  DateTime         @default(now())
+  updatedAt  DateTime         @updatedAt
+
+  @@id([internId, discipline])
+}
+
+model TestSlot {
+  id               String             @id @default(uuid())
+  discipline       Discipline
+  start            DateTime
+  end              DateTime
+  location         String
+  capacity         Int
+  maxPoints        Int
+  InternDiscipline InternDiscipline[]
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime           @updatedAt
+}
+
+model InterviewSlot {
+  id           String                         @id @default(uuid())
+  intern       Intern?                        @relation(fields: [internId], references: [id])
+  internId     String?                        @unique
+  status       InterviewStatus?
+  start        DateTime
+  end          DateTime
+  answers      Json
+  score        Int?
+  createdAt    DateTime                       @default(now())
+  updatedAt    DateTime                       @updatedAt
+  interviewers InterviewMemberParticipation[]
+}
+
+model InterviewMemberParticipation {
+  interviewSlotId String
+  interviewSlot   InterviewSlot @relation(fields: [interviewSlotId], references: [id])
+  interviewerId   String
+  interviewer     Interviewer   @relation(fields: [interviewerId], references: [id])
+
+  @@id([interviewSlotId, interviewerId])
 }
 
 enum Discipline {
@@ -35,4 +96,22 @@ enum Discipline {
   Design
   Multimedia
   Marketing
+}
+
+enum DisciplineStatus {
+  Pending
+  Approved
+  Rejected
+}
+
+enum InterviewStatus {
+  Pending
+  Done
+  Missed
+}
+
+enum TestStatus {
+  Pending
+  Done
+  Missed
 }

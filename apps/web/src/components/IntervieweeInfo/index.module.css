@@ -1,0 +1,33 @@
+.container {
+  font-size: 18px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: start;
+  width: 100%;
+  margin: 50px 0;
+  font-family: 'Roboto,Helvetica,Arial'; 
+}
+
+h1{
+  margin: 0
+}
+
+.interviewInfo {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 10px 0px;
+  box-sizing: border-box;
+}
+
+.interviewInfoCol {
+  margin-top: 15px;
+  width: 100%;
+  padding-right: 50px;
+}
+
+.interviewInfoRow {
+  flex-direction: row;
+  display: flex;
+}
