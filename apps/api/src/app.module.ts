@@ -4,6 +4,7 @@ import { join } from 'path';
 
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { EmailModule } from './email/email.module';
 import { AuthController } from './auth/auth.controller';
 import { AuthModule } from './auth/auth.module';
 import { InternModule } from './intern/intern.module';
@@ -16,6 +17,7 @@ import { PrismaService } from './prisma.service';
       exclude: ['/api/(.*)'],
     }),
     InternModule,
+    EmailModule,
     AuthModule,
   ],
   controllers: [AppController, AuthController],
