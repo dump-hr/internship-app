@@ -5,6 +5,7 @@ import { join } from 'path';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { InternModule } from './intern/intern.module';
+import { InternDisciplineModule } from './intern-discipline/intern-discipline.module';
 import { InterviewSlotModule } from './interview-slot/interview-slot.module';
 import { PrismaService } from './prisma.service';
 
@@ -16,6 +17,7 @@ import { PrismaService } from './prisma.service';
     }),
     InternModule,
     InterviewSlotModule,
+    InternDisciplineModule,
   ],
   controllers: [AppController],
   providers: [AppService, PrismaService],

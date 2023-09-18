@@ -2,8 +2,7 @@ import { Button } from '@mui/material';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { Intern } from '@prisma/client';
 
-//import { useFetchInternDiscipline } from '../../api/useFetchInternDiscipline';
-
+import { useFetchAllInternDisciplines } from '../../api/useFetchAllInternDisciplines';
 const columns: GridColDef[] = [
   { field: 'firstName', headerName: 'Ime', width: 130 },
   { field: 'lastName', headerName: 'Prezime', width: 130 },
@@ -73,13 +72,17 @@ type Props = {
 };
 
 const UsersList: React.FC<Props> = ({ data = [] }) => {
+  const { data: internDisciplines } = useFetchAllInternDisciplines();
+
   const rows = data.map((intern) => {
-    //const { data: discipline } = useFetchInternDiscipline(intern.id);
     return {
       id: intern.id,
       lastName: intern.lastName,
       firstName: intern.firstName,
-      discipline: 'Dev',
+      discipline:
+        internDisciplines?.find(
+          (internDiscipline) => internDiscipline.internId === intern.id,
+        )?.discipline || '/',
       emailApplication: Math.random() < 0.5,
       emailAppointment: Math.random() < 0.5,
       emailInterview: Math.random() < 0.5,
