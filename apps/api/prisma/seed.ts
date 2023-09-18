@@ -1,5 +1,4 @@
-import { PrismaClient } from '@prisma/client';
-//import { Discipline, DisciplineStatus } from '@prisma/client';
+import { Discipline, DisciplineStatus, PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
@@ -16,7 +15,6 @@ async function main() {
     ],
   });
 
-  /*
   await prisma.internDiscipline.createMany({
     data: [
       {
@@ -26,7 +24,18 @@ async function main() {
       },
     ],
   });
-  */
+
+  await prisma.interviewSlot.createMany({
+    data: [
+      {
+        id: '1',
+        start: new Date('2021-06-01T10:00:00.000Z'),
+        end: new Date('2021-06-01T10:30:00.000Z'),
+        internId: 'ante-roca',
+        answers: {},
+      },
+    ],
+  });
 }
 
 main()

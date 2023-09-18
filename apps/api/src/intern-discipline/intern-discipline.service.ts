@@ -5,6 +5,10 @@ import { PrismaService } from 'src/prisma.service';
 export class InternDisciplineService {
   constructor(private readonly prisma: PrismaService) {}
 
+  async getAll() {
+    return await this.prisma.internDiscipline.findMany();
+  }
+
   async getInternDiscipline(internId: string) {
     const internDisciplines = await this.prisma.internDiscipline.findFirst({
       where: { internId },
