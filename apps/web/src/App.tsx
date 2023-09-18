@@ -4,12 +4,12 @@ import { Route, Switch } from 'wouter';
 
 import { Path } from './constants/paths';
 import { ApplicationFormPage } from './pages/ApplicationFormPage/ApplicationFormPage';
+import CandidateInfoPage from './pages/CandidateInfoPage';
 import { HomePage } from './pages/HomePage';
 import InterviewPage from './pages/InterviewPage';
 import LoginPage from './pages/LoginPage';
 import { NotFoundPage } from './pages/NotFoundPage';
 import StatusPage from './pages/StatusPage';
-import CandidateInfoPage from './pages/CandidateInfoPage';
 
 const queryClient = new QueryClient();
 

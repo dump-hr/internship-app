@@ -8,7 +8,7 @@ const CandidateInfoPage = () => {
   const [, params] = useRoute(Path.Candidate);
   const internId: string | undefined = params?.internId;
   const { data: intern, isFetching } = useFetchIntern(internId as string);
-  
+
   if (isFetching) {
     return <div>Učitavanje...</div>;
   }
