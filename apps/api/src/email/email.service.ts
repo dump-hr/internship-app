@@ -15,10 +15,6 @@ export class EmailService {
       where: { email: { in: emails } },
     });
     const template = nunjucks.compile(emailText);
-    const htmls = [];
-    interns.forEach((intern) => {
-      htmls.push(template.render({ intern }));
-    });
-    return htmls;
+    return interns.map((intern) => template.render({ intern }));
   }
 }

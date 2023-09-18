@@ -30,20 +30,13 @@ export const EmailBox: React.FC<Props> = ({ sendEmail }: Props) => {
         }}
       />
       <Button
-        style={{
+        sx={{
           width: '200px',
           backgroundColor: '#D9D9D9',
           color: '#000000',
+          transition: 'background-color 0.3s ease, color 0.3s ease',
+          '&:hover': { backgroundColor: '#000000', color: '#D9D9D9' },
         }}
-        onMouseOver={(e) => {
-          e.currentTarget.style.backgroundColor = '#000000';
-          e.currentTarget.style.color = '#D9D9D9';
-        }}
-        onMouseOut={(e) => {
-          e.currentTarget.style.backgroundColor = '#D9D9D9';
-          e.currentTarget.style.color = '#000000';
-        }}
-        //js moment
         onClick={() => sendEmail(text)}
       >
         Send

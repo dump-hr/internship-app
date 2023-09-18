@@ -31,19 +31,13 @@ export const EmailPage = ({ emails, on, close }: Props) => {
         <EmailBox sendEmail={sendEmails} />
         <EmailList emails={emails} />
         <Button
-          style={{
+          sx={{
             width: '200px',
             backgroundColor: 'red',
             color: 'white',
             marginTop: '1rem',
-          }}
-          onMouseOver={(e) => {
-            e.currentTarget.style.backgroundColor = 'gray';
-            e.currentTarget.style.color = 'red';
-          }}
-          onMouseOut={(e) => {
-            e.currentTarget.style.backgroundColor = 'red';
-            e.currentTarget.style.color = 'white';
+            transition: 'background-color 0.3s ease, color 0.3s ease',
+            '&:hover': { backgroundColor: 'gray', color: 'red' },
           }}
           onClick={close}
         >

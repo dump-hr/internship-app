@@ -5,5 +5,4 @@ export enum Path {
   Logout = '/logout',
   Interview = '/interview/:internId',
   CatchAll = '/:path*',
-  Email = '/email',
 }
