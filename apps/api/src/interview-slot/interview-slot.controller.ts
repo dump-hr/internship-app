@@ -1,11 +1,4 @@
-import {
-  Body,
-  Controller,
-  Get,
-  NotFoundException,
-  Param,
-  Post,
-} from '@nestjs/common';
+import { Controller, Get } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 
 import { InterviewSlotService } from './interview-slot.service';
@@ -14,4 +7,10 @@ import { InterviewSlotService } from './interview-slot.service';
 @ApiTags('interview-slot')
 export class InterviewSlotController {
   constructor(private readonly interviewSlotService: InterviewSlotService) {}
+
+  @Get()
+  async getAll() {
+    const interviewSlots = await this.interviewSlotService.getAll();
+    return interviewSlots;
+  }
 }

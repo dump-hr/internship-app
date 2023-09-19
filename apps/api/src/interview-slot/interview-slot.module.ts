@@ -8,4 +8,4 @@ import { InterviewSlotService } from './interview-slot.service';
   controllers: [InterviewSlotController],
   providers: [InterviewSlotService, PrismaService],
 })
-export class InternModule {}
+export class InterviewSlotModule {}
