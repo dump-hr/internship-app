@@ -1,4 +1,7 @@
 import axios, { AxiosError, AxiosResponse } from 'axios';
+import { toast } from 'react-hot-toast';
+
+import { Path } from '../constants/paths';
 
 export const api = axios.create({
   baseURL: '/api',
@@ -15,6 +18,13 @@ type ErrorResponse = AxiosError & {
 api.interceptors.response.use(
   (response) => response.data,
 
-  (error: ErrorResponse) =>
-    Promise.reject(error.response.data.message || error.message),
+  (error: ErrorResponse) => {
+    if (error.response.status === 401) {
+      history.pushState(null, '', Path.Login);
+      toast.error(
+        error.response.data.message || error.message || 'Forbbiden access',
+      );
+    }
+    return Promise.reject(error.response.data.message || error.message);
+  },
 );

@@ -4,6 +4,9 @@ import { join } from 'path';
 
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { AuthController } from './auth/auth.controller';
+import { AuthModule } from './auth/auth.module';
+import { EmailModule } from './email/email.module';
 import { InternModule } from './intern/intern.module';
 import { InternDisciplineModule } from './intern-discipline/intern-discipline.module';
 import { InterviewSlotModule } from './interview-slot/interview-slot.module';
@@ -16,10 +19,12 @@ import { PrismaService } from './prisma.service';
       exclude: ['/api/(.*)'],
     }),
     InternModule,
+    EmailModule,
+    AuthModule,
     InterviewSlotModule,
     InternDisciplineModule,
   ],
-  controllers: [AppController],
+  controllers: [AppController, AuthController],
   providers: [AppService, PrismaService],
 })
 export class AppModule {}

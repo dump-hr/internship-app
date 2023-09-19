@@ -1,4 +1,5 @@
 import { Discipline, DisciplineStatus, PrismaClient } from '@prisma/client';
+import * as bcrypt from 'bcrypt';
 
 const prisma = new PrismaClient();
 
@@ -141,6 +142,24 @@ async function main() {
         end: new Date('2021-06-01T10:30:00.000Z'),
         internId: 'ante-roca',
         answers: {},
+      },
+    ],
+  });
+
+  await prisma.admin.createMany({
+    data: [
+      {
+        email: 'admin@dump.hr',
+        password: await bcrypt.hash('dump.1950', 10),
+      },
+    ],
+  });
+
+  await prisma.admin.createMany({
+    data: [
+      {
+        email: 'admin@dump.hr',
+        password: await bcrypt.hash('dump.1950', 10),
       },
     ],
   });
