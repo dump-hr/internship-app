@@ -8,11 +8,4 @@ export class InternDisciplineService {
   async getAll() {
     return await this.prisma.internDiscipline.findMany();
   }
-
-  async getInternDiscipline(internId: string) {
-    const internDisciplines = await this.prisma.internDiscipline.findFirst({
-      where: { internId },
-    });
-    return internDisciplines.discipline;
-  }
 }

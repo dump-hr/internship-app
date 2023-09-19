@@ -15,12 +15,4 @@ export class InternDisciplineController {
     const disciplines = await this.internDisciplineService.getAll();
     return disciplines;
   }
-
-  @Get(':internId')
-  async getInternDiscipline(@Param('internId') internId: string) {
-    const discipline = await this.internDisciplineService.getInternDiscipline(
-      internId,
-    );
-    return discipline;
-  }
 }
