@@ -11,7 +11,7 @@ import styles from './index.module.css';
 
 interface Props {
   label: string;
-  menuOptions: string[];
+  menuOptions: string[] | undefined;
   isMultiSelect: boolean;
 }
 
@@ -26,12 +26,12 @@ export const CustomSelectInput: React.FC<Props> = ({
     <FormControl>
       <InputLabel>{label}</InputLabel>
       <Select
-        multiple
+        multiple={isMultiSelect}
         value={selectedValues}
         onChange={(e) => setSelectedValues(e.target.value)}
         input={<OutlinedInput label="Multiple Select" />}
       >
-        {menuOptions.map((option) => (
+        {menuOptions?.map((option) => (
           <MenuItem key={option} value={option}>
             {option}
           </MenuItem>
