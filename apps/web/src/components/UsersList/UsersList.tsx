@@ -1,7 +1,7 @@
 import { Button } from '@mui/material';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { Intern } from '@prisma/client';
-import { useLocation } from 'wouter';
+import { Link } from 'wouter';
 
 import { useFetchAllInternDisciplines } from '../../api/useFetchAllInternDisciplines';
 
@@ -11,7 +11,6 @@ type Props = {
 
 const UsersList: React.FC<Props> = ({ data = [] }) => {
   const { data: internDisciplines } = useFetchAllInternDisciplines();
-  const [, setLocation] = useLocation();
 
   const columns: GridColDef[] = [
     { field: 'id', headerName: 'ID', width: 0 },
@@ -59,7 +58,7 @@ const UsersList: React.FC<Props> = ({ data = [] }) => {
       width: 100,
       sortable: false,
       renderCell: (params) => (
-        <Button onClick={() => setLocation(`/interview/${params.row.id}`)}>
+        <Button component={Link} to={`/interview/${params.row.id}`}>
           Intervju
         </Button>
       ),
