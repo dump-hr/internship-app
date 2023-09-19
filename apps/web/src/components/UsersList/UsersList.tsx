@@ -87,7 +87,6 @@ const UsersList: React.FC<Props> = ({ data = [] }) => {
   return (
     <div
       style={{
-        height: 400,
         width: '100%',
         marginTop: '30px',
         marginBottom: '100px',
@@ -98,7 +97,7 @@ const UsersList: React.FC<Props> = ({ data = [] }) => {
         columns={columns}
         initialState={{
           pagination: {
-            paginationModel: { page: 0, pageSize: 5 },
+            paginationModel: { page: 0, pageSize: 1000 },
           },
           columns: {
             columnVisibilityModel: {
