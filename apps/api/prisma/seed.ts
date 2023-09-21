@@ -144,22 +144,57 @@ async function main() {
     ],
   });
 
-  await prisma.interviewSlot.createMany({
+  await prisma.interviewer.createMany({
     data: [
       {
         id: '1',
-        start: new Date('2021-06-01T10:00:00.000Z'),
-        end: new Date('2021-06-01T10:30:00.000Z'),
-        internId: 'ante-roca',
-        answers: {},
+        name: 'Frane',
+        disciplines: [Discipline.Development],
       },
       {
         id: '2',
-        start: new Date('2021-06-01T10:30:00.000Z'),
-        end: new Date('2021-06-01T11:00:00.000Z'),
-        answers: {},
+        name: 'Duje',
+        disciplines: [Discipline.Development, Discipline.Multimedia],
+      },
+      {
+        id: '3',
+        name: 'Ante',
+        disciplines: [
+          Discipline.Multimedia,
+          Discipline.Development,
+          Discipline.Marketing,
+          Discipline.Design,
+        ],
       },
     ],
+  });
+
+  await prisma.interviewSlot.create({
+    data: {
+      id: '1',
+      start: new Date('2021-06-01T10:00:00.000Z'),
+      end: new Date('2021-06-01T10:30:00.000Z'),
+      answers: {},
+      interviewers: {
+        createMany: {
+          data: [{ interviewerId: '1' }, { interviewerId: '2' }],
+        },
+      },
+    },
+  });
+
+  await prisma.interviewSlot.create({
+    data: {
+      id: '2',
+      start: new Date('2021-06-01T10:30:00.000Z'),
+      end: new Date('2021-06-01T11:00:00.000Z'),
+      answers: {},
+      interviewers: {
+        createMany: {
+          data: [{ interviewerId: '1' }, { interviewerId: '3' }],
+        },
+      },
+    },
   });
 
   await prisma.admin.createMany({
