@@ -1,6 +1,5 @@
 import { Discipline } from '@internship-app/types';
 
-import { useFetchAllInternDisciplines } from '../../api/useFetchAllInternDisciplines';
 import { useFetchInterviewers } from '../../api/useFetchInterviewers';
 import { CustomSelectInput } from '../common/SelectInput/CustomSelectInput';
 import styles from './index.module.css';
@@ -14,9 +13,8 @@ export const CalendarSidebar: React.FC<Props> = ({
   selectedStartTime,
   selectedEndTime,
 }: Props) => {
-  const { data: internDisciplines } = useFetchAllInternDisciplines();
   const { data: interviewers } = useFetchInterviewers();
-  console.log('Disciplines: ', internDisciplines);
+
   return (
     <div className={styles.wrapper}>
       <h1 className={styles.time}>
@@ -24,7 +22,7 @@ export const CalendarSidebar: React.FC<Props> = ({
       </h1>
       <CustomSelectInput
         label="Područje:"
-        menuOptions={['dev', 'multimedija', 'dizajn', 'marketing']}
+        menuOptions={Object.values(Discipline)}
         isMultiSelect={false}
       />
       <CustomSelectInput
