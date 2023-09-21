@@ -12,20 +12,19 @@ const CandidateInfoPage = (props: CandidateInfoProps) => {
       <h1>
         {props.item.firstName} {props.item.lastName}
       </h1>
-      <div className={styles.datesContainer}>
+
+      {/*<div className={styles.datesContainer}> not sure if we need dates but they break the app
         <div>Created at: {props.item.createdAt}</div>
         <div>Updated at: {props.item.updatedAt}</div>
-      </div>
+  </div>*/}
 
       <div className={styles.container}>
         <div>
           <img
             src={
-              props.item.image
-                ? props.item.image
-                : 'https://i0.wp.com/www.bishoprook.com/wp-content/uploads/2021/05/placeholder-image-gray-16x9-1.png?ssl=1'
+              'https://i0.wp.com/www.bishoprook.com/wp-content/uploads/2021/05/placeholder-image-gray-16x9-1.png?ssl=1'
             }
-            alt="Original one"
+            alt="Placeholder"
           />
         </div>
         <div>
@@ -38,7 +37,7 @@ const CandidateInfoPage = (props: CandidateInfoProps) => {
               return (
                 <div className={styles.atribute}>
                   <h3>{key}</h3>
-                  <span> {props.item[key].toString()} </span>
+                  <span> {props.item.data[key as keyof JSON].toString()} </span>
                 </div>
               );
             })}
