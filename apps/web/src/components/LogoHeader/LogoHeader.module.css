@@ -1,0 +1,15 @@
+.layout {
+  display: flex;
+  align-items: center;
+  height: 100px;
+}
+
+.logo {
+  height: 30px;
+  margin-right: 20px;
+}
+
+.text {
+  font-size: 25px;
+  font-weight: 400;
+}

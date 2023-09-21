@@ -1,7 +1,8 @@
 import { Module } from '@nestjs/common';
-import { InternService } from './intern.service';
-import { InternController } from './intern.controller';
 import { PrismaService } from 'src/prisma.service';
+
+import { InternController } from './intern.controller';
+import { InternService } from './intern.service';
 
 @Module({
   controllers: [InternController],
