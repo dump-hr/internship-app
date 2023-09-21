@@ -32,6 +32,7 @@ const CandidateInfoPage = (props: CandidateInfoProps) => {
             <h3>Email</h3>
             <span> {props.item.email} </span>
           </div>
+          
           <div>
             {Object.keys(props.item.data).map((key: string) => {
               return (
