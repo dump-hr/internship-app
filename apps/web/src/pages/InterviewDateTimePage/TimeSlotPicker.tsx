@@ -1,8 +1,9 @@
 import { List, ListItem, ListItemButton, ListItemText } from '@mui/material';
+import type { InterviewSlot } from '@prisma/client';
 
 type Props = {
-  availableTimeSlots: Date[];
-  onChange: (date: Date) => void;
+  availableTimeSlots: InterviewSlot[];
+  onChange: (date: InterviewSlot) => void;
   isMobile: boolean;
 };
 
@@ -22,7 +23,7 @@ export const TimeSlotPicker: React.FC<Props> = ({
       }}
     >
       {availableTimeSlots.map((slot) => (
-        <ListItem key={slot.getTime()}>
+        <ListItem key={slot.id}>
           <ListItemButton
             sx={{
               border: '1px solid rgba(0, 0, 0, 0.6)',
@@ -32,7 +33,7 @@ export const TimeSlotPicker: React.FC<Props> = ({
             onClick={() => onChange(slot)}
           >
             <ListItemText
-              primary={slot.toLocaleTimeString('hr-HR', {
+              primary={slot.start.toLocaleTimeString('hr-HR', {
                 timeStyle: 'short',
               })}
             />

@@ -8,7 +8,7 @@ const getIntern = async (id: string) => {
 };
 
 export const useGetIntern = (id?: string) => {
-  return useQuery(['intern'], () => getIntern(id!), {
+  return useQuery(['intern', id], () => getIntern(id!), {
     enabled: !!id,
     retry: false,
   });

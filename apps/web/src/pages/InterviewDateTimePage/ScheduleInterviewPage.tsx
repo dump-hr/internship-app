@@ -1,7 +1,9 @@
 import { Box, useMediaQuery } from '@mui/material';
+import type { InterviewSlot } from '@prisma/client';
 import { useState } from 'react';
 import { useRoute } from 'wouter';
 
+import { useFetchAvailableInterviewSlots } from '../../api/useFetchAvailableInterviewSlots';
 import { useGetIntern } from '../../api/useGetIntern';
 import { ConfirmDialog } from '../../components/ConfirmDialog';
 import { Path } from '../../constants/paths';
@@ -9,29 +11,15 @@ import { DatePicker, MuiDate } from './DatePicker';
 import { Layout } from './Layout';
 import { TimeSlotPicker } from './TimeSlotPicker';
 
-const availableSlots = [
-  new Date('2023-09-17T09:00:00'),
-  new Date('2023-09-17T09:30:00'),
-  new Date('2023-09-17T10:00:00'),
-  new Date('2023-09-17T10:30:00'),
-  new Date('2023-09-17T11:00:00'),
-  new Date('2023-09-17T11:30:00'),
-  new Date('2023-09-17T12:00:00'),
-  new Date('2023-09-17T12:30:00'),
-  new Date('2023-09-17T14:00:00'),
-  new Date('2023-09-17T14:30:00'),
-  new Date('2023-09-17T15:00:00'),
-  new Date('2023-09-17T15:30:00'),
-];
-
 const ScheduleInterviewPage = () => {
   const [, params] = useRoute(Path.ScheduleInterview);
   const isMobile = useMediaQuery('(max-width:700px)');
 
-  const { data: intern, isLoading, isError } = useGetIntern(params?.internId);
+  const intern = useGetIntern(params?.internId);
+  const slots = useFetchAvailableInterviewSlots(params?.internId);
 
   const [selectedDate, setSelectedDate] = useState<MuiDate | null>(null);
-  const [selectedSlot, setSelectedSlot] = useState<Date | null>(null);
+  const [selectedSlot, setSelectedSlot] = useState<InterviewSlot | null>(null);
   const [dialogOpen, setDialogOpen] = useState(false);
 
   const handleSubmit = () => {
@@ -39,24 +27,26 @@ const ScheduleInterviewPage = () => {
   };
 
   const interviewSlotDateFormat =
-    selectedSlot?.toLocaleString('hr-HR', {
+    selectedSlot?.start.toLocaleString('hr-HR', {
       timeStyle: 'short',
       dateStyle: 'short',
     }) +
     '-' +
-    selectedSlot?.toLocaleTimeString('hr-HR', {
+    selectedSlot?.end.toLocaleTimeString('hr-HR', {
       timeStyle: 'short',
     });
 
-  if (isLoading) return <Layout title="Loading..." />;
+  if (intern.isLoading || slots.isLoading) return <Layout title="Loading..." />;
 
-  if (isError)
+  if (intern.isError || slots.isError)
     return (
       <Layout title="Dogodila se greška. Molimo kontaktirajte nas na info@dump.hr" />
     );
 
   return (
-    <Layout title={`Pozdrav ${intern?.firstName}, odaberi termin za intervju`}>
+    <Layout
+      title={`Pozdrav ${intern.data?.firstName}, odaberi termin za intervju`}
+    >
       <Box
         sx={{
           display: 'flex',
@@ -65,17 +55,19 @@ const ScheduleInterviewPage = () => {
         }}
       >
         <DatePicker
-          availableDates={availableSlots}
+          availableDates={slots.data?.map((s) => s.start) || []}
           onChange={setSelectedDate}
         />
         {!!selectedDate && (
           <TimeSlotPicker
-            availableTimeSlots={availableSlots.filter(
-              (slot) =>
-                slot.getDate() === selectedDate.$D &&
-                slot.getMonth() === selectedDate.$M &&
-                slot.getFullYear() === selectedDate.$y,
-            )}
+            availableTimeSlots={
+              slots.data?.filter(
+                (slot) =>
+                  slot.start.getDate() === selectedDate.$D &&
+                  slot.start.getMonth() === selectedDate.$M &&
+                  slot.start.getFullYear() === selectedDate.$y,
+              ) || []
+            }
             isMobile={isMobile}
             onChange={(slot) => {
               setSelectedSlot(slot);

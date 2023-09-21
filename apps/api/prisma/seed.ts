@@ -88,6 +88,18 @@ async function main() {
         priority: 1,
       },
       {
+        internId: 'ante-roca',
+        discipline: Discipline.Multimedia,
+        status: DisciplineStatus.Pending,
+        priority: 2,
+      },
+      {
+        internId: 'ante-roca',
+        discipline: Discipline.Design,
+        status: DisciplineStatus.Pending,
+        priority: 3,
+      },
+      {
         internId: 'ana-kovac',
         discipline: Discipline.Development,
         status: DisciplineStatus.Pending,
@@ -98,6 +110,12 @@ async function main() {
         discipline: Discipline.Design,
         status: DisciplineStatus.Pending,
         priority: 1,
+      },
+      {
+        internId: 'ivan-petrovic',
+        discipline: Discipline.Marketing,
+        status: DisciplineStatus.Pending,
+        priority: 2,
       },
       {
         internId: 'marija-juric',
@@ -172,8 +190,8 @@ async function main() {
   await prisma.interviewSlot.create({
     data: {
       id: '1',
-      start: new Date('2021-06-01T10:00:00.000Z'),
-      end: new Date('2021-06-01T10:30:00.000Z'),
+      start: new Date('2023-10-01T10:00:00.000Z'),
+      end: new Date('2023-10-01T10:30:00.000Z'),
       answers: {},
       interviewers: {
         createMany: {
@@ -186,8 +204,8 @@ async function main() {
   await prisma.interviewSlot.create({
     data: {
       id: '2',
-      start: new Date('2021-06-01T10:30:00.000Z'),
-      end: new Date('2021-06-01T11:00:00.000Z'),
+      start: new Date('2023-10-01T10:30:00.000Z'),
+      end: new Date('2023-10-01T11:00:00.000Z'),
       answers: {},
       interviewers: {
         createMany: {
