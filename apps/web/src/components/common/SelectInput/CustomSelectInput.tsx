@@ -5,7 +5,7 @@ import {
   OutlinedInput,
   Select,
 } from '@mui/material';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import styles from './index.module.css';
 
@@ -13,14 +13,20 @@ interface Props {
   label: string;
   menuOptions: string[] | undefined;
   isMultiSelect: boolean;
+  valueHandler?: (value: string) => void;
 }
 
 export const CustomSelectInput: React.FC<Props> = ({
   label,
   menuOptions,
   isMultiSelect,
+  valueHandler,
 }: Props) => {
   const [selectedValues, setSelectedValues] = useState([]);
+
+  useEffect(() => {
+    valueHandler && valueHandler(selectedValues);
+  }, [selectedValues]);
 
   return (
     <FormControl className={styles.form}>

@@ -1,8 +1,17 @@
 import { Discipline } from '@internship-app/types';
+import { useEffect, useState } from 'react';
 
 import { useFetchInterviewers } from '../../api/useFetchInterviewers';
+import { MultilineInput } from '../common/MultilineInput/MultilineInput';
 import { CustomSelectInput } from '../common/SelectInput/CustomSelectInput';
 import styles from './index.module.css';
+
+const colorMappings = {
+  [Discipline.Development]: '#369354',
+  [Discipline.Design]: '#297ABC',
+  [Discipline.Marketing]: '#F54558',
+  [Discipline.Multimedia]: '#6A5CB0',
+};
 
 interface Props {
   selectedStartTime?: string;
@@ -14,6 +23,15 @@ export const CalendarSidebar: React.FC<Props> = ({
   selectedEndTime,
 }: Props) => {
   const { data: interviewers } = useFetchInterviewers();
+  const [selectedDiscipline, setSelectedDiscipline] = useState('');
+
+  useEffect(() => {
+    selectedDiscipline.length &&
+      document.documentElement.style.setProperty(
+        '--main-calendar-color',
+        colorMappings[selectedDiscipline],
+      );
+  }, [selectedDiscipline]);
 
   return (
     <div className={styles.wrapper}>
@@ -24,6 +42,7 @@ export const CalendarSidebar: React.FC<Props> = ({
         label="Područje:"
         menuOptions={Object.values(Discipline)}
         isMultiSelect={false}
+        valueHandler={(value) => setSelectedDiscipline(value)}
       />
       <CustomSelectInput
         label="Intervjueri:"
@@ -31,7 +50,8 @@ export const CalendarSidebar: React.FC<Props> = ({
         isMultiSelect={true}
       />
       <div>
-        <span>Notes:</span>
+        <div className={styles.notesLabel}>Notes:</div>
+        <MultilineInput />
       </div>
     </div>
   );
