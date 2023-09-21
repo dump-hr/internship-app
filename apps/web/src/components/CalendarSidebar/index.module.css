@@ -3,4 +3,11 @@
     height: 618px;
     background-color: white;
     border-radius: 25px;
+    padding: 35px;
+}
+
+.time {
+    margin-bottom: 15px;
+    font-weight: normal;
+    font-size: 24px;
 }

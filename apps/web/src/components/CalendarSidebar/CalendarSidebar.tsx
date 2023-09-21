@@ -5,16 +5,26 @@ import { useFetchInterviewers } from '../../api/useFetchInterviewers';
 import { CustomSelectInput } from '../common/SelectInput/CustomSelectInput';
 import styles from './index.module.css';
 
-export const CalendarSidebar = () => {
+interface Props {
+  selectedStartTime?: string;
+  selectedEndTime?: string;
+}
+
+export const CalendarSidebar: React.FC<Props> = ({
+  selectedStartTime,
+  selectedEndTime,
+}: Props) => {
   const { data: internDisciplines } = useFetchAllInternDisciplines();
   const { data: interviewers } = useFetchInterviewers();
+  console.log('Disciplines: ', internDisciplines);
   return (
     <div className={styles.wrapper}>
+      <h1 className={styles.time}>
+        {selectedStartTime} - {selectedEndTime}
+      </h1>
       <CustomSelectInput
         label="Područje:"
-        menuOptions={internDisciplines?.map(
-          (discipline: Discipline) => discipline.discipline,
-        )}
+        menuOptions={['dev', 'multimedija', 'dizajn', 'marketing']}
         isMultiSelect={false}
       />
       <CustomSelectInput

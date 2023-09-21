@@ -23,7 +23,7 @@ export const CustomSelectInput: React.FC<Props> = ({
   const [selectedValues, setSelectedValues] = useState([]);
 
   return (
-    <FormControl>
+    <FormControl className={styles.form}>
       <InputLabel>{label}</InputLabel>
       <Select
         multiple={isMultiSelect}
