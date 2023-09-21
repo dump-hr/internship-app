@@ -1,10 +1,11 @@
 import { Box, useMediaQuery } from '@mui/material';
 import type { InterviewSlot } from '@prisma/client';
 import { useState } from 'react';
-import { useRoute } from 'wouter';
+import { useLocation, useRoute } from 'wouter';
 
 import { useFetchAvailableInterviewSlots } from '../../api/useFetchAvailableInterviewSlots';
 import { useGetIntern } from '../../api/useGetIntern';
+import { useScheduleInterview } from '../../api/useScheduleInterview';
 import { ConfirmDialog } from '../../components/ConfirmDialog';
 import { Path } from '../../constants/paths';
 import { DatePicker, MuiDate } from './DatePicker';
@@ -13,17 +14,26 @@ import { TimeSlotPicker } from './TimeSlotPicker';
 
 const ScheduleInterviewPage = () => {
   const [, params] = useRoute(Path.ScheduleInterview);
+  const [, navigate] = useLocation();
   const isMobile = useMediaQuery('(max-width:700px)');
 
   const intern = useGetIntern(params?.internId);
   const slots = useFetchAvailableInterviewSlots(params?.internId);
+  const scheduleInterview = useScheduleInterview(() => {
+    navigate(Path.Status.replace(':internId', params?.internId || ''));
+  });
 
   const [selectedDate, setSelectedDate] = useState<MuiDate | null>(null);
   const [selectedSlot, setSelectedSlot] = useState<InterviewSlot | null>(null);
   const [dialogOpen, setDialogOpen] = useState(false);
 
   const handleSubmit = () => {
-    console.log(selectedSlot);
+    if (!selectedSlot || !params?.internId) return;
+
+    scheduleInterview.mutate({
+      internId: params.internId,
+      interviewSlotId: selectedSlot.id,
+    });
   };
 
   const interviewSlotDateFormat =

@@ -62,4 +62,33 @@ export class InterviewSlotService {
 
     return availableSlots;
   }
+
+  async scheduleInterview(slotId: string, internId: string) {
+    const slot = await this.prisma.interviewSlot.findUnique({
+      where: { id: slotId },
+    });
+
+    if (slot.internId) {
+      throw new NotFoundException('Slot is already taken');
+    }
+
+    const internSlot = await this.prisma.interviewSlot.findFirst({
+      where: { internId },
+    });
+
+    if (internSlot) {
+      throw new NotFoundException('Intern already has a slot');
+    }
+
+    return await this.prisma.interviewSlot.update({
+      where: { id: slotId },
+      data: {
+        intern: {
+          connect: {
+            id: internId,
+          },
+        },
+      },
+    });
+  }
 }
