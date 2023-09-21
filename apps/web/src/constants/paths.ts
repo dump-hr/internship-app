@@ -7,4 +7,5 @@ export enum Path {
   Interview = '/interview/:internId',
   ScheduleInterview = '/schedule-interview/:internId',
   CatchAll = '/:path*',
+  Dashboard = '/dashboard',
 }

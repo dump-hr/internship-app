@@ -6,6 +6,7 @@ import { Route, Switch } from 'wouter';
 
 import { Path } from './constants/paths';
 import { ApplicationFormPage } from './pages/ApplicationFormPage/ApplicationFormPage';
+import DashboardPage from './pages/DashboardPage';
 import { HomePage } from './pages/HomePage';
 import ScheduleInterviewPage from './pages/InterviewDateTimePage';
 import InterviewPage from './pages/InterviewPage';
@@ -32,6 +33,7 @@ export const App = () => {
               path={Path.ScheduleInterview}
               component={ScheduleInterviewPage}
             />
+            <Route path={Path.Dashboard} component={DashboardPage} />
             <Route path={Path.Login} component={LoginPage} />
             <Route path={Path.CatchAll} component={NotFoundPage} />
           </Switch>
