@@ -1,9 +1,9 @@
-import { Intern } from '@internship-app/types';
+import { InternCreateRequest } from '@internship-app/types';
 import { useMutation } from 'react-query';
 
 import { api } from '.';
 
-const addIntern = async (newIntern: Intern) => {
+const addIntern = async (newIntern: InternCreateRequest) => {
   return await api.post('/intern', newIntern);
 };
 

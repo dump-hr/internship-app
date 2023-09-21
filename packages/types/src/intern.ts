@@ -54,6 +54,13 @@ export type Intern = {
   internDisciplines: InternDiscipline[];
 };
 
+export type InternCreateRequest = {
+  firstName: string;
+  lastName: string;
+  email: string;
+  data: any;
+};
+
 export type InternDiscipline = {
   discipline: Discipline;
   priority: number;
