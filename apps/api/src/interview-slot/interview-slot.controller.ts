@@ -13,4 +13,12 @@ export class InterviewSlotController {
     const interviewSlots = await this.interviewSlotService.getAll();
     return interviewSlots;
   }
+
+  @Get('/get-by-discipline/:discipline')
+  async getByDiscipline(discipline: string) {
+    const interviewSlots = await this.interviewSlotService.getByDiscipline(
+      discipline,
+    );
+    return interviewSlots;
+  }
 }
