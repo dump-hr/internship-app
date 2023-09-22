@@ -10,4 +10,9 @@ export class InterviewerController {
   findAll() {
     return this.interviewerService.findAll();
   }
+
+  @Get('/get-by-discipline/:discipline')
+  findByDiscipline(@Param('discipline') discipline: string) {
+    return this.interviewerService.findByDiscipline(discipline);
+  }
 }

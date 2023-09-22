@@ -10,10 +10,6 @@ import withDragAndDrop from 'react-big-calendar/lib/addons/dragAndDrop';
 import { EventContent } from './EventContent';
 import styles from './index.module.css';
 
-interface Props {
-  selectedDiscipline?: string;
-}
-
 moment.locale('hr');
 const locales = {
   hr: hrLocale,
@@ -26,19 +22,17 @@ const localizer = dateFnsLocalizer({
   locales,
 });
 
-export const Calendar: React.FC<Props> = ({ selectedDiscipline }: Props) => {
+export const Calendar: React.FC<Props> = () => {
   const [events, setEvents] = useState([]);
   const DragAndDropCalendar = withDragAndDrop(BigCalendar);
 
   const handleTimeSlotAdd = (slotInfo: any) => {
     setEvents((prev) => [...prev, slotInfo]);
-    console.log('ADD', slotInfo.start, slotInfo.end);
   };
   const handleTimeSlotEdit = (slotInfo: any) => {
     console.log('EDIT', slotInfo);
   };
   const deleteEvent = (event: any) => {
-    console.log('DELETE', event);
     setEvents((prev) => prev.filter((e) => e !== event));
   };
 

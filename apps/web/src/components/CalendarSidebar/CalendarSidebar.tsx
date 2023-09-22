@@ -1,7 +1,7 @@
 import { Discipline } from '@internship-app/types';
 import { useEffect, useState } from 'react';
 
-import { useFetchInterviewers } from '../../api/useFetchInterviewers';
+import { useFetchInterviewersByDiscipline } from '../../api/useFetchInterviewers';
 import { MultilineInput } from '../common/MultilineInput/MultilineInput';
 import { CustomSelectInput } from '../common/SelectInput/CustomSelectInput';
 import styles from './index.module.css';
@@ -22,15 +22,17 @@ export const CalendarSidebar: React.FC<Props> = ({
   selectedStartTime,
   selectedEndTime,
 }: Props) => {
-  const { data: interviewers } = useFetchInterviewers();
   const [selectedDiscipline, setSelectedDiscipline] = useState('');
+  const { data: interviewers } =
+    useFetchInterviewersByDiscipline(selectedDiscipline);
 
   useEffect(() => {
-    selectedDiscipline.length &&
-      document.documentElement.style.setProperty(
-        '--main-calendar-color',
-        colorMappings[selectedDiscipline],
-      );
+    if (!selectedDiscipline.length) return;
+
+    document.documentElement.style.setProperty(
+      '--main-calendar-color',
+      colorMappings[selectedDiscipline],
+    );
   }, [selectedDiscipline]);
 
   return (
