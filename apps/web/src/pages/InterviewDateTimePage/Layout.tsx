@@ -1,4 +1,4 @@
-import { Box, Typography } from '@mui/material';
+import { Box, Typography, useMediaQuery } from '@mui/material';
 import { ReactNode } from 'react';
 
 import { Logo } from '../../components/Logo';
@@ -9,16 +9,20 @@ type Props = {
 };
 
 export const Layout: React.FC<Props> = ({ children, title }) => {
+  const isMobile = useMediaQuery('(max-width:400px)');
+
   return (
     <Box
       sx={{
         maxWidth: '650px',
-        width: 'calc(100% - 40px)',
+        width: '100%',
         margin: '0 auto',
-        padding: '20px',
+        padding: isMobile ? '20px 0' : '20px',
       }}
     >
-      <Logo />
+      <Box sx={{ marginLeft: '10px' }}>
+        <Logo />
+      </Box>
       <Box
         sx={{
           backgroundColor: '#fff',
