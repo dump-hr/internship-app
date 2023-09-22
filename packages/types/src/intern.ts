@@ -1,3 +1,5 @@
+import { Json } from './json';
+
 export enum Discipline {
   Development = 'Development',
   Design = 'Design',
@@ -49,7 +51,7 @@ export type Intern = {
   firstName: string;
   lastName: string;
   email: string;
-  data: JSON;
+  data: Json;
   interviewSlot?: InterviewSlot;
   internDisciplines: InternDiscipline[];
 };
@@ -58,7 +60,7 @@ export type InternCreateRequest = {
   firstName: string;
   lastName: string;
   email: string;
-  data: any;
+  data: Json;
 };
 
 export type InternDiscipline = {
@@ -88,6 +90,6 @@ export type InterviewSlot = {
   status?: InterviewStatus;
   start: string;
   end: string;
-  answers: JSON;
+  answers: Json;
   score?: number;
 };
