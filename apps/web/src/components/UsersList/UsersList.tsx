@@ -4,140 +4,31 @@ import {
   Intern,
   InternDiscipline,
   InterviewStatus,
-  TestStatus,
 } from '@internship-app/types';
-import { Button, Chip, ChipProps, TextField } from '@mui/material';
+import { Button, Chip, TextField } from '@mui/material';
 import {
   DataGrid,
   GridCellParams,
   GridColDef,
+  GridFilterInputValueProps,
+  GridFilterItem,
   GridRenderCellParams,
+  GridTreeNode,
 } from '@mui/x-data-grid';
 import { Link } from 'wouter';
 
+import FilterSingleSelect from '../FilterSingleSelect/FilterSingleSelect';
+import {
+  disciplineStatusChipProps,
+  InternStatus,
+  internStatusChipProps,
+  interviewChipProps,
+  shortDisciplineLabels,
+  testChipProps,
+} from './consts';
+
 type Props = {
   data: Intern[] | undefined;
-};
-
-enum InternStatus {
-  Approved = 'Approved',
-  Pending = 'Pending',
-  Rejected = 'Rejected',
-}
-
-const shortDisciplineLabels = {
-  [Discipline.Development]: 'Dev',
-  [Discipline.Design]: 'Diz',
-  [Discipline.Marketing]: 'Mark',
-  [Discipline.Multimedia]: 'Mult',
-};
-
-const disciplineStatusChipProps: Record<InternStatus, ChipProps> = {
-  [DisciplineStatus.Pending]: {
-    color: 'info',
-    title: 'Status područja još nije određen',
-  },
-  [DisciplineStatus.Rejected]: {
-    color: 'error',
-    title: 'Intern nije prihvaćen u područje',
-  },
-  [DisciplineStatus.Approved]: {
-    color: 'success',
-    title: 'Intern je prihvaćen u područje',
-  },
-};
-
-const statusChipProps: Record<InternStatus, ChipProps> = {
-  [InternStatus.Pending]: {
-    label: 'Pending',
-    color: 'info',
-    title: 'Status interna još nije određen',
-  },
-  [InternStatus.Rejected]: {
-    label: 'Rejected',
-    color: 'error',
-    title: 'Intern nije prihvaćen ni u jedno područje',
-  },
-  [InternStatus.Approved]: {
-    label: 'Approved',
-    color: 'success',
-    title: 'Intern je prihvaćen bar u jedno područje',
-  },
-};
-
-const interviewChipProps: Record<InterviewStatus, ChipProps> = {
-  [InterviewStatus.NoRight]: {
-    label: 'NoRight',
-    color: 'warning',
-    title: 'Nema pravo na intervju',
-  },
-  [InterviewStatus.PickTerm]: {
-    label: 'PickTerm',
-    color: 'primary',
-    title: 'U procesu odabira termina',
-  },
-  [InterviewStatus.Pending]: {
-    label: 'Pending',
-    color: 'info',
-    title: 'Termin odabran i čeka',
-  },
-  [InterviewStatus.Done]: {
-    label: 'Done',
-    color: 'success',
-    title: 'Intervju odrađen',
-  },
-  [InterviewStatus.Missed]: {
-    label: 'Missed',
-    color: 'error',
-    title: 'Intervju propušten',
-  },
-};
-
-function CustomFilterInputSingleSelect(props) {
-  const { item, applyValue, type, focusElementRef } = props;
-
-  return (
-    <TextField
-      id={`contains-input-${item.id}`}
-      value={item.value}
-      onChange={(event) => applyValue({ ...item, value: event.target.value })}
-      type={type || 'text'}
-      variant="standard"
-      InputLabelProps={{
-        shrink: true,
-      }}
-      inputRef={focusElementRef}
-      select
-      SelectProps={{
-        native: true,
-      }}
-    >
-      {Object.values(Discipline).map((option) => (
-        <option key={option} value={option}>
-          {shortDisciplineLabels[option]}
-        </option>
-      ))}
-    </TextField>
-  );
-}
-
-const testChipProps: Record<TestStatus, ChipProps> = {
-  [TestStatus.PickTerm]: {
-    color: 'primary',
-    title: 'U procesu odabira termina',
-  },
-  [TestStatus.Pending]: {
-    color: 'info',
-    title: 'Termin odabran i čeka',
-  },
-  [InterviewStatus.Done]: {
-    color: 'success',
-    title: 'Test odrađen (ne nužno i položen)',
-  },
-  [InterviewStatus.Missed]: {
-    color: 'error',
-    title: 'Test propušten',
-  },
 };
 
 const getDisciplineChip = (internDiscipline: InternDiscipline) => {
@@ -199,13 +90,14 @@ const UsersList: React.FC<Props> = ({ data = [] }) => {
       headerName: 'Status',
       width: 140,
       renderCell: (status) => (
-        <Chip {...statusChipProps[status.value as InternStatus]} />
+        <Chip {...internStatusChipProps[status.value as InternStatus]} />
       ),
     },
     {
       field: 'disciplines',
       headerName: 'Područja',
       width: 200,
+      sortable: false,
       filterOperators: [
         {
           value: 'contains',
@@ -214,14 +106,17 @@ const UsersList: React.FC<Props> = ({ data = [] }) => {
               return null;
             }
 
-            return ({ value }) => {
-              // if one of the cell values corresponds to the filter item
-              return value.some(
-                (cellValue) => cellValue.discipline === filterItem.value,
+            return ({ value }) =>
+              value.some(
+                (ind: InternDiscipline) => ind.discipline === filterItem.value,
               );
-            };
           },
-          InputComponent: CustomFilterInputSingleSelect,
+          InputComponent: (filterProps) => (
+            <FilterSingleSelect
+              filterProps={filterProps}
+              items={shortDisciplineLabels}
+            />
+          ),
         },
       ],
       renderCell: (
@@ -240,6 +135,8 @@ const UsersList: React.FC<Props> = ({ data = [] }) => {
       field: 'testStatus',
       headerName: 'Testovi',
       width: 150,
+      sortable: false,
+      filterable: false,
       renderCell: (
         internDisciplines: GridRenderCellParams<InternDiscipline[]>,
       ) => <>{internDisciplines.value.map(getTestChip)}</>,
@@ -249,6 +146,7 @@ const UsersList: React.FC<Props> = ({ data = [] }) => {
       headerName: '',
       width: 110,
       sortable: false,
+      filterable: false,
       renderCell: () => <Button disabled>Pregledaj</Button>,
     },
     {
@@ -256,6 +154,7 @@ const UsersList: React.FC<Props> = ({ data = [] }) => {
       headerName: '',
       width: 100,
       sortable: false,
+      filterable: false,
       renderCell: (params) => (
         <Button component={Link} to={`/interview/${params.row.id}`}>
           Intervju
