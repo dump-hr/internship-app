@@ -2,11 +2,11 @@ import { Intern } from '@internship-app/types';
 
 import styles from './index.module.css';
 
-interface CandidateInfoProps {
+interface InternInfoProps {
   intern: Intern;
 }
 
-const CandidateInfoPage = ({ intern }: CandidateInfoProps) => {
+const InternInfo = ({ intern }: InternInfoProps) => {
   return (
     <div className={styles.page}>
       <h1>
@@ -48,4 +48,4 @@ const CandidateInfoPage = ({ intern }: CandidateInfoProps) => {
   );
 };
 
-export default CandidateInfoPage;
+export default InternInfo;
