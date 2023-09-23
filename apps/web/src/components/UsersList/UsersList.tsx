@@ -6,8 +6,13 @@ import {
   InterviewStatus,
   TestStatus,
 } from '@internship-app/types';
-import { Button, Chip, ChipProps } from '@mui/material';
-import { DataGrid, GridColDef, GridRenderCellParams } from '@mui/x-data-grid';
+import { Button, Chip, ChipProps, TextField } from '@mui/material';
+import {
+  DataGrid,
+  GridCellParams,
+  GridColDef,
+  GridRenderCellParams,
+} from '@mui/x-data-grid';
 import { Link } from 'wouter';
 
 type Props = {
@@ -44,17 +49,17 @@ const disciplineStatusChipProps: Record<InternStatus, ChipProps> = {
 
 const statusChipProps: Record<InternStatus, ChipProps> = {
   [InternStatus.Pending]: {
-    label: 'Čekanje',
+    label: 'Pending',
     color: 'info',
     title: 'Status interna još nije određen',
   },
   [InternStatus.Rejected]: {
-    label: 'Odbijen',
+    label: 'Rejected',
     color: 'error',
     title: 'Intern nije prihvaćen ni u jedno područje',
   },
   [InternStatus.Approved]: {
-    label: 'Prihvaćen',
+    label: 'Approved',
     color: 'success',
     title: 'Intern je prihvaćen bar u jedno područje',
   },
@@ -62,31 +67,59 @@ const statusChipProps: Record<InternStatus, ChipProps> = {
 
 const interviewChipProps: Record<InterviewStatus, ChipProps> = {
   [InterviewStatus.NoRight]: {
-    label: 'Obespravljen',
+    label: 'NoRight',
     color: 'warning',
     title: 'Nema pravo na intervju',
   },
   [InterviewStatus.PickTerm]: {
-    label: 'Bira termin',
+    label: 'PickTerm',
     color: 'primary',
     title: 'U procesu odabira termina',
   },
   [InterviewStatus.Pending]: {
-    label: 'Čekanje',
+    label: 'Pending',
     color: 'info',
     title: 'Termin odabran i čeka',
   },
   [InterviewStatus.Done]: {
-    label: 'Odrađen',
+    label: 'Done',
     color: 'success',
     title: 'Intervju odrađen',
   },
   [InterviewStatus.Missed]: {
-    label: 'Propušten',
+    label: 'Missed',
     color: 'error',
     title: 'Intervju propušten',
   },
 };
+
+function CustomFilterInputSingleSelect(props) {
+  const { item, applyValue, type, focusElementRef } = props;
+
+  return (
+    <TextField
+      id={`contains-input-${item.id}`}
+      value={item.value}
+      onChange={(event) => applyValue({ ...item, value: event.target.value })}
+      type={type || 'text'}
+      variant="standard"
+      InputLabelProps={{
+        shrink: true,
+      }}
+      inputRef={focusElementRef}
+      select
+      SelectProps={{
+        native: true,
+      }}
+    >
+      {Object.values(Discipline).map((option) => (
+        <option key={option} value={option}>
+          {shortDisciplineLabels[option]}
+        </option>
+      ))}
+    </TextField>
+  );
+}
 
 const testChipProps: Record<TestStatus, ChipProps> = {
   [TestStatus.PickTerm]: {
@@ -156,7 +189,11 @@ const getInternStatus = (intern: Intern) => {
 const UsersList: React.FC<Props> = ({ data = [] }) => {
   const columns: GridColDef[] = [
     { field: 'id', headerName: 'ID', width: 0 },
-    { field: 'name', headerName: 'Ime i prezime', width: 140 },
+    {
+      field: 'name',
+      headerName: 'Ime i prezime',
+      width: 140,
+    },
     {
       field: 'status',
       headerName: 'Status',
@@ -169,6 +206,24 @@ const UsersList: React.FC<Props> = ({ data = [] }) => {
       field: 'disciplines',
       headerName: 'Područja',
       width: 200,
+      filterOperators: [
+        {
+          value: 'contains',
+          getApplyFilterFn: (filterItem) => {
+            if (filterItem.value == null || filterItem.value === '') {
+              return null;
+            }
+
+            return ({ value }) => {
+              // if one of the cell values corresponds to the filter item
+              return value.some(
+                (cellValue) => cellValue.discipline === filterItem.value,
+              );
+            };
+          },
+          InputComponent: CustomFilterInputSingleSelect,
+        },
+      ],
       renderCell: (
         internDisciplines: GridRenderCellParams<InternDiscipline[]>,
       ) => <>{internDisciplines.value.map(getDisciplineChip)}</>,
