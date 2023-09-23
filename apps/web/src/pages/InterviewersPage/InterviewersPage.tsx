@@ -25,7 +25,7 @@ const InterviewersPage = () => {
     deleteInterviewer: false,
   });
 
-  const [newInterviewer, setNewInterviewer] = useState({
+  const [, setNewInterviewer] = useState({
     name: '',
     disciplines: {
       [Discipline.Development]: false,
@@ -56,6 +56,7 @@ const InterviewersPage = () => {
       ...prevState,
       addInterviewer: !prevState.addInterviewer,
     }));
+    eraseNewInterviewer();
   }
 
   function setNewInterviewerName(name: string) {
@@ -75,15 +76,24 @@ const InterviewersPage = () => {
     }));
   }
 
+  function eraseNewInterviewer() {
+    setNewInterviewer({
+      name: '',
+      disciplines: {
+        [Discipline.Development]: false,
+        [Discipline.Design]: false,
+        [Discipline.Multimedia]: false,
+        [Discipline.Marketing]: false,
+      },
+    });
+  }
+
   return (
     <>
       <LogoHeader text="Intervjueri" />
       <LayoutSpacing>
         <button onClick={() => console.log(interviewers)}>
           Log interviewers
-        </button>
-        <button onClick={() => console.log(newInterviewer)}>
-          Log new interviewer
         </button>
         <br />
         <Button onClick={toggleAddInterviewerDialog}>
