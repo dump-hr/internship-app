@@ -1,3 +1,4 @@
+import { Discipline } from '@internship-app/types';
 import {
   Button,
   Checkbox,
@@ -8,7 +9,6 @@ import {
   FormControl,
   FormControlLabel,
   FormGroup,
-  FormLabel,
   TextField,
 } from '@mui/material';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
@@ -23,6 +23,16 @@ const InterviewersPage = () => {
   const [dialogs, setDialogs] = useState({
     addInterviewer: false,
     deleteInterviewer: false,
+  });
+
+  const [newInterviewer, setNewInterviewer] = useState({
+    name: '',
+    disciplines: {
+      [Discipline.Development]: false,
+      [Discipline.Design]: false,
+      [Discipline.Multimedia]: false,
+      [Discipline.Marketing]: false,
+    },
   });
 
   const { data: interviewers } = useFetchAllInterviewers();
@@ -42,7 +52,27 @@ const InterviewersPage = () => {
   });
 
   function toggleAddInterviewerDialog() {
-    setDialogs({ ...dialogs, addInterviewer: !dialogs.addInterviewer });
+    setDialogs((prevState) => ({
+      ...prevState,
+      addInterviewer: !prevState.addInterviewer,
+    }));
+  }
+
+  function setNewInterviewerName(name: string) {
+    setNewInterviewer((prevState) => ({
+      ...prevState,
+      name,
+    }));
+  }
+
+  function toggleNewInterviewerDiscipline(discipline: Discipline) {
+    setNewInterviewer((prevState) => ({
+      ...prevState,
+      disciplines: {
+        ...prevState.disciplines,
+        [discipline]: !prevState.disciplines[discipline],
+      },
+    }));
   }
 
   return (
@@ -51,6 +81,9 @@ const InterviewersPage = () => {
       <LayoutSpacing>
         <button onClick={() => console.log(interviewers)}>
           Log interviewers
+        </button>
+        <button onClick={() => console.log(newInterviewer)}>
+          Log new interviewer
         </button>
         <br />
         <Button onClick={toggleAddInterviewerDialog}>
@@ -76,14 +109,41 @@ const InterviewersPage = () => {
         <DialogTitle>Dodaj intervjuera</DialogTitle>
         <DialogContent>
           <FormControl>
-            <TextField placeholder="Ime i prezime" />
+            <TextField
+              placeholder="Ime i prezime"
+              onChange={(e) => setNewInterviewerName(e.target.value)}
+            />
             <br />
             <DialogContentText>Izaberi područja:</DialogContentText>
             <FormGroup>
-              <FormControlLabel control={<Checkbox />} label="Programiranje" />
-              <FormControlLabel control={<Checkbox />} label="Dizajn" />
-              <FormControlLabel control={<Checkbox />} label="Multimedija" />
-              <FormControlLabel control={<Checkbox />} label="Marketing" />
+              <FormControlLabel
+                control={<Checkbox />}
+                label="Programiranje"
+                onChange={() =>
+                  toggleNewInterviewerDiscipline(Discipline.Development)
+                }
+              />
+              <FormControlLabel
+                control={<Checkbox />}
+                label="Dizajn"
+                onChange={() =>
+                  toggleNewInterviewerDiscipline(Discipline.Design)
+                }
+              />
+              <FormControlLabel
+                control={<Checkbox />}
+                label="Multimedija"
+                onChange={() =>
+                  toggleNewInterviewerDiscipline(Discipline.Multimedia)
+                }
+              />
+              <FormControlLabel
+                control={<Checkbox />}
+                label="Marketing"
+                onChange={() =>
+                  toggleNewInterviewerDiscipline(Discipline.Marketing)
+                }
+              />
             </FormGroup>
             <div className={c.dialogButtonWrapper}>
               <Button onClick={toggleAddInterviewerDialog}>Odustani</Button>
