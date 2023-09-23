@@ -1,6 +1,7 @@
-import { Controller, Get } from '@nestjs/common';
+import { Body, Controller, Get, Post } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 
+import { CreateInterviewSlotDto } from './dto/createInterviewSlot.dto';
 import { InterviewSlotService } from './interview-slot.service';
 
 @Controller('interview-slot')
@@ -20,5 +21,12 @@ export class InterviewSlotController {
       discipline,
     );
     return interviewSlots;
+  }
+
+  @Post()
+  async createInterviewSlot(@Body() interviewSlotDto: CreateInterviewSlotDto) {
+    return await this.interviewSlotService.createInterviewSlot(
+      interviewSlotDto,
+    );
   }
 }

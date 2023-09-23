@@ -84,3 +84,5 @@ export type InterviewSlot = {
   answers: JSON;
   score?: number;
 };
+
+export type InterviewSlotDto = Omit<InterviewSlot, 'id'>;
