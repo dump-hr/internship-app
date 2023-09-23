@@ -1,7 +1,8 @@
-import { useRoute } from 'wouter';
 import { isError } from 'react-query';
+import { useRoute } from 'wouter';
 
 import { useFetchIntern } from '../../api/useFetchIntern';
+
 import CandidateInfo from '../../components/CandidateInfo';
 import { Path } from '../../constants/paths';
 
@@ -21,3 +22,4 @@ const CandidateInfoPage = () => {
 };
 
 export default CandidateInfoPage;
+
