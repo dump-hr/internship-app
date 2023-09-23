@@ -37,7 +37,9 @@ const InternInfo = ({ intern }: InternInfoProps) => {
               return (
                 <div className={styles.atribute}>
                   <h3>{key}</h3>
-                  <span> {intern.data[key as keyof JSON].toString()} </span>
+                  <span>
+                    {intern.data[key as keyof typeof intern.data].toString()}
+                  </span>
                 </div>
               );
             })}
