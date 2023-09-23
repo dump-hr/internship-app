@@ -164,6 +164,16 @@ async function main() {
       },
     ],
   });
+
+  await prisma.interviewer.createMany({
+    data: [
+      {
+        id: 'lovre',
+        name: 'Lovre Tomić',
+        disciplines: [Discipline.Development],
+      },
+    ],
+  });
 }
 
 main()
