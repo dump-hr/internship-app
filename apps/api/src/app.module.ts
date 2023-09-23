@@ -11,6 +11,9 @@ import { InternModule } from './intern/intern.module';
 import { InternDisciplineModule } from './intern-discipline/intern-discipline.module';
 import { InterviewSlotModule } from './interview-slot/interview-slot.module';
 import { PrismaService } from './prisma.service';
+import { InterviewerController } from './interviewer/interviewer.controller';
+import { InterviewerService } from './interviewer/interviewer.service';
+import { InterviewerModule } from './interviewer/interviewer.module';
 
 @Module({
   imports: [
@@ -23,8 +26,9 @@ import { PrismaService } from './prisma.service';
     AuthModule,
     InterviewSlotModule,
     InternDisciplineModule,
+    InterviewerModule,
   ],
-  controllers: [AppController, AuthController],
-  providers: [AppService, PrismaService],
+  controllers: [AppController, AuthController, InterviewerController],
+  providers: [AppService, PrismaService, InterviewerService],
 })
 export class AppModule {}
