@@ -35,7 +35,7 @@ const disciplineEnumValues = Object.values(Discipline);
 export const ApplicationFormPage = () => {
   const [internDisciplines, setInternDisciplines] = useState<Discipline[]>([]);
 
-  const { mutate: createInternMutation } = usePostIntern();
+  const createIntern = usePostIntern();
 
   const { register, handleSubmit, formState, reset, watch } =
     useForm<FormValues>({
@@ -72,7 +72,7 @@ export const ApplicationFormPage = () => {
     };
 
     try {
-      createInternMutation(internToSend);
+      createIntern.mutate(internToSend);
     } catch (err) {
       console.log(err);
     }

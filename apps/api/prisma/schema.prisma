@@ -33,6 +33,7 @@ model Intern {
   lastName          String
   email             String             @unique
   data              Json
+  hasInterviewRight Boolean            @default(true)
   interviewSlot     InterviewSlot?
   internDisciplines InternDiscipline[]
   createdAt         DateTime           @default(now())

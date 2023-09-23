@@ -1,4 +1,4 @@
-import { InterviewSlot } from '@prisma/client';
+import type { InterviewSlot } from '@prisma/client';
 import { useQuery } from 'react-query';
 
 import { api } from '.';

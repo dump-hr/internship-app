@@ -1,6 +1,6 @@
 import { Button } from '@mui/material';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
-import { Intern } from '@prisma/client';
+import type { Intern } from '@prisma/client';
 import { Link } from 'wouter';
 
 import { useFetchAllInternDisciplines } from '../../api/useFetchAllInternDisciplines';
