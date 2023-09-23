@@ -8,10 +8,10 @@ import { Path } from './constants/paths';
 import { ApplicationFormPage } from './pages/ApplicationFormPage/ApplicationFormPage';
 import DashboardPage from './pages/DashboardPage';
 import { HomePage } from './pages/HomePage';
-import ScheduleInterviewPage from './pages/InterviewDateTimePage';
 import InterviewPage from './pages/InterviewPage';
 import LoginPage from './pages/LoginPage';
 import { NotFoundPage } from './pages/NotFoundPage';
+import ScheduleInterviewPage from './pages/ScheduleInterviewPage';
 import StatusPage from './pages/StatusPage';
 
 const queryClient = new QueryClient();
