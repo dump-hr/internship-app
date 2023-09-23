@@ -1,49 +1,119 @@
-import { Button } from '@mui/material';
+import { DisciplineStatus, Intern, TestStatus } from '@internship-app/types';
+import { Button, Chip, ChipProps } from '@mui/material';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
-import type { Intern } from '@prisma/client';
 import { Link } from 'wouter';
-
-import { useFetchAllInternDisciplines } from '../../api/useFetchAllInternDisciplines';
 
 type Props = {
   data: Intern[] | undefined;
 };
 
-const UsersList: React.FC<Props> = ({ data = [] }) => {
-  const { data: internDisciplines } = useFetchAllInternDisciplines();
+enum InternStatus {
+  Approved = 'Approved',
+  Pending = 'Pending',
+  Rejected = 'Rejected',
+}
 
+enum InterviewStatus {
+  NoRight = 'NoRight',
+  PickTerm = 'PickTerm',
+  Pending = 'Pending',
+  Done = 'Done',
+  Missed = 'Missed',
+}
+
+const statusChips: Record<InternStatus, ChipProps> = {
+  [InternStatus.Pending]: {
+    label: 'Čekanje',
+    color: 'info',
+    title: 'Status interna još nije određen',
+  },
+  [InternStatus.Rejected]: {
+    label: 'Odbijen',
+    color: 'error',
+    title: 'Intern nije prihvaćen ni u jedno područje',
+  },
+  [InternStatus.Approved]: {
+    label: 'Prihvaćen',
+    color: 'success',
+    title: 'Intern je prihvaćen bar u jedno područje',
+  },
+};
+
+const interviewChips: Record<InterviewStatus, ChipProps> = {
+  [InterviewStatus.NoRight]: {
+    label: 'Obespravljen',
+    color: 'warning',
+    title: 'Nema pravo na intervju',
+  },
+  [InterviewStatus.PickTerm]: {
+    label: 'Bira termin',
+    color: 'primary',
+    title: 'U procesu odabira termina',
+  },
+  [InterviewStatus.Pending]: {
+    label: 'Čekanje',
+    color: 'info',
+    title: 'Termin odabran i čeka',
+  },
+  [InterviewStatus.Done]: {
+    label: 'Odrađen',
+    color: 'success',
+    title: 'Intervju odrađen',
+  },
+  [InterviewStatus.Missed]: {
+    label: 'Propušten',
+    color: 'error',
+    title: 'Intervju propušten',
+  },
+};
+
+const getInterviewStatus = (intern: Intern) => {
+  if (!intern.hasInterviewRight) return InterviewStatus.NoRight;
+
+  if (!intern.interviewSlot) return InterviewStatus.PickTerm;
+
+  return intern.interviewSlot.status as InterviewStatus;
+};
+
+const getInternStatus = (intern: Intern) => {
+  if (
+    intern.internDisciplines.some(
+      (ind) => ind.status === DisciplineStatus.Pending,
+    )
+  )
+    return InternStatus.Pending;
+
+  if (
+    intern.internDisciplines.some(
+      (ind) => ind.status === DisciplineStatus.Approved,
+    )
+  )
+    return InternStatus.Approved;
+
+  return InternStatus.Rejected;
+};
+
+const UsersList: React.FC<Props> = ({ data = [] }) => {
   const columns: GridColDef[] = [
     { field: 'id', headerName: 'ID', width: 0 },
-    { field: 'firstName', headerName: 'Ime', width: 130 },
-    { field: 'lastName', headerName: 'Prezime', width: 130 },
-    { field: 'discipline', headerName: 'Područje', width: 130 },
+    { field: 'name', headerName: 'Ime i prezime', width: 140 },
     {
-      field: 'emailApplication',
-      headerName: 'Prijava',
-      width: 70,
-      type: 'boolean',
-      sortable: false,
+      field: 'status',
+      headerName: 'Status',
+      width: 140,
+      renderCell: (status) => (
+        <Chip {...statusChips[status.value as InternStatus]} />
+      ),
     },
+    { field: 'disciplines', headerName: 'Područja', width: 130 },
     {
-      field: 'emailAppointment',
-      headerName: 'Termin',
-      width: 70,
-      type: 'boolean',
-      sortable: false,
-    },
-    {
-      field: 'emailInterview',
+      field: 'interviewStatus',
       headerName: 'Intervju',
-      width: 70,
-      type: 'boolean',
+      width: 150,
       sortable: false,
-    },
-    {
-      field: 'emailExam',
-      headerName: 'Ispit',
-      width: 70,
-      type: 'boolean',
-      sortable: false,
+      renderCell: (status) => (
+        <Chip {...interviewChips[status.value as InterviewStatus]} />
+      ),
     },
     {
       field: 'buttonPregledaj',
@@ -68,16 +138,12 @@ const UsersList: React.FC<Props> = ({ data = [] }) => {
   const rows = data.map((intern) => {
     return {
       id: intern.id,
-      lastName: intern.lastName,
-      firstName: intern.firstName,
-      discipline:
-        internDisciplines?.find(
-          (internDiscipline) => internDiscipline.internId === intern.id,
-        )?.discipline || '/',
-      emailApplication: Math.random() < 0.5,
-      emailAppointment: Math.random() < 0.5,
-      emailInterview: Math.random() < 0.5,
-      emailExam: Math.random() < 0.5,
+      name: `${intern.firstName} ${intern.lastName}`,
+      status: getInternStatus(intern),
+      disciplines: intern.internDisciplines
+        .sort((ind) => ind.priority)
+        .map((ind) => ind.discipline),
+      interviewStatus: getInterviewStatus(intern),
     };
   });
 
