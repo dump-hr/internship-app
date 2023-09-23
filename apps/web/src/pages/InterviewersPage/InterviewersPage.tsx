@@ -12,11 +12,15 @@ const InterviewersPage = () => {
     { field: 'name', headerName: 'Ime i prezime', width: 130 },
     { field: 'disciplines', headerName: 'Područja', width: 130 },
   ];
-  const rows = [
-    { id: 1, name: 'John Doe', disciplines: 'Matematika' },
-    { id: 2, name: 'Jane Doe', disciplines: 'Matematika' },
-    { id: 3, name: 'John Doe', disciplines: 'Matematika' },
-  ];
+
+  const rows = interviewers?.map((interviewer) => {
+    return {
+      id: interviewer.id,
+      name: interviewer.name,
+      disciplines: interviewer.disciplines.join(', '),
+    };
+  });
+
   return (
     <>
       <LogoHeader text="Intervjueri" />
@@ -24,7 +28,17 @@ const InterviewersPage = () => {
         <button onClick={() => console.log(interviewers)}>
           Log interviewers
         </button>
-        <DataGrid columns={columns} rows={rows} />
+        <DataGrid
+          columns={columns}
+          rows={rows || []}
+          initialState={{
+            columns: {
+              columnVisibilityModel: {
+                id: false,
+              },
+            },
+          }}
+        />
       </LayoutSpacing>
     </>
   );
