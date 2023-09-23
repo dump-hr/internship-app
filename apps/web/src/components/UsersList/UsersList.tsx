@@ -1,6 +1,13 @@
-import { DisciplineStatus, Intern, TestStatus } from '@internship-app/types';
+import {
+  Discipline,
+  DisciplineStatus,
+  Intern,
+  InternDiscipline,
+  InterviewStatus,
+  TestStatus,
+} from '@internship-app/types';
 import { Button, Chip, ChipProps } from '@mui/material';
-import { DataGrid, GridColDef } from '@mui/x-data-grid';
+import { DataGrid, GridColDef, GridRenderCellParams } from '@mui/x-data-grid';
 import { Link } from 'wouter';
 
 type Props = {
@@ -13,15 +20,29 @@ enum InternStatus {
   Rejected = 'Rejected',
 }
 
-enum InterviewStatus {
-  NoRight = 'NoRight',
-  PickTerm = 'PickTerm',
-  Pending = 'Pending',
-  Done = 'Done',
-  Missed = 'Missed',
-}
+const shortDisciplineLabels = {
+  [Discipline.Development]: 'Dev',
+  [Discipline.Design]: 'Diz',
+  [Discipline.Marketing]: 'Mark',
+  [Discipline.Multimedia]: 'Mult',
+};
 
-const statusChips: Record<InternStatus, ChipProps> = {
+const disciplineStatusChipProps: Record<InternStatus, ChipProps> = {
+  [DisciplineStatus.Pending]: {
+    color: 'info',
+    title: 'Status područja još nije određen',
+  },
+  [DisciplineStatus.Rejected]: {
+    color: 'error',
+    title: 'Intern nije prihvaćen u područje',
+  },
+  [DisciplineStatus.Approved]: {
+    color: 'success',
+    title: 'Intern je prihvaćen u područje',
+  },
+};
+
+const statusChipProps: Record<InternStatus, ChipProps> = {
   [InternStatus.Pending]: {
     label: 'Čekanje',
     color: 'info',
@@ -39,7 +60,7 @@ const statusChips: Record<InternStatus, ChipProps> = {
   },
 };
 
-const interviewChips: Record<InterviewStatus, ChipProps> = {
+const interviewChipProps: Record<InterviewStatus, ChipProps> = {
   [InterviewStatus.NoRight]: {
     label: 'Obespravljen',
     color: 'warning',
@@ -67,12 +88,51 @@ const interviewChips: Record<InterviewStatus, ChipProps> = {
   },
 };
 
-const getInterviewStatus = (intern: Intern) => {
-  if (!intern.hasInterviewRight) return InterviewStatus.NoRight;
+const testChipProps: Record<TestStatus, ChipProps> = {
+  [TestStatus.PickTerm]: {
+    color: 'primary',
+    title: 'U procesu odabira termina',
+  },
+  [TestStatus.Pending]: {
+    color: 'info',
+    title: 'Termin odabran i čeka',
+  },
+  [InterviewStatus.Done]: {
+    color: 'success',
+    title: 'Test odrađen (ne nužno i položen)',
+  },
+  [InterviewStatus.Missed]: {
+    color: 'error',
+    title: 'Test propušten',
+  },
+};
 
-  if (!intern.interviewSlot) return InterviewStatus.PickTerm;
+const getDisciplineChip = (internDiscipline: InternDiscipline) => {
+  const { discipline, status } = internDiscipline;
 
-  return intern.interviewSlot.status as InterviewStatus;
+  return (
+    <Chip
+      label={shortDisciplineLabels[discipline]}
+      {...disciplineStatusChipProps[status]}
+      key={internDiscipline.internId + discipline}
+    />
+  );
+};
+
+const getTestChip = (internDiscipline: InternDiscipline) => {
+  const { discipline, testStatus, testScore } = internDiscipline;
+  if (!testStatus) return null;
+
+  const scoreText = testScore ? `(${testScore}b)` : '';
+  const label = shortDisciplineLabels[discipline];
+
+  return (
+    <Chip
+      label={`${label} ${scoreText}`}
+      {...testChipProps[testStatus]}
+      key={internDiscipline.internId + discipline}
+    />
+  );
 };
 
 const getInternStatus = (intern: Intern) => {
@@ -102,18 +162,32 @@ const UsersList: React.FC<Props> = ({ data = [] }) => {
       headerName: 'Status',
       width: 140,
       renderCell: (status) => (
-        <Chip {...statusChips[status.value as InternStatus]} />
+        <Chip {...statusChipProps[status.value as InternStatus]} />
       ),
     },
-    { field: 'disciplines', headerName: 'Područja', width: 130 },
+    {
+      field: 'disciplines',
+      headerName: 'Područja',
+      width: 200,
+      renderCell: (
+        internDisciplines: GridRenderCellParams<InternDiscipline[]>,
+      ) => <>{internDisciplines.value.map(getDisciplineChip)}</>,
+    },
     {
       field: 'interviewStatus',
       headerName: 'Intervju',
       width: 150,
-      sortable: false,
       renderCell: (status) => (
-        <Chip {...interviewChips[status.value as InterviewStatus]} />
+        <Chip {...interviewChipProps[status.value as InterviewStatus]} />
       ),
+    },
+    {
+      field: 'testStatus',
+      headerName: 'Testovi',
+      width: 150,
+      renderCell: (
+        internDisciplines: GridRenderCellParams<InternDiscipline[]>,
+      ) => <>{internDisciplines.value.map(getTestChip)}</>,
     },
     {
       field: 'buttonPregledaj',
@@ -140,10 +214,9 @@ const UsersList: React.FC<Props> = ({ data = [] }) => {
       id: intern.id,
       name: `${intern.firstName} ${intern.lastName}`,
       status: getInternStatus(intern),
-      disciplines: intern.internDisciplines
-        .sort((ind) => ind.priority)
-        .map((ind) => ind.discipline),
-      interviewStatus: getInterviewStatus(intern),
+      disciplines: intern.internDisciplines.sort((ind) => ind.priority),
+      interviewStatus: intern.interviewStatus,
+      testStatus: intern.internDisciplines,
     };
   });
 

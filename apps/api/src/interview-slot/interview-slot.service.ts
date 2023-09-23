@@ -3,6 +3,7 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
+import { InterviewStatus } from '@prisma/client';
 import { PrismaService } from 'src/prisma.service';
 
 @Injectable()
@@ -31,7 +32,7 @@ export class InterviewSlotService {
       throw new NotFoundException('Intern not found');
     }
 
-    if (!intern.hasInterviewRight) {
+    if (intern.interviewStatus === InterviewStatus.NoRight) {
       throw new BadRequestException('Intern does not have interview right');
     }
 

@@ -52,7 +52,6 @@ export class InternService {
           select: {
             start: true,
             end: true,
-            status: true,
           },
         },
       },
