@@ -50,8 +50,16 @@ const ScheduleInterviewPage = () => {
 
   if (intern.isError || slots.isError)
     return (
-      <Layout title="Dogodila se greška. Molimo kontaktirajte nas na info@dump.hr" />
+      <Layout
+        title={`Dogodila se greška (${slots.error}). Molimo kontaktirajte nas na info@dump.hr`}
+      />
     );
+
+  if (slots.data?.length === 0) {
+    return (
+      <Layout title="Nema dostupnih termina. Molimo kontaktirajte nas na info@dump.hr" />
+    );
+  }
 
   return (
     <Layout

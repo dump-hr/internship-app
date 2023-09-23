@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
 
 @Injectable()
@@ -19,11 +23,20 @@ export class InterviewSlotService {
             priority: 'asc',
           },
         },
+        interviewSlot: true,
       },
     });
 
     if (!intern) {
       throw new NotFoundException('Intern not found');
+    }
+
+    if (!intern.hasInterviewRight) {
+      throw new BadRequestException('Intern does not have interview right');
+    }
+
+    if (intern.interviewSlot) {
+      throw new BadRequestException('Interview already scheduled');
     }
 
     const [primaryDiscipline, ...otherDisciplines] = intern.internDisciplines;
