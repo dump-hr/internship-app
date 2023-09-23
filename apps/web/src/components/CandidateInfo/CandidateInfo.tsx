@@ -3,19 +3,19 @@ import { Intern } from '@internship-app/types';
 import styles from './index.module.css';
 
 interface CandidateInfoProps {
-  item: Intern;
+  intern: Intern;
 }
 
-const CandidateInfoPage = (props: CandidateInfoProps) => {
+const CandidateInfoPage = ({ intern }: CandidateInfoProps) => {
   return (
     <div className={styles.page}>
       <h1>
-        {props.item.firstName} {props.item.lastName}
+        {intern.firstName} {intern.lastName}
       </h1>
 
       {/*<div className={styles.datesContainer}> not sure if we need dates but they break the app
-        <div>Created at: {props.item.createdAt}</div>
-        <div>Updated at: {props.item.updatedAt}</div>
+        <div>Created at: {intern.createdAt}</div>
+        <div>Updated at: {intern.updatedAt}</div>
   </div>*/}
 
       <div className={styles.container}>
@@ -30,14 +30,14 @@ const CandidateInfoPage = (props: CandidateInfoProps) => {
         <div>
           <div className={styles.atribute}>
             <h3>Email</h3>
-            <span> {props.item.email} </span>
+            <span> {intern.email} </span>
           </div>
           <div>
-            {Object.keys(props.item.data).map((key: string) => {
+            {Object.keys(intern.data).map((key: string) => {
               return (
                 <div className={styles.atribute}>
                   <h3>{key}</h3>
-                  <span> {props.item.data[key as keyof JSON].toString()} </span>
+                  <span> {intern.data[key as keyof JSON].toString()} </span>
                 </div>
               );
             })}

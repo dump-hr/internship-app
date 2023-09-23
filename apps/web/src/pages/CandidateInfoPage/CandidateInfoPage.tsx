@@ -1,4 +1,5 @@
 import { useRoute } from 'wouter';
+import { isError } from 'react-query';
 
 import { useFetchIntern } from '../../api/useFetchIntern';
 import CandidateInfo from '../../components/CandidateInfo';
@@ -6,18 +7,17 @@ import { Path } from '../../constants/paths';
 
 const CandidateInfoPage = () => {
   const [, params] = useRoute(Path.Candidate);
-  const internId: string | undefined = params?.internId;
-  const { data: intern, isFetching } = useFetchIntern(internId as string);
+  const internId = params?.internId;
+  const { data: intern, isLoading } = useFetchIntern(internId);
 
-  if (isFetching) {
+  console.log(intern);
+  if (isLoading) {
     return <div>Učitavanje...</div>;
   }
-
-  return (
-    <div>
-      <CandidateInfo item={intern!} />
-    </div>
-  );
+  if (isError(intern)) {
+    return <div>Dogodila se greška</div>;
+  }
+  return <CandidateInfo intern={intern!} />;
 };
 
 export default CandidateInfoPage;
