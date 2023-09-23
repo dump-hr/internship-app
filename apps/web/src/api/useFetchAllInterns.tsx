@@ -1,4 +1,4 @@
-import { Intern } from '@prisma/client';
+import type { Intern } from '@prisma/client';
 import { useQuery } from 'react-query';
 
 import { api } from '.';
