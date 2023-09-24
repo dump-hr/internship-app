@@ -1,6 +1,7 @@
 import { useRoute } from 'wouter';
 
 import { useFetchIntern } from '../../api/useFetchIntern';
+import AdminPage from '../../components/AdminPage';
 import InternInfo from '../../components/InternInfo';
 import { Path } from '../../constants/paths';
 
@@ -12,10 +13,16 @@ const InternInfoPage = () => {
   if (isLoading) {
     return <div>Učitavanje...</div>;
   }
+
   if (isError) {
     return <div>Dogodila se greška</div>;
   }
-  return <InternInfo intern={intern!} />;
+
+  return (
+    <AdminPage>
+      <InternInfo intern={intern!} />
+    </AdminPage>
+  );
 };
 
 export default InternInfoPage;

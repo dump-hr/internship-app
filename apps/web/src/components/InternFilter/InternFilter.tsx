@@ -102,7 +102,13 @@ const InternFilter = ({ submitHandler }: InternFilterProps) => {
 
   return (
     <div>
-      <Button onClick={handleSubmit(submitHandler)}>Filtriraj</Button>
+      <Button
+        onClick={handleSubmit(submitHandler)}
+        variant="contained"
+        color="secondary"
+      >
+        Filtriraj
+      </Button>
       {criteria.map((section, index) => (
         <Box display="flex" gap="20px" alignItems="center" key={section.id}>
           {section.questions.map((q) => (

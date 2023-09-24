@@ -5,8 +5,10 @@ import {
   NotFoundException,
   Param,
   Post,
+  UseGuards,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
+import { JwtAuthGuard } from 'src/auth/jwt-auth-guard';
 
 import { CreateInternDto } from './dto/createIntern.dto';
 import { InternService } from './intern.service';
@@ -16,6 +18,7 @@ import { InternService } from './intern.service';
 export class InternController {
   constructor(private readonly internService: InternService) {}
 
+  @UseGuards(JwtAuthGuard)
   @Get()
   async getAll() {
     const interns = await this.internService.getAll();
@@ -23,6 +26,7 @@ export class InternController {
     return interns;
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get(':id')
   async get(@Param('id') id: string) {
     const intern = await this.internService.get(id);

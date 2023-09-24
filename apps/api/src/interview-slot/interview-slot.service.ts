@@ -37,7 +37,9 @@ export class InterviewSlotService {
     }
 
     if (intern.interviewStatus !== InterviewStatus.PickTerm) {
-      throw new BadRequestException('Intern does not have right to pick');
+      throw new BadRequestException(
+        'Intern does not have the right to schedule interview',
+      );
     }
 
     const [primaryDiscipline, ...otherDisciplines] =

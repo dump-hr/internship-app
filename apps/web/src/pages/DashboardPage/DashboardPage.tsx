@@ -4,18 +4,19 @@ import {
   InternStatus,
   InterviewStatus,
 } from '@internship-app/types';
-import { Box, Button, Grid } from '@mui/material';
+import { Button, Grid } from '@mui/material';
 import { useState } from 'react';
 import { FieldValues } from 'react-hook-form';
 
 import { useFetchAllInterns } from '../../api/useFetchAllInterns';
+import AdminPage from '../../components/AdminPage';
 import InternFilter from '../../components/InternFilter';
 import {
   FilterCriteria,
   getInternFilter,
 } from '../../components/InternFilter/filter';
 import InternList from '../../components/InternList';
-import LogoHeader from '../../components/LogoHeader';
+import EmailPage from '../EmailPage';
 import c from './DashboardPage.module.css';
 
 const getInternStatus = (intern: Intern) => {
@@ -45,6 +46,9 @@ const initialState: { filterCriteria: FilterCriteria } = {
 
 const DashboardPage = () => {
   const { data: interns } = useFetchAllInterns();
+
+  const [selection, setSelection] = useState<string[]>([]);
+  const [emailDialogOpen, setEmailDialogOpen] = useState(false);
 
   const [filterCriteria, setFilterCriteria] = useState<FilterCriteria>(
     initialState.filterCriteria,
@@ -83,31 +87,40 @@ const DashboardPage = () => {
   ];
 
   return (
-    <>
-      <LogoHeader text="Kandidati" />
-      <Box margin="auto" maxWidth="1200px" className={c.content}>
-        <Grid container spacing={2}>
-          {stats.map((stat) => (
-            <Grid item xs={12} md={2} textAlign="center" key={stat.label}>
-              <div className={c.infoBox}>
-                <h3>{stat.value}</h3>
-                <p>{stat.label}</p>
-              </div>
-            </Grid>
-          ))}
-          <Grid item xs={12} md={5}>
-            <div className={c.buttonsWrapper}>
-              <Button disabled>Pregledaj dev ispit</Button>
-              <Button disabled>Pošalji mail</Button>
+    <AdminPage>
+      <Grid container spacing={2} mt={1}>
+        {stats.map((stat) => (
+          <Grid item xs={12} md={2} textAlign="center" key={stat.label}>
+            <div className={c.infoBox}>
+              <h3>{stat.value}</h3>
+              <p>{stat.label}</p>
             </div>
           </Grid>
-        </Grid>
-        <InternFilter submitHandler={filterHandler} />
-        <InternList
-          data={internsWithStatus?.filter(getInternFilter(filterCriteria))}
-        />
-      </Box>
-    </>
+        ))}
+      </Grid>
+      <Grid item xs={12} md={5}>
+        <div className={c.buttonsWrapper}>
+          <Button disabled>Pregledaj dev ispit</Button>
+          <Button onClick={() => setEmailDialogOpen(true)}>Pošalji mail</Button>
+        </div>
+      </Grid>
+
+      <InternFilter submitHandler={filterHandler} />
+      <InternList
+        data={internsWithStatus?.filter(getInternFilter(filterCriteria))}
+        setSelection={setSelection}
+      />
+
+      <EmailPage
+        on={emailDialogOpen}
+        close={() => setEmailDialogOpen(false)}
+        emails={
+          interns
+            ?.filter((i) => selection.includes(i.id))
+            .map((i) => i.email) || []
+        }
+      />
+    </AdminPage>
   );
 };
 

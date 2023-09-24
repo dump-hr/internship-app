@@ -1,8 +1,8 @@
 import { Discipline } from '@internship-app/types';
-import { Box } from '@mui/material';
 import { FieldValues, useForm } from 'react-hook-form';
 import { useRoute } from 'wouter';
 
+import AdminPage from '../../components/AdminPage';
 import IntervieweeInfo from '../../components/IntervieweeInfo';
 import MultistepForm from '../../components/MultistepForm';
 import { Path } from '../../constants/paths';
@@ -30,7 +30,7 @@ const InterviewPage = () => {
   };
 
   return (
-    <Box maxWidth="1280px" margin="auto">
+    <AdminPage>
       <IntervieweeInfo
         setUrl={setUrl}
         info={{
@@ -54,7 +54,7 @@ const InterviewPage = () => {
         onSubmit={handleFormSubmit}
         InputHandler={InterviewQuestionHandler}
       />
-    </Box>
+    </AdminPage>
   );
 };
 

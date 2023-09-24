@@ -7,6 +7,7 @@ import { Button, Chip } from '@mui/material';
 import { DataGrid, GridColDef, GridRenderCellParams } from '@mui/x-data-grid';
 import { Link } from 'wouter';
 
+import { Path } from '../../constants/paths';
 import {
   disciplineStatusChipProps,
   internStatusChipProps,
@@ -17,6 +18,7 @@ import {
 
 type Props = {
   data: InternWithStatus[] | undefined;
+  setSelection?: (selection: string[]) => void;
 };
 
 const getDisciplineChip = (internDiscipline: InternDiscipline) => {
@@ -62,7 +64,7 @@ const getInterviewChip = (intern: InternWithStatus) => {
   );
 };
 
-const InternList: React.FC<Props> = ({ data = [] }) => {
+const InternList: React.FC<Props> = ({ data = [], setSelection }) => {
   const columns: GridColDef[] = [
     { field: 'id', headerName: 'ID', width: 0 },
     {
@@ -112,7 +114,14 @@ const InternList: React.FC<Props> = ({ data = [] }) => {
       headerName: '',
       width: 110,
       sortable: false,
-      renderCell: () => <Button disabled>Pregledaj</Button>,
+      renderCell: (params) => (
+        <Button
+          component={Link}
+          to={Path.Intern.replace(':internId', params.row.id)}
+        >
+          Pregledaj
+        </Button>
+      ),
     },
     {
       field: 'buttonIntervju',
@@ -120,7 +129,10 @@ const InternList: React.FC<Props> = ({ data = [] }) => {
       width: 100,
       sortable: false,
       renderCell: (params) => (
-        <Button component={Link} to={`/interview/${params.row.id}`}>
+        <Button
+          component={Link}
+          to={Path.Interview.replace(':internId', params.row.id)}
+        >
           Intervju
         </Button>
       ),
@@ -163,6 +175,9 @@ const InternList: React.FC<Props> = ({ data = [] }) => {
         pageSizeOptions={[5, 10]}
         checkboxSelection
         disableRowSelectionOnClick
+        onRowSelectionModelChange={(newSelection) => {
+          setSelection && setSelection(newSelection as string[]);
+        }}
       />
     </div>
   );
