@@ -20,6 +20,11 @@ export class InternService {
     const interns = await this.prisma.intern.findMany({
       include: {
         internDisciplines: true,
+        interviewSlot: {
+          select: {
+            score: true,
+          },
+        },
       },
     });
 

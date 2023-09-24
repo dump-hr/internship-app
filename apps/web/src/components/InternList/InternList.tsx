@@ -2,7 +2,6 @@ import {
   InternDiscipline,
   InternStatus,
   InternWithStatus,
-  InterviewStatus,
 } from '@internship-app/types';
 import { Button, Chip } from '@mui/material';
 import { DataGrid, GridColDef, GridRenderCellParams } from '@mui/x-data-grid';
@@ -48,7 +47,22 @@ const getTestChip = (internDiscipline: InternDiscipline) => {
   );
 };
 
-const UsersList: React.FC<Props> = ({ data = [] }) => {
+const getInterviewChip = (intern: InternWithStatus) => {
+  const props = interviewChipProps[intern.interviewStatus];
+  const score = intern.interviewSlot?.score;
+
+  const scoreText = score ? `(${score}b)` : '';
+
+  return (
+    <Chip
+      {...props}
+      label={`${props.label} ${scoreText}`}
+      key={intern.id + 'interview'}
+    />
+  );
+};
+
+const InternList: React.FC<Props> = ({ data = [] }) => {
   const columns: GridColDef[] = [
     { field: 'id', headerName: 'ID', width: 0 },
     {
@@ -60,6 +74,7 @@ const UsersList: React.FC<Props> = ({ data = [] }) => {
       field: 'status',
       headerName: 'Status',
       width: 140,
+      sortable: false,
       renderCell: (status) => (
         <Chip {...internStatusChipProps[status.value as InternStatus]} />
       ),
@@ -67,23 +82,25 @@ const UsersList: React.FC<Props> = ({ data = [] }) => {
     {
       field: 'disciplines',
       headerName: 'Područja',
+      description: 'Boja - status, hover; sort - po broju područja',
       width: 200,
-      sortable: false,
-      renderCell: (
-        internDisciplines: GridRenderCellParams<InternDiscipline[]>,
-      ) => <>{internDisciplines.value.map(getDisciplineChip)}</>,
+      sortComparator: (a, b) => a.length - b.length,
+      renderCell: (props: GridRenderCellParams<InternDiscipline[]>) =>
+        props.value.map(getDisciplineChip),
     },
     {
       field: 'interviewStatus',
       headerName: 'Intervju',
+      description: 'Sort - po broju bodova',
       width: 150,
-      renderCell: (status) => (
-        <Chip {...interviewChipProps[status.value as InterviewStatus]} />
-      ),
+      sortComparator: (a, b) => a.interviewSlot?.score - b.interviewSlot?.score,
+      renderCell: (props: GridRenderCellParams<InternWithStatus>) =>
+        getInterviewChip(props.value),
     },
     {
       field: 'testStatus',
       headerName: 'Testovi',
+      description: 'Boja - status, hover',
       width: 150,
       sortable: false,
       renderCell: (
@@ -116,7 +133,7 @@ const UsersList: React.FC<Props> = ({ data = [] }) => {
       name: `${intern.firstName} ${intern.lastName}`,
       status: intern.status,
       disciplines: intern.internDisciplines.sort((ind) => ind.priority),
-      interviewStatus: intern.interviewStatus,
+      interviewStatus: intern,
       testStatus: intern.internDisciplines,
     };
   });
@@ -151,4 +168,4 @@ const UsersList: React.FC<Props> = ({ data = [] }) => {
   );
 };
 
-export default UsersList;
+export default InternList;

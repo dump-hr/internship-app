@@ -1,6 +1,7 @@
 import {
   Discipline,
   DisciplineStatus,
+  InternStatus,
   InterviewStatus,
   Question,
   QuestionType,
@@ -33,7 +34,7 @@ const initialCriteria: CriteriaSection[] = [
         id: 'main.status',
         type: QuestionType.Select,
         registerValue: '',
-        options: ['', ...Object.keys(InterviewStatus)],
+        options: ['', ...Object.keys(InternStatus)],
         title: 'Status',
       },
       {
@@ -75,7 +76,7 @@ const getNewCriteria = (id: string): CriteriaSection => ({
       id: `${id}.score`,
       type: QuestionType.Field,
       registerValue: '',
-      title: 'Bodovi',
+      title: 'Bodovi (eg >15)',
     },
   ],
 });

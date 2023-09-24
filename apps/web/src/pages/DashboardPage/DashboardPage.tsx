@@ -10,9 +10,9 @@ import {
   FilterCriteria,
   getInternFilter,
 } from '../../components/InternFilter/filter';
+import InternList from '../../components/InternList';
 import LayoutSpacing from '../../components/LayoutSpacing/LayoutSpacing';
 import LogoHeader from '../../components/LogoHeader';
-import UsersList from '../../components/UsersList';
 import c from './DashboardPage.module.css';
 
 const getInternStatus = (intern: Intern) => {
@@ -83,7 +83,7 @@ const DashboardPage = () => {
           </Grid>
         </Grid>
         <InternFilter submitHandler={filterHandler} />
-        <UsersList
+        <InternList
           data={internsWithStatus?.filter(getInternFilter(filterCriteria))}
         />
       </LayoutSpacing>

@@ -6,6 +6,7 @@ import {
   InterviewStatus,
   TestStatus,
 } from '@internship-app/types';
+import toast from 'react-hot-toast';
 
 export type FilterCriteria = {
   main: {
@@ -27,10 +28,11 @@ export const getInternFilter = (criteria: FilterCriteria) => {
   return (intern: InternWithStatus) => {
     const { main } = criteria;
 
-    console.log(intern);
     if (
       main.name &&
-      !`${intern.firstName} ${intern.lastName}`.includes(main.name)
+      !`${intern.firstName} ${intern.lastName}`
+        .toLocaleLowerCase()
+        .includes(main.name.toLocaleLowerCase())
     )
       return false;
 
@@ -39,8 +41,8 @@ export const getInternFilter = (criteria: FilterCriteria) => {
     if (main.interviewStatus && intern.interviewStatus !== main.interviewStatus)
       return false;
 
-    const disciplineCriteria = Object.values(criteria.disciplines);
-    disciplineCriteria.forEach((dc) => {
+    const disciplineCriteria = Object.values(criteria.disciplines || []);
+    for (const dc of disciplineCriteria) {
       const ind = intern.internDisciplines.find(
         (ind) => ind.discipline === dc.discipline,
       );
@@ -52,9 +54,13 @@ export const getInternFilter = (criteria: FilterCriteria) => {
 
       if (dc.score) {
         const expression = dc.score;
-        if (!eval(`${ind.testScore} ${expression}`)) return false;
+        try {
+          if (!eval(`${ind.testScore} ${expression}`)) return false;
+        } catch (err) {
+          toast.error(`Pogreška u filtriranju bodova: ${err}`);
+        }
       }
-    });
+    }
 
     return true;
   };

@@ -40,7 +40,8 @@ export class InterviewSlotService {
       throw new BadRequestException('Interview already scheduled');
     }
 
-    const [primaryDiscipline, ...otherDisciplines] = intern.internDisciplines;
+    const [primaryDiscipline, ...otherDisciplines] =
+      intern.internDisciplines.filter((ind) => ind.status === 'Pending');
 
     const availableSlots = await this.prisma.interviewSlot.findMany({
       where: {
