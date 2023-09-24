@@ -33,7 +33,7 @@ model Intern {
   lastName          String
   email             String             @unique
   data              Json
-  hasInterviewRight Boolean            @default(true)
+  interviewStatus   InterviewStatus    @default(NoRight)
   interviewSlot     InterviewSlot?
   internDisciplines InternDiscipline[]
   createdAt         DateTime           @default(now())
@@ -73,7 +73,6 @@ model InterviewSlot {
   id           String                         @id @default(uuid())
   intern       Intern?                        @relation(fields: [internId], references: [id])
   internId     String?                        @unique
-  status       InterviewStatus?
   start        DateTime
   end          DateTime
   answers      Json
@@ -106,12 +105,15 @@ enum DisciplineStatus {
 }
 
 enum InterviewStatus {
+  NoRight
+  PickTerm
   Pending
   Done
   Missed
 }
 
 enum TestStatus {
+  PickTerm
   Pending
   Done
   Missed

@@ -19,12 +19,15 @@ export const disciplineStatusLabel = {
 };
 
 export const testStatusLabel = {
+  [TestStatus.PickTerm]: 'Odabir termina',
   [TestStatus.Pending]: 'Na čekanju',
   [TestStatus.Missed]: 'Propušteno',
   [TestStatus.Done]: 'Obavljeno',
 };
 
 export const interviewStatusLabel = {
+  [InterviewStatus.NoRight]: 'Nema pravo na intervju',
+  [InterviewStatus.PickTerm]: 'Odaberi termin',
   [InterviewStatus.Pending]: 'Na čekanju',
   [InterviewStatus.Missed]: 'Propušteno',
   [InterviewStatus.Done]: 'Obavljeno',

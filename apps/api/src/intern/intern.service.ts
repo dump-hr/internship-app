@@ -17,7 +17,20 @@ export class InternService {
   }
 
   async getAll() {
-    const interns = await this.prisma.intern.findMany();
+    const interns = await this.prisma.intern.findMany({
+      include: {
+        internDisciplines: {
+          orderBy: {
+            priority: 'asc',
+          },
+        },
+        interviewSlot: {
+          select: {
+            score: true,
+          },
+        },
+      },
+    });
 
     return interns;
   }
@@ -48,7 +61,6 @@ export class InternService {
           select: {
             start: true,
             end: true,
-            status: true,
           },
         },
       },

@@ -29,12 +29,15 @@ export enum DisciplineStatus {
 }
 
 export enum InterviewStatus {
+  NoRight = 'NoRight',
+  PickTerm = 'PickTerm',
   Pending = 'Pending',
   Done = 'Done',
   Missed = 'Missed',
 }
 
 export enum TestStatus {
+  PickTerm = 'PickTerm',
   Pending = 'Pending',
   Done = 'Done',
   Missed = 'Missed',
@@ -52,6 +55,7 @@ export type Intern = {
   lastName: string;
   email: string;
   data: Json;
+  interviewStatus: InterviewStatus;
   interviewSlot?: InterviewSlot;
   internDisciplines: InternDiscipline[];
 };
@@ -87,9 +91,16 @@ export type TestSlot = {
 
 export type InterviewSlot = {
   id: string;
-  status?: InterviewStatus;
   start: string;
   end: string;
   answers: Json;
   score?: number;
 };
+
+export enum InternStatus {
+  Approved = 'Approved',
+  Pending = 'Pending',
+  Rejected = 'Rejected',
+}
+
+export type InternWithStatus = Intern & {status: InternStatus}
