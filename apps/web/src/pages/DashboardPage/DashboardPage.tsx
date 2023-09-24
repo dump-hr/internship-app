@@ -1,15 +1,40 @@
+import { DisciplineStatus, Intern, InternStatus } from '@internship-app/types';
 import { Button, Grid } from '@mui/material';
 
 import { useFetchAllInterns } from '../../api/useFetchAllInterns';
 import { useFetchAllInterviewSlots } from '../../api/useFetchAllInterviewSlots';
+import InternFilter from '../../components/InternFilter';
 import LayoutSpacing from '../../components/LayoutSpacing/LayoutSpacing';
 import LogoHeader from '../../components/LogoHeader';
 import UsersList from '../../components/UsersList';
 import c from './DashboardPage.module.css';
 
+const getInternStatus = (intern: Intern) => {
+  if (
+    intern.internDisciplines.some(
+      (ind) => ind.status === DisciplineStatus.Pending,
+    )
+  )
+    return InternStatus.Pending;
+
+  if (
+    intern.internDisciplines.some(
+      (ind) => ind.status === DisciplineStatus.Approved,
+    )
+  )
+    return InternStatus.Approved;
+
+  return InternStatus.Rejected;
+};
+
 const DashboardPage = () => {
   const { data: interns } = useFetchAllInterns();
   const { data: interviewSlots } = useFetchAllInterviewSlots();
+
+  const internsWithStatus = interns?.map((i) => ({
+    ...i,
+    status: getInternStatus(i),
+  }));
 
   return (
     <>
@@ -41,7 +66,8 @@ const DashboardPage = () => {
             </div>
           </Grid>
         </Grid>
-        <UsersList data={interns} />
+        <InternFilter />
+        <UsersList data={internsWithStatus} />
       </LayoutSpacing>
     </>
   );

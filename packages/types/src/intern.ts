@@ -97,3 +97,11 @@ export type InterviewSlot = {
   answers: Json;
   score?: number;
 };
+
+export enum InternStatus {
+  Approved = 'Approved',
+  Pending = 'Pending',
+  Rejected = 'Rejected',
+}
+
+export type InternWithStatus = Intern & {status: InternStatus}

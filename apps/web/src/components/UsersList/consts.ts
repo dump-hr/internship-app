@@ -1,16 +1,11 @@
 import {
   Discipline,
   DisciplineStatus,
+  InternStatus,
   InterviewStatus,
   TestStatus,
 } from '@internship-app/types';
 import { ChipProps } from '@mui/material';
-
-export enum InternStatus {
-  Approved = 'Approved',
-  Pending = 'Pending',
-  Rejected = 'Rejected',
-}
 
 export const shortDisciplineLabels = {
   [Discipline.Development]: 'Dev',

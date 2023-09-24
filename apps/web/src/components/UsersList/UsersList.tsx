@@ -1,26 +1,15 @@
 import {
-  Discipline,
-  DisciplineStatus,
-  Intern,
   InternDiscipline,
+  InternStatus,
+  InternWithStatus,
   InterviewStatus,
 } from '@internship-app/types';
-import { Button, Chip, TextField } from '@mui/material';
-import {
-  DataGrid,
-  GridCellParams,
-  GridColDef,
-  GridFilterInputValueProps,
-  GridFilterItem,
-  GridRenderCellParams,
-  GridTreeNode,
-} from '@mui/x-data-grid';
+import { Button, Chip } from '@mui/material';
+import { DataGrid, GridColDef, GridRenderCellParams } from '@mui/x-data-grid';
 import { Link } from 'wouter';
 
-import FilterSingleSelect from '../FilterSingleSelect/FilterSingleSelect';
 import {
   disciplineStatusChipProps,
-  InternStatus,
   internStatusChipProps,
   interviewChipProps,
   shortDisciplineLabels,
@@ -28,7 +17,7 @@ import {
 } from './consts';
 
 type Props = {
-  data: Intern[] | undefined;
+  data: InternWithStatus[] | undefined;
 };
 
 const getDisciplineChip = (internDiscipline: InternDiscipline) => {
@@ -59,24 +48,6 @@ const getTestChip = (internDiscipline: InternDiscipline) => {
   );
 };
 
-const getInternStatus = (intern: Intern) => {
-  if (
-    intern.internDisciplines.some(
-      (ind) => ind.status === DisciplineStatus.Pending,
-    )
-  )
-    return InternStatus.Pending;
-
-  if (
-    intern.internDisciplines.some(
-      (ind) => ind.status === DisciplineStatus.Approved,
-    )
-  )
-    return InternStatus.Approved;
-
-  return InternStatus.Rejected;
-};
-
 const UsersList: React.FC<Props> = ({ data = [] }) => {
   const columns: GridColDef[] = [
     { field: 'id', headerName: 'ID', width: 0 },
@@ -98,27 +69,6 @@ const UsersList: React.FC<Props> = ({ data = [] }) => {
       headerName: 'Područja',
       width: 200,
       sortable: false,
-      filterOperators: [
-        {
-          value: 'contains',
-          getApplyFilterFn: (filterItem) => {
-            if (filterItem.value == null || filterItem.value === '') {
-              return null;
-            }
-
-            return ({ value }) =>
-              value.some(
-                (ind: InternDiscipline) => ind.discipline === filterItem.value,
-              );
-          },
-          InputComponent: (filterProps) => (
-            <FilterSingleSelect
-              filterProps={filterProps}
-              items={shortDisciplineLabels}
-            />
-          ),
-        },
-      ],
       renderCell: (
         internDisciplines: GridRenderCellParams<InternDiscipline[]>,
       ) => <>{internDisciplines.value.map(getDisciplineChip)}</>,
@@ -136,7 +86,6 @@ const UsersList: React.FC<Props> = ({ data = [] }) => {
       headerName: 'Testovi',
       width: 150,
       sortable: false,
-      filterable: false,
       renderCell: (
         internDisciplines: GridRenderCellParams<InternDiscipline[]>,
       ) => <>{internDisciplines.value.map(getTestChip)}</>,
@@ -146,7 +95,6 @@ const UsersList: React.FC<Props> = ({ data = [] }) => {
       headerName: '',
       width: 110,
       sortable: false,
-      filterable: false,
       renderCell: () => <Button disabled>Pregledaj</Button>,
     },
     {
@@ -154,7 +102,6 @@ const UsersList: React.FC<Props> = ({ data = [] }) => {
       headerName: '',
       width: 100,
       sortable: false,
-      filterable: false,
       renderCell: (params) => (
         <Button component={Link} to={`/interview/${params.row.id}`}>
           Intervju
@@ -167,7 +114,7 @@ const UsersList: React.FC<Props> = ({ data = [] }) => {
     return {
       id: intern.id,
       name: `${intern.firstName} ${intern.lastName}`,
-      status: getInternStatus(intern),
+      status: intern.status,
       disciplines: intern.internDisciplines.sort((ind) => ind.priority),
       interviewStatus: intern.interviewStatus,
       testStatus: intern.internDisciplines,
@@ -185,6 +132,7 @@ const UsersList: React.FC<Props> = ({ data = [] }) => {
       <DataGrid
         rows={rows}
         columns={columns}
+        disableColumnFilter
         initialState={{
           pagination: {
             paginationModel: { page: 0, pageSize: 100 },

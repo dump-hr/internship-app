@@ -74,6 +74,7 @@ const InputHandler = ({ question, form }: InputHandlerProps) => {
       <Controller
         control={control}
         name={question.id}
+        defaultValue={question.registerValue}
         render={({ field }) => getInputComponent(question, field)}
       />
     </>
