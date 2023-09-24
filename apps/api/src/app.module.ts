@@ -8,7 +8,6 @@ import { AuthController } from './auth/auth.controller';
 import { AuthModule } from './auth/auth.module';
 import { EmailModule } from './email/email.module';
 import { InternModule } from './intern/intern.module';
-import { InternDisciplineModule } from './intern-discipline/intern-discipline.module';
 import { InterviewSlotModule } from './interview-slot/interview-slot.module';
 import { PrismaService } from './prisma.service';
 
@@ -22,7 +21,6 @@ import { PrismaService } from './prisma.service';
     EmailModule,
     AuthModule,
     InterviewSlotModule,
-    InternDisciplineModule,
   ],
   controllers: [AppController, AuthController],
   providers: [AppService, PrismaService],
