@@ -39,16 +39,74 @@ const InterviewersPage = () => {
   const { data: interviewers } = useFetchAllInterviewers();
 
   const columns: GridColDef[] = [
-    { field: 'id', headerName: 'ID', width: 70 },
+    { field: 'id', headerName: 'ID', width: 300 },
     { field: 'name', headerName: 'Ime i prezime', width: 130 },
-    { field: 'disciplines', headerName: 'Područja', width: 130 },
+    {
+      field: 'developmentDiscipline',
+      headerName: 'DEV',
+      width: 70,
+      type: 'boolean',
+    },
+    {
+      field: 'designDiscipline',
+      headerName: 'DIZ',
+      width: 70,
+      type: 'boolean',
+    },
+    {
+      field: 'multimediaDiscipline',
+      headerName: 'MULT',
+      width: 70,
+      type: 'boolean',
+    },
+    {
+      field: 'marketingDiscipline',
+      headerName: 'MARK',
+      width: 70,
+      type: 'boolean',
+    },
+    {
+      field: 'deleteButton',
+      headerName: 'Postavke',
+      width: 100,
+      renderCell: () => (
+        <>
+          <Button
+            variant="outlined"
+            color="info"
+            style={{ marginRight: '20px' }}
+            disabled
+          >
+            Uredi
+          </Button>
+          <Button variant="outlined" color="warning">
+            Obriši
+          </Button>
+        </>
+      ),
+
+      align: 'right',
+      headerAlign: 'right',
+      flex: 1,
+      disableColumnMenu: true,
+      sortable: false,
+    },
   ];
 
   const rows = interviewers?.map((interviewer) => {
     return {
       id: interviewer.id,
       name: interviewer.name,
-      disciplines: interviewer.disciplines.join(', '),
+      developmentDiscipline: interviewer.disciplines.includes(
+        Discipline.Development,
+      ),
+      designDiscipline: interviewer.disciplines.includes(Discipline.Design),
+      multimediaDiscipline: interviewer.disciplines.includes(
+        Discipline.Multimedia,
+      ),
+      marketingDiscipline: interviewer.disciplines.includes(
+        Discipline.Marketing,
+      ),
     };
   });
 
@@ -119,6 +177,7 @@ const InterviewersPage = () => {
         <DataGrid
           columns={columns}
           rows={rows || []}
+          disableRowSelectionOnClick
           initialState={{
             columns: {
               columnVisibilityModel: {
