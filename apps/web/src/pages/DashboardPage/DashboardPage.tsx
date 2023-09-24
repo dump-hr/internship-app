@@ -4,7 +4,7 @@ import {
   InternStatus,
   InterviewStatus,
 } from '@internship-app/types';
-import { Button, Grid } from '@mui/material';
+import { Box, Button, Grid } from '@mui/material';
 import { useState } from 'react';
 import { FieldValues } from 'react-hook-form';
 
@@ -15,7 +15,6 @@ import {
   getInternFilter,
 } from '../../components/InternFilter/filter';
 import InternList from '../../components/InternList';
-import LayoutSpacing from '../../components/LayoutSpacing/LayoutSpacing';
 import LogoHeader from '../../components/LogoHeader';
 import c from './DashboardPage.module.css';
 
@@ -86,7 +85,7 @@ const DashboardPage = () => {
   return (
     <>
       <LogoHeader text="Kandidati" />
-      <LayoutSpacing className={c.content}>
+      <Box margin="auto" maxWidth="1200px" className={c.content}>
         <Grid container spacing={2}>
           {stats.map((stat) => (
             <Grid item xs={12} md={2} textAlign="center" key={stat.label}>
@@ -107,7 +106,7 @@ const DashboardPage = () => {
         <InternList
           data={internsWithStatus?.filter(getInternFilter(filterCriteria))}
         />
-      </LayoutSpacing>
+      </Box>
     </>
   );
 };

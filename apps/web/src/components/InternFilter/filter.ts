@@ -24,8 +24,8 @@ export type FilterCriteria = {
   };
 };
 
-export const getInternFilter = (criteria: FilterCriteria) => {
-  return (intern: InternWithStatus) => {
+export const getInternFilter =
+  (criteria: FilterCriteria) => (intern: InternWithStatus) => {
     const { main } = criteria;
 
     if (
@@ -64,4 +64,3 @@ export const getInternFilter = (criteria: FilterCriteria) => {
 
     return true;
   };
-};

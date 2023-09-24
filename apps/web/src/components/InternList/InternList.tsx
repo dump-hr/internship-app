@@ -68,7 +68,7 @@ const InternList: React.FC<Props> = ({ data = [] }) => {
     {
       field: 'name',
       headerName: 'Ime i prezime',
-      width: 140,
+      width: 180,
     },
     {
       field: 'status',
@@ -83,7 +83,7 @@ const InternList: React.FC<Props> = ({ data = [] }) => {
       field: 'disciplines',
       headerName: 'Područja',
       description: 'Boja - status, hover; sort - po broju područja',
-      width: 200,
+      width: 240,
       sortComparator: (a, b) => a.length - b.length,
       renderCell: (props: GridRenderCellParams<InternDiscipline[]>) =>
         props.value.map(getDisciplineChip),
@@ -101,7 +101,7 @@ const InternList: React.FC<Props> = ({ data = [] }) => {
       field: 'testStatus',
       headerName: 'Testovi',
       description: 'Boja - status, hover',
-      width: 150,
+      width: 170,
       sortable: false,
       renderCell: (
         internDisciplines: GridRenderCellParams<InternDiscipline[]>,

@@ -7,6 +7,7 @@ import {
   Slider,
   TextareaAutosize,
   TextField,
+  Typography,
 } from '@mui/material';
 import {
   Controller,
@@ -36,7 +37,7 @@ const getInputComponent = (
         <Select {...field} fullWidth>
           {question.options.map((option) => (
             <MenuItem key={option} value={option}>
-              {option}
+              {option || <Typography color="gray">empty</Typography>}
             </MenuItem>
           ))}
         </Select>

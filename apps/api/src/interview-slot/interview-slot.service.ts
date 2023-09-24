@@ -32,12 +32,12 @@ export class InterviewSlotService {
       throw new NotFoundException('Intern not found');
     }
 
-    if (intern.interviewStatus === InterviewStatus.NoRight) {
-      throw new BadRequestException('Intern does not have interview right');
-    }
-
     if (intern.interviewSlot) {
       throw new BadRequestException('Interview already scheduled');
+    }
+
+    if (intern.interviewStatus !== InterviewStatus.PickTerm) {
+      throw new BadRequestException('Intern does not have right to pick');
     }
 
     const [primaryDiscipline, ...otherDisciplines] =
@@ -95,12 +95,13 @@ export class InterviewSlotService {
       throw new NotFoundException('Intern already has a slot');
     }
 
-    return await this.prisma.interviewSlot.update({
-      where: { id: slotId },
+    return await this.prisma.intern.update({
+      where: { id: internId, interviewStatus: InterviewStatus.PickTerm },
       data: {
-        intern: {
+        interviewStatus: InterviewStatus.Pending,
+        interviewSlot: {
           connect: {
-            id: internId,
+            id: slotId,
           },
         },
       },
