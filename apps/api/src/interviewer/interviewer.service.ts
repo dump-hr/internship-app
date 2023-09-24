@@ -35,4 +35,24 @@ export class InterviewerService {
 
     return newInterviewer;
   }
+
+  async delete(id: string) {
+    const interviewerToDelete = await this.prisma.interviewer.findUnique({
+      where: {
+        id: id,
+      },
+    });
+
+    if (!interviewerToDelete) {
+      throw new BadRequestException('Interviewer does not exist');
+    }
+
+    const deletedInterviewer = await this.prisma.interviewer.delete({
+      where: {
+        id,
+      },
+    });
+
+    return deletedInterviewer;
+  }
 }

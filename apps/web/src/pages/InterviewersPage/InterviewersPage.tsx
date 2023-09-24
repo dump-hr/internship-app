@@ -14,6 +14,7 @@ import {
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { useEffect, useState } from 'react';
 
+import { useDeleteInterviewer } from '../../api/useDeleteInterviewer';
 import { useFetchAllInterviewers } from '../../api/useFetchAllInterviewers';
 import { usePostInterviewer } from '../../api/usePostInterviewer';
 import LayoutSpacing from '../../components/LayoutSpacing/LayoutSpacing';
@@ -68,7 +69,10 @@ const InterviewersPage = () => {
     },
   });
 
-  const [interviewerToDelete, setInterviewerToDelete] = useState('');
+  const [interviewerToDelete, setInterviewerToDelete] = useState({
+    id: '',
+    name: '',
+  });
 
   const { data: interviewers } = useFetchAllInterviewers();
 
@@ -117,7 +121,10 @@ const InterviewersPage = () => {
             variant="outlined"
             color="warning"
             onClick={() => {
-              setInterviewerToDelete(params.row.name);
+              setInterviewerToDelete({
+                id: params.row.id,
+                name: params.row.name,
+              });
               dialogs.deleteInterviewer.toggle();
             }}
           >
@@ -180,13 +187,18 @@ const InterviewersPage = () => {
     });
   }
 
+  const deleteInterviewer = useDeleteInterviewer();
+
   useEffect(() => {
     if (!dialogs.addInterviewer.isOpen) {
       eraseNewInterviewer();
     }
 
     if (!dialogs.deleteInterviewer.isOpen) {
-      setInterviewerToDelete('');
+      setInterviewerToDelete({
+        id: '',
+        name: '',
+      });
     }
   }, [dialogs]);
 
@@ -204,6 +216,7 @@ const InterviewersPage = () => {
 
     putInterviewer.mutate(newInterviewerData);
     dialogs.addInterviewer.toggle();
+    window.location.reload();
   }
 
   return (
@@ -291,11 +304,26 @@ const InterviewersPage = () => {
         open={dialogs.deleteInterviewer.isOpen}
         onClose={dialogs.deleteInterviewer.toggle}
       >
-        <DialogTitle>Obriši intervjuera ({interviewerToDelete})</DialogTitle>
+        <DialogTitle>
+          Obriši intervjuera ({interviewerToDelete.name})
+        </DialogTitle>
         <DialogContent>
           <DialogContentText>
             Jesi li siguran da želiš obrisati intervjuera?
           </DialogContentText>
+          <div className={c.dialogButtonWrapper}>
+            <Button onClick={dialogs.deleteInterviewer.toggle}>Odustani</Button>
+            <Button
+              onClick={() => {
+                deleteInterviewer.mutate(interviewerToDelete.id);
+                dialogs.deleteInterviewer.toggle();
+                window.location.reload();
+              }}
+              variant="outlined"
+            >
+              Potvrdi
+            </Button>
+          </div>
         </DialogContent>
       </Dialog>
     </>

@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 
 import { CreateInterviewerDto } from './dto/createInterviewer.dto';
@@ -19,5 +19,11 @@ export class InterviewerController {
   async create(@Body() interviewer: CreateInterviewerDto) {
     const newInterviewer = await this.interviewerService.create(interviewer);
     return newInterviewer;
+  }
+
+  @Delete(':id')
+  async delete(@Param('id') id: string) {
+    const deletedInterviewer = await this.interviewerService.delete(id);
+    return deletedInterviewer;
   }
 }
