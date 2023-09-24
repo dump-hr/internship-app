@@ -1,4 +1,5 @@
 import { Discipline } from '@internship-app/types';
+import { Button } from '@mui/material';
 import { useEffect, useState } from 'react';
 
 import { useFetchInterviewersByDiscipline } from '../../api/useFetchInterviewers';
@@ -7,39 +8,33 @@ import { MultilineInput } from '../common/MultilineInput/MultilineInput';
 import { CustomSelectInput } from '../common/SelectInput/CustomSelectInput';
 import styles from './index.module.css';
 
-const colorMappings = {
-  [Discipline.Development]: '#369354',
-  [Discipline.Design]: '#297ABC',
-  [Discipline.Marketing]: '#F54558',
-  [Discipline.Multimedia]: '#6A5CB0',
-};
-
 interface Props {
   selectedStartTime?: string;
   selectedEndTime?: string;
+  setDiscipline: (value: string | null) => void;
+  setInterviewers: (value: string[] | null) => void;
 }
 
 export const CalendarSidebar: React.FC<Props> = ({
   selectedStartTime,
   selectedEndTime,
+  setDiscipline,
+  setInterviewers,
 }: Props) => {
-  const [selectedDiscipline, setSelectedDiscipline] = useState('');
-  const [selectedInterviewers, setSelectedInterviewers] = useState<string[]>(
-    [],
+  const [selectedDiscipline, setSelectedDiscipline] = useState(null);
+  const [selectedInterviewers, setSelectedInterviewers] = useState<
+    string[] | null
+  >(null);
+  const { data: interviewers } = useFetchInterviewersByDiscipline(
+    selectedDiscipline || '',
   );
-  const { data: interviewers } =
-    useFetchInterviewersByDiscipline(selectedDiscipline);
-  const { data: interviewSlots } =
-    useFetchInterviewSlotsByDiscipline(selectedDiscipline);
+  // const { data: interviewSlots } =
+  //   useFetchInterviewSlotsByDiscipline(selectedDiscipline);
 
   useEffect(() => {
-    if (!selectedDiscipline.length) return;
-
-    document.documentElement.style.setProperty(
-      '--main-calendar-color',
-      colorMappings[selectedDiscipline],
-    );
-  }, [selectedDiscipline]);
+    setDiscipline(selectedDiscipline || null);
+    setInterviewers(selectedInterviewers || null);
+  }, [selectedInterviewers, selectedDiscipline]);
 
   return (
     <div className={styles.wrapper}>
@@ -56,6 +51,7 @@ export const CalendarSidebar: React.FC<Props> = ({
         label="Intervjueri:"
         menuOptions={interviewers?.map((interviewer) => interviewer.name)}
         isMultiSelect={true}
+        valueHandler={(value) => setSelectedInterviewers(value)}
       />
       <div>
         <div className={styles.notesLabel}>Notes:</div>
