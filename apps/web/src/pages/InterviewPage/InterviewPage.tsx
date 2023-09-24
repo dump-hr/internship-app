@@ -1,7 +1,8 @@
-import { Discipline } from '@internship-app/types';
 import { FieldValues, useForm } from 'react-hook-form';
+import { LoaderIcon } from 'react-hot-toast';
 import { useRoute } from 'wouter';
 
+import { useGetIntern } from '../../api/useGetIntern';
 import AdminPage from '../../components/AdminPage';
 import IntervieweeInfo from '../../components/IntervieweeInfo';
 import MultistepForm from '../../components/MultistepForm';
@@ -17,6 +18,8 @@ const InterviewPage = () => {
   const [, params] = useRoute(Path.Interview);
   const internId = params?.internId;
 
+  const { data: intern, isFetching } = useGetIntern(internId);
+
   const form = useForm<FieldValues>({
     defaultValues: defaultInterviewValues,
   });
@@ -29,24 +32,17 @@ const InterviewPage = () => {
     console.log(image);
   };
 
+  if (isFetching) {
+    return <LoaderIcon />;
+  }
+
+  if (!intern) {
+    return <div>Intern ovog ID-a ne postoji!</div>;
+  }
+
   return (
     <AdminPage>
-      <IntervieweeInfo
-        setUrl={setUrl}
-        info={{
-          fullName: 'Ime i prezime',
-          email: 'intern@dump.hr',
-          phone: '091 123 4567',
-          dateOfBirth: '01/01/2020',
-          workingStatus: 'Student',
-          institutionName: 'Fakultet elektrotehnike i računarstva',
-          yearOfStudy: 3,
-          field: Discipline.Development,
-          referral: 'Ostalo',
-          applicationMotivation: 'Lorem ipsum dolor sit amet, consectetur.',
-        }}
-      />
-
+      <IntervieweeInfo setUrl={setUrl} intern={intern} />
       <MultistepForm
         questions={interviewQuestions}
         form={form}

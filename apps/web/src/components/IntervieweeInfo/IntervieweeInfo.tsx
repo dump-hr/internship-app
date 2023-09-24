@@ -1,45 +1,42 @@
-import { Discipline } from '@internship-app/types';
+import { Intern } from '@internship-app/types';
 
 import Webcamera from '../Webcamera';
 import styles from './index.module.css';
 
-type Info = {
-  fullName: string;
-  email: string;
-  phone: string;
-  dateOfBirth: string;
-  workingStatus: string;
-  institutionName: string;
-  yearOfStudy: number;
-  field: Discipline;
-  referral: string;
-  applicationMotivation: string;
-};
-
 type IntervieweeInfoProps = {
   setUrl: (image: string) => void;
-  info: Info;
+  intern: Intern;
 };
 
-const IntervieweeInfo = ({ setUrl, info }: IntervieweeInfoProps) => {
+const IntervieweeInfo = ({ setUrl, intern }: IntervieweeInfoProps) => {
+  const info = intern.data as { [key: string]: string };
+
   return (
     <div className={styles.container}>
       <div className={styles.interviewInfo}>
-        <h1>{info.fullName}</h1>
+        <h1>
+          {intern.firstName} {intern.lastName}
+        </h1>
         <div className={styles.interviewInfoCol}>
-          <div>Email: {info.email}</div>
-          <div>Mobitel: {info.phone} </div>
+          <div>Email: {intern.email}</div>
+          <div>Mobitel: {info.phoneNumber} </div>
           <div>Datum rođenja: {info.dateOfBirth}</div>
           <div>
-            {info.workingStatus}, {info.institutionName}, {info.yearOfStudy}
+            {info.educationOrEmploymentStatus}, {info.highSchoolOrCollegeName},{' '}
+            {info.yearOfStudy}
           </div>
         </div>
 
         <div className={styles.interviewInfoCol}>
-          <div>Područje: {info.field}</div>
-          <div>Kako si saznao/la za internship: {info.referral}</div>
           <div>
-            Zašto se prijavljujes na internships: {info.applicationMotivation}
+            Područja:{' '}
+            {intern.internDisciplines.map((id) => id.discipline).join(', ')}
+          </div>
+          <div>
+            Kako si saznao/la za internship: {info.foundOutAboutInternshipBy}
+          </div>
+          <div>
+            Zašto se prijavljuješ na internships: {info.reasonForApplying}
           </div>
         </div>
       </div>

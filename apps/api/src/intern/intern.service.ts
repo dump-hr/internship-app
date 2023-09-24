@@ -1,4 +1,11 @@
+import { Json } from '@internship-app/types/src/json';
 import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  Discipline,
+  DisciplineStatus,
+  InterviewStatus,
+  TestStatus,
+} from '@prisma/client';
 import { PrismaService } from 'src/prisma.service';
 
 import { CreateInternDto } from './dto/createIntern.dto';
@@ -85,10 +92,48 @@ export class InternService {
       );
     }
 
+    const interviewStatus = internToCreate.disciplines.some(
+      (ind) => ind === Discipline.Development,
+    )
+      ? InterviewStatus.NoRight
+      : InterviewStatus.PickTerm;
+
+    const getTestStatus = (discipline) =>
+      [Discipline.Development, Discipline.Design].includes(discipline)
+        ? TestStatus.PickTerm
+        : null;
+
     const newIntern = await this.prisma.intern.create({
-      data: internToCreate,
+      data: {
+        firstName: internToCreate.firstName,
+        lastName: internToCreate.lastName,
+        email: internToCreate.email,
+        data: internToCreate.data,
+        interviewStatus: interviewStatus,
+        internDisciplines: {
+          createMany: {
+            data: internToCreate.disciplines.map((ind, index) => ({
+              discipline: ind,
+              priority: index,
+              status: DisciplineStatus.Pending,
+              testStatus: getTestStatus(ind),
+            })),
+          },
+        },
+      },
     });
 
     return newIntern;
+  }
+
+  async setInterview(internId: string, answers: Json) {
+    await this.prisma.interviewSlot.update({
+      where: {
+        internId: internId,
+      },
+      data: {
+        answers: answers,
+      },
+    });
   }
 }

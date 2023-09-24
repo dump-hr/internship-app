@@ -21,10 +21,11 @@ export type FormValues = {
   lastName: string;
   email: string;
   disciplines: Discipline[];
-  phoneNumber: number;
+  phoneNumber: string;
   dateOfBirth: string;
   educationOrEmploymentStatus: EducationOrEmploymentStatus;
   highSchoolOrCollegeName: string;
+  yearOfStudy: string;
   foundOutAboutInternshipBy: FoundOutAboutInternshipBy;
   reasonForApplying: string;
 };
@@ -44,7 +45,8 @@ export const ApplicationFormPage = () => {
         lastName: '',
         email: '',
         disciplines: [],
-        phoneNumber: 0,
+        phoneNumber: '0',
+        yearOfStudy: '',
         dateOfBirth: '',
         educationOrEmploymentStatus: EducationOrEmploymentStatus.Other,
         highSchoolOrCollegeName: '',
@@ -66,6 +68,7 @@ export const ApplicationFormPage = () => {
         dateOfBirth: data.dateOfBirth,
         educationOrEmploymentStatus: data.educationOrEmploymentStatus,
         highSchoolOrCollegeName: data.highSchoolOrCollegeName,
+        yearOfStudy: data.yearOfStudy,
         foundOutAboutInternshipBy: data.foundOutAboutInternshipBy,
         reasonForApplying: data.reasonForApplying,
       },
