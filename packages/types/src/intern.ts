@@ -85,4 +85,8 @@ export type InterviewSlot = {
   score?: number;
 };
 
-export type InterviewSlotDto = Omit<InterviewSlot, 'id'>;
+export type CreateInterviewSlotDto = {
+  start: string;
+  end: string;
+  interviewers: string[];
+};

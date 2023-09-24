@@ -30,31 +30,39 @@ export class InterviewSlotService {
     return interviewSlots;
   }
 
-  async createInterviewSlot(interviewSlotDto: CreateInterviewSlotDto) {
-    const interviewSlot = await this.prisma.interviewSlot.create({
-      data: {
-        start: interviewSlotDto.start,
-        end: interviewSlotDto.end,
-        answers: JSON.stringify({}), // TODO handle interview questions/answers
+  async deleteInterviewSlot(id: string) {
+    return await this.prisma.interviewSlot.delete({
+      where: {
+        id,
       },
     });
+  }
 
-    for (const interviewerName of interviewSlotDto.interviewers) {
-      const interviewer = await this.prisma.interviewer.findFirst({
-        where: {
-          name: interviewerName,
+  async createInterviewSlot(interviewSlotDto: CreateInterviewSlotDto) {
+    const { start, end } = interviewSlotDto;
+    const interviewSlots = [];
+
+    const slotDuration = 20 * 60 * 1000;
+
+    for (
+      let currentTime = new Date(start).getTime();
+      currentTime < new Date(end).getTime();
+      currentTime += slotDuration
+    ) {
+      const slotStart = new Date(currentTime);
+      const slotEnd = new Date(currentTime + slotDuration);
+
+      const interviewSlot = await this.prisma.interviewSlot.create({
+        data: {
+          start: slotStart,
+          end: slotEnd,
+          answers: JSON.stringify({}), // TODO handle interview questions/answers
         },
       });
-      if (!interviewer) {
-        await this.prisma.interviewMemberParticipation.create({
-          data: {
-            interviewerId: interviewer.id,
-            interviewSlotId: interviewSlot.id,
-          },
-        });
-      }
+
+      interviewSlots.push(interviewSlot);
     }
 
-    return interviewSlot;
+    return interviewSlots;
   }
 }

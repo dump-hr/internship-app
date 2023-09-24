@@ -3,6 +3,7 @@ import moment from 'moment';
 
 const parseInterviewSlotToCalendarEvent = (interviewSlot: InterviewSlot) => {
   return {
+    id: interviewSlot.id,
     start: interviewSlot.start,
     end: interviewSlot.end,
     additionalInfo: `Interviewers: ${interviewSlot.interviewers

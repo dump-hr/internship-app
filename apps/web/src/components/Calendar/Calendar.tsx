@@ -23,9 +23,19 @@ const localizer = dateFnsLocalizer({
   locales,
 });
 
-interface Props {}
+interface Props {
+  existingEvents: any[];
+  deleteEvent: (event: any) => void;
+  updateEvent: (event: any) => void;
+  addEvent: (event: any) => void;
+}
 
-export const Calendar: React.FC<Props> = () => {
+export const Calendar: React.FC<Props> = ({
+  existingEvents,
+  deleteEvent,
+  updateEvent,
+  addEvent,
+}: Props) => {
   const [events, setEvents] = useState([]);
   const DragAndDropCalendar = withDragAndDrop(BigCalendar);
   console.log('events', events);
@@ -38,19 +48,14 @@ export const Calendar: React.FC<Props> = () => {
       slotInfo,
     );
 
-    //overlappingEvents.forEach(deleteEvent); // --> mutation
-
-    if (overlappingEvents.length > 0) {
-      setEvents((prev) =>
-        prev.filter((event) => !overlappingEvents.includes(event)),
-      );
-    }
+    overlappingEvents.forEach(deleteEvent); // --> mutation
 
     const newMergedEvent = calendarHelper.getMergedEvent(
       overlappingEvents,
       slotInfo,
     );
-    //addEvent(newMergedEvent); // --> api
+
+    addEvent(newMergedEvent); // --> api
 
     setEvents((prev) => [...prev, newMergedEvent]);
   };
@@ -62,18 +67,13 @@ export const Calendar: React.FC<Props> = () => {
       events,
       editedSlotInfo,
     );
-    overlappingEvents.filter(
-      (event) =>
-        event.start !== editedSlotInfo.start &&
-        event.end !== editedSlotInfo.end,
-    );
-    //.forEach(deleteEvent); --> mutation
-    console.log('overlappingEvents', overlappingEvents, editedSlotInfo);
-    if (overlappingEvents.length > 0) {
-      setEvents((prev) =>
-        prev.filter((event) => !overlappingEvents.includes(event)),
-      );
-    }
+    overlappingEvents
+      .filter(
+        (event) =>
+          event.start !== editedSlotInfo.start &&
+          event.end !== editedSlotInfo.end,
+      )
+      .forEach(deleteEvent); // --> mutation
 
     const mergedEvent = calendarHelper.getMergedEvent(
       overlappingEvents,
@@ -81,10 +81,6 @@ export const Calendar: React.FC<Props> = () => {
     );
     setEvents((prev) => [...prev, mergedEvent]);
     //updateEvent({ ...mergedEvent, id: editedSlotInfo.id }); --> api
-  };
-
-  const deleteEvent = (event: any) => {
-    setEvents((prev) => prev.filter((e) => e !== event));
   };
 
   const handleTimeSlotSelect = (event: any) => {

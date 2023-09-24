@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Post } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 
 import { CreateInterviewSlotDto } from './dto/createInterviewSlot.dto';
@@ -21,6 +21,11 @@ export class InterviewSlotController {
       discipline,
     );
     return interviewSlots;
+  }
+
+  @Delete('/:id')
+  async deleteInterviewSlot(id: string) {
+    return await this.interviewSlotService.deleteInterviewSlot(id);
   }
 
   @Post()
