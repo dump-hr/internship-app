@@ -19,7 +19,11 @@ export class InternService {
   async getAll() {
     const interns = await this.prisma.intern.findMany({
       include: {
-        internDisciplines: true,
+        internDisciplines: {
+          orderBy: {
+            priority: 'asc',
+          },
+        },
         interviewSlot: {
           select: {
             score: true,

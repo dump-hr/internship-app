@@ -55,7 +55,6 @@ export type Intern = {
   lastName: string;
   email: string;
   data: Json;
-  hasInterviewRight: boolean;
   interviewStatus: InterviewStatus;
   interviewSlot?: InterviewSlot;
   internDisciplines: InternDiscipline[];

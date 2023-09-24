@@ -31,17 +31,17 @@ export const disciplineStatusChipProps: Record<InternStatus, ChipProps> = {
 
 export const internStatusChipProps: Record<InternStatus, ChipProps> = {
   [InternStatus.Pending]: {
-    label: 'Pending',
+    label: 'Čekanje',
     color: 'info',
     title: 'Status interna još nije određen',
   },
   [InternStatus.Rejected]: {
-    label: 'Rejected',
+    label: 'Odbijen',
     color: 'error',
     title: 'Intern nije prihvaćen ni u jedno područje',
   },
   [InternStatus.Approved]: {
-    label: 'Approved',
+    label: 'Prihvaćen',
     color: 'success',
     title: 'Intern je prihvaćen bar u jedno područje',
   },
@@ -49,27 +49,27 @@ export const internStatusChipProps: Record<InternStatus, ChipProps> = {
 
 export const interviewChipProps: Record<InterviewStatus, ChipProps> = {
   [InterviewStatus.NoRight]: {
-    label: 'NoRight',
+    label: 'Obespravljen',
     color: 'warning',
     title: 'Nema pravo na intervju',
   },
   [InterviewStatus.PickTerm]: {
-    label: 'PickTerm',
-    color: 'primary',
+    label: 'BiraTerm',
+    color: 'secondary',
     title: 'U procesu odabira termina',
   },
   [InterviewStatus.Pending]: {
-    label: 'Pending',
+    label: 'Čekanje',
     color: 'info',
     title: 'Termin odabran i čeka',
   },
   [InterviewStatus.Done]: {
-    label: 'Done',
+    label: 'Obavljen',
     color: 'success',
-    title: 'Intervju odrađen',
+    title: 'Intervju obavljen',
   },
   [InterviewStatus.Missed]: {
-    label: 'Missed',
+    label: 'Propušten',
     color: 'error',
     title: 'Intervju propušten',
   },
@@ -77,7 +77,7 @@ export const interviewChipProps: Record<InterviewStatus, ChipProps> = {
 
 export const testChipProps: Record<TestStatus, ChipProps> = {
   [TestStatus.PickTerm]: {
-    color: 'primary',
+    color: 'secondary',
     title: 'U procesu odabira termina',
   },
   [TestStatus.Pending]: {

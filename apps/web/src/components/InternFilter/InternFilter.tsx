@@ -103,21 +103,21 @@ const InternFilter = ({ submitHandler }: InternFilterProps) => {
   return (
     <div>
       <Button onClick={handleSubmit(submitHandler)}>Filtriraj</Button>
-      {criteria.map((section, i) => (
+      {criteria.map((section, index) => (
         <Box display="flex" gap="20px" alignItems="center" key={section.id}>
           {section.questions.map((q) => (
             <Box minWidth="200px" key={q.id}>
               <InputHandler form={form} question={q} />
             </Box>
           ))}
-          {i !== 0 && (
+          {index !== 0 && (
             <Box>
               <IconButton onClick={() => removeDisciplineSection(section.id)}>
                 <CloseIcon />
               </IconButton>
             </Box>
           )}
-          {criteria.length - 1 === i && (
+          {criteria.length - 1 === index && (
             <Box>
               <IconButton onClick={addDisciplineSection}>
                 <AddIcon />

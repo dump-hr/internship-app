@@ -1,10 +1,14 @@
-import { DisciplineStatus, Intern, InternStatus } from '@internship-app/types';
+import {
+  DisciplineStatus,
+  Intern,
+  InternStatus,
+  InterviewStatus,
+} from '@internship-app/types';
 import { Button, Grid } from '@mui/material';
 import { useState } from 'react';
 import { FieldValues } from 'react-hook-form';
 
 import { useFetchAllInterns } from '../../api/useFetchAllInterns';
-import { useFetchAllInterviewSlots } from '../../api/useFetchAllInterviewSlots';
 import InternFilter from '../../components/InternFilter';
 import {
   FilterCriteria,
@@ -33,48 +37,65 @@ const getInternStatus = (intern: Intern) => {
   return InternStatus.Rejected;
 };
 
-const DashboardPage = () => {
-  const { data: interns } = useFetchAllInterns();
-  const { data: interviewSlots } = useFetchAllInterviewSlots();
-
-  const [filterCriteria, setFilterCriteria] = useState<FilterCriteria>({
+const initialState: { filterCriteria: FilterCriteria } = {
+  filterCriteria: {
     main: { name: '', status: '', interviewStatus: '' },
     disciplines: {},
-  });
+  },
+};
 
-  const internsWithStatus = interns?.map((i) => ({
-    ...i,
-    status: getInternStatus(i),
+const DashboardPage = () => {
+  const { data: interns } = useFetchAllInterns();
+
+  const [filterCriteria, setFilterCriteria] = useState<FilterCriteria>(
+    initialState.filterCriteria,
+  );
+
+  const internsWithStatus = interns?.map((intern) => ({
+    ...intern,
+    status: getInternStatus(intern),
   }));
 
   const filterHandler = (criteria: FieldValues) => {
-    console.log(criteria as FilterCriteria);
     setFilterCriteria(criteria as FilterCriteria);
   };
+
+  const stats = [
+    {
+      label: 'Broj prijava',
+      value: interns?.length,
+    },
+    {
+      label: 'Obav. intervjui',
+      value: interns?.filter((i) => i.interviewStatus === InterviewStatus.Done)
+        .length,
+    },
+    {
+      label: 'Nadol. intervjui',
+      value: interns?.filter((i) => i.interviewStatus === InterviewStatus.Done)
+        .length,
+    },
+    {
+      label: 'Primljeno',
+      value: internsWithStatus?.filter(
+        (i) => i.status === InternStatus.Approved,
+      ).length,
+    },
+  ];
 
   return (
     <>
       <LogoHeader text="Kandidati" />
       <LayoutSpacing className={c.content}>
         <Grid container spacing={2}>
-          <Grid item xs={12} md={2}>
-            <div className={c.infoBox}>
-              <h3>{interns?.length}</h3>
-              <p>Broj prijava</p>
-            </div>
-          </Grid>
-          <Grid item xs={12} md={2}>
-            <div className={c.infoBox}>
-              <h3>{interviewSlots?.length}</h3>
-              <p>Broj intervjua</p>
-            </div>
-          </Grid>
-          <Grid item xs={12} md={2}>
-            <div className={c.infoBox}>
-              <h3>####</h3>
-              <p>Broj poslanih mailova</p>
-            </div>
-          </Grid>
+          {stats.map((stat) => (
+            <Grid item xs={12} md={2} textAlign="center" key={stat.label}>
+              <div className={c.infoBox}>
+                <h3>{stat.value}</h3>
+                <p>{stat.label}</p>
+              </div>
+            </Grid>
+          ))}
           <Grid item xs={12} md={5}>
             <div className={c.buttonsWrapper}>
               <Button disabled>Pregledaj dev ispit</Button>

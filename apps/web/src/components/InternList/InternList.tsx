@@ -132,7 +132,7 @@ const InternList: React.FC<Props> = ({ data = [] }) => {
       id: intern.id,
       name: `${intern.firstName} ${intern.lastName}`,
       status: intern.status,
-      disciplines: intern.internDisciplines.sort((ind) => ind.priority),
+      disciplines: intern.internDisciplines,
       interviewStatus: intern,
       testStatus: intern.internDisciplines,
     };
