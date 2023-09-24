@@ -15,6 +15,7 @@ import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { useState } from 'react';
 
 import { useFetchAllInterviewers } from '../../api/useFetchAllInterviewers';
+import { usePostInterviewer } from '../../api/usePostInterviewer';
 import LayoutSpacing from '../../components/LayoutSpacing/LayoutSpacing';
 import LogoHeader from '../../components/LogoHeader';
 import c from './InterviewersPage.module.css';
@@ -25,7 +26,7 @@ const InterviewersPage = () => {
     deleteInterviewer: false,
   });
 
-  const [, setNewInterviewer] = useState({
+  const [newInterviewer, setNewInterviewer] = useState({
     name: '',
     disciplines: {
       [Discipline.Development]: false,
@@ -86,6 +87,22 @@ const InterviewersPage = () => {
         [Discipline.Marketing]: false,
       },
     });
+  }
+
+  const putInterviewer = usePostInterviewer();
+
+  function submitNewInterviewer() {
+    const disciplines = Object.keys(newInterviewer.disciplines).filter(
+      (discipline) => newInterviewer.disciplines[discipline as Discipline],
+    ) as Discipline[];
+
+    const newInterviewerData = {
+      name: newInterviewer.name,
+      disciplines,
+    };
+
+    putInterviewer.mutate(newInterviewerData);
+    toggleAddInterviewerDialog();
   }
 
   return (
@@ -157,7 +174,9 @@ const InterviewersPage = () => {
             </FormGroup>
             <div className={c.dialogButtonWrapper}>
               <Button onClick={toggleAddInterviewerDialog}>Odustani</Button>
-              <Button variant="outlined">Potvrdi</Button>
+              <Button onClick={submitNewInterviewer} variant="outlined">
+                Potvrdi
+              </Button>
             </div>
           </FormControl>
         </DialogContent>
