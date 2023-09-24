@@ -4,6 +4,7 @@ import {
   InterviewStatus,
   Question,
   QuestionType,
+  TestStatus,
 } from '@internship-app/types';
 import AddIcon from '@mui/icons-material/Add';
 import CloseIcon from '@mui/icons-material/Close';
@@ -32,14 +33,14 @@ const initialCriteria: CriteriaSection[] = [
         id: 'main.status',
         type: QuestionType.Select,
         registerValue: '',
-        options: [' ', ...Object.keys(InterviewStatus)],
+        options: ['', ...Object.keys(InterviewStatus)],
         title: 'Status',
       },
       {
         id: 'main.interviewStatus',
         type: QuestionType.Select,
-        registerValue: ' ',
-        options: [' ', ...Object.keys(InterviewStatus)],
+        registerValue: '',
+        options: ['', ...Object.keys(InterviewStatus)],
         title: 'Intervju',
       },
     ],
@@ -59,15 +60,15 @@ const getNewCriteria = (id: string): CriteriaSection => ({
     {
       id: `${id}.status`,
       type: QuestionType.Select,
-      registerValue: ' ',
-      options: [' ', ...Object.keys(DisciplineStatus)],
+      registerValue: '',
+      options: ['', ...Object.keys(DisciplineStatus)],
       title: 'Status',
     },
     {
-      id: `${id}.test`,
+      id: `${id}.testStatus`,
       type: QuestionType.Select,
-      registerValue: ' ',
-      options: [' ', ...Object.keys(DisciplineStatus)],
+      registerValue: '',
+      options: ['', ...Object.keys(TestStatus)],
       title: 'Test',
     },
     {
@@ -79,7 +80,11 @@ const getNewCriteria = (id: string): CriteriaSection => ({
   ],
 });
 
-const InternFilter = () => {
+type InternFilterProps = {
+  submitHandler: (values: FieldValues) => void;
+};
+
+const InternFilter = ({ submitHandler }: InternFilterProps) => {
   const form = useForm();
   const { unregister, handleSubmit } = form;
   const [criteria, setCriteria] = useState(initialCriteria);
@@ -96,9 +101,7 @@ const InternFilter = () => {
 
   return (
     <div>
-      <Button onClick={handleSubmit((status) => console.log(status))}>
-        Filtriraj
-      </Button>
+      <Button onClick={handleSubmit(submitHandler)}>Filtriraj</Button>
       {criteria.map((section, i) => (
         <Box display="flex" gap="20px" alignItems="center" key={section.id}>
           {section.questions.map((q) => (

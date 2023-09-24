@@ -1,9 +1,15 @@
 import { DisciplineStatus, Intern, InternStatus } from '@internship-app/types';
 import { Button, Grid } from '@mui/material';
+import { useState } from 'react';
+import { FieldValues } from 'react-hook-form';
 
 import { useFetchAllInterns } from '../../api/useFetchAllInterns';
 import { useFetchAllInterviewSlots } from '../../api/useFetchAllInterviewSlots';
 import InternFilter from '../../components/InternFilter';
+import {
+  FilterCriteria,
+  getInternFilter,
+} from '../../components/InternFilter/filter';
 import LayoutSpacing from '../../components/LayoutSpacing/LayoutSpacing';
 import LogoHeader from '../../components/LogoHeader';
 import UsersList from '../../components/UsersList';
@@ -31,10 +37,20 @@ const DashboardPage = () => {
   const { data: interns } = useFetchAllInterns();
   const { data: interviewSlots } = useFetchAllInterviewSlots();
 
+  const [filterCriteria, setFilterCriteria] = useState<FilterCriteria>({
+    main: { name: '', status: '', interviewStatus: '' },
+    disciplines: {},
+  });
+
   const internsWithStatus = interns?.map((i) => ({
     ...i,
     status: getInternStatus(i),
   }));
+
+  const filterHandler = (criteria: FieldValues) => {
+    console.log(criteria as FilterCriteria);
+    setFilterCriteria(criteria as FilterCriteria);
+  };
 
   return (
     <>
@@ -66,8 +82,10 @@ const DashboardPage = () => {
             </div>
           </Grid>
         </Grid>
-        <InternFilter />
-        <UsersList data={internsWithStatus} />
+        <InternFilter submitHandler={filterHandler} />
+        <UsersList
+          data={internsWithStatus?.filter(getInternFilter(filterCriteria))}
+        />
       </LayoutSpacing>
     </>
   );
