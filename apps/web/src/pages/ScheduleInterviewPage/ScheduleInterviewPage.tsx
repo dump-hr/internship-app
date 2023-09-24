@@ -4,7 +4,6 @@ import { useState } from 'react';
 import { useLocation, useRoute } from 'wouter';
 
 import { useFetchAvailableInterviewSlots } from '../../api/useFetchAvailableInterviewSlots';
-import { useGetIntern } from '../../api/useGetIntern';
 import { useScheduleInterview } from '../../api/useScheduleInterview';
 import { ConfirmDialog } from '../../components/ConfirmDialog';
 import { Path } from '../../constants/paths';
@@ -17,8 +16,13 @@ const ScheduleInterviewPage = () => {
   const [, navigate] = useLocation();
   const isMobile = useMediaQuery('(max-width:700px)');
 
-  const intern = useGetIntern(params?.internId);
-  const slots = useFetchAvailableInterviewSlots(params?.internId);
+  const {
+    data: slots,
+    isLoading,
+    isError,
+    error,
+  } = useFetchAvailableInterviewSlots(params?.internId);
+
   const scheduleInterview = useScheduleInterview(() => {
     navigate(Path.Status.replace(':internId', params?.internId || ''));
   });
@@ -46,25 +50,23 @@ const ScheduleInterviewPage = () => {
       timeStyle: 'short',
     });
 
-  if (intern.isLoading || slots.isLoading) return <Layout title="Loading..." />;
+  if (isLoading) return <Layout title="Loading..." />;
 
-  if (intern.isError || slots.isError)
+  if (isError)
     return (
       <Layout
-        title={`Dogodila se greška (${slots.error}). Molimo kontaktirajte nas na info@dump.hr`}
+        title={`Dogodila se greška (${error}). Molimo kontaktirajte nas na info@dump.hr`}
       />
     );
 
-  if (slots.data?.length === 0) {
+  if (slots?.length === 0) {
     return (
       <Layout title="Nema dostupnih termina. Molimo kontaktirajte nas na info@dump.hr" />
     );
   }
 
   return (
-    <Layout
-      title={`Pozdrav ${intern.data?.firstName}, odaberi termin za intervju`}
-    >
+    <Layout title="Odaberi termin za intervju">
       <Box
         sx={{
           display: 'flex',
@@ -73,13 +75,13 @@ const ScheduleInterviewPage = () => {
         }}
       >
         <DatePicker
-          availableDates={slots.data?.map((s) => s.start) || []}
+          availableDates={slots?.map((s) => s.start) || []}
           onChange={setSelectedDate}
         />
         {!!selectedDate && (
           <TimeSlotPicker
             availableTimeSlots={
-              slots.data?.filter(
+              slots?.filter(
                 (slot) =>
                   slot.start.getDate() === selectedDate.$D &&
                   slot.start.getMonth() === selectedDate.$M &&

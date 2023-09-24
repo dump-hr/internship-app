@@ -7,6 +7,7 @@ import { Button, Chip } from '@mui/material';
 import { DataGrid, GridColDef, GridRenderCellParams } from '@mui/x-data-grid';
 import { Link } from 'wouter';
 
+import { Path } from '../../constants/paths';
 import {
   disciplineStatusChipProps,
   internStatusChipProps,
@@ -113,7 +114,14 @@ const InternList: React.FC<Props> = ({ data = [], setSelection }) => {
       headerName: '',
       width: 110,
       sortable: false,
-      renderCell: () => <Button disabled>Pregledaj</Button>,
+      renderCell: (params) => (
+        <Button
+          component={Link}
+          to={Path.Intern.replace(':internId', params.row.id)}
+        >
+          Pregledaj
+        </Button>
+      ),
     },
     {
       field: 'buttonIntervju',
@@ -121,7 +129,10 @@ const InternList: React.FC<Props> = ({ data = [], setSelection }) => {
       width: 100,
       sortable: false,
       renderCell: (params) => (
-        <Button component={Link} to={`/interview/${params.row.id}`}>
+        <Button
+          component={Link}
+          to={Path.Interview.replace(':internId', params.row.id)}
+        >
           Intervju
         </Button>
       ),
