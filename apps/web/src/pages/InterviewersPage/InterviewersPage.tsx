@@ -12,7 +12,7 @@ import {
   TextField,
 } from '@mui/material';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { useFetchAllInterviewers } from '../../api/useFetchAllInterviewers';
 import { usePostInterviewer } from '../../api/usePostInterviewer';
@@ -21,9 +21,41 @@ import LogoHeader from '../../components/LogoHeader';
 import c from './InterviewersPage.module.css';
 
 const InterviewersPage = () => {
-  const [dialogs, setDialogs] = useState({
-    addInterviewer: false,
-    deleteInterviewer: false,
+  type DialogState = {
+    isOpen: boolean;
+    toggle: () => void;
+  };
+
+  type DialogsState = {
+    addInterviewer: DialogState;
+    deleteInterviewer: DialogState;
+  };
+
+  const [dialogs, setDialogs] = useState<DialogsState>({
+    addInterviewer: {
+      isOpen: false,
+      toggle: () => {
+        setDialogs((prevState) => ({
+          ...prevState,
+          addInterviewer: {
+            ...prevState.addInterviewer,
+            isOpen: !prevState.addInterviewer.isOpen,
+          },
+        }));
+      },
+    },
+    deleteInterviewer: {
+      isOpen: false,
+      toggle: () => {
+        setDialogs((prevState) => ({
+          ...prevState,
+          deleteInterviewer: {
+            ...prevState.deleteInterviewer,
+            isOpen: !prevState.deleteInterviewer.isOpen,
+          },
+        }));
+      },
+    },
   });
 
   const [newInterviewer, setNewInterviewer] = useState({
@@ -35,6 +67,8 @@ const InterviewersPage = () => {
       [Discipline.Marketing]: false,
     },
   });
+
+  const [interviewerToDelete, setInterviewerToDelete] = useState('');
 
   const { data: interviewers } = useFetchAllInterviewers();
 
@@ -69,7 +103,7 @@ const InterviewersPage = () => {
       field: 'deleteButton',
       headerName: 'Postavke',
       width: 100,
-      renderCell: () => (
+      renderCell: (params) => (
         <>
           <Button
             variant="outlined"
@@ -79,7 +113,14 @@ const InterviewersPage = () => {
           >
             Uredi
           </Button>
-          <Button variant="outlined" color="warning">
+          <Button
+            variant="outlined"
+            color="warning"
+            onClick={() => {
+              setInterviewerToDelete(params.row.name);
+              dialogs.deleteInterviewer.toggle();
+            }}
+          >
             Obriši
           </Button>
         </>
@@ -110,14 +151,6 @@ const InterviewersPage = () => {
     };
   });
 
-  function toggleAddInterviewerDialog() {
-    setDialogs((prevState) => ({
-      ...prevState,
-      addInterviewer: !prevState.addInterviewer,
-    }));
-    eraseNewInterviewer();
-  }
-
   function setNewInterviewerName(name: string) {
     setNewInterviewer((prevState) => ({
       ...prevState,
@@ -147,6 +180,16 @@ const InterviewersPage = () => {
     });
   }
 
+  useEffect(() => {
+    if (!dialogs.addInterviewer.isOpen) {
+      eraseNewInterviewer();
+    }
+
+    if (!dialogs.deleteInterviewer.isOpen) {
+      setInterviewerToDelete('');
+    }
+  }, [dialogs]);
+
   const putInterviewer = usePostInterviewer();
 
   function submitNewInterviewer() {
@@ -160,7 +203,7 @@ const InterviewersPage = () => {
     };
 
     putInterviewer.mutate(newInterviewerData);
-    toggleAddInterviewerDialog();
+    dialogs.addInterviewer.toggle();
   }
 
   return (
@@ -170,8 +213,11 @@ const InterviewersPage = () => {
         <button onClick={() => console.log(interviewers)}>
           Log interviewers
         </button>
+        <button onClick={() => console.log(newInterviewer)}>
+          Log new interviewer
+        </button>
         <br />
-        <Button onClick={toggleAddInterviewerDialog}>
+        <Button onClick={dialogs.addInterviewer.toggle}>
           + Dodaj intervjuera
         </Button>
         <DataGrid
@@ -189,8 +235,8 @@ const InterviewersPage = () => {
       </LayoutSpacing>
 
       <Dialog
-        open={dialogs.addInterviewer}
-        onClose={toggleAddInterviewerDialog}
+        open={dialogs.addInterviewer.isOpen}
+        onClose={dialogs.addInterviewer.toggle}
       >
         <DialogTitle>Dodaj intervjuera</DialogTitle>
         <DialogContent>
@@ -232,12 +278,24 @@ const InterviewersPage = () => {
               />
             </FormGroup>
             <div className={c.dialogButtonWrapper}>
-              <Button onClick={toggleAddInterviewerDialog}>Odustani</Button>
+              <Button onClick={dialogs.addInterviewer.toggle}>Odustani</Button>
               <Button onClick={submitNewInterviewer} variant="outlined">
                 Potvrdi
               </Button>
             </div>
           </FormControl>
+        </DialogContent>
+      </Dialog>
+
+      <Dialog
+        open={dialogs.deleteInterviewer.isOpen}
+        onClose={dialogs.deleteInterviewer.toggle}
+      >
+        <DialogTitle>Obriši intervjuera ({interviewerToDelete})</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Jesi li siguran da želiš obrisati intervjuera?
+          </DialogContentText>
         </DialogContent>
       </Dialog>
     </>
