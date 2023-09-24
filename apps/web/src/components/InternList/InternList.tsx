@@ -17,6 +17,7 @@ import {
 
 type Props = {
   data: InternWithStatus[] | undefined;
+  setSelection?: (selection: string[]) => void;
 };
 
 const getDisciplineChip = (internDiscipline: InternDiscipline) => {
@@ -62,7 +63,7 @@ const getInterviewChip = (intern: InternWithStatus) => {
   );
 };
 
-const InternList: React.FC<Props> = ({ data = [] }) => {
+const InternList: React.FC<Props> = ({ data = [], setSelection }) => {
   const columns: GridColDef[] = [
     { field: 'id', headerName: 'ID', width: 0 },
     {
@@ -163,6 +164,9 @@ const InternList: React.FC<Props> = ({ data = [] }) => {
         pageSizeOptions={[5, 10]}
         checkboxSelection
         disableRowSelectionOnClick
+        onRowSelectionModelChange={(newSelection) => {
+          setSelection && setSelection(newSelection as string[]);
+        }}
       />
     </div>
   );
