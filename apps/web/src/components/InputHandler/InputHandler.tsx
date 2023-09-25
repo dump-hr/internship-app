@@ -42,6 +42,7 @@ const getInputComponent = (
           ))}
         </Select>
       );
+    case QuestionType.Rating:
     case QuestionType.Slider:
       return (
         <Slider

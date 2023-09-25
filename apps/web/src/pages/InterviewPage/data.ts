@@ -4,7 +4,7 @@ import {
   QuestionType,
 } from '@internship-app/types';
 
-enum QuestionCategory {
+export enum QuestionCategory {
   General = 'General',
   Personal = 'Personal',
   Dev = 'Dev',
@@ -60,9 +60,45 @@ export const interviewQuestions: Array<MultistepQuestion<QuestionCategory>> = [
     options: ['2 sata dnevno', '10000 sati dnevno', '-2 s'],
   },
   {
-    id: 'p6',
-    title: 'Kako si?',
-    type: QuestionType.Field,
+    id: 'final-p1',
+    title: 'Komentar:',
+    type: QuestionType.TextArea,
+    category: QuestionCategory.Final,
+  },
+  {
+    id: 'final-p2',
+    title: 'Culture fit',
+    type: QuestionType.Slider,
+    min: 1,
+    max: 10,
+    step: 1,
+    category: QuestionCategory.Final,
+  },
+  {
+    id: 'final-p3',
+    title: 'Ambicije',
+    type: QuestionType.Slider,
+    min: 1,
+    max: 10,
+    step: 1,
+    category: QuestionCategory.Final,
+  },
+  {
+    id: 'final-p4',
+    title: 'Sposobnost',
+    type: QuestionType.Slider,
+    min: 1,
+    max: 5,
+    step: 1,
+    category: QuestionCategory.Final,
+  },
+  {
+    id: 'final-p5',
+    title: 'Upoznatost DUMP-a',
+    type: QuestionType.Slider,
+    min: 1,
+    max: 5,
+    step: 1,
     category: QuestionCategory.Final,
   },
 ];

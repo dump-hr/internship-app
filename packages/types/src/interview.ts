@@ -6,5 +6,7 @@ export type ScheduleInterviewRequest = {
 };
 
 export type SetInterviewRequest = {
-  answers: Json
+  internId: string;
+  answers: Json;
+  score: number;
 }

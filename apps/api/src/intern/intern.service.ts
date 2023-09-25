@@ -1,3 +1,4 @@
+import { SetInterviewRequest } from '@internship-app/types';
 import { Json } from '@internship-app/types/src/json';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import {
@@ -126,13 +127,16 @@ export class InternService {
     return newIntern;
   }
 
-  async setInterview(internId: string, answers: Json) {
-    await this.prisma.interviewSlot.update({
+  async setInterview(internId: string, data: SetInterviewRequest) {
+    await this.prisma.intern.update({
       where: {
-        internId: internId,
+        id: internId,
       },
       data: {
-        answers: answers,
+        interviewStatus: InterviewStatus.Done,
+        interviewSlot: {
+          update: { answers: data.answers, score: data.score },
+        },
       },
     });
   }

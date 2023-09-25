@@ -61,8 +61,8 @@ export class InternController {
   @Put('setInterview/:internId')
   async setInterview(
     @Param('internId') internId: string,
-    @Body() { answers }: SetInterviewRequest,
+    @Body() data: SetInterviewRequest,
   ) {
-    return await this.internService.setInterview(internId, answers);
+    return await this.internService.setInterview(internId, data);
   }
 }
