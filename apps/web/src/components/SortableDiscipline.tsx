@@ -6,19 +6,21 @@ import { disciplineLabel } from '../constants/internConstants';
 
 type Props = {
   discipline: Discipline;
+  index: number;
 };
 
-export const SortableDiscipline: React.FC<Props> = ({ discipline }) => {
+export const SortableDiscipline: React.FC<Props> = ({ discipline, index }) => {
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id: discipline });
 
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,
+    margin: '12px 0',
   };
   return (
     <div ref={setNodeRef} {...attributes} {...listeners} style={style}>
-      {disciplineLabel[discipline]}
+      {index + 1}. {disciplineLabel[discipline]}
     </div>
   );
 };
