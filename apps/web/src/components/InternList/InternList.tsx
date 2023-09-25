@@ -2,6 +2,7 @@ import {
   InternDiscipline,
   InternStatus,
   InternWithStatus,
+  InterviewStatus,
 } from '@internship-app/types';
 import { Button, Chip } from '@mui/material';
 import { DataGrid, GridColDef, GridRenderCellParams } from '@mui/x-data-grid';
@@ -131,6 +132,7 @@ const InternList: React.FC<Props> = ({ data = [], setSelection }) => {
       renderCell: (params) => (
         <Button
           component={Link}
+          disabled={params.value !== InterviewStatus.Pending}
           to={Path.Interview.replace(':internId', params.row.id)}
         >
           Intervju
@@ -147,6 +149,7 @@ const InternList: React.FC<Props> = ({ data = [], setSelection }) => {
       disciplines: intern.internDisciplines,
       interviewStatus: intern,
       testStatus: intern.internDisciplines,
+      buttonIntervju: intern.interviewStatus,
     };
   });
 

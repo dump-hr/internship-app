@@ -1,3 +1,4 @@
+import { SetInterviewRequest } from '@internship-app/types';
 import {
   Body,
   Controller,
@@ -5,6 +6,7 @@ import {
   NotFoundException,
   Param,
   Post,
+  Put,
   UseGuards,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
@@ -54,5 +56,13 @@ export class InternController {
     const newIntern = await this.internService.create(intern);
 
     return newIntern;
+  }
+
+  @Put('setInterview/:internId')
+  async setInterview(
+    @Param('internId') internId: string,
+    @Body() data: SetInterviewRequest,
+  ) {
+    return await this.internService.setInterview(internId, data);
   }
 }

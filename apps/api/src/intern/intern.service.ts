@@ -1,4 +1,11 @@
+import { SetInterviewRequest } from '@internship-app/types';
 import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  Discipline,
+  DisciplineStatus,
+  InterviewStatus,
+  TestStatus,
+} from '@prisma/client';
 import { PrismaService } from 'src/prisma.service';
 
 import { CreateInternDto } from './dto/createIntern.dto';
@@ -85,10 +92,51 @@ export class InternService {
       );
     }
 
+    const initialInterviewStatus = internToCreate.disciplines.some(
+      (dis) => dis === Discipline.Development,
+    )
+      ? InterviewStatus.NoRight
+      : InterviewStatus.PickTerm;
+
+    const getInitialTestStatus = (discipline) =>
+      [Discipline.Development, Discipline.Design].includes(discipline)
+        ? TestStatus.PickTerm
+        : null;
+
     const newIntern = await this.prisma.intern.create({
-      data: internToCreate,
+      data: {
+        firstName: internToCreate.firstName,
+        lastName: internToCreate.lastName,
+        email: internToCreate.email,
+        data: internToCreate.data,
+        interviewStatus: initialInterviewStatus,
+        internDisciplines: {
+          createMany: {
+            data: internToCreate.disciplines.map((dis, index) => ({
+              discipline: dis,
+              priority: index,
+              status: DisciplineStatus.Pending,
+              testStatus: getInitialTestStatus(dis),
+            })),
+          },
+        },
+      },
     });
 
     return newIntern;
+  }
+
+  async setInterview(internId: string, data: SetInterviewRequest) {
+    await this.prisma.intern.update({
+      where: {
+        id: internId,
+      },
+      data: {
+        interviewStatus: InterviewStatus.Done,
+        interviewSlot: {
+          update: { answers: data.answers, score: data.score },
+        },
+      },
+    });
   }
 }

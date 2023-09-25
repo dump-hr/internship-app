@@ -31,6 +31,12 @@ export const applicationFormDataQuestions: Question[] = [
   },
   {
     id: 'dq5',
+    title: 'Razred / godina fakulteta:',
+    type: QuestionType.Field,
+    registerValue: 'yearOfStudy',
+  },
+  {
+    id: 'dq6',
     title: 'Za DUMP internship si saznao/la putem:',
     type: QuestionType.Radio,
     options: [
@@ -44,7 +50,7 @@ export const applicationFormDataQuestions: Question[] = [
     registerValue: 'foundOutAboutInternshipBy',
   },
   {
-    id: 'dq6',
+    id: 'dq7',
     title: 'Zašto se prijavljuješ na DUMP internship?',
     type: QuestionType.Field,
     required: true,

@@ -19,7 +19,7 @@ export class CreateInternDto {
   email: string;
 
   @ApiProperty()
-  Disciplines: Discipline[];
+  disciplines: Discipline[];
 
   @ApiProperty()
   data: Prisma.JsonObject;
