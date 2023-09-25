@@ -1,4 +1,4 @@
-import { BoardAction } from '@internship-app/types';
+import { BoardActionType } from '@internship-app/types';
 import {
   Discipline,
   DisciplineStatus,
@@ -13,8 +13,8 @@ type Option = {
   questions: Question[];
 };
 
-export const options: { [key in BoardAction]: Option } = {
-  [BoardAction.SetInterviewStatus]: {
+export const options: { [key in BoardActionType]: Option } = {
+  [BoardActionType.SetInterviewStatus]: {
     description:
       'Izmijeni intervju status selektiranih na određenu vrijednost.',
     questions: [
@@ -27,7 +27,7 @@ export const options: { [key in BoardAction]: Option } = {
       },
     ],
   },
-  [BoardAction.SetDiscipline]: {
+  [BoardActionType.SetDiscipline]: {
     description:
       'Izmijeni discipline status selektiranih na određenu vrijednost. Prazna polja bit će ignorirana.',
     questions: [
@@ -60,6 +60,6 @@ export const actionQuestion: Question = {
   id: 'actionType',
   title: 'Akcija',
   type: QuestionType.Select,
-  options: ['', ...Object.values(BoardAction)],
+  options: ['', ...Object.values(BoardActionType)],
   registerValue: '',
 };

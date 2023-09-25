@@ -1,20 +1,20 @@
 import { Discipline, DisciplineStatus, InterviewStatus, TestStatus } from "./intern";
 
-export enum BoardAction {
+export enum BoardActionType {
     SetInterviewStatus = 'SetInterviewStatus',
     SetDiscipline = 'SetDiscipline',
   }
 
-export type BoardActionRequest = {internIds: string[]} &
-(
-    | {
-        actionType: BoardAction.SetInterviewStatus,
-        interviewStatus: InterviewStatus
-    }
-    | {
-        actionType: BoardAction.SetDiscipline,
-        discipline: Discipline,
-        status?: DisciplineStatus,
-        testStatus?: TestStatus
-    }
+export type BoardAction =   (| {
+    actionType: BoardActionType.SetInterviewStatus,
+    interviewStatus: InterviewStatus
+}
+| {
+    actionType: BoardActionType.SetDiscipline,
+    discipline: Discipline,
+    status?: DisciplineStatus,
+    testStatus?: TestStatus
+}
 )
+
+export type BoardActionRequest = {internIds: string[], action: BoardAction}
