@@ -38,22 +38,21 @@ export const ApplicationFormPage = () => {
 
   const createIntern = usePostIntern();
 
-  const { register, handleSubmit, formState, reset, watch } =
-    useForm<FormValues>({
-      defaultValues: {
-        firstName: '',
-        lastName: '',
-        email: '',
-        disciplines: [],
-        phoneNumber: '0',
-        yearOfStudy: '',
-        dateOfBirth: '',
-        educationOrEmploymentStatus: EducationOrEmploymentStatus.Other,
-        highSchoolOrCollegeName: '',
-        foundOutAboutInternshipBy: FoundOutAboutInternshipBy.Other,
-        reasonForApplying: '',
-      } as FormValues,
-    });
+  const { register, handleSubmit, formState, watch } = useForm<FormValues>({
+    defaultValues: {
+      firstName: '',
+      lastName: '',
+      email: '',
+      disciplines: [],
+      phoneNumber: '',
+      yearOfStudy: '',
+      dateOfBirth: '',
+      educationOrEmploymentStatus: EducationOrEmploymentStatus.Other,
+      highSchoolOrCollegeName: '',
+      foundOutAboutInternshipBy: FoundOutAboutInternshipBy.Other,
+      reasonForApplying: '',
+    } as FormValues,
+  });
 
   const { errors } = formState;
 
@@ -98,15 +97,10 @@ export const ApplicationFormPage = () => {
     }
   };
 
-  const handleReset = () => {
-    reset();
-    setInternDisciplines([]);
-  };
-
   return (
     <div className={classes.applicationFormPageWrapper}>
       <h1 className={classes.applicationFormTitle}>
-        Prijava na DUMP internship
+        Prijava na DUMP Internship
       </h1>
       <form
         className={classes.formClass}
@@ -234,14 +228,10 @@ export const ApplicationFormPage = () => {
           >
             Submit
           </Button>
-
-          <Button type="button" variant="text" onClick={handleReset}>
-            Reset
-          </Button>
         </div>
       </form>
       <h3 className={classes.applicationFooterText}>
-        DUMP udruga mladih programera
+        DUMP Udruga mladih programera
       </h3>
     </div>
   );

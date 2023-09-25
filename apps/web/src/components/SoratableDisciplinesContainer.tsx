@@ -5,6 +5,7 @@ import {
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
 import { Discipline } from '@internship-app/types';
+import clsx from 'clsx';
 
 import classes from '../pages/ApplicationFormPage/index.module.css';
 import { SortableDiscipline } from './SortableDiscipline';
@@ -33,17 +34,27 @@ export const SortableDisciplinesContainer: React.FC<Props> = ({
 
   return (
     <div className={classes.formQuestionWrapper}>
-      <p className={classes.formQuestionSubtitleText}>
+      <label>Područja</label>
+      <p
+        className={clsx(
+          classes.formQuestionSubtitleText,
+          classes.marginBottom30px,
+        )}
+      >
         Ovdje možeš posložiti prioritete
       </p>
-      <div className={classes.cursorGrab}>
+      <div className={clsx(classes.cursorGrab, classes.marginBottom30px)}>
         <DndContext collisionDetection={closestCenter} onDragEnd={onDragEnd}>
           <SortableContext
             items={internDisciplines}
             strategy={verticalListSortingStrategy}
           >
-            {internDisciplines.map((discipline) => (
-              <SortableDiscipline key={discipline} discipline={discipline} />
+            {internDisciplines.map((discipline, index) => (
+              <SortableDiscipline
+                key={discipline}
+                discipline={discipline}
+                index={index}
+              />
             ))}
           </SortableContext>
         </DndContext>
