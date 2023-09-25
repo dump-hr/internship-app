@@ -4,8 +4,8 @@ import moment from 'moment';
 const parseInterviewSlotToCalendarEvent = (interviewSlot: InterviewSlot) => {
   return {
     id: interviewSlot.id,
-    start: new Date(interviewSlot.start),
-    end: new Date(interviewSlot.end),
+    start: moment(interviewSlot.start).toDate(),
+    end: moment(interviewSlot.end).toDate(),
     additionalInfo: `Interviewers: ${interviewSlot.interviewers
       .map((interviewer) => interviewer.interviewer.name)
       .join(', ')}`,
@@ -54,10 +54,34 @@ const getMergedEvent = (events, newEvent) => {
   };
 };
 
+const mergeEventsWithSameInterviewers = (events) => {
+  events.sort((a, b) => a.start.getTime() - b.start.getTime());
+
+  let i = 0;
+  while (i < events.length - 1) {
+    const currentEvent = events[i];
+    const nextEvent = events[i + 1];
+
+    if (
+      JSON.stringify(currentEvent.interviewers) ===
+        JSON.stringify(nextEvent.interviewers) &&
+      currentEvent.end.getTime() === nextEvent.start.getTime()
+    ) {
+      currentEvent.end = nextEvent.end;
+      events.splice(i + 1, 1);
+    } else {
+      i++;
+    }
+  }
+
+  return events;
+};
+
 export const calendarHelper = {
   parseInterviewSlotToCalendarEvent,
   parseCalendarEventToInterviewSlot,
   checkIfEventExists,
   getOverlappingEvents,
   getMergedEvent,
+  mergeEventsWithSameInterviewers,
 };
