@@ -10,6 +10,7 @@ import { FieldValues } from 'react-hook-form';
 
 import { useFetchAllInterns } from '../../api/useFetchAllInterns';
 import AdminPage from '../../components/AdminPage';
+import BoardActions from '../../components/BoardActions';
 import InternFilter from '../../components/InternFilter';
 import {
   FilterCriteria,
@@ -49,6 +50,8 @@ const DashboardPage = () => {
 
   const [selection, setSelection] = useState<string[]>([]);
   const [emailDialogOpen, setEmailDialogOpen] = useState(false);
+  const [actionsOpen, setActionsOpen] = useState(false);
+  const toggleActions = () => setActionsOpen((prev) => !prev);
 
   const [filterCriteria, setFilterCriteria] = useState<FilterCriteria>(
     initialState.filterCriteria,
@@ -102,9 +105,15 @@ const DashboardPage = () => {
         <div className={c.buttonsWrapper}>
           <Button disabled>Pregledaj dev ispit</Button>
           <Button onClick={() => setEmailDialogOpen(true)}>Pošalji mail</Button>
+          <Button
+            onClick={toggleActions}
+            disabled={!selection.length && !actionsOpen}
+          >
+            Toggleaj akcije
+          </Button>
         </div>
       </Grid>
-
+      {actionsOpen && <BoardActions />}
       <InternFilter submitHandler={filterHandler} />
       <InternList
         data={internsWithStatus?.filter(getInternFilter(filterCriteria))}
