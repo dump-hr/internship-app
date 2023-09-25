@@ -4,25 +4,7 @@ import {
   QuestionType,
 } from '@internship-app/types';
 
-export enum QuestionCategory {
-  General = 'General',
-  Personal = 'Personal',
-  Dev = 'Dev',
-  Design = 'Design',
-  Marketing = 'Marketing',
-  Multimedia = 'Multimedia',
-  Final = 'Final',
-}
-
-export const steps = [
-  { label: 'Općenito', category: QuestionCategory.General },
-  { label: 'Osobno', category: QuestionCategory.Personal },
-  { label: 'Dev', category: QuestionCategory.Dev },
-  { label: 'Design', category: QuestionCategory.Design },
-  { label: 'Marketing', category: QuestionCategory.Marketing },
-  { label: 'Multimedia', category: QuestionCategory.Multimedia },
-  { label: 'Ocjena', category: QuestionCategory.Final },
-];
+import { QuestionCategory } from '../../constants/interviewConstants';
 
 export const interviewQuestions: Array<MultistepQuestion<QuestionCategory>> = [
   {
@@ -50,13 +32,13 @@ export const interviewQuestions: Array<MultistepQuestion<QuestionCategory>> = [
     id: 'p4',
     title: 'Neko dev pitanje',
     type: QuestionType.Field,
-    category: QuestionCategory.Dev,
+    category: QuestionCategory.Development,
   },
   {
     id: 'p5',
     title: 'Koliko vremena dnevno gubiš',
     type: QuestionType.Select,
-    category: QuestionCategory.Dev,
+    category: QuestionCategory.Development,
     options: ['2 sata dnevno', '10000 sati dnevno', '-2 s'],
   },
   {

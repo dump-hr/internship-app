@@ -1,5 +1,4 @@
 import { SetInterviewRequest } from '@internship-app/types';
-import { Json } from '@internship-app/types/src/json';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import {
   Discipline,
@@ -93,13 +92,13 @@ export class InternService {
       );
     }
 
-    const interviewStatus = internToCreate.disciplines.some(
-      (ind) => ind === Discipline.Development,
+    const initialInterviewStatus = internToCreate.disciplines.some(
+      (dis) => dis === Discipline.Development,
     )
       ? InterviewStatus.NoRight
       : InterviewStatus.PickTerm;
 
-    const getTestStatus = (discipline) =>
+    const getInitialTestStatus = (discipline) =>
       [Discipline.Development, Discipline.Design].includes(discipline)
         ? TestStatus.PickTerm
         : null;
@@ -110,14 +109,14 @@ export class InternService {
         lastName: internToCreate.lastName,
         email: internToCreate.email,
         data: internToCreate.data,
-        interviewStatus: interviewStatus,
+        interviewStatus: initialInterviewStatus,
         internDisciplines: {
           createMany: {
-            data: internToCreate.disciplines.map((ind, index) => ({
-              discipline: ind,
+            data: internToCreate.disciplines.map((dis, index) => ({
+              discipline: dis,
               priority: index,
               status: DisciplineStatus.Pending,
-              testStatus: getTestStatus(ind),
+              testStatus: getInitialTestStatus(dis),
             })),
           },
         },

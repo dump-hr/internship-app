@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { FieldValues, useForm } from 'react-hook-form';
 import { LoaderIcon } from 'react-hot-toast';
 import { useRoute } from 'wouter';
+import { navigate } from 'wouter/use-location';
 
 import { useGetIntern } from '../../api/useGetIntern';
 import { useSetInterview } from '../../api/useSetInterview';
@@ -11,13 +12,12 @@ import AdminPage from '../../components/AdminPage';
 import { ConfirmDialog } from '../../components/ConfirmDialog';
 import IntervieweeInfo from '../../components/IntervieweeInfo';
 import MultistepForm from '../../components/MultistepForm';
-import { Path } from '../../constants/paths';
 import {
-  defaultInterviewValues,
-  interviewQuestions,
+  filterInterviewSteps as getFilteredInterviewSteps,
   QuestionCategory,
-  steps,
-} from './data';
+} from '../../constants/interviewConstants';
+import { Path } from '../../constants/paths';
+import { defaultInterviewValues, interviewQuestions } from './data';
 import InterviewQuestionHandler from './InterviewQuestionHandler';
 
 const mapAnswersToQuestions = (
@@ -31,9 +31,11 @@ const InterviewPage = () => {
   const internId = params?.internId;
 
   const { data: intern, isFetching } = useGetIntern(internId);
-  const setInterview = useSetInterview();
+  const setInterview = useSetInterview(() => {
+    navigate(Path.Intern.replace(':internId', params?.internId || ''));
+  });
 
-  const [dialogOpen, setDialogOpen] = useState(false);
+  const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
   const form = useForm<FieldValues>({
     defaultValues: defaultInterviewValues,
   });
@@ -74,15 +76,17 @@ const InterviewPage = () => {
       <MultistepForm
         questions={interviewQuestions}
         form={form}
-        steps={steps}
-        onSubmit={() => setDialogOpen(true)}
+        steps={getFilteredInterviewSteps(
+          intern.internDisciplines.map((ind) => ind.discipline),
+        )}
+        onSubmit={() => setConfirmDialogOpen(true)}
         InputHandler={InterviewQuestionHandler}
       />
       <ConfirmDialog
-        open={!!dialogOpen}
+        open={!!confirmDialogOpen}
         handleClose={(confirmed) => {
           if (confirmed) handleFormSubmit(internId);
-          setDialogOpen(false);
+          setConfirmDialogOpen(false);
         }}
         title="Potvrdi unos intervjua!"
         description={`Uneseni intervju ne može se poništiti.`}
