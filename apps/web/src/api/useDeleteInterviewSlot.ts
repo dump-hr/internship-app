@@ -2,16 +2,15 @@ import { useMutation, useQueryClient } from 'react-query';
 
 import { api } from '.';
 
-const deleteInterviewSlot = (slotId: string) =>
-  api.delete<never, never>(`/interview-slot/${slotId}`);
+const deleteInterviewSlot = (slotId: string) => {
+  return api.delete<never, never>(`/interview-slot/${slotId}`);
+};
 
-export const useDeleteInterviewSlot = (slotId: string | null) => {
+export const useDeleteInterviewSlot = () => {
   const queryClient = useQueryClient();
   return useMutation(deleteInterviewSlot, {
     onSuccess: () => {
-      if (slotId) {
-        void queryClient.invalidateQueries(['interview-slot', slotId]);
-      }
+      void queryClient.invalidateQueries(['interview-slot']);
     },
   });
 };

@@ -11,9 +11,11 @@ export const useCreateInterviewSlot = () => {
 
   return useMutation(createInterviewSlot, {
     onMutate: () => {},
-    onSuccess: (_data, _variables, context) => {
+    onSuccess: () => {
       void queryClient.invalidateQueries(['interview-slot']);
     },
-    onError: (error: string, _variables, context) => {},
+    onError: (error: string) => {
+      console.log('error creating interview slot: ', error);
+    },
   });
 };

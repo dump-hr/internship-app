@@ -49,9 +49,7 @@ export class InterviewSlotService {
 
   async deleteInterviewSlot(id: string) {
     return await this.prisma.interviewSlot.delete({
-      where: {
-        id,
-      },
+      where: { id },
     });
   }
 

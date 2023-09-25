@@ -84,9 +84,9 @@ model InterviewSlot {
 
 model InterviewMemberParticipation {
   interviewSlotId String
-  interviewSlot   InterviewSlot @relation(fields: [interviewSlotId], references: [id])
+  interviewSlot   InterviewSlot @relation(fields: [interviewSlotId], references: [id], onDelete: Cascade)
   interviewerId   String
-  interviewer     Interviewer   @relation(fields: [interviewerId], references: [id])
+  interviewer     Interviewer   @relation(fields: [interviewerId], references: [id], onDelete: Cascade)
 
   @@id([interviewSlotId, interviewerId])
 }

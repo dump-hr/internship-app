@@ -3,7 +3,7 @@ import 'react-big-calendar/lib/css/react-big-calendar.css';
 import { format, getDay, parse, startOfWeek } from 'date-fns';
 import hrLocale from 'date-fns/locale/hr';
 import moment from 'moment';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Calendar as BigCalendar, dateFnsLocalizer } from 'react-big-calendar';
 import withDragAndDrop from 'react-big-calendar/lib/addons/dragAndDrop';
 
@@ -36,9 +36,8 @@ export const Calendar: React.FC<Props> = ({
   updateEvent,
   addEvent,
 }: Props) => {
-  const [events, setEvents] = useState([]);
+  const [events, setEvents] = useState(existingEvents);
   const DragAndDropCalendar = withDragAndDrop(BigCalendar);
-  console.log('events', events);
 
   const handleTimeSlotAdd = (slotInfo: any) => {
     if (calendarHelper.checkIfEventExists(events, slotInfo)) return;
@@ -57,7 +56,7 @@ export const Calendar: React.FC<Props> = ({
 
     addEvent(newMergedEvent); // --> api
 
-    setEvents((prev) => [...prev, newMergedEvent]);
+    //setEvents((prev) => [...prev, newMergedEvent]);
   };
 
   const handleTimeSlotEdit = (editedSlotInfo: any) => {
@@ -84,12 +83,18 @@ export const Calendar: React.FC<Props> = ({
   };
 
   const handleTimeSlotSelect = (event: any) => {
-    //send time slot data to sidebar
+    // open modal with details or maybe tooltip
   };
+
+  useEffect(() => {
+    console.log('UPDATED EVENTS STATE: ', existingEvents);
+    setEvents(existingEvents);
+  }, [existingEvents]);
 
   return (
     <div>
       <DragAndDropCalendar
+        step={20}
         localizer={localizer}
         style={{ height: 618, width: 685 }}
         defaultView="week"

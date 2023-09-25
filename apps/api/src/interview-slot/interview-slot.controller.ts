@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 
 import { CreateInterviewSlotDto } from './dto/createInterviewSlot.dto';
@@ -16,7 +16,7 @@ export class InterviewSlotController {
   }
 
   @Get('/get-by-discipline/:discipline')
-  async getByDiscipline(discipline: string) {
+  async getByDiscipline(@Param('discipline') discipline: string) {
     const interviewSlots = await this.interviewSlotService.getByDiscipline(
       discipline,
     );
@@ -24,7 +24,7 @@ export class InterviewSlotController {
   }
 
   @Delete('/:id')
-  async deleteInterviewSlot(id: string) {
+  async deleteInterviewSlot(@Param('id') id: string) {
     return await this.interviewSlotService.deleteInterviewSlot(id);
   }
 

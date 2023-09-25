@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 
 import { useCreateInterviewSlot } from '../../api/useCreateInterviewSlot';
 import { useDeleteInterviewSlot } from '../../api/useDeleteInterviewSlot';
-import { useFetchInterviewSlotsByDiscipline } from '../../api/useFetchInterviewSlots';
+import { useFetchInterviewSlots } from '../../api/useFetchInterviewSlots';
 import { Calendar } from '../../components/Calendar/Calendar';
 import { CalendarSidebar } from '../../components/CalendarSidebar/CalendarSidebar';
 import { calendarHelper } from '../../helpers/calendarHelper';
@@ -17,19 +17,19 @@ export const AdminInterviewPage = () => {
     string[] | null
   >();
   const [events, setEvents] = useState<any[]>([]);
-  const { data: interviewSlots } = useFetchInterviewSlotsByDiscipline(
-    selectedDiscipline || '',
-  );
-  useEffect(() => {
-    console.log('interviewSlots', interviewSlots);
-  }, [interviewSlots]);
+  const { data: interviewSlots, refetchInterviewSlots } =
+    useFetchInterviewSlots();
 
-  const deleteInterviewSlotMutation = useDeleteInterviewSlot(null);
+  const deleteInterviewSlotMutation = useDeleteInterviewSlot();
   const createInterviewSlotMutation = useCreateInterviewSlot();
 
   function deleteEvent(event) {
     if (!event.id) return;
-    deleteInterviewSlotMutation.mutate(event.id);
+    deleteInterviewSlotMutation.mutate(event.id, {
+      onSuccess: () => {
+        refetchInterviewSlots();
+      },
+    });
   }
 
   function updateEvent() {}
@@ -39,14 +39,18 @@ export const AdminInterviewPage = () => {
       console.log('Data missing');
       return;
     }
-    //TODO handle if it is not divisible by 20 minutes
+
     const interviewSlotDto = {
       start: moment(event.start).format('YYYY-MM-DD HH:mm:ss'),
       end: moment(event.end).format('YYYY-MM-DD HH:mm:ss'),
       interviewers: selectedInterviewers,
     };
-    console.log('interviewSlotDto', interviewSlotDto);
-    createInterviewSlotMutation.mutate(interviewSlotDto);
+
+    createInterviewSlotMutation.mutate(interviewSlotDto, {
+      onSuccess: () => {
+        refetchInterviewSlots();
+      },
+    });
   }
 
   useEffect(() => {
@@ -57,6 +61,7 @@ export const AdminInterviewPage = () => {
       return calendarHelper.parseInterviewSlotToCalendarEvent(interviewSlot);
     });
 
+    //setEvents(calendarHelper.mergeEventsWithSameInterviewers(convertedEvents));
     setEvents(convertedEvents);
   }, [interviewSlots]);
 
