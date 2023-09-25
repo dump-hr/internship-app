@@ -8,15 +8,11 @@ import { CustomSelectInput } from '../common/SelectInput/CustomSelectInput';
 import styles from './index.module.css';
 
 interface Props {
-  selectedStartTime?: string;
-  selectedEndTime?: string;
   setDiscipline: (value: string | null) => void;
   setInterviewers: (value: string[] | null) => void;
 }
 
 export const CalendarSidebar: React.FC<Props> = ({
-  selectedStartTime,
-  selectedEndTime,
   setDiscipline,
   setInterviewers,
 }: Props) => {
@@ -35,9 +31,6 @@ export const CalendarSidebar: React.FC<Props> = ({
 
   return (
     <div className={styles.wrapper}>
-      <h1 className={styles.time}>
-        {selectedStartTime} - {selectedEndTime}
-      </h1>
       <CustomSelectInput
         label="Područje:"
         menuOptions={Object.values(Discipline)}

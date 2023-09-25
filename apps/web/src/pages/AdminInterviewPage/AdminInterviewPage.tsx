@@ -1,3 +1,4 @@
+import moment from 'moment';
 import { useEffect, useState } from 'react';
 
 import { useCreateInterviewSlot } from '../../api/useCreateInterviewSlot';
@@ -11,15 +12,17 @@ import styles from './index.module.css';
 type Event = {};
 
 export const AdminInterviewPage = () => {
-  const [dataReady, setDataReady] = useState<boolean>(false);
   const [selectedDiscipline, setSelectedDiscipline] = useState<string | null>();
   const [selectedInterviewers, setSelectedInterviewers] = useState<
     string[] | null
   >();
   const [events, setEvents] = useState<any[]>([]);
-  // const { data: interviewSlots } = useFetchInterviewSlotsByDiscipline(
-  //   selectedDiscipline || '',
-  // );
+  const { data: interviewSlots } = useFetchInterviewSlotsByDiscipline(
+    selectedDiscipline || '',
+  );
+  useEffect(() => {
+    console.log('interviewSlots', interviewSlots);
+  }, [interviewSlots]);
 
   const deleteInterviewSlotMutation = useDeleteInterviewSlot(null);
   const createInterviewSlotMutation = useCreateInterviewSlot();
@@ -32,27 +35,30 @@ export const AdminInterviewPage = () => {
   function updateEvent() {}
 
   function addEvent(event) {
-    console.log('Event', event.start, event.end);
-    if (!event || !selectedDiscipline || !selectedInterviewers) return;
+    if (!event || !selectedDiscipline || !selectedInterviewers) {
+      console.log('Data missing');
+      return;
+    }
     //TODO handle if it is not divisible by 20 minutes
     const interviewSlotDto = {
-      start: event.start.toString(),
-      end: event.end.toString(),
+      start: moment(event.start).format('YYYY-MM-DD HH:mm:ss'),
+      end: moment(event.end).format('YYYY-MM-DD HH:mm:ss'),
       interviewers: selectedInterviewers,
     };
-
+    console.log('interviewSlotDto', interviewSlotDto);
     createInterviewSlotMutation.mutate(interviewSlotDto);
   }
 
-  // useEffect(() => {
-  //   if (!interviewSlots) return;
+  useEffect(() => {
+    if (!interviewSlots) return;
 
-  //   const convertedEvents = interviewSlots.map((interviewSlot) =>
-  //     calendarHelper.parseInterviewSlotToCalendarEvent(interviewSlot),
-  //   );
+    const convertedEvents = interviewSlots.map((interviewSlot) => {
+      if (!interviewSlot.interviewers) return;
+      return calendarHelper.parseInterviewSlotToCalendarEvent(interviewSlot);
+    });
 
-  //   setEvents(convertedEvents);
-  // }, [interviewSlots]);
+    setEvents(convertedEvents);
+  }, [interviewSlots]);
 
   return (
     <div className={styles.wrapper}>

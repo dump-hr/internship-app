@@ -9,7 +9,16 @@ export class InterviewSlotService {
   constructor(private readonly prisma: PrismaService) {}
 
   async getAll() {
-    const interviewSlots = await this.prisma.interviewSlot.findMany();
+    const interviewSlots = await this.prisma.interviewSlot.findMany({
+      include: {
+        interviewers: {
+          include: {
+            interviewer: true,
+            interviewSlot: true,
+          },
+        },
+      },
+    });
     return interviewSlots;
   }
 
@@ -20,9 +29,17 @@ export class InterviewSlotService {
           some: {
             interviewer: {
               disciplines: {
-                has: Discipline[discipline],
+                has: discipline as Discipline,
               },
             },
+          },
+        },
+      },
+      include: {
+        interviewers: {
+          include: {
+            interviewer: true,
+            interviewSlot: true,
           },
         },
       },
@@ -61,8 +78,22 @@ export class InterviewSlotService {
       });
 
       interviewSlots.push(interviewSlot);
-    }
 
+      for (const interviewerName of interviewSlotDto.interviewers) {
+        const interviewer = await this.prisma.interviewer.findFirst({
+          where: { name: interviewerName },
+        });
+
+        if (interviewer) {
+          await this.prisma.interviewMemberParticipation.create({
+            data: {
+              interviewSlotId: interviewSlot.id,
+              interviewerId: interviewer.id,
+            },
+          });
+        }
+      }
+    }
     return interviewSlots;
   }
 }
