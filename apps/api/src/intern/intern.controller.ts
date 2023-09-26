@@ -1,4 +1,8 @@
-import { BoardActionRequest, SetInterviewRequest } from '@internship-app/types';
+import {
+  BoardActionRequest,
+  InternDecisionRequest,
+  SetInterviewRequest,
+} from '@internship-app/types';
 import {
   Body,
   Controller,
@@ -69,5 +73,13 @@ export class InternController {
   @Put('boardAction')
   async applyBoardAction(@Body() { action, internIds }: BoardActionRequest) {
     return await this.internService.applyBoardAction(action, internIds);
+  }
+
+  @Put('setDecision/:internId')
+  async setDecision(
+    @Param('internId') internId: string,
+    @Body() data: InternDecisionRequest,
+  ) {
+    return await this.internService.setDecision(internId, data);
   }
 }

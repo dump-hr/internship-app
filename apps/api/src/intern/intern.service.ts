@@ -1,4 +1,8 @@
-import { BoardAction, SetInterviewRequest } from '@internship-app/types';
+import {
+  BoardAction,
+  InternDecisionRequest,
+  SetInterviewRequest,
+} from '@internship-app/types';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import {
   Discipline,
@@ -160,5 +164,23 @@ export class InternService {
       default:
         return new BadRequestException();
     }
+  }
+
+  async setDecision(internId: string, data: InternDecisionRequest) {
+    return await this.prisma.$transaction(
+      data.disciplines.map((d) =>
+        this.prisma.internDiscipline.update({
+          where: {
+            internId_discipline: {
+              internId,
+              discipline: d.discipline,
+            },
+          },
+          data: {
+            status: d.status,
+          },
+        }),
+      ),
+    );
   }
 }
