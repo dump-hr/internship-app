@@ -10,3 +10,13 @@
 .notesLabel {
     margin-bottom: 15px;
 }
+
+.filterSection {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+    gap: 10px;
+}
+.filterSection > div {
+    margin-bottom: 0 !important;
+}

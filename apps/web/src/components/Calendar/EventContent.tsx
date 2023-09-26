@@ -17,8 +17,6 @@ export const EventContent = ({ event, eventDeleteHandler }: Props) => {
     eventDeleteHandler(event);
   };
 
-  console.log('EVENT: ', event, calendarHelper.getDisciplinesFromEvent(event));
-
   return (
     <div>
       <div onClick={handleRemoveClick} className={styles.deleteEventButton}>

@@ -22,14 +22,60 @@ export class InterviewSlotService {
     return interviewSlots;
   }
 
-  async getByDiscipline(discipline: string) {
+  async getByInterviewer(interviewerNames: string[]) {
+    const interviewSlots = await this.prisma.interviewSlot.findMany({
+      where: {
+        interviewers: {
+          some: {
+            interviewer: {
+              name: {
+                in: interviewerNames,
+              },
+            },
+          },
+        },
+      },
+      include: {
+        interviewers: {
+          include: {
+            interviewer: true,
+            interviewSlot: true,
+          },
+        },
+      },
+    });
+    return interviewSlots;
+  }
+
+  mapStringsToDisciplines(strings: string[]): Discipline[] {
+    const mappedDisciplines: Discipline[] = strings.map((str) => {
+      switch (str) {
+        case 'Development':
+          return Discipline.Development;
+        case 'Design':
+          return Discipline.Design;
+        case 'Multimedia':
+          return Discipline.Multimedia;
+        case 'Marketing':
+          return Discipline.Marketing;
+        default:
+          return Discipline.Development;
+      }
+    });
+
+    return mappedDisciplines;
+  }
+
+  async getByDisciplines(disciplines: string[]) {
+    const mappedDisciplines = this.mapStringsToDisciplines(disciplines);
+
     const interviewSlots = await this.prisma.interviewSlot.findMany({
       where: {
         interviewers: {
           some: {
             interviewer: {
               disciplines: {
-                has: discipline as Discipline,
+                hasSome: mappedDisciplines,
               },
             },
           },

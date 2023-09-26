@@ -15,14 +15,6 @@ export class InterviewSlotController {
     return interviewSlots;
   }
 
-  @Get('/get-by-discipline/:discipline')
-  async getByDiscipline(@Param('discipline') discipline: string) {
-    const interviewSlots = await this.interviewSlotService.getByDiscipline(
-      discipline,
-    );
-    return interviewSlots;
-  }
-
   @Delete('/:id')
   async deleteInterviewSlot(@Param('id') id: string) {
     return await this.interviewSlotService.deleteInterviewSlot(id);

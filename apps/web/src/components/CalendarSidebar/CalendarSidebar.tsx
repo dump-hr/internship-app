@@ -1,4 +1,5 @@
 import { Discipline } from '@internship-app/types';
+import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import { useEffect, useState } from 'react';
 
 import { useFetchInterviewers } from '../../api/useFetchInterviewers';
@@ -7,35 +8,51 @@ import { CustomSelectInput } from '../common/SelectInput/CustomSelectInput';
 import styles from './index.module.css';
 
 interface Props {
-  setDiscipline: (value: string | null) => void;
+  setSelectedDisciplineFilter: (value: string | null) => void;
   setInterviewers: (value: string[] | null) => void;
+  setSelectedInterviewerFilter: (value: string[] | null) => void;
 }
 
 export const CalendarSidebar: React.FC<Props> = ({
-  setDiscipline,
   setInterviewers,
+  setSelectedDisciplineFilter,
+  setSelectedInterviewerFilter,
 }: Props) => {
-  const [selectedDiscipline, setSelectedDiscipline] = useState(null);
+  const [disciplineFilter, setDisciplineFilter] = useState(null);
+  const [interviewerFilter, setInterviewerFilter] = useState(null);
   const [selectedInterviewers, setSelectedInterviewers] = useState<
     string[] | null
   >(null);
   const { data: interviewers } = useFetchInterviewers();
 
   useEffect(() => {
-    setDiscipline(selectedDiscipline || null);
+    setSelectedDisciplineFilter(disciplineFilter || null);
+    setSelectedInterviewerFilter(interviewerFilter || null);
     setInterviewers(selectedInterviewers || null);
-  }, [selectedInterviewers, selectedDiscipline]);
+  }, [selectedInterviewers, disciplineFilter, interviewerFilter]);
 
   return (
     <div className={styles.wrapper}>
+      <div className={styles.filterSection}>
+        <FilterAltIcon className={styles.filterIcon} />
+        <CustomSelectInput
+          label="Područje"
+          menuOptions={Object.values(Discipline)}
+          isMultiSelect={true}
+          valueHandler={(value) => setDisciplineFilter(value)}
+        />
+      </div>
+      <div className={styles.filterSection}>
+        <FilterAltIcon className={styles.filterIcon} />
+        <CustomSelectInput
+          label="Intervjueri"
+          menuOptions={interviewers?.map((interviewer) => interviewer.name)}
+          isMultiSelect={true}
+          valueHandler={(value) => setInterviewerFilter(value)}
+        />
+      </div>
       <CustomSelectInput
-        label="Područje:"
-        menuOptions={Object.values(Discipline)}
-        isMultiSelect={true}
-        valueHandler={(value) => setSelectedDiscipline(value)}
-      />
-      <CustomSelectInput
-        label="Intervjueri:"
+        label="Intervjueri"
         menuOptions={interviewers?.map((interviewer) => interviewer.name)}
         isMultiSelect={true}
         valueHandler={(value) => setSelectedInterviewers(value)}

@@ -12,7 +12,8 @@ import styles from './index.module.css';
 type Event = {};
 
 export const AdminInterviewPage = () => {
-  const [selectedDiscipline, setSelectedDiscipline] = useState<string | null>();
+  const [disciplineFilter, setDisciplineFilter] = useState<string | null>();
+  const [interviewFilter, setInterviewFilter] = useState<string[] | null>();
   const [selectedInterviewers, setSelectedInterviewers] = useState<
     string[] | null
   >();
@@ -33,7 +34,7 @@ export const AdminInterviewPage = () => {
   }
 
   function addEvent(event) {
-    if (!event || !selectedDiscipline || !selectedInterviewers) {
+    if (!event || !selectedInterviewers) {
       return;
     }
 
@@ -69,7 +70,8 @@ export const AdminInterviewPage = () => {
         addEvent={addEvent}
       />
       <CalendarSidebar
-        setDiscipline={setSelectedDiscipline}
+        setSelectedDisciplineFilter={setDisciplineFilter}
+        setSelectedInterviewerFilter={setInterviewFilter}
         setInterviewers={setSelectedInterviewers}
       />
     </div>
