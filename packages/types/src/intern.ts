@@ -104,3 +104,11 @@ export enum InternStatus {
 }
 
 export type InternWithStatus = Intern & {status: InternStatus}
+
+export type InternDecisionRequest = {
+  internId: string,
+  disciplines: {
+    discipline: Discipline,
+    status: DisciplineStatus
+  }[]
+}

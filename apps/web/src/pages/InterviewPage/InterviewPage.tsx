@@ -35,7 +35,7 @@ const InterviewPage = () => {
     navigate(Path.Intern.replace(':internId', params?.internId || ''));
   });
 
-  const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
+  const [dialogOpen, setDialogOpen] = useState(false);
   const form = useForm<FieldValues>({
     defaultValues: defaultInterviewValues,
   });
@@ -79,14 +79,14 @@ const InterviewPage = () => {
         steps={getFilteredInterviewSteps(
           intern.internDisciplines.map((ind) => ind.discipline),
         )}
-        onSubmit={() => setConfirmDialogOpen(true)}
+        onSubmit={() => setDialogOpen(true)}
         InputHandler={InterviewQuestionHandler}
       />
       <ConfirmDialog
-        open={!!confirmDialogOpen}
+        open={!!dialogOpen}
         handleClose={(confirmed) => {
           if (confirmed) handleFormSubmit(internId);
-          setConfirmDialogOpen(false);
+          setDialogOpen(false);
         }}
         title="Potvrdi unos intervjua!"
         description={`Uneseni intervju ne može se poništiti.`}

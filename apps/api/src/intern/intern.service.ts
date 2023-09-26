@@ -1,4 +1,8 @@
-import { SetInterviewRequest } from '@internship-app/types';
+import {
+  BoardAction,
+  InternDecisionRequest,
+  SetInterviewRequest,
+} from '@internship-app/types';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import {
   Discipline,
@@ -138,5 +142,120 @@ export class InternService {
         },
       },
     });
+  }
+
+  async applyBoardAction(action: BoardAction, internIds: string[]) {
+    switch (action.actionType) {
+      case 'SetInterviewStatus':
+        return await this.prisma.intern.updateMany({
+          where: { id: { in: internIds } },
+          data: { interviewStatus: action.interviewStatus },
+        });
+
+      case 'SetDiscipline':
+        return await this.prisma.internDiscipline.updateMany({
+          where: { internId: { in: internIds }, discipline: action.discipline },
+          data: {
+            ...(action.status && { status: action.status }),
+            ...(action.testStatus && { testStatus: action.testStatus }),
+          },
+        });
+
+      case 'Kick':
+        await this.prisma.interviewSlot.updateMany({
+          where: {
+            intern: {
+              id: { in: internIds },
+              interviewStatus: InterviewStatus.Pending,
+            },
+          },
+          data: { internId: null },
+        });
+
+        await this.prisma.intern.updateMany({
+          where: {
+            id: { in: internIds },
+            interviewStatus: {
+              in: [InterviewStatus.PickTerm, InterviewStatus.Pending],
+            },
+          },
+          data: {
+            interviewStatus: InterviewStatus.NoRight,
+          },
+        });
+
+        await this.prisma.internDiscipline.updateMany({
+          where: {
+            internId: { in: internIds },
+            testStatus: {
+              in: [TestStatus.PickTerm, TestStatus.Pending],
+            },
+          },
+          data: { testSlotId: null, testStatus: null },
+        });
+
+        return await this.prisma.internDiscipline.updateMany({
+          where: { internId: { in: internIds } },
+          data: {
+            status: DisciplineStatus.Rejected,
+          },
+        });
+
+      case 'CancelInterviewSlot':
+        const internFilter = {
+          id: { in: internIds },
+          interviewStatus: InterviewStatus.Pending,
+        };
+
+        await this.prisma.interviewSlot.updateMany({
+          where: {
+            intern: internFilter,
+          },
+          data: {
+            internId: null,
+          },
+        });
+
+        return await this.prisma.intern.updateMany({
+          where: internFilter,
+          data: {
+            interviewStatus: InterviewStatus.PickTerm,
+          },
+        });
+
+      case 'CancelTestSlot':
+        return await this.prisma.internDiscipline.updateMany({
+          where: {
+            internId: { in: internIds },
+            discipline: action.discipline,
+            testStatus: TestStatus.Pending,
+          },
+          data: {
+            testStatus: TestStatus.PickTerm,
+            testSlotId: null,
+          },
+        });
+
+      default:
+        return new BadRequestException();
+    }
+  }
+
+  async setDecision(internId: string, data: InternDecisionRequest) {
+    return await this.prisma.$transaction(
+      data.disciplines.map((d) =>
+        this.prisma.internDiscipline.update({
+          where: {
+            internId_discipline: {
+              internId,
+              discipline: d.discipline,
+            },
+          },
+          data: {
+            status: d.status,
+          },
+        }),
+      ),
+    );
   }
 }

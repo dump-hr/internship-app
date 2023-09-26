@@ -1,4 +1,6 @@
 import {
+  BoardAction,
+  BoardActionRequest,
   DisciplineStatus,
   Intern,
   InternStatus,
@@ -7,9 +9,12 @@ import {
 import { Button, Grid } from '@mui/material';
 import { useState } from 'react';
 import { FieldValues } from 'react-hook-form';
+import toast from 'react-hot-toast';
 
+import { useApplyBoardAction } from '../../api/useApplyBoardAction';
 import { useFetchAllInterns } from '../../api/useFetchAllInterns';
 import AdminPage from '../../components/AdminPage';
+import BoardActions from '../../components/BoardActions';
 import InternFilter from '../../components/InternFilter';
 import {
   FilterCriteria,
@@ -45,10 +50,13 @@ const initialState: { filterCriteria: FilterCriteria } = {
 };
 
 const DashboardPage = () => {
-  const { data: interns } = useFetchAllInterns();
+  const { data: interns, refetch } = useFetchAllInterns();
+  const applyBoardAction = useApplyBoardAction(refetch);
 
   const [selection, setSelection] = useState<string[]>([]);
   const [emailDialogOpen, setEmailDialogOpen] = useState(false);
+  const [actionsOpen, setActionsOpen] = useState(false);
+  const toggleActions = () => setActionsOpen((prev) => !prev);
 
   const [filterCriteria, setFilterCriteria] = useState<FilterCriteria>(
     initialState.filterCriteria,
@@ -61,6 +69,13 @@ const DashboardPage = () => {
 
   const filterHandler = (criteria: FieldValues) => {
     setFilterCriteria(criteria as FilterCriteria);
+  };
+
+  const actionHandler = (action: BoardAction) => {
+    if (!selection.length) return toast.error('Selektiraj pripravnike!');
+
+    const request: BoardActionRequest = { action, internIds: selection };
+    applyBoardAction.mutate(request);
   };
 
   const stats = [
@@ -98,14 +113,25 @@ const DashboardPage = () => {
           </Grid>
         ))}
       </Grid>
+
+      {actionsOpen && <BoardActions handleSubmit={actionHandler} />}
+
+      <InternFilter submitHandler={filterHandler} />
+
       <Grid item xs={12} md={5}>
         <div className={c.buttonsWrapper}>
           <Button disabled>Pregledaj dev ispit</Button>
           <Button onClick={() => setEmailDialogOpen(true)}>Pošalji mail</Button>
+          <Button
+            onClick={toggleActions}
+            disabled={!selection.length && !actionsOpen}
+          >
+            Toggleaj akcije
+          </Button>
         </div>
       </Grid>
 
-      <InternFilter submitHandler={filterHandler} />
+      {actionsOpen && <>{selection.length} interna selektirano.</>}
       <InternList
         data={internsWithStatus?.filter(getInternFilter(filterCriteria))}
         setSelection={setSelection}
