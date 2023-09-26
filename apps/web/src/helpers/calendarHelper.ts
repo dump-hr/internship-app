@@ -6,6 +6,7 @@ const parseInterviewSlotToCalendarEvent = (interviewSlot: InterviewSlot) => {
     id: interviewSlot.id,
     start: moment(interviewSlot.start).toDate(),
     end: moment(interviewSlot.end).toDate(),
+    interviewers: interviewSlot.interviewers,
     additionalInfo: `Interviewers: ${interviewSlot.interviewers
       .map((interviewer) => interviewer.interviewer.name)
       .join(', ')}`,
@@ -77,6 +78,17 @@ const mergeEventsWithSameInterviewers = (events) => {
   return events;
 };
 
+export const getDisciplinesFromEvent = (event) => {
+  const arrayOfArrays = event.interviewers.map(
+    (interviewer) => interviewer.interviewer.disciplines,
+  );
+
+  const flattenedArray = arrayOfArrays.flatMap((array) => array);
+  const uniqueDisciplines = [...new Set(flattenedArray)];
+
+  return uniqueDisciplines;
+};
+
 export const calendarHelper = {
   parseInterviewSlotToCalendarEvent,
   parseCalendarEventToInterviewSlot,
@@ -84,4 +96,5 @@ export const calendarHelper = {
   getOverlappingEvents,
   getMergedEvent,
   mergeEventsWithSameInterviewers,
+  getDisciplinesFromEvent,
 };

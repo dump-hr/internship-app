@@ -1,8 +1,7 @@
 import { Discipline } from '@internship-app/types';
-import { Button } from '@mui/material';
 import { useEffect, useState } from 'react';
 
-import { useFetchInterviewersByDiscipline } from '../../api/useFetchInterviewers';
+import { useFetchInterviewers } from '../../api/useFetchInterviewers';
 import { MultilineInput } from '../common/MultilineInput/MultilineInput';
 import { CustomSelectInput } from '../common/SelectInput/CustomSelectInput';
 import styles from './index.module.css';
@@ -20,9 +19,7 @@ export const CalendarSidebar: React.FC<Props> = ({
   const [selectedInterviewers, setSelectedInterviewers] = useState<
     string[] | null
   >(null);
-  const { data: interviewers } = useFetchInterviewersByDiscipline(
-    selectedDiscipline || '',
-  );
+  const { data: interviewers } = useFetchInterviewers();
 
   useEffect(() => {
     setDiscipline(selectedDiscipline || null);
@@ -34,7 +31,7 @@ export const CalendarSidebar: React.FC<Props> = ({
       <CustomSelectInput
         label="Područje:"
         menuOptions={Object.values(Discipline)}
-        isMultiSelect={false}
+        isMultiSelect={true}
         valueHandler={(value) => setSelectedDiscipline(value)}
       />
       <CustomSelectInput

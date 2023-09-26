@@ -53,9 +53,6 @@
   display: none;
   height: 0;
 }
-.rbc-event-info {
-  padding-top: 10px;
-}
 .rbc-event {
   width: 100% !important;
   opacity: 0.54;

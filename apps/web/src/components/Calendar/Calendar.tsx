@@ -26,14 +26,12 @@ const localizer = dateFnsLocalizer({
 interface Props {
   existingEvents: any[];
   deleteEvent: (event: any) => void;
-  updateEvent: (event: any) => void;
   addEvent: (event: any) => void;
 }
 
 export const Calendar: React.FC<Props> = ({
   existingEvents,
   deleteEvent,
-  updateEvent,
   addEvent,
 }: Props) => {
   const [events, setEvents] = useState(existingEvents);
@@ -47,39 +45,14 @@ export const Calendar: React.FC<Props> = ({
       slotInfo,
     );
 
-    overlappingEvents.forEach(deleteEvent); // --> mutation
+    overlappingEvents.forEach(deleteEvent);
 
     const newMergedEvent = calendarHelper.getMergedEvent(
       overlappingEvents,
       slotInfo,
     );
 
-    addEvent(newMergedEvent); // --> api
-
-    //setEvents((prev) => [...prev, newMergedEvent]);
-  };
-
-  const handleTimeSlotEdit = (editedSlotInfo: any) => {
-    if (!events) return;
-
-    const overlappingEvents = calendarHelper.getOverlappingEvents(
-      events,
-      editedSlotInfo,
-    );
-    overlappingEvents
-      .filter(
-        (event) =>
-          event.start !== editedSlotInfo.start &&
-          event.end !== editedSlotInfo.end,
-      )
-      .forEach(deleteEvent); // --> mutation
-
-    const mergedEvent = calendarHelper.getMergedEvent(
-      overlappingEvents,
-      editedSlotInfo,
-    );
-    setEvents((prev) => [...prev, mergedEvent]);
-    //updateEvent({ ...mergedEvent, id: editedSlotInfo.id }); --> api
+    addEvent(newMergedEvent);
   };
 
   const handleTimeSlotSelect = (event: any) => {
@@ -107,8 +80,6 @@ export const Calendar: React.FC<Props> = ({
         culture="hr"
         className={styles.wrapper}
         onSelectSlot={handleTimeSlotAdd}
-        onEventResize={(e) => handleTimeSlotEdit(e)}
-        onEventDrop={(e) => handleTimeSlotEdit(e)}
         onSelectEvent={(e) => handleTimeSlotSelect(e)}
         events={events}
         components={{

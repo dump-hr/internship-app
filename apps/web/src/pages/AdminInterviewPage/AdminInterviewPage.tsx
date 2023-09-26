@@ -32,11 +32,8 @@ export const AdminInterviewPage = () => {
     });
   }
 
-  function updateEvent() {}
-
   function addEvent(event) {
     if (!event || !selectedDiscipline || !selectedInterviewers) {
-      console.log('Data missing');
       return;
     }
 
@@ -61,7 +58,6 @@ export const AdminInterviewPage = () => {
       return calendarHelper.parseInterviewSlotToCalendarEvent(interviewSlot);
     });
 
-    //setEvents(calendarHelper.mergeEventsWithSameInterviewers(convertedEvents));
     setEvents(convertedEvents);
   }, [interviewSlots]);
 
@@ -70,7 +66,6 @@ export const AdminInterviewPage = () => {
       <Calendar
         existingEvents={events}
         deleteEvent={deleteEvent}
-        updateEvent={updateEvent}
         addEvent={addEvent}
       />
       <CalendarSidebar
