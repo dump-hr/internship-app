@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { Discipline } from '@prisma/client';
 import { PrismaService } from 'src/prisma.service';
 
@@ -22,7 +22,7 @@ export class InterviewSlotService {
     return interviewSlots;
   }
 
-  async getByInterviewer(interviewerNames: string[]) {
+  async getByInterviewers(interviewerNames: string[]) {
     const interviewSlots = await this.prisma.interviewSlot.findMany({
       where: {
         interviewers: {
@@ -47,8 +47,8 @@ export class InterviewSlotService {
     return interviewSlots;
   }
 
-  mapStringsToDisciplines(strings: string[]): Discipline[] {
-    const mappedDisciplines: Discipline[] = strings.map((str) => {
+  async getByDisciplines(disciplines: string[]) {
+    const mappedDisciplines: Discipline[] = disciplines.map((str) => {
       switch (str) {
         case 'Development':
           return Discipline.Development;
@@ -62,12 +62,6 @@ export class InterviewSlotService {
           return Discipline.Development;
       }
     });
-
-    return mappedDisciplines;
-  }
-
-  async getByDisciplines(disciplines: string[]) {
-    const mappedDisciplines = this.mapStringsToDisciplines(disciplines);
 
     const interviewSlots = await this.prisma.interviewSlot.findMany({
       where: {

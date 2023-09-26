@@ -1,4 +1,13 @@
-import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Logger,
+  Param,
+  Post,
+  Query,
+} from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 
 import { CreateInterviewSlotDto } from './dto/createInterviewSlot.dto';
@@ -10,9 +19,33 @@ export class InterviewSlotController {
   constructor(private readonly interviewSlotService: InterviewSlotService) {}
 
   @Get()
-  async getAll() {
-    const interviewSlots = await this.interviewSlotService.getAll();
-    return interviewSlots;
+  async getAll(
+    @Query('disciplines') disciplines: string,
+    @Query('interviewers') interviewers: string,
+  ) {
+    let interviewSlotsFilteredByDiscipline = [];
+    let interviewSlotsFilteredByInterviewer = [];
+    let allInterviewSlots = [];
+    if (disciplines) {
+      interviewSlotsFilteredByDiscipline =
+        await this.interviewSlotService.getByDisciplines(
+          disciplines ? disciplines.split(',') : [],
+        );
+    }
+    if (interviewers) {
+      interviewSlotsFilteredByInterviewer =
+        await this.interviewSlotService.getByInterviewers(
+          interviewers ? interviewers.split(',') : [],
+        );
+    }
+    if (!interviewers && !disciplines) {
+      allInterviewSlots = await this.interviewSlotService.getAll();
+    }
+    return [
+      ...allInterviewSlots,
+      ...interviewSlotsFilteredByDiscipline,
+      ...interviewSlotsFilteredByInterviewer,
+    ];
   }
 
   @Delete('/:id')

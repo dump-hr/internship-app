@@ -12,14 +12,14 @@ import styles from './index.module.css';
 type Event = {};
 
 export const AdminInterviewPage = () => {
-  const [disciplineFilter, setDisciplineFilter] = useState<string | null>();
+  const [disciplineFilter, setDisciplineFilter] = useState<string[] | null>();
   const [interviewFilter, setInterviewFilter] = useState<string[] | null>();
   const [selectedInterviewers, setSelectedInterviewers] = useState<
     string[] | null
   >();
   const [events, setEvents] = useState<any[]>([]);
   const { data: interviewSlots, refetchInterviewSlots } =
-    useFetchInterviewSlots();
+    useFetchInterviewSlots(disciplineFilter, interviewFilter);
 
   const deleteInterviewSlotMutation = useDeleteInterviewSlot();
   const createInterviewSlotMutation = useCreateInterviewSlot();
