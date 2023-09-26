@@ -158,7 +158,7 @@ export class InternService {
         });
 
       default:
-        break;
+        return new BadRequestException();
     }
   }
 }

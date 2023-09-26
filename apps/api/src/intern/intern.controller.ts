@@ -66,7 +66,7 @@ export class InternController {
     return await this.internService.setInterview(internId, data);
   }
 
-  @Put('applyBoardAction')
+  @Put('boardAction')
   async applyBoardAction(@Body() { action, internIds }: BoardActionRequest) {
     return await this.internService.applyBoardAction(action, internIds);
   }

@@ -9,6 +9,7 @@ import {
 import { Button, Grid } from '@mui/material';
 import { useState } from 'react';
 import { FieldValues } from 'react-hook-form';
+import toast from 'react-hot-toast';
 
 import { useApplyBoardAction } from '../../api/useApplyBoardAction';
 import { useFetchAllInterns } from '../../api/useFetchAllInterns';
@@ -71,6 +72,8 @@ const DashboardPage = () => {
   };
 
   const actionHandler = (action: BoardAction) => {
+    if (!selection.length) return toast.error('Selektiraj pripravnike!');
+
     const request: BoardActionRequest = { action, internIds: selection };
     applyBoardAction.mutate(request);
   };

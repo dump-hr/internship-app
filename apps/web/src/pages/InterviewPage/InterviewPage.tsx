@@ -35,7 +35,7 @@ const InterviewPage = () => {
     navigate(Path.Intern.replace(':internId', params?.internId || ''));
   });
 
-  const [confirmDialogOpen, setDialogOpen] = useState(false);
+  const [dialogOpen, setDialogOpen] = useState(false);
   const form = useForm<FieldValues>({
     defaultValues: defaultInterviewValues,
   });
@@ -83,7 +83,7 @@ const InterviewPage = () => {
         InputHandler={InterviewQuestionHandler}
       />
       <ConfirmDialog
-        open={!!confirmDialogOpen}
+        open={!!dialogOpen}
         handleClose={(confirmed) => {
           if (confirmed) handleFormSubmit(internId);
           setDialogOpen(false);

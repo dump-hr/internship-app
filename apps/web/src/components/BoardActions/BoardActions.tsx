@@ -34,6 +34,7 @@ const BoardActions: React.FC<BoardActionProps> = ({ handleSubmit }) => {
         title="Potvrdi izvršenje akcije!"
         description="Oprezno - izazvanu štetu možda neće biti moguće popraviti."
       />
+
       <Box>
         <Button
           variant="contained"
@@ -43,6 +44,7 @@ const BoardActions: React.FC<BoardActionProps> = ({ handleSubmit }) => {
         >
           Podnesi
         </Button>
+
         <Box display="flex" gap="20px">
           <Box width="200px">
             <InputHandler question={actionQuestion} form={form} />
@@ -53,6 +55,7 @@ const BoardActions: React.FC<BoardActionProps> = ({ handleSubmit }) => {
             </Box>
           ))}
         </Box>
+
         <Typography variant="body2">
           {options[currentAction]?.description}
         </Typography>
