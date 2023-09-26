@@ -161,6 +161,14 @@ export class InternService {
           },
         });
 
+      case 'Kick':
+        return await this.prisma.internDiscipline.updateMany({
+          where: { internId: { in: internIds } },
+          data: {
+            status: 'Rejected',
+          },
+        });
+
       default:
         return new BadRequestException();
     }

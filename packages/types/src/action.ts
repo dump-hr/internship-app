@@ -3,6 +3,7 @@ import { Discipline, DisciplineStatus, InterviewStatus, TestStatus } from "./int
 export enum BoardActionType {
     SetInterviewStatus = 'SetInterviewStatus',
     SetDiscipline = 'SetDiscipline',
+    Kick = 'Kick'
   }
 
 export type BoardAction =   (| {
@@ -14,6 +15,9 @@ export type BoardAction =   (| {
     discipline: Discipline,
     status?: DisciplineStatus,
     testStatus?: TestStatus
+}
+| {
+    actionType: BoardActionType.Kick
 }
 )
 

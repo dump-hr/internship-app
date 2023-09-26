@@ -54,6 +54,11 @@ export const options: { [key in BoardActionType]: Option } = {
       },
     ],
   },
+  [BoardActionType.Kick]: {
+    description:
+      'Izbacuje selektirane pripravnike iz svih područja, odnosno Internshipa. Status intervjua, testova nepromijenjen.',
+    questions: [],
+  },
 };
 
 export const actionQuestion: Question = {
