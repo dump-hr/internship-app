@@ -1,8 +1,4 @@
-import {
-  BoardAction,
-  BoardActionType,
-  SetInterviewRequest,
-} from '@internship-app/types';
+import { BoardAction, SetInterviewRequest } from '@internship-app/types';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import {
   Discipline,
@@ -146,13 +142,13 @@ export class InternService {
 
   async applyBoardAction(action: BoardAction, internIds: string[]) {
     switch (action.actionType) {
-      case BoardActionType.SetInterviewStatus:
+      case 'SetInterviewStatus':
         return await this.prisma.intern.updateMany({
           where: { id: { in: internIds } },
           data: { interviewStatus: action.interviewStatus },
         });
 
-      case BoardActionType.SetDiscipline:
+      case 'SetDiscipline':
         return await this.prisma.internDiscipline.updateMany({
           where: { internId: { in: internIds }, discipline: action.discipline },
           data: {
