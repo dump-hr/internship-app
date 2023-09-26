@@ -1,4 +1,4 @@
-import { IsArray, IsDateString } from 'class-validator';
+import { IsArray, IsDateString, IsString } from 'class-validator';
 
 export class CreateInterviewSlotDto {
   @IsDateString()
@@ -9,4 +9,7 @@ export class CreateInterviewSlotDto {
 
   @IsArray()
   interviewers: string[];
+
+  @IsString()
+  notes?: string;
 }

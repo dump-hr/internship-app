@@ -83,10 +83,12 @@ export type InterviewSlot = {
   end: string;
   answers: JSON;
   score?: number;
+  notes?: string;
 };
 
 export type CreateInterviewSlotDto = {
   start: string;
   end: string;
   interviewers: string[];
+  notes?: string;
 };

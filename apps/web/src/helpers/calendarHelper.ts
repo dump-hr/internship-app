@@ -9,7 +9,7 @@ const parseInterviewSlotToCalendarEvent = (interviewSlot: InterviewSlot) => {
     interviewers: interviewSlot.interviewers,
     additionalInfo: `Interviewers: ${interviewSlot.interviewers
       .map((interviewer) => interviewer.interviewer.name)
-      .join(', ')}`,
+      .join(', ')}\nNotes: ${interviewSlot?.notes ?? 'None'}`,
   };
 };
 

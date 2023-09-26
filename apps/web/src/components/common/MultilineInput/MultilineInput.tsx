@@ -2,6 +2,16 @@ import { TextField } from '@mui/material';
 
 import styles from './index.module.css';
 
-export const MultilineInput = () => {
-  return <TextField className={styles.fieldWrapper} multiline />;
+interface Props {
+  onValueChange: (value: string) => void;
+}
+
+export const MultilineInput = ({ onValueChange }: Props) => {
+  return (
+    <TextField
+      className={styles.fieldWrapper}
+      multiline
+      onChange={(e) => onValueChange(e.target.value)}
+    />
+  );
 };

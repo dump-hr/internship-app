@@ -11,24 +11,28 @@ interface Props {
   setSelectedDisciplineFilter: (value: string | null) => void;
   setInterviewers: (value: string[] | null) => void;
   setSelectedInterviewerFilter: (value: string[] | null) => void;
+  setAdditionalNotesValue: (value: string | null) => void;
 }
 
 export const CalendarSidebar: React.FC<Props> = ({
   setInterviewers,
   setSelectedDisciplineFilter,
   setSelectedInterviewerFilter,
+  setAdditionalNotesValue,
 }: Props) => {
   const [disciplineFilter, setDisciplineFilter] = useState(null);
   const [interviewerFilter, setInterviewerFilter] = useState(null);
   const [selectedInterviewers, setSelectedInterviewers] = useState<
     string[] | null
   >(null);
+  const [notesValue, setNotesValue] = useState<string | null>(null);
   const { data: interviewers } = useFetchInterviewers();
 
   useEffect(() => {
     setSelectedDisciplineFilter(disciplineFilter || null);
     setSelectedInterviewerFilter(interviewerFilter || null);
     setInterviewers(selectedInterviewers || null);
+    setAdditionalNotesValue(notesValue || null);
   }, [selectedInterviewers, disciplineFilter, interviewerFilter]);
 
   return (
@@ -59,7 +63,7 @@ export const CalendarSidebar: React.FC<Props> = ({
       />
       <div>
         <div className={styles.notesLabel}>Notes:</div>
-        <MultilineInput />
+        <MultilineInput onValueChange={setNotesValue} />
       </div>
     </div>
   );

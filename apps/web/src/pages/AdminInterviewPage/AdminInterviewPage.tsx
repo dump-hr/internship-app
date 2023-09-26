@@ -17,6 +17,9 @@ export const AdminInterviewPage = () => {
   const [selectedInterviewers, setSelectedInterviewers] = useState<
     string[] | null
   >();
+  const [additionalNotesValue, setAdditionalNotesValue] = useState<
+    string | null
+  >(null);
   const [events, setEvents] = useState<any[]>([]);
   const { data: interviewSlots, refetchInterviewSlots } =
     useFetchInterviewSlots(disciplineFilter, interviewFilter);
@@ -42,6 +45,7 @@ export const AdminInterviewPage = () => {
       start: moment(event.start).format('YYYY-MM-DD HH:mm:ss'),
       end: moment(event.end).format('YYYY-MM-DD HH:mm:ss'),
       interviewers: selectedInterviewers,
+      notes: additionalNotesValue,
     };
 
     createInterviewSlotMutation.mutate(interviewSlotDto, {
@@ -73,6 +77,7 @@ export const AdminInterviewPage = () => {
         setSelectedDisciplineFilter={setDisciplineFilter}
         setSelectedInterviewerFilter={setInterviewFilter}
         setInterviewers={setSelectedInterviewers}
+        setAdditionalNotesValue={setAdditionalNotesValue}
       />
     </div>
   );
