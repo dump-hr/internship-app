@@ -16,7 +16,7 @@ type Option = {
 export const options: { [key in BoardActionType]: Option } = {
   [BoardActionType.SetInterviewStatus]: {
     description:
-      'Izmijeni intervju status selektiranih na određenu vrijednost.',
+      'Izmijeni intervju status selektiranih na određenu vrijednost. Napomena: za poništenje termina intervjua koristi CancelInterviewSlot.',
     questions: [
       {
         id: 'interviewStatus',
@@ -28,8 +28,8 @@ export const options: { [key in BoardActionType]: Option } = {
     ],
   },
   [BoardActionType.SetDiscipline]: {
-    description:
-      'Izmijeni discipline status selektiranih na određenu vrijednost. Prazna polja bit će ignorirana.',
+    description: `Izmijeni discipline status selektiranih na određenu vrijednost. Prazna polja bit će ignorirana.
+      Napomena: ovo ne utječe na logiku aplikacije, pa bi intervjue/testove/prava trebalo brisati/izmijeniti ručno.`,
     questions: [
       {
         id: 'discipline',
@@ -56,8 +56,26 @@ export const options: { [key in BoardActionType]: Option } = {
   },
   [BoardActionType.Kick]: {
     description:
-      'Izbacuje selektirane pripravnike iz svih područja, odnosno Internshipa. Status intervjua, testova nepromijenjen.',
+      'Izbacuje selektirane pripravnike iz svih područja, odnosno Internshipa. Poništava termin svih nenapisanih testova i pending intervjua. Koristiti u slučaju da netko odustane.',
     questions: [],
+  },
+  [BoardActionType.CancelInterviewSlot]: {
+    description:
+      'Poništava interview slot selektiranih pripravnika, samo u slučaju kada je Pending. Interview slot sada je opet slobodan drugima na biranje, a selektirani pripravnici mogu odabrati drugi termin u aplikaciji. Koristiti u slučaju da netko ipak ne može doći na neki termin.',
+    questions: [],
+  },
+  [BoardActionType.CancelTestSlot]: {
+    description:
+      'Poništava test slot određenog područja selektiranih pripravnika, samo u slučaju kada je Pending. Test slot sada je opet slobodan drugima na biranje, a selektirani pripravnici mogu odabrati drugi termin u aplikaciji. Koristiti u slučaju da netko ipak ne može doći na neki termin.',
+    questions: [
+      {
+        id: 'discipline',
+        title: 'Područje',
+        type: QuestionType.Select,
+        options: [Discipline.Development, Discipline.Design],
+        registerValue: Discipline.Development,
+      },
+    ],
   },
 };
 

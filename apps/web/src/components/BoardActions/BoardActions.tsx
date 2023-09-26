@@ -56,7 +56,7 @@ const BoardActions: React.FC<BoardActionProps> = ({ handleSubmit }) => {
           ))}
         </Box>
 
-        <Typography variant="body2">
+        <Typography variant="body2" maxWidth="700px">
           {options[currentAction]?.description}
         </Typography>
       </Box>

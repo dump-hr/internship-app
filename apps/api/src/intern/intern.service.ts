@@ -162,10 +162,77 @@ export class InternService {
         });
 
       case 'Kick':
+        await this.prisma.interviewSlot.updateMany({
+          where: {
+            intern: {
+              id: { in: internIds },
+              interviewStatus: InterviewStatus.Pending,
+            },
+          },
+          data: { internId: null },
+        });
+
+        await this.prisma.intern.updateMany({
+          where: {
+            id: { in: internIds },
+            interviewStatus: {
+              in: [InterviewStatus.PickTerm, InterviewStatus.Pending],
+            },
+          },
+          data: {
+            interviewStatus: InterviewStatus.NoRight,
+          },
+        });
+
+        await this.prisma.internDiscipline.updateMany({
+          where: {
+            internId: { in: internIds },
+            testStatus: {
+              in: [TestStatus.PickTerm, TestStatus.Pending],
+            },
+          },
+          data: { testSlotId: null, testStatus: null },
+        });
+
         return await this.prisma.internDiscipline.updateMany({
           where: { internId: { in: internIds } },
           data: {
-            status: 'Rejected',
+            status: DisciplineStatus.Rejected,
+          },
+        });
+
+      case 'CancelInterviewSlot':
+        const internFilter = {
+          id: { in: internIds },
+          interviewStatus: InterviewStatus.Pending,
+        };
+
+        await this.prisma.interviewSlot.updateMany({
+          where: {
+            intern: internFilter,
+          },
+          data: {
+            internId: null,
+          },
+        });
+
+        return await this.prisma.intern.updateMany({
+          where: internFilter,
+          data: {
+            interviewStatus: InterviewStatus.PickTerm,
+          },
+        });
+
+      case 'CancelTestSlot':
+        return await this.prisma.internDiscipline.updateMany({
+          where: {
+            internId: { in: internIds },
+            discipline: action.discipline,
+            testStatus: TestStatus.Pending,
+          },
+          data: {
+            testStatus: TestStatus.PickTerm,
+            testSlotId: null,
           },
         });
 
