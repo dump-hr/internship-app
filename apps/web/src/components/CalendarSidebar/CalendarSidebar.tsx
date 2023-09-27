@@ -20,25 +20,7 @@ export const CalendarSidebar: React.FC<Props> = ({
   setSelectedInterviewerFilter,
   setAdditionalNotesValue,
 }: Props) => {
-  const [disciplineFilter, setDisciplineFilter] = useState<string[] | null>(
-    null,
-  );
-  const [interviewerFilter, setInterviewerFilter] = useState<string[] | null>(
-    null,
-  );
-  const [selectedInterviewers, setSelectedInterviewers] = useState<
-    string[] | null
-  >(null);
-  const [notesValue, setNotesValue] = useState<string | null>(null);
   const { data: interviewers } = useFetchInterviewers();
-
-  useEffect(() => {
-    setSelectedDisciplineFilter(disciplineFilter || null);
-    setSelectedInterviewerFilter(interviewerFilter || null);
-    setInterviewers(selectedInterviewers || null);
-    setAdditionalNotesValue(notesValue || undefined);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedInterviewers, disciplineFilter, interviewerFilter]);
 
   return (
     <div className={styles.wrapper}>
@@ -49,7 +31,9 @@ export const CalendarSidebar: React.FC<Props> = ({
           menuOptions={Object.values(Discipline)}
           isMultiSelect={true}
           valueHandler={(value) =>
-            setDisciplineFilter(typeof value === 'string' ? [value] : value)
+            setSelectedDisciplineFilter(
+              typeof value === 'string' ? [value] : value,
+            )
           }
         />
       </div>
@@ -60,7 +44,9 @@ export const CalendarSidebar: React.FC<Props> = ({
           menuOptions={interviewers?.map((interviewer) => interviewer.name)}
           isMultiSelect={true}
           valueHandler={(value) =>
-            setInterviewerFilter(typeof value === 'string' ? [value] : value)
+            setSelectedInterviewerFilter(
+              typeof value === 'string' ? [value] : value,
+            )
           }
         />
       </div>
@@ -69,12 +55,12 @@ export const CalendarSidebar: React.FC<Props> = ({
         menuOptions={interviewers?.map((interviewer) => interviewer.name)}
         isMultiSelect={true}
         valueHandler={(value) =>
-          setSelectedInterviewers(typeof value === 'string' ? [value] : value)
+          setInterviewers(typeof value === 'string' ? [value] : value)
         }
       />
       <div>
         <div className={styles.notesLabel}>Notes:</div>
-        <MultilineInput onValueChange={setNotesValue} />
+        <MultilineInput onValueChange={setAdditionalNotesValue} />
       </div>
     </div>
   );
