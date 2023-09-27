@@ -1,12 +1,13 @@
-import { Interviewer, InterviewSlot } from '@internship-app/types';
+import { InterviewSlot } from '@internship-app/types';
 import moment from 'moment';
+import { SlotInfo } from 'react-big-calendar';
 
 type MappedEvent = {
   id: string;
   start: Date;
   end: Date;
   additionalInfo: string;
-  interviewers: Interviewer[];
+  interviewers: string[];
 };
 
 const parseInterviewSlotToCalendarEvent = (interviewSlot: InterviewSlot) => {
@@ -18,32 +19,28 @@ const parseInterviewSlotToCalendarEvent = (interviewSlot: InterviewSlot) => {
     additionalInfo: `Interviewers: ${interviewSlot.interviewers
       .map((interviewer) => interviewer.interviewer.name)
       .join(', ')}\nNotes: ${interviewSlot?.notes ?? 'None'}`,
-  } as MappedEvent;
+  };
 };
 
-const checkIfEventExists = (events, newEvent) => {
+const checkIfEventExists = (events: MappedEvent[], newEvent: SlotInfo) => {
   return events.some((event) => {
     return event.start === newEvent.start && event.end === newEvent.end;
   });
 };
 
-const checkIfDateIsBetween = (date: Date, start: Date, end: Date) => {
-  return date >= start && date <= end;
-};
-
-const getOverlappingEvents = (events, newEvent) => {
+const getOverlappingEvents = (events: MappedEvent[], newEvent: SlotInfo) => {
   return events.filter((e) => {
     const isOverlap =
-      checkIfDateIsBetween(e.start, newEvent.start, newEvent.end) ||
-      checkIfDateIsBetween(e.end, newEvent.start, newEvent.end) ||
-      checkIfDateIsBetween(newEvent.start, e.start, e.end) ||
-      checkIfDateIsBetween(newEvent.end, e.start, e.end);
+      moment(newEvent.start).isBetween(e.start, e.end) ||
+      moment(newEvent.end).isBetween(e.start, e.end) ||
+      moment(e.start).isBetween(newEvent.start, newEvent.end) ||
+      moment(e.end).isBetween(newEvent.start, newEvent.end);
 
     return isOverlap;
   });
 };
 
-const getMergedEvent = (events, newEvent) => {
+const getMergedEvent = (events: MappedEvent[], newEvent: SlotInfo) => {
   if (!events.length) return newEvent;
   events.push(newEvent);
   const mergedStartTime = moment.min(
@@ -59,30 +56,7 @@ const getMergedEvent = (events, newEvent) => {
   };
 };
 
-const mergeEventsWithSameInterviewers = (events) => {
-  events.sort((a, b) => a.start.getTime() - b.start.getTime());
-
-  let i = 0;
-  while (i < events.length - 1) {
-    const currentEvent = events[i];
-    const nextEvent = events[i + 1];
-
-    if (
-      JSON.stringify(currentEvent.interviewers) ===
-        JSON.stringify(nextEvent.interviewers) &&
-      currentEvent.end.getTime() === nextEvent.start.getTime()
-    ) {
-      currentEvent.end = nextEvent.end;
-      events.splice(i + 1, 1);
-    } else {
-      i++;
-    }
-  }
-
-  return events;
-};
-
-export const getDisciplinesFromEvent = (event) => {
+export const getDisciplinesFromEvent = (event: InterviewSlot) => {
   const arrayOfArrays = event.interviewers.map(
     (interviewer) => interviewer.interviewer.disciplines,
   );
@@ -98,6 +72,5 @@ export const calendarHelper = {
   checkIfEventExists,
   getOverlappingEvents,
   getMergedEvent,
-  mergeEventsWithSameInterviewers,
   getDisciplinesFromEvent,
 };
