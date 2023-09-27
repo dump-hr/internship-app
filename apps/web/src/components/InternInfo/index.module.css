@@ -1,0 +1,55 @@
+.container {
+  display: flex;
+  flex-direction: row;
+  align-items: start;
+  width: 100%;
+}
+
+.page {
+  padding: 50px 8%;
+}
+
+.container > :first-child {
+  width: 35%;
+  padding: 0 20px 0 0;
+}
+
+.container > :last-child {
+  width: 65%;
+}
+
+@media screen and (max-width: 360px) {
+  .container > :first-child, .container > :last-child {
+    width: 100%;
+    padding: 0;
+  }
+  .container {
+    flex-direction: column;
+  }
+  
+}
+
+img {
+  width: 100%;
+  aspect-ratio: calc(16 / 9);
+}
+.container > div > * {
+  max-width: 100%;
+}
+
+.datesContainer {
+  padding: 0 0 15px 0;
+  margin: 0;
+  color: gray;
+  font-size: 14px;
+}
+
+h1 {
+  padding: 0;
+  margin: 0;
+  font-size: 40px;
+}
+
+.atribute:first-child > h3 {
+  margin-top: 0;
+}

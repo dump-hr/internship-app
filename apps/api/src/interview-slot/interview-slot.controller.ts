@@ -1,9 +1,11 @@
+import { ScheduleInterviewRequest } from '@internship-app/types';
 import {
   Body,
   Controller,
   Delete,
   Get,
   Param,
+  Patch,
   Post,
   Query,
 } from '@nestjs/common';
@@ -57,5 +59,18 @@ export class InterviewSlotController {
     return await this.interviewSlotService.createInterviewSlot(
       interviewSlotDto,
     );
+  }
+
+  @Get('available/:internId')
+  async getAvailableSlots(@Param('internId') internId: string) {
+    return await this.interviewSlotService.getAvailableSlots(internId);
+  }
+
+  @Patch('schedule/:slotId')
+  async scheduleInterview(
+    @Param('slotId') slotId: string,
+    @Body() { internId }: ScheduleInterviewRequest,
+  ) {
+    return await this.interviewSlotService.scheduleInterview(slotId, internId);
   }
 }

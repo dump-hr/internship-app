@@ -1,4 +1,15 @@
+import {
+  BoardAction,
+  InternDecisionRequest,
+  SetInterviewRequest,
+} from '@internship-app/types';
 import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  Discipline,
+  DisciplineStatus,
+  InterviewStatus,
+  TestStatus,
+} from '@prisma/client';
 import { PrismaService } from 'src/prisma.service';
 
 import { CreateInternDto } from './dto/createIntern.dto';
@@ -8,15 +19,29 @@ export class InternService {
   constructor(private readonly prisma: PrismaService) {}
 
   async get(id: string) {
-    const intern = await this.prisma.intern.findUnique({
-      where: { id: id },
+    return await this.prisma.intern.findUnique({
+      where: { id },
+      include: {
+        internDisciplines: true,
+      },
     });
-
-    return intern;
   }
 
   async getAll() {
-    const interns = await this.prisma.intern.findMany();
+    const interns = await this.prisma.intern.findMany({
+      include: {
+        internDisciplines: {
+          orderBy: {
+            priority: 'asc',
+          },
+        },
+        interviewSlot: {
+          select: {
+            score: true,
+          },
+        },
+      },
+    });
 
     return interns;
   }
@@ -47,7 +72,6 @@ export class InternService {
           select: {
             start: true,
             end: true,
-            status: true,
           },
         },
       },
@@ -72,10 +96,166 @@ export class InternService {
       );
     }
 
+    const initialInterviewStatus = internToCreate.disciplines.some(
+      (dis) => dis === Discipline.Development,
+    )
+      ? InterviewStatus.NoRight
+      : InterviewStatus.PickTerm;
+
+    const getInitialTestStatus = (discipline) =>
+      [Discipline.Development, Discipline.Design].includes(discipline)
+        ? TestStatus.PickTerm
+        : null;
+
     const newIntern = await this.prisma.intern.create({
-      data: internToCreate,
+      data: {
+        firstName: internToCreate.firstName,
+        lastName: internToCreate.lastName,
+        email: internToCreate.email,
+        data: internToCreate.data,
+        interviewStatus: initialInterviewStatus,
+        internDisciplines: {
+          createMany: {
+            data: internToCreate.disciplines.map((dis, index) => ({
+              discipline: dis,
+              priority: index,
+              status: DisciplineStatus.Pending,
+              testStatus: getInitialTestStatus(dis),
+            })),
+          },
+        },
+      },
     });
 
     return newIntern;
+  }
+
+  async setInterview(internId: string, data: SetInterviewRequest) {
+    await this.prisma.intern.update({
+      where: {
+        id: internId,
+      },
+      data: {
+        interviewStatus: InterviewStatus.Done,
+        interviewSlot: {
+          update: { answers: data.answers, score: data.score },
+        },
+      },
+    });
+  }
+
+  async applyBoardAction(action: BoardAction, internIds: string[]) {
+    switch (action.actionType) {
+      case 'SetInterviewStatus':
+        return await this.prisma.intern.updateMany({
+          where: { id: { in: internIds } },
+          data: { interviewStatus: action.interviewStatus },
+        });
+
+      case 'SetDiscipline':
+        return await this.prisma.internDiscipline.updateMany({
+          where: { internId: { in: internIds }, discipline: action.discipline },
+          data: {
+            ...(action.status && { status: action.status }),
+            ...(action.testStatus && { testStatus: action.testStatus }),
+          },
+        });
+
+      case 'Kick':
+        await this.prisma.interviewSlot.updateMany({
+          where: {
+            intern: {
+              id: { in: internIds },
+              interviewStatus: InterviewStatus.Pending,
+            },
+          },
+          data: { internId: null },
+        });
+
+        await this.prisma.intern.updateMany({
+          where: {
+            id: { in: internIds },
+            interviewStatus: {
+              in: [InterviewStatus.PickTerm, InterviewStatus.Pending],
+            },
+          },
+          data: {
+            interviewStatus: InterviewStatus.NoRight,
+          },
+        });
+
+        await this.prisma.internDiscipline.updateMany({
+          where: {
+            internId: { in: internIds },
+            testStatus: {
+              in: [TestStatus.PickTerm, TestStatus.Pending],
+            },
+          },
+          data: { testSlotId: null, testStatus: null },
+        });
+
+        return await this.prisma.internDiscipline.updateMany({
+          where: { internId: { in: internIds } },
+          data: {
+            status: DisciplineStatus.Rejected,
+          },
+        });
+
+      case 'CancelInterviewSlot':
+        const internFilter = {
+          id: { in: internIds },
+          interviewStatus: InterviewStatus.Pending,
+        };
+
+        await this.prisma.interviewSlot.updateMany({
+          where: {
+            intern: internFilter,
+          },
+          data: {
+            internId: null,
+          },
+        });
+
+        return await this.prisma.intern.updateMany({
+          where: internFilter,
+          data: {
+            interviewStatus: InterviewStatus.PickTerm,
+          },
+        });
+
+      case 'CancelTestSlot':
+        return await this.prisma.internDiscipline.updateMany({
+          where: {
+            internId: { in: internIds },
+            discipline: action.discipline,
+            testStatus: TestStatus.Pending,
+          },
+          data: {
+            testStatus: TestStatus.PickTerm,
+            testSlotId: null,
+          },
+        });
+
+      default:
+        return new BadRequestException();
+    }
+  }
+
+  async setDecision(internId: string, data: InternDecisionRequest) {
+    return await this.prisma.$transaction(
+      data.disciplines.map((d) =>
+        this.prisma.internDiscipline.update({
+          where: {
+            internId_discipline: {
+              internId,
+              discipline: d.discipline,
+            },
+          },
+          data: {
+            status: d.status,
+          },
+        }),
+      ),
+    );
   }
 }

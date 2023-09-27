@@ -21,10 +21,11 @@ export type FormValues = {
   lastName: string;
   email: string;
   disciplines: Discipline[];
-  phoneNumber: number;
+  phoneNumber: string;
   dateOfBirth: string;
   educationOrEmploymentStatus: EducationOrEmploymentStatus;
   highSchoolOrCollegeName: string;
+  yearOfStudy: string;
   foundOutAboutInternshipBy: FoundOutAboutInternshipBy;
   reasonForApplying: string;
 };
@@ -35,23 +36,23 @@ const disciplineEnumValues = Object.values(Discipline);
 export const ApplicationFormPage = () => {
   const [internDisciplines, setInternDisciplines] = useState<Discipline[]>([]);
 
-  const { mutate: createInternMutation } = usePostIntern();
+  const createIntern = usePostIntern();
 
-  const { register, handleSubmit, formState, reset, watch } =
-    useForm<FormValues>({
-      defaultValues: {
-        firstName: '',
-        lastName: '',
-        email: '',
-        disciplines: [],
-        phoneNumber: 0,
-        dateOfBirth: '',
-        educationOrEmploymentStatus: EducationOrEmploymentStatus.Other,
-        highSchoolOrCollegeName: '',
-        foundOutAboutInternshipBy: FoundOutAboutInternshipBy.Other,
-        reasonForApplying: '',
-      } as FormValues,
-    });
+  const { register, handleSubmit, formState, watch } = useForm<FormValues>({
+    defaultValues: {
+      firstName: '',
+      lastName: '',
+      email: '',
+      disciplines: [],
+      phoneNumber: '',
+      yearOfStudy: '',
+      dateOfBirth: '',
+      educationOrEmploymentStatus: EducationOrEmploymentStatus.Other,
+      highSchoolOrCollegeName: '',
+      foundOutAboutInternshipBy: FoundOutAboutInternshipBy.Other,
+      reasonForApplying: '',
+    } as FormValues,
+  });
 
   const { errors } = formState;
 
@@ -66,13 +67,14 @@ export const ApplicationFormPage = () => {
         dateOfBirth: data.dateOfBirth,
         educationOrEmploymentStatus: data.educationOrEmploymentStatus,
         highSchoolOrCollegeName: data.highSchoolOrCollegeName,
+        yearOfStudy: data.yearOfStudy,
         foundOutAboutInternshipBy: data.foundOutAboutInternshipBy,
         reasonForApplying: data.reasonForApplying,
       },
     };
 
     try {
-      createInternMutation(internToSend);
+      createIntern.mutate(internToSend);
     } catch (err) {
       console.log(err);
     }
@@ -95,15 +97,10 @@ export const ApplicationFormPage = () => {
     }
   };
 
-  const handleReset = () => {
-    reset();
-    setInternDisciplines([]);
-  };
-
   return (
     <div className={classes.applicationFormPageWrapper}>
       <h1 className={classes.applicationFormTitle}>
-        Prijava na DUMP internship
+        Prijava na DUMP Internship
       </h1>
       <form
         className={classes.formClass}
@@ -231,14 +228,10 @@ export const ApplicationFormPage = () => {
           >
             Submit
           </Button>
-
-          <Button type="button" variant="text" onClick={handleReset}>
-            Reset
-          </Button>
         </div>
       </form>
       <h3 className={classes.applicationFooterText}>
-        DUMP udruga mladih programera
+        DUMP Udruga mladih programera
       </h3>
     </div>
   );

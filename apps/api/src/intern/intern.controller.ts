@@ -1,12 +1,20 @@
 import {
+  BoardActionRequest,
+  InternDecisionRequest,
+  SetInterviewRequest,
+} from '@internship-app/types';
+import {
   Body,
   Controller,
   Get,
   NotFoundException,
   Param,
   Post,
+  Put,
+  UseGuards,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
+import { JwtAuthGuard } from 'src/auth/jwt-auth-guard';
 
 import { CreateInternDto } from './dto/createIntern.dto';
 import { InternService } from './intern.service';
@@ -16,6 +24,7 @@ import { InternService } from './intern.service';
 export class InternController {
   constructor(private readonly internService: InternService) {}
 
+  @UseGuards(JwtAuthGuard)
   @Get()
   async getAll() {
     const interns = await this.internService.getAll();
@@ -23,6 +32,7 @@ export class InternController {
     return interns;
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get(':id')
   async get(@Param('id') id: string) {
     const intern = await this.internService.get(id);
@@ -50,5 +60,26 @@ export class InternController {
     const newIntern = await this.internService.create(intern);
 
     return newIntern;
+  }
+
+  @Put('setInterview/:internId')
+  async setInterview(
+    @Param('internId') internId: string,
+    @Body() data: SetInterviewRequest,
+  ) {
+    return await this.internService.setInterview(internId, data);
+  }
+
+  @Put('boardAction')
+  async applyBoardAction(@Body() { action, internIds }: BoardActionRequest) {
+    return await this.internService.applyBoardAction(action, internIds);
+  }
+
+  @Put('setDecision/:internId')
+  async setDecision(
+    @Param('internId') internId: string,
+    @Body() data: InternDecisionRequest,
+  ) {
+    return await this.internService.setDecision(internId, data);
   }
 }

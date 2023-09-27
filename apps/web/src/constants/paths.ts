@@ -1,11 +1,15 @@
 export enum Path {
   Home = '/',
   ApplicationForm = '/application-form',
+  ScheduleInterview = '/schedule-interview/:internId',
   Status = '/status/:internId',
-  Login = '/login',
-  Logout = '/logout',
-  Interview = '/interview/:internId',
+
+  Dashboard = '/admin',
+  Login = '/admin/login',
+  Interview = '/admin/interview/:internId',
+  Intern = '/admin/intern/:internId',
+
   CatchAll = '/:path*',
-  Dashboard = '/dashboard',
+  
   AdminInterviewPicker = '/admin/interview',
 }

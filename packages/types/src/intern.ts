@@ -1,3 +1,5 @@
+import { Json } from './json';
+
 export enum Discipline {
   Development = 'Development',
   Design = 'Design',
@@ -27,12 +29,15 @@ export enum DisciplineStatus {
 }
 
 export enum InterviewStatus {
+  NoRight = 'NoRight',
+  PickTerm = 'PickTerm',
   Pending = 'Pending',
   Done = 'Done',
   Missed = 'Missed',
 }
 
 export enum TestStatus {
+  PickTerm = 'PickTerm',
   Pending = 'Pending',
   Done = 'Done',
   Missed = 'Missed',
@@ -49,9 +54,17 @@ export type Intern = {
   firstName: string;
   lastName: string;
   email: string;
-  data: JSON;
+  data: Json;
+  interviewStatus: InterviewStatus;
   interviewSlot?: InterviewSlot;
   internDisciplines: InternDiscipline[];
+};
+
+export type InternCreateRequest = {
+  firstName: string;
+  lastName: string;
+  email: string;
+  data: Json;
 };
 
 export type InternDiscipline = {
@@ -78,10 +91,9 @@ export type TestSlot = {
 
 export type InterviewSlot = {
   id: string;
-  status?: InterviewStatus;
   start: string;
   end: string;
-  answers: JSON;
+  answers: Json;
   score?: number;
   notes?: string;
   interviewers: Interviewer[];
@@ -111,3 +123,19 @@ export type CreateInterviewSlotDto = {
   interviewers: string[];
   notes?: string;
 };
+
+export enum InternStatus {
+  Approved = 'Approved',
+  Pending = 'Pending',
+  Rejected = 'Rejected',
+}
+
+export type InternWithStatus = Intern & {status: InternStatus}
+
+export type InternDecisionRequest = {
+  internId: string,
+  disciplines: {
+    discipline: Discipline,
+    status: DisciplineStatus
+  }[]
+}

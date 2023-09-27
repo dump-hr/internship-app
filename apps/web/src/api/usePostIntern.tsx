@@ -1,33 +1,10 @@
-import {
-  Discipline,
-  EducationOrEmploymentStatus,
-  FoundOutAboutInternshipBy,
-} from '@internship-app/types';
+import { InternCreateRequest } from '@internship-app/types';
 import { useMutation } from 'react-query';
 
 import { api } from '.';
 
-type InternToCreate = {
-  firstName: string;
-  lastName: string;
-  email: string;
-  disciplines: Discipline[];
-  data: {
-    phoneNumber: number;
-    dateOfBirth: string;
-    educationOrEmploymentStatus: EducationOrEmploymentStatus;
-    highSchoolOrCollegeName: string;
-    foundOutAboutInternshipBy: FoundOutAboutInternshipBy;
-    reasonForApplying: string;
-  };
-};
-
-const addIntern = async (newIntern: InternToCreate) => {
-  try {
-    await api.post('/intern', newIntern);
-  } catch (err) {
-    alert(err);
-  }
+const addIntern = async (newIntern: InternCreateRequest) => {
+  return await api.post('/intern', newIntern);
 };
 
 export const usePostIntern = () => {
