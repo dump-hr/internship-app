@@ -1,3 +1,4 @@
+import { Event } from '@internship-app/types';
 import moment from 'moment';
 import { useEffect, useState } from 'react';
 
@@ -9,25 +10,35 @@ import { CalendarSidebar } from '../../components/CalendarSidebar/CalendarSideba
 import { calendarHelper } from '../../helpers/calendarHelper';
 import styles from './index.module.css';
 
-type Event = {};
+type MappedEvent = {
+  id: string;
+  start: Date;
+  end: Date;
+  additionalInfo: string;
+  interviewers: string[];
+};
 
 export const AdminInterviewPage = () => {
-  const [disciplineFilter, setDisciplineFilter] = useState<string[] | null>();
-  const [interviewFilter, setInterviewFilter] = useState<string[] | null>();
+  const [disciplineFilter, setDisciplineFilter] = useState<
+    string[] | null | undefined
+  >();
+  const [interviewFilter, setInterviewFilter] = useState<
+    string[] | null | undefined
+  >();
   const [selectedInterviewers, setSelectedInterviewers] = useState<
     string[] | null
   >();
   const [additionalNotesValue, setAdditionalNotesValue] = useState<
-    string | null
-  >(null);
-  const [events, setEvents] = useState<any[]>([]);
+    string | undefined
+  >();
+  const [events, setEvents] = useState<MappedEvent[]>([]);
   const { data: interviewSlots, refetchInterviewSlots } =
-    useFetchInterviewSlots(disciplineFilter, interviewFilter);
+    useFetchInterviewSlots(disciplineFilter || null, interviewFilter || null);
 
   const deleteInterviewSlotMutation = useDeleteInterviewSlot();
   const createInterviewSlotMutation = useCreateInterviewSlot();
 
-  function deleteEvent(event) {
+  function deleteEvent(event: Event) {
     if (!event.id) return;
     deleteInterviewSlotMutation.mutate(event.id, {
       onSuccess: () => {
@@ -36,8 +47,8 @@ export const AdminInterviewPage = () => {
     });
   }
 
-  function addEvent(event) {
-    if (!event || !selectedInterviewers) {
+  function addEvent(event: Event) {
+    if (!event || !selectedInterviewers || !selectedInterviewers.length) {
       return;
     }
 
@@ -45,7 +56,7 @@ export const AdminInterviewPage = () => {
       start: moment(event.start).format('YYYY-MM-DD HH:mm:ss'),
       end: moment(event.end).format('YYYY-MM-DD HH:mm:ss'),
       interviewers: selectedInterviewers,
-      notes: additionalNotesValue,
+      notes: additionalNotesValue || '',
     };
 
     createInterviewSlotMutation.mutate(interviewSlotDto, {
@@ -56,14 +67,17 @@ export const AdminInterviewPage = () => {
   }
 
   useEffect(() => {
-    if (!interviewSlots) return;
+    if (!interviewSlots || !interviewSlots.every((slot) => slot.interviewers)) {
+      return;
+    }
 
     const convertedEvents = interviewSlots.map((interviewSlot) => {
-      if (!interviewSlot.interviewers) return;
+      if (!interviewSlot?.interviewers)
+        return undefined as unknown as MappedEvent;
       return calendarHelper.parseInterviewSlotToCalendarEvent(interviewSlot);
     });
 
-    setEvents(convertedEvents);
+    setEvents(convertedEvents as MappedEvent[]);
   }, [interviewSlots]);
 
   return (

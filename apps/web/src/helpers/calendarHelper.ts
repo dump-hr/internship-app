@@ -1,5 +1,13 @@
-import { InterviewSlot, InterviewSlotDto } from '@internship-app/types';
+import { Interviewer, InterviewSlot } from '@internship-app/types';
 import moment from 'moment';
+
+type MappedEvent = {
+  id: string;
+  start: Date;
+  end: Date;
+  additionalInfo: string;
+  interviewers: Interviewer[];
+};
 
 const parseInterviewSlotToCalendarEvent = (interviewSlot: InterviewSlot) => {
   return {
@@ -10,11 +18,7 @@ const parseInterviewSlotToCalendarEvent = (interviewSlot: InterviewSlot) => {
     additionalInfo: `Interviewers: ${interviewSlot.interviewers
       .map((interviewer) => interviewer.interviewer.name)
       .join(', ')}\nNotes: ${interviewSlot?.notes ?? 'None'}`,
-  };
-};
-
-const parseCalendarEventToInterviewSlot = (start: Date, end: Date) => {
-  return {} as InterviewSlotDto;
+  } as MappedEvent;
 };
 
 const checkIfEventExists = (events, newEvent) => {
@@ -91,7 +95,6 @@ export const getDisciplinesFromEvent = (event) => {
 
 export const calendarHelper = {
   parseInterviewSlotToCalendarEvent,
-  parseCalendarEventToInterviewSlot,
   checkIfEventExists,
   getOverlappingEvents,
   getMergedEvent,

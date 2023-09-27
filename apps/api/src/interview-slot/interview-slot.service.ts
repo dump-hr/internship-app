@@ -1,4 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { Discipline } from '@prisma/client';
 import { PrismaService } from 'src/prisma.service';
 
@@ -111,7 +111,8 @@ export class InterviewSlotService {
         data: {
           start: slotStart,
           end: slotEnd,
-          answers: JSON.stringify({}), // TODO handle interview questions/answers
+          answers: JSON.stringify({}),
+          notes: interviewSlotDto.notes,
         },
       });
 

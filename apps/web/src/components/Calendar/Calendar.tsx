@@ -1,10 +1,15 @@
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 
+import { Event } from '@internship-app/types';
 import { format, getDay, parse, startOfWeek } from 'date-fns';
 import hrLocale from 'date-fns/locale/hr';
 import moment from 'moment';
 import { useEffect, useState } from 'react';
-import { Calendar as BigCalendar, dateFnsLocalizer } from 'react-big-calendar';
+import {
+  Calendar as BigCalendar,
+  dateFnsLocalizer,
+  SlotInfo,
+} from 'react-big-calendar';
 import withDragAndDrop from 'react-big-calendar/lib/addons/dragAndDrop';
 
 import { calendarHelper } from '../../helpers/calendarHelper';
@@ -23,10 +28,18 @@ const localizer = dateFnsLocalizer({
   locales,
 });
 
+type MappedEvent = {
+  id: string;
+  start: Date;
+  end: Date;
+  additionalInfo: string;
+  interviewers: string[];
+};
+
 interface Props {
-  existingEvents: any[];
-  deleteEvent: (event: any) => void;
-  addEvent: (event: any) => void;
+  existingEvents: MappedEvent[];
+  deleteEvent: (event: Event) => void;
+  addEvent: (event: Event) => void;
 }
 
 export const Calendar: React.FC<Props> = ({
@@ -37,7 +50,8 @@ export const Calendar: React.FC<Props> = ({
   const [events, setEvents] = useState(existingEvents);
   const DragAndDropCalendar = withDragAndDrop(BigCalendar);
 
-  const handleTimeSlotAdd = (slotInfo: any) => {
+  const handleTimeSlotAdd = (slotInfo: SlotInfo) => {
+    console.log('SLOT INFO: ', slotInfo);
     if (calendarHelper.checkIfEventExists(events, slotInfo)) return;
 
     const overlappingEvents = calendarHelper.getOverlappingEvents(
@@ -55,12 +69,7 @@ export const Calendar: React.FC<Props> = ({
     addEvent(newMergedEvent);
   };
 
-  const handleTimeSlotSelect = (event: any) => {
-    // open modal with details or maybe tooltip
-  };
-
   useEffect(() => {
-    console.log('UPDATED EVENTS STATE: ', existingEvents);
     setEvents(existingEvents);
   }, [existingEvents]);
 
@@ -80,7 +89,6 @@ export const Calendar: React.FC<Props> = ({
         culture="hr"
         className={styles.wrapper}
         onSelectSlot={handleTimeSlotAdd}
-        onSelectEvent={(e) => handleTimeSlotSelect(e)}
         events={events}
         components={{
           event: (event) => (

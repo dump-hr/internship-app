@@ -79,6 +79,7 @@ model InterviewSlot {
   score        Int?
   createdAt    DateTime                       @default(now())
   updatedAt    DateTime                       @updatedAt
+  notes        String?
   interviewers InterviewMemberParticipation[]
 }
 

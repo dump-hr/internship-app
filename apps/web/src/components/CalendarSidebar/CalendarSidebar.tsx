@@ -8,10 +8,10 @@ import { CustomSelectInput } from '../common/SelectInput/CustomSelectInput';
 import styles from './index.module.css';
 
 interface Props {
-  setSelectedDisciplineFilter: (value: string | null) => void;
+  setSelectedDisciplineFilter: (value: string[] | null | undefined) => void;
   setInterviewers: (value: string[] | null) => void;
   setSelectedInterviewerFilter: (value: string[] | null) => void;
-  setAdditionalNotesValue: (value: string | null) => void;
+  setAdditionalNotesValue: (value: string | undefined) => void;
 }
 
 export const CalendarSidebar: React.FC<Props> = ({
@@ -22,9 +22,7 @@ export const CalendarSidebar: React.FC<Props> = ({
 }: Props) => {
   const [disciplineFilter, setDisciplineFilter] = useState(null);
   const [interviewerFilter, setInterviewerFilter] = useState(null);
-  const [selectedInterviewers, setSelectedInterviewers] = useState<
-    string[] | null
-  >(null);
+  const [selectedInterviewers, setSelectedInterviewers] = useState(null);
   const [notesValue, setNotesValue] = useState<string | null>(null);
   const { data: interviewers } = useFetchInterviewers();
 
@@ -32,7 +30,7 @@ export const CalendarSidebar: React.FC<Props> = ({
     setSelectedDisciplineFilter(disciplineFilter || null);
     setSelectedInterviewerFilter(interviewerFilter || null);
     setInterviewers(selectedInterviewers || null);
-    setAdditionalNotesValue(notesValue || null);
+    setAdditionalNotesValue(notesValue || undefined);
   }, [selectedInterviewers, disciplineFilter, interviewerFilter]);
 
   return (

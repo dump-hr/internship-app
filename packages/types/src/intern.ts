@@ -84,6 +84,25 @@ export type InterviewSlot = {
   answers: JSON;
   score?: number;
   notes?: string;
+  interviewers: Interviewer[];
+};
+
+export type InterviewMemberParticipation = {
+  id: string;
+  interviewerId: string;
+  interviewer: Interviewer;
+  interviewSlotId: string;
+  interviewSlot: InterviewSlot;
+};
+
+export type Event = {
+  id: string;
+  start: Date;
+  end: Date;
+  title: string;
+  additionalInfo: string;
+  interviewers: InterviewMemberParticipation[];
+  notes: string;
 };
 
 export type CreateInterviewSlotDto = {

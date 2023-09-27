@@ -1,4 +1,4 @@
-import { Discipline } from '@internship-app/types';
+import { Discipline, Event } from '@internship-app/types';
 import Tooltip from '@mui/material/Tooltip';
 import clsx from 'clsx';
 
@@ -6,7 +6,7 @@ import { calendarHelper } from '../../helpers/calendarHelper';
 import styles from './index.module.css';
 
 interface Props {
-  event: unknown;
+  event: Event;
   eventDeleteHandler: (event: unknown) => void;
 }
 
@@ -17,9 +17,8 @@ export const EventContent = ({ event, eventDeleteHandler }: Props) => {
     e.preventDefault();
     eventDeleteHandler(event);
   };
-  console.log('Event: ', event);
   return (
-    <Tooltip title={event.additionalInfo} arrow>
+    <Tooltip title={event.additionalInfo} arrow placement="top-start">
       <div>
         <div onClick={handleRemoveClick} className={styles.deleteEventButton}>
           &#10005;

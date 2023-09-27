@@ -7,7 +7,7 @@ const fetchInterviewSlots = async (
   disciplines: string[] | null,
   interviewers: string[] | null,
 ) => {
-  const params = {};
+  const params: Record<string, string> = {};
 
   if (disciplines) {
     params['disciplines'] = disciplines.join(',');
