@@ -20,9 +20,15 @@ export const CalendarSidebar: React.FC<Props> = ({
   setSelectedInterviewerFilter,
   setAdditionalNotesValue,
 }: Props) => {
-  const [disciplineFilter, setDisciplineFilter] = useState(null);
-  const [interviewerFilter, setInterviewerFilter] = useState(null);
-  const [selectedInterviewers, setSelectedInterviewers] = useState(null);
+  const [disciplineFilter, setDisciplineFilter] = useState<string[] | null>(
+    null,
+  );
+  const [interviewerFilter, setInterviewerFilter] = useState<string[] | null>(
+    null,
+  );
+  const [selectedInterviewers, setSelectedInterviewers] = useState<
+    string[] | null
+  >(null);
   const [notesValue, setNotesValue] = useState<string | null>(null);
   const { data: interviewers } = useFetchInterviewers();
 
@@ -31,6 +37,7 @@ export const CalendarSidebar: React.FC<Props> = ({
     setSelectedInterviewerFilter(interviewerFilter || null);
     setInterviewers(selectedInterviewers || null);
     setAdditionalNotesValue(notesValue || undefined);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedInterviewers, disciplineFilter, interviewerFilter]);
 
   return (
@@ -41,7 +48,9 @@ export const CalendarSidebar: React.FC<Props> = ({
           label="Područje"
           menuOptions={Object.values(Discipline)}
           isMultiSelect={true}
-          valueHandler={(value) => setDisciplineFilter(value)}
+          valueHandler={(value) =>
+            setDisciplineFilter(typeof value === 'string' ? [value] : value)
+          }
         />
       </div>
       <div className={styles.filterSection}>
@@ -50,14 +59,18 @@ export const CalendarSidebar: React.FC<Props> = ({
           label="Intervjueri"
           menuOptions={interviewers?.map((interviewer) => interviewer.name)}
           isMultiSelect={true}
-          valueHandler={(value) => setInterviewerFilter(value)}
+          valueHandler={(value) =>
+            setInterviewerFilter(typeof value === 'string' ? [value] : value)
+          }
         />
       </div>
       <CustomSelectInput
         label="Intervjueri"
         menuOptions={interviewers?.map((interviewer) => interviewer.name)}
         isMultiSelect={true}
-        valueHandler={(value) => setSelectedInterviewers(value)}
+        valueHandler={(value) =>
+          setSelectedInterviewers(typeof value === 'string' ? [value] : value)
+        }
       />
       <div>
         <div className={styles.notesLabel}>Notes:</div>
