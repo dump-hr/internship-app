@@ -24,40 +24,13 @@ export const EventContent = ({ event, eventDeleteHandler }: Props) => {
           &#10005;
         </div>
         {calendarHelper.getDisciplinesFromEvent(event).map((discipline) => {
-          switch (discipline) {
-            case Discipline.Design:
-              return (
-                <div
-                  className={clsx(styles.design, styles.disciplineIndicator)}
-                />
-              );
-            case Discipline.Development:
-              return (
-                <div
-                  className={clsx(
-                    styles.development,
-                    styles.disciplineIndicator,
-                  )}
-                />
-              );
-            case Discipline.Marketing:
-              return (
-                <div
-                  className={clsx(styles.marketing, styles.disciplineIndicator)}
-                />
-              );
-            case Discipline.Multimedia:
-              return (
-                <div
-                  className={clsx(
-                    styles.multimedia,
-                    styles.disciplineIndicator,
-                  )}
-                />
-              );
-            default:
-              return null;
-          }
+          const disciplineStyle = clsx(styles.discipline, {
+            [styles.design]: discipline === Discipline.Design,
+            [styles.development]: discipline === Discipline.Development,
+            [styles.marketing]: discipline === Discipline.Marketing,
+            [styles.multimedia]: discipline === Discipline.Multimedia,
+          });
+          return <div className={disciplineStyle} key={event.id} />;
         })}
       </div>
     </Tooltip>
