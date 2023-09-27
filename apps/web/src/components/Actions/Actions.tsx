@@ -1,4 +1,4 @@
-import { Question, QuestionType } from '@internship-app/types';
+import { ActionOptions, Question, QuestionType } from '@internship-app/types';
 import { Box, Button, Typography } from '@mui/material';
 import { useState } from 'react';
 import { useForm, useWatch } from 'react-hook-form';
@@ -6,21 +6,17 @@ import { useForm, useWatch } from 'react-hook-form';
 import { ConfirmDialog } from '../ConfirmDialog';
 import InputHandler from '../InputHandler';
 
-type Options<T> = { [key in keyof T]: Option };
-
-type Option = {
-  description: string;
-  questions: Question[];
-};
-
-type ActionProps<T, R> = {
-  options: Options<T>;
+type ActionProps<T extends PropertyKey, R> = {
+  options: ActionOptions<T>;
   handleSubmit: (action: R) => void;
 };
 
-const Actions = <T, R>({ options, handleSubmit }: ActionProps<T, R>) => {
+const Actions = <T extends PropertyKey, R>({
+  options,
+  handleSubmit,
+}: ActionProps<T, R>) => {
   const form = useForm();
-  const currentAction: keyof T = useWatch({
+  const currentAction: T = useWatch({
     control: form.control,
     name: 'actionType',
   });

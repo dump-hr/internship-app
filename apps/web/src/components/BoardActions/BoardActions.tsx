@@ -3,7 +3,7 @@ import toast from 'react-hot-toast';
 
 import { useApplyBoardAction } from '../../api/useApplyBoardAction';
 import Actions from '../Actions/Actions';
-import { options } from './consts';
+import { options } from './options';
 
 type BoardActionProps = {
   internIds: string[];

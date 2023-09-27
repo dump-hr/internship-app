@@ -1,19 +1,13 @@
-import { BoardActionType } from '@internship-app/types';
+import { ActionOptions, BoardActionType } from '@internship-app/types';
 import {
   Discipline,
   DisciplineStatus,
   InterviewStatus,
-  Question,
   QuestionType,
   TestStatus,
 } from '@internship-app/types';
 
-type Option = {
-  description: string;
-  questions: Question[];
-};
-
-export const options: { [key in BoardActionType]: Option } = {
+export const options: ActionOptions<BoardActionType> = {
   [BoardActionType.SetInterviewStatus]: {
     description:
       'Izmijeni intervju status selektiranih na određenu vrijednost. Napomena: za poništenje termina intervjua koristi CancelInterviewSlot.',
@@ -77,12 +71,4 @@ export const options: { [key in BoardActionType]: Option } = {
       },
     ],
   },
-};
-
-export const actionQuestion: Question = {
-  id: 'actionType',
-  title: 'Akcija',
-  type: QuestionType.Select,
-  options: ['', ...Object.values(BoardActionType)],
-  registerValue: '',
 };
