@@ -10,6 +10,6 @@ export enum Path {
   Intern = '/admin/intern/:internId',
 
   CatchAll = '/:path*',
-  
-  AdminInterviewPicker = '/admin/interview',
+
+  AdminInterviewPicker = '/interview-picker',
 }
