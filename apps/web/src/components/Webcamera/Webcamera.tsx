@@ -1,17 +1,17 @@
 import DeleteIcon from '@mui/icons-material/Delete';
 import PhotoCamera from '@mui/icons-material/PhotoCamera';
 import IconButton from '@mui/material/IconButton';
-import { useCallback } from 'react';
-import { useRef, useState } from 'react';
+import { useRef } from 'react';
 import Webcam from 'react-webcam';
 
 import styles from './index.module.css';
 
 type WebcameraProps = {
-  setUrl: (image: string) => void;
+  image: string;
+  setImage: (image: string) => void;
 };
 
-const Webcamera = ({ setUrl }: WebcameraProps) => {
+const Webcamera = ({ image, setImage }: WebcameraProps) => {
   const videoConstraints = {
     width: 650,
     height: 365,
@@ -19,29 +19,25 @@ const Webcamera = ({ setUrl }: WebcameraProps) => {
   };
 
   const webRef = useRef<Webcam>(null);
-  const [image, setImage] = useState<string | undefined>(undefined);
 
-  const capturePicture = useCallback(() => {
+  const handleCapturePicture = () => {
     const imageSrc = webRef.current?.getScreenshot();
-    if (imageSrc) {
-      setImage(imageSrc);
-      setUrl(imageSrc);
-    }
-  }, [webRef, setUrl]);
 
-  const deletePicture = useCallback(() => {
+    setImage(imageSrc || '');
+  };
+
+  const handleDeletePicture = () => {
     setImage('');
-    setUrl('');
-  }, [setUrl]);
+  };
 
   return (
     <div className={styles.camera}>
       <Webcam
         style={{ display: image ? 'none' : 'flex' }}
-        width={650}
-        height={365}
+        width={videoConstraints.width}
+        height={videoConstraints.height}
         audio={false}
-        screenshotFormat="image/jpeg"
+        screenshotFormat="image/png"
         videoConstraints={videoConstraints}
         ref={webRef}
       />
@@ -54,11 +50,11 @@ const Webcamera = ({ setUrl }: WebcameraProps) => {
           bottom: '0',
           marginLeft: 'auto',
         }}
-        onClick={image ? deletePicture : capturePicture}
+        onClick={image ? handleDeletePicture : handleCapturePicture}
         aria-label="delete"
         size="large"
       >
-        {image ? <DeleteIcon /> : <PhotoCamera />}
+        {image ? <DeleteIcon color="error" /> : <PhotoCamera />}
       </IconButton>
     </div>
   );

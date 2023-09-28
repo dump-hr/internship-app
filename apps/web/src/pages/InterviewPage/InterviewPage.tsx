@@ -1,12 +1,14 @@
-import { InterviewStatus, QuestionType } from '@internship-app/types';
+import { Intern, InterviewStatus, QuestionType } from '@internship-app/types';
 import { Json } from '@internship-app/types/src/json';
 import { useState } from 'react';
 import { FieldValues, useForm } from 'react-hook-form';
 import { LoaderIcon } from 'react-hot-toast';
+import { useQueryClient } from 'react-query';
 import { useRoute } from 'wouter';
 import { navigate } from 'wouter/use-location';
 
 import { useGetIntern } from '../../api/useGetIntern';
+import { useSetImage } from '../../api/useSetImage';
 import { useSetInterview } from '../../api/useSetInterview';
 import AdminPage from '../../components/AdminPage';
 import { ConfirmDialog } from '../../components/ConfirmDialog';
@@ -34,6 +36,8 @@ const InterviewPage = () => {
   const setInterview = useSetInterview(() => {
     navigate(Path.Intern.replace(':internId', params?.internId || ''));
   });
+  const setImage = useSetImage();
+  const queryClient = useQueryClient();
 
   const [dialogOpen, setDialogOpen] = useState(false);
   const form = useForm<FieldValues>({
@@ -54,8 +58,24 @@ const InterviewPage = () => {
       setInterview.mutate({ internId, answers, score });
     })();
 
-  const setUrl = (image: string) => {
-    console.log(image);
+  const handleSetImage = async (base64: string) => {
+    if (!internId) return;
+
+    if (!base64) {
+      queryClient.setQueryData(
+        ['intern', internId],
+        (prev: Intern | undefined) => ({ ...prev, image: '' }) as Intern,
+      );
+      return;
+    }
+
+    const blob = await fetch(base64).then((res) => res.blob());
+    const image = await setImage.mutateAsync({ internId, blob });
+
+    queryClient.setQueryData(
+      ['intern', internId],
+      (prev: Intern | undefined) => ({ ...prev, image }) as Intern,
+    );
   };
 
   if (isFetching) {
@@ -72,7 +92,11 @@ const InterviewPage = () => {
 
   return (
     <AdminPage>
-      <IntervieweeInfo setUrl={setUrl} intern={intern} />
+      <IntervieweeInfo
+        image={intern.image || ''}
+        setImage={handleSetImage}
+        intern={intern}
+      />
       <MultistepForm
         questions={interviewQuestions}
         form={form}

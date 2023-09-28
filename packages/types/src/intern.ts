@@ -54,6 +54,7 @@ export type Intern = {
   firstName: string;
   lastName: string;
   email: string;
+  image?: string;
   data: Json;
   interviewStatus: InterviewStatus;
   interviewSlot?: InterviewSlot;
@@ -103,12 +104,12 @@ export enum InternStatus {
   Rejected = 'Rejected',
 }
 
-export type InternWithStatus = Intern & {status: InternStatus}
+export type InternWithStatus = Intern & { status: InternStatus };
 
 export type InternDecisionRequest = {
-  internId: string,
+  internId: string;
   disciplines: {
-    discipline: Discipline,
-    status: DisciplineStatus
-  }[]
-}
+    discipline: Discipline;
+    status: DisciplineStatus;
+  }[];
+};
