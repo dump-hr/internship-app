@@ -1,4 +1,6 @@
-import { Box, Button, Modal } from '@mui/joy';
+import { Box, Button, Input, Modal } from '@mui/joy';
+import { Typography } from '@mui/material';
+import { useState } from 'react';
 
 import { useMakeEmails } from '../../api/useCreateEmails';
 import xSymbol from '../../assets/x-symbol.svg';
@@ -13,10 +15,12 @@ type Props = {
 };
 
 export const EmailPage = ({ emails, on, close }: Props) => {
-  const { mutate: makeEmailsMutation } = useMakeEmails();
-
+  const { mutateAsync: makeEmailsMutation } = useMakeEmails();
+  const [subject, setSubject] = useState<string>(''); // [1
+  const [emailList, setEmailList] = useState<string[]>(); // [1
   const sendEmails = async (text: string) => {
-    makeEmailsMutation({ emails, text });
+    const createdEmails = await makeEmailsMutation({ emails, text });
+    setEmailList(createdEmails.data);
     alert('emails sent, check logs	');
   };
 
@@ -60,6 +64,20 @@ export const EmailPage = ({ emails, on, close }: Props) => {
           <img src={xSymbol} alt="close" />
         </Button>
         Emails
+        <Input
+          value={subject}
+          onChange={(e) => setSubject(e.target.value)}
+          sx={{
+            width: '66vw',
+            backgroundColor: '#D9D9D9',
+            marginBottom: '1rem',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'flex-start',
+            justifyContent: 'space-around',
+          }}
+          placeholder="Subject"
+        />
         <EmailBox sendEmail={sendEmails} />
         <EmailGuide />
         <EmailList emails={emails} />
