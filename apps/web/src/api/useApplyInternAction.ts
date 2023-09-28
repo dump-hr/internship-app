@@ -1,22 +1,25 @@
-import { BoardActionRequest } from '@internship-app/types';
+import { Intern, InternActionRequest } from '@internship-app/types';
 import toast from 'react-hot-toast';
 import { useMutation, useQueryClient } from 'react-query';
 
 import { api } from '.';
 
-const applyBoardAction = async (req: BoardActionRequest) => {
-  return await api.put<BoardActionRequest, never>(`/intern/boardAction`, req);
+const applyInternAction = async (req: InternActionRequest) => {
+  return await api.put<InternActionRequest, never>(
+    `/intern/action/${req.internId}`,
+    req,
+  );
 };
 
-export const useApplyBoardAction = () => {
+export const useApplyInternAction = (intern: Intern) => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: applyBoardAction,
+    mutationFn: applyInternAction,
     mutationKey: ['timesSubmitted'],
     onSuccess: () => {
       toast.success('Akcija uspješno izvedena!');
-      queryClient.invalidateQueries('intern');
+      queryClient.invalidateQueries(['intern', intern.id]);
     },
     onError: (error: string) => {
       toast.error(`Greška pri izvođenju akcije: ${error}`);

@@ -1,6 +1,4 @@
 import {
-  BoardAction,
-  BoardActionRequest,
   DisciplineStatus,
   Intern,
   InternStatus,
@@ -9,9 +7,7 @@ import {
 import { Button, Grid } from '@mui/material';
 import { useState } from 'react';
 import { FieldValues } from 'react-hook-form';
-import toast from 'react-hot-toast';
 
-import { useApplyBoardAction } from '../../api/useApplyBoardAction';
 import { useFetchAllInterns } from '../../api/useFetchAllInterns';
 import AdminPage from '../../components/AdminPage';
 import BoardActions from '../../components/BoardActions';
@@ -50,8 +46,7 @@ const initialState: { filterCriteria: FilterCriteria } = {
 };
 
 const DashboardPage = () => {
-  const { data: interns, refetch } = useFetchAllInterns();
-  const applyBoardAction = useApplyBoardAction(refetch);
+  const { data: interns } = useFetchAllInterns();
 
   const [selection, setSelection] = useState<string[]>([]);
   const [emailDialogOpen, setEmailDialogOpen] = useState(false);
@@ -69,13 +64,6 @@ const DashboardPage = () => {
 
   const filterHandler = (criteria: FieldValues) => {
     setFilterCriteria(criteria as FilterCriteria);
-  };
-
-  const actionHandler = (action: BoardAction) => {
-    if (!selection.length) return toast.error('Selektiraj pripravnike!');
-
-    const request: BoardActionRequest = { action, internIds: selection };
-    applyBoardAction.mutate(request);
   };
 
   const stats = [
@@ -114,7 +102,7 @@ const DashboardPage = () => {
         ))}
       </Grid>
 
-      {actionsOpen && <BoardActions handleSubmit={actionHandler} />}
+      {actionsOpen && <BoardActions internIds={selection} />}
 
       <InternFilter submitHandler={filterHandler} />
 
