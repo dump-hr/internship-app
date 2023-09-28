@@ -1,5 +1,6 @@
 import {
   BoardActionRequest,
+  InternActionRequest,
   InternDecisionRequest,
   SetInterviewRequest,
 } from '@internship-app/types';
@@ -93,6 +94,14 @@ export class InternController {
     file: Express.Multer.File,
   ) {
     return await this.internService.setImage(internId, file.buffer);
+  }
+
+  @Put('action/:internId')
+  async applyAction(
+    @Param('internId') internId: string,
+    @Body() { action }: InternActionRequest,
+  ) {
+    return await this.internService.applyAction(internId, action);
   }
 
   @Put('boardAction')

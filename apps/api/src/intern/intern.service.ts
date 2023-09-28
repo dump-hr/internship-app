@@ -1,6 +1,7 @@
 import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
 import {
   BoardAction,
+  InternAction,
   InternDecisionRequest,
   SetInterviewRequest,
 } from '@internship-app/types';
@@ -115,11 +116,6 @@ export class InternService {
       ? InterviewStatus.NoRight
       : InterviewStatus.PickTerm;
 
-    const getInitialTestStatus = (discipline) =>
-      [Discipline.Development, Discipline.Design].includes(discipline)
-        ? TestStatus.PickTerm
-        : null;
-
     const newIntern = await this.prisma.intern.create({
       data: {
         firstName: internToCreate.firstName,
@@ -133,7 +129,7 @@ export class InternService {
               discipline: dis,
               priority: index,
               status: DisciplineStatus.Pending,
-              testStatus: getInitialTestStatus(dis),
+              testStatus: this.getInitialTestStatus(dis),
             })),
           },
         },
@@ -184,6 +180,54 @@ export class InternService {
     } catch (err) {
       console.error(err);
       throw new InternalServerErrorException(err.message);
+    }
+  }
+
+  async applyAction(internId: string, action: InternAction) {
+    switch (action.actionType) {
+      case 'AddDiscipline':
+        return await this.prisma.intern.update({
+          where: {
+            id: internId,
+            internDisciplines: {
+              none: {
+                discipline: action.discipline,
+              },
+            },
+          },
+          data: {
+            internDisciplines: {
+              create: {
+                discipline: action.discipline,
+                status: DisciplineStatus.Pending,
+                testStatus: this.getInitialTestStatus(action.discipline),
+                priority: -1,
+              },
+            },
+          },
+        });
+
+      case 'RemoveDiscipline':
+        const internDisciplines = await this.prisma.internDiscipline.findMany({
+          where: { internId },
+          select: { discipline: true },
+        });
+        if (internDisciplines.length < 2)
+          throw new BadRequestException(
+            'Intern should have at least 2 disciplines!',
+          );
+
+        return this.prisma.internDiscipline.delete({
+          where: {
+            internId_discipline: {
+              internId: internId,
+              discipline: action.discipline,
+            },
+          },
+        });
+
+      default:
+        throw new BadRequestException();
     }
   }
 
@@ -280,7 +324,7 @@ export class InternService {
         });
 
       default:
-        return new BadRequestException();
+        throw new BadRequestException();
     }
   }
 
@@ -300,5 +344,11 @@ export class InternService {
         }),
       ),
     );
+  }
+
+  private getInitialTestStatus(discipline) {
+    return [Discipline.Development, Discipline.Design].includes(discipline)
+      ? TestStatus.PickTerm
+      : null;
   }
 }
