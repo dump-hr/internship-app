@@ -1,5 +1,4 @@
 import { Box, Button, Input, Modal } from '@mui/joy';
-import { Typography } from '@mui/material';
 import { useState } from 'react';
 
 import { useMakeEmails } from '../../api/useCreateEmails';
@@ -7,6 +6,7 @@ import xSymbol from '../../assets/x-symbol.svg';
 import EmailBox from '../../components/EmailBox';
 import EmailGuide from '../../components/EmailGuide';
 import EmailList from '../../components/EmailList';
+import EmailPreviewList from '../../components/EmailPreviewList';
 
 type Props = {
   emails: string[];
@@ -16,12 +16,14 @@ type Props = {
 
 export const EmailPage = ({ emails, on, close }: Props) => {
   const { mutateAsync: makeEmailsMutation } = useMakeEmails();
-  const [subject, setSubject] = useState<string>(''); // [1
-  const [emailList, setEmailList] = useState<string[]>(); // [1
+  const [subject, setSubject] = useState<string>('');
+  const [emailPreviewOpen, setEmailPreviewOpen] = useState<boolean>(false);
+  const [emailList, setEmailList] = useState<string[]>();
   const sendEmails = async (text: string) => {
     const createdEmails = await makeEmailsMutation({ emails, text });
-    setEmailList(createdEmails.data);
-    alert('emails sent, check logs	');
+    console.log(createdEmails);
+    setEmailList(createdEmails);
+    setEmailPreviewOpen(true);
   };
 
   return (
@@ -67,6 +69,7 @@ export const EmailPage = ({ emails, on, close }: Props) => {
         <Input
           value={subject}
           onChange={(e) => setSubject(e.target.value)}
+          inputMode="text"
           sx={{
             width: '66vw',
             backgroundColor: '#D9D9D9',
@@ -74,11 +77,23 @@ export const EmailPage = ({ emails, on, close }: Props) => {
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'flex-start',
-            justifyContent: 'space-around',
+            input: {
+              padding: '1rem',
+              fontSize: '1.5rem',
+              fontWeight: 'bold',
+              width: '100%',
+            },
           }}
           placeholder="Subject"
         />
         <EmailBox sendEmail={sendEmails} />
+        <EmailPreviewList
+          subject={subject}
+          emails={emailList as string[]}
+          open={emailPreviewOpen}
+          sendEmails={() => {}}
+          close={() => setEmailPreviewOpen(false)}
+        />
         <EmailGuide />
         <EmailList emails={emails} />
       </Box>
