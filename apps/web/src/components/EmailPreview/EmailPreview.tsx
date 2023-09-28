@@ -14,6 +14,9 @@ export const EmailPreview = ({ subject, body }: EmailPreviewProps) => (
     justifyContent={'space-around'}
   >
     <Typography fontSize={'20px'}>{subject}</Typography>
-    <Typography fontSize={'10px'}>{body}</Typography>
+
+    <Typography fontSize={'10px'}>
+      <pre>{body}</pre>
+    </Typography>
   </Box>
 );

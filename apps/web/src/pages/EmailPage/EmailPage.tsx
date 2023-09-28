@@ -2,6 +2,7 @@ import { Box, Button, Input, Modal } from '@mui/joy';
 import { useState } from 'react';
 
 import { useMakeEmails } from '../../api/useCreateEmails';
+import { useSendEmails } from '../../api/useSendEmails';
 import xSymbol from '../../assets/x-symbol.svg';
 import EmailBox from '../../components/EmailBox';
 import EmailGuide from '../../components/EmailGuide';
@@ -16,14 +17,22 @@ type Props = {
 
 export const EmailPage = ({ emails, on, close }: Props) => {
   const { mutateAsync: makeEmailsMutation } = useMakeEmails();
+  const { mutateAsync: sendEmailsMutation } = useSendEmails();
   const [subject, setSubject] = useState<string>('');
   const [emailPreviewOpen, setEmailPreviewOpen] = useState<boolean>(false);
-  const [emailList, setEmailList] = useState<string[]>();
-  const sendEmails = async (text: string) => {
+  const [emailList, setEmailList] = useState<string[]>([]);
+  const [text, setText] = useState<string>('');
+
+  const makeEmails = async () => {
     const createdEmails = await makeEmailsMutation({ emails, text });
     console.log(createdEmails);
     setEmailList(createdEmails);
     setEmailPreviewOpen(true);
+  };
+
+  const sendEmails = async () => {
+    await sendEmailsMutation({ emails, text, subject });
+    alert('Emails sent!');
   };
 
   return (
@@ -86,12 +95,18 @@ export const EmailPage = ({ emails, on, close }: Props) => {
           }}
           placeholder="Subject"
         />
-        <EmailBox sendEmail={sendEmails} />
+        <EmailBox
+          sendEmail={makeEmails}
+          body={text}
+          setBody={(event: React.ChangeEvent<HTMLTextAreaElement>) =>
+            setText(event.target.value)
+          }
+        />
         <EmailPreviewList
           subject={subject}
-          emails={emailList as string[]}
+          emails={emailList}
           open={emailPreviewOpen}
-          sendEmails={() => {}}
+          sendEmails={sendEmails}
           close={() => setEmailPreviewOpen(false)}
         />
         <EmailList emails={emails} />

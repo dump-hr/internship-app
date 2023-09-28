@@ -72,10 +72,30 @@ export const EmailGuide = () => {
               textAlign: 'flex-start',
             }}
           >
-            The available intern variables are: id, lastName, firstName, email,
-            interviewStatus, internDisciplines[].discipline,
-            internDisciplines[].priority, internDisciplines[].status,
-            interviewSlot?.start, interviewSlot?.end, interviewSlot?.score
+            The available intern variables are:
+            <List
+              sx={{
+                width: '100%',
+                maxWidth: '500px',
+                marginBottom: '1rem',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'flex-start',
+                justifyContent: 'space-around',
+              }}
+            >
+              <ListItem>id</ListItem>
+              <ListItem>lastName</ListItem>
+              <ListItem>firstName</ListItem>
+              <ListItem>email</ListItem>
+              <ListItem>interviewStatus</ListItem>
+              <ListItem>internDisciplines[].discipline</ListItem>
+              <ListItem>internDisciplines[].priority</ListItem>
+              <ListItem>internDisciplines[].status</ListItem>
+              <ListItem>interviewSlot?.start</ListItem>
+              <ListItem>interviewSlot?.end</ListItem>
+              <ListItem>interviewSlot?.score</ListItem>
+            </List>
           </Typography>
         </ListItem>
         <ListItem sx={{ width: '100%', marginBottom: '0.5 rem' }}>

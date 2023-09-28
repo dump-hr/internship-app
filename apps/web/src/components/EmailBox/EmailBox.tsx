@@ -1,13 +1,17 @@
 import { Box, Button, Textarea } from '@mui/joy';
-import React, { useState } from 'react';
+import React from 'react';
 
 interface Props {
-  sendEmail: (text: string) => void;
+  sendEmail: () => void;
+  body: string;
+  setBody: (event: React.ChangeEvent<HTMLTextAreaElement>) => void;
 }
 
-export const EmailBox: React.FC<Props> = ({ sendEmail }: Props) => {
-  const [text, setText] = useState<string>('');
-
+export const EmailBox: React.FC<Props> = ({
+  sendEmail,
+  body,
+  setBody,
+}: Props) => {
   return (
     <Box
       display="flex"
@@ -19,8 +23,8 @@ export const EmailBox: React.FC<Props> = ({ sendEmail }: Props) => {
     >
       <Textarea
         placeholder="Enter your email here"
-        onChange={(e) => setText(e.target.value)}
-        value={text}
+        onChange={setBody}
+        value={body}
         style={{
           width: '100%',
           height: '50vh',
@@ -37,7 +41,7 @@ export const EmailBox: React.FC<Props> = ({ sendEmail }: Props) => {
           transition: 'background-color 0.3s ease, color 0.3s ease',
           '&:hover': { backgroundColor: '#000000', color: '#D9D9D9' },
         }}
-        onClick={() => sendEmail(text)}
+        onClick={sendEmail}
       >
         Generate
       </Button>
