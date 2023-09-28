@@ -94,8 +94,8 @@ export const EmailPage = ({ emails, on, close }: Props) => {
           sendEmails={() => {}}
           close={() => setEmailPreviewOpen(false)}
         />
-        <EmailGuide />
         <EmailList emails={emails} />
+        <EmailGuide />
       </Box>
     </Modal>
   );

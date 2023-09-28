@@ -39,7 +39,7 @@ export const EmailBox: React.FC<Props> = ({ sendEmail }: Props) => {
         }}
         onClick={() => sendEmail(text)}
       >
-        Send
+        Generate
       </Button>
     </Box>
   );
