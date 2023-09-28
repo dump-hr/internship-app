@@ -2,6 +2,7 @@ import { Box, Button, Modal } from '@mui/joy';
 
 import { useMakeEmails } from '../../api/useCreateEmails';
 import EmailBox from '../../components/EmailBox';
+import EmailGuide from '../../components/EmailGuide';
 import EmailList from '../../components/EmailList';
 
 type Props = {
@@ -19,7 +20,12 @@ export const EmailPage = ({ emails, on, close }: Props) => {
   };
 
   return (
-    <Modal open={on}>
+    <Modal
+      open={on}
+      sx={{
+        overflow: 'scroll',
+      }}
+    >
       <Box
         display="flex"
         flexDirection="column"
@@ -29,6 +35,7 @@ export const EmailPage = ({ emails, on, close }: Props) => {
       >
         Emails
         <EmailBox sendEmail={sendEmails} />
+        <EmailGuide />
         <EmailList emails={emails} />
         <Button
           sx={{
