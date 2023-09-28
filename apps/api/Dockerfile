@@ -28,7 +28,7 @@ RUN yarn turbo run build --filter=api...
 FROM base AS runner
 WORKDIR /app
 EXPOSE 3000
-HEALTHCHECK CMD curl -f http://localhost:3000/api/healthcheck || exit 1
+HEALTHCHECK CMD curl -f http://localhost:3000/api/healthz || exit 1
 RUN apk add --no-cache curl
 
 # Don't run production as root
