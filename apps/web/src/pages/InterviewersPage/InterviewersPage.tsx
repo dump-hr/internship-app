@@ -212,14 +212,8 @@ const InterviewersPage = () => {
   return (
     <>
       <LogoHeader text="Intervjueri" />
+      <br />
       <LayoutSpacing>
-        <button onClick={() => console.log(interviewers)}>
-          Log interviewers
-        </button>
-        <button onClick={() => console.log(newInterviewer)}>
-          Log new interviewer
-        </button>
-        <br />
         <Button onClick={dialogs.addInterviewer.toggle}>
           + Dodaj intervjuera
         </Button>
