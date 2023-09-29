@@ -11,9 +11,7 @@ const applyBoardAction = async (req: BoardActionRequest) => {
 export const useApplyBoardAction = () => {
   const queryClient = useQueryClient();
 
-  return useMutation({
-    mutationFn: applyBoardAction,
-    mutationKey: ['timesSubmitted'],
+  return useMutation(applyBoardAction, {
     onSuccess: () => {
       toast.success('Akcija uspješno izvedena!');
       queryClient.invalidateQueries('intern');

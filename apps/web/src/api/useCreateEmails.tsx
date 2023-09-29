@@ -12,8 +12,5 @@ const makeEmails = async (request: EmailToCreate) => {
 };
 
 export const useMakeEmails = () => {
-  return useMutation({
-    mutationFn: makeEmails,
-    mutationKey: ['timesSubmitted'],
-  });
+  return useMutation(makeEmails);
 };

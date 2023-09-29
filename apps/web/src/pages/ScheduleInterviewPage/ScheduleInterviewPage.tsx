@@ -1,7 +1,7 @@
 import { Box, useMediaQuery } from '@mui/material';
 import type { InterviewSlot } from '@prisma/client';
 import { useState } from 'react';
-import { useLocation, useRoute } from 'wouter';
+import { useRoute } from 'wouter';
 
 import { useFetchAvailableInterviewSlots } from '../../api/useFetchAvailableInterviewSlots';
 import { useScheduleInterview } from '../../api/useScheduleInterview';
@@ -13,7 +13,6 @@ import { TimeSlotPicker } from './TimeSlotPicker';
 
 const ScheduleInterviewPage = () => {
   const [, params] = useRoute(Path.ScheduleInterview);
-  const [, navigate] = useLocation();
   const isMobile = useMediaQuery('(max-width:700px)');
 
   const {
@@ -23,9 +22,7 @@ const ScheduleInterviewPage = () => {
     error,
   } = useFetchAvailableInterviewSlots(params?.internId);
 
-  const scheduleInterview = useScheduleInterview(() => {
-    navigate(Path.Status.replace(':internId', params?.internId || ''));
-  });
+  const scheduleInterview = useScheduleInterview();
 
   const [selectedDate, setSelectedDate] = useState<MuiDate | null>(null);
   const [selectedSlot, setSelectedSlot] = useState<InterviewSlot | null>(null);
