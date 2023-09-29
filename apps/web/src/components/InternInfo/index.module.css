@@ -19,17 +19,17 @@
 }
 
 @media screen and (max-width: 360px) {
-  .container > :first-child, .container > :last-child {
+  .container > :first-child,
+  .container > :last-child {
     width: 100%;
     padding: 0;
   }
   .container {
     flex-direction: column;
   }
-  
 }
 
-img {
+.image {
   width: 100%;
   aspect-ratio: calc(16 / 9);
 }
@@ -44,7 +44,7 @@ img {
   font-size: 14px;
 }
 
-h1 {
+.internFullName {
   padding: 0;
   margin: 0;
   font-size: 40px;

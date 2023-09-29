@@ -9,7 +9,7 @@ interface InternInfoProps {
 const InternInfo = ({ intern }: InternInfoProps) => {
   return (
     <div className={styles.page}>
-      <h1>
+      <h1 className={styles.internFullName}>
         {intern.firstName} {intern.lastName}
       </h1>
 
@@ -21,6 +21,7 @@ const InternInfo = ({ intern }: InternInfoProps) => {
       <div className={styles.container}>
         <div>
           <img
+            className={styles.image}
             src={
               'https://i0.wp.com/www.bishoprook.com/wp-content/uploads/2021/05/placeholder-image-gray-16x9-1.png?ssl=1'
             }
