@@ -58,14 +58,9 @@ export const Calendar: React.FC<Props> = ({
       slotInfo,
     );
 
-    overlappingEvents.forEach(deleteEvent);
+    if (overlappingEvents.length > 0) return;
 
-    const newMergedEvent = calendarHelper.getMergedEvent(
-      overlappingEvents,
-      slotInfo,
-    );
-
-    addEvent(newMergedEvent as Event);
+    addEvent({ start: slotInfo.start, end: slotInfo.end } as Event);
   };
 
   useEffect(() => {
