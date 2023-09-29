@@ -5,5 +5,5 @@ export class CreateInterviewMemberParticipationDto {
   interviewSlotId: string;
 
   @IsString()
-  interviewrId: string;
+  interviewerId: string;
 }
