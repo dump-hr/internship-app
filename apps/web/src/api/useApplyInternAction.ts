@@ -14,9 +14,7 @@ const applyInternAction = async (req: InternActionRequest) => {
 export const useApplyInternAction = (intern: Intern) => {
   const queryClient = useQueryClient();
 
-  return useMutation({
-    mutationFn: applyInternAction,
-    mutationKey: ['timesSubmitted'],
+  return useMutation(applyInternAction, {
     onSuccess: () => {
       toast.success('Akcija uspješno izvedena!');
       queryClient.invalidateQueries(['intern', intern.id]);

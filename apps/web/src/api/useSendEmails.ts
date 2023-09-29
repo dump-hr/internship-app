@@ -13,8 +13,5 @@ const sendEmails = async (request: EmailToSend) => {
 };
 
 export const useSendEmails = () => {
-  return useMutation({
-    mutationFn: sendEmails,
-    mutationKey: ['timesSubmitted'],
-  });
+  return useMutation(sendEmails);
 };

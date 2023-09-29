@@ -12,9 +12,7 @@ const setInternDecision = async (req: InternDecisionRequest) => {
 };
 
 export const useSetInternDecision = () => {
-  return useMutation({
-    mutationFn: setInternDecision,
-    mutationKey: ['timesSubmitted'],
+  return useMutation(setInternDecision, {
     onSuccess: () => {
       toast.success('Odluka je primijenjena!');
     },
