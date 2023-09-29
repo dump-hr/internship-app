@@ -24,7 +24,6 @@ import { PrismaService } from './prisma.service';
     EmailModule,
     AuthModule,
     InterviewSlotModule,
-    InternDisciplineModule,
     InterviewerModule,
   ],
   controllers: [AppController, AuthController, InterviewerController],

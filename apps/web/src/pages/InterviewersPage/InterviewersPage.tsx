@@ -115,7 +115,6 @@ const InterviewersPage = () => {
           variant="outlined"
           color="warning"
           onClick={() => {
-            console.log('info', { id: params.row.id, name: params.row.name });
             setInterviewerToDelete({
               id: params.row.id,
               name: params.row.name,
@@ -245,10 +244,6 @@ const InterviewersPage = () => {
       });
     }
   }
-
-  useEffect(() => {
-    console.log(interviewerToDelete);
-  }, [interviewerToDelete]);
 
   return (
     <>
