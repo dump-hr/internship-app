@@ -48,7 +48,6 @@ jobs:
           file: ./apps/api/Dockerfile
           push: true
           tags: ghcr.io/${{ github.repository }}:${{ github.sha }},
-            ghcr.io/${{ github.repository }}:${{ github.ref_name }},
             ghcr.io/${{ github.repository }}:${{ github.ref_name == 'main' && 'latest' || 'unstable' }}
           cache-from: type=gha
           cache-to: type=gha,mode=max

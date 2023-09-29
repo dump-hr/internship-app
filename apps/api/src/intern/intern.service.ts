@@ -1,10 +1,15 @@
+import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
 import {
   BoardAction,
   InternAction,
   InternDecisionRequest,
   SetInterviewRequest,
 } from '@internship-app/types';
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  InternalServerErrorException,
+} from '@nestjs/common';
 import {
   Discipline,
   DisciplineStatus,
@@ -18,6 +23,14 @@ import { CreateInternDto } from './dto/createIntern.dto';
 @Injectable()
 export class InternService {
   constructor(private readonly prisma: PrismaService) {}
+
+  private s3 = new S3Client({
+    credentials: {
+      accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+      secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+    },
+    region: 'eu-central-1',
+  });
 
   async get(id: string) {
     return await this.prisma.intern.findUnique({
@@ -138,6 +151,36 @@ export class InternService {
         },
       },
     });
+  }
+
+  async setImage(internId: string, buffer: Buffer) {
+    const key = `intern-images/${internId}-${new Date().getTime()}.png`;
+    const command = new PutObjectCommand({
+      Bucket: 'internship-app-uploads',
+      Key: key,
+      Body: buffer,
+      ContentType: 'image/png',
+    });
+
+    try {
+      await this.s3.send(command);
+
+      const image = `https://internship-app-uploads.dump.hr/${key}`;
+
+      await this.prisma.intern.update({
+        where: {
+          id: internId,
+        },
+        data: {
+          image,
+        },
+      });
+
+      return image;
+    } catch (err) {
+      console.error(err);
+      throw new InternalServerErrorException(err.message);
+    }
   }
 
   async applyAction(internId: string, action: InternAction) {

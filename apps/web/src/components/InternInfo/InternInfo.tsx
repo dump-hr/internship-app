@@ -19,14 +19,13 @@ const InternInfo = ({ intern }: InternInfoProps) => {
   </div>*/}
 
       <div className={styles.container}>
-        <div>
-          <img
-            src={
-              'https://i0.wp.com/www.bishoprook.com/wp-content/uploads/2021/05/placeholder-image-gray-16x9-1.png?ssl=1'
-            }
-            alt="Placeholder"
-          />
-        </div>
+        <img
+          src={
+            intern.image ||
+            'https://images.placeholders.dev/?width=650&height=365'
+          }
+          alt="Intern image"
+        />
         <div>
           <div className={styles.atribute}>
             <h3>Email</h3>
