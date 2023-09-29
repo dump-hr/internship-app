@@ -13,7 +13,7 @@ interface Props {
   label: string;
   menuOptions: { key: string; value: string }[] | undefined;
   isMultiSelect: boolean;
-  valueHandler?: (value: string) => void;
+  valueHandler?: (value: string[]) => void;
 }
 
 export const CustomSelectInput: React.FC<Props> = ({
@@ -26,7 +26,7 @@ export const CustomSelectInput: React.FC<Props> = ({
 
   useEffect(() => {
     valueHandler && valueHandler(selectedValues);
-  }, [selectedValues]);
+  }, [selectedValues, valueHandler]);
 
   return (
     <FormControl className={styles.form}>

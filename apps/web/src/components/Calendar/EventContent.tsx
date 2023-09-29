@@ -1,4 +1,4 @@
-import { Discipline, Event, InterviewSlot } from '@internship-app/types';
+import { Discipline, Event } from '@internship-app/types';
 import Tooltip from '@mui/material/Tooltip';
 import clsx from 'clsx';
 
@@ -7,7 +7,7 @@ import styles from './index.module.css';
 
 interface Props {
   event: Event;
-  eventDeleteHandler: (event: unknown) => void;
+  eventDeleteHandler: (event: Event) => void;
 }
 
 export const EventContent = ({ event, eventDeleteHandler }: Props) => {

@@ -40,22 +40,6 @@ const getOverlappingEvents = (events: MappedEvent[], newEvent: SlotInfo) => {
   });
 };
 
-const getMergedEvent = (events: MappedEvent[], newEvent: SlotInfo) => {
-  if (!events.length) return newEvent;
-  events.push(newEvent);
-  const mergedStartTime = moment.min(
-    events.map((existingEvent) => moment(existingEvent.start)),
-  );
-  const mergedEndTime = moment.max(
-    events.map((existingEvent) => moment(existingEvent.end)),
-  );
-
-  return {
-    start: mergedStartTime.toDate(),
-    end: mergedEndTime.toDate(),
-  };
-};
-
 export const getDisciplinesFromEvent = (event: Event) => {
   const arrayOfArrays = event.interviewers.map(
     (interviewer) => interviewer.interviewer.disciplines,
@@ -71,6 +55,5 @@ export const calendarHelper = {
   parseInterviewSlotToCalendarEvent,
   checkIfEventExists,
   getOverlappingEvents,
-  getMergedEvent,
   getDisciplinesFromEvent,
 };

@@ -30,9 +30,7 @@ export const CalendarSidebar: React.FC<Props> = ({
           }))}
           isMultiSelect={true}
           valueHandler={(value) => {
-            setSelectedInterviewerFilter(
-              typeof value === 'string' ? [value] : value,
-            );
+            setSelectedInterviewerFilter(value);
           }}
         />
       </div>
@@ -44,8 +42,7 @@ export const CalendarSidebar: React.FC<Props> = ({
         }))}
         isMultiSelect={true}
         valueHandler={(value) => {
-          const selectedInterviewers =
-            typeof value === 'string' ? [value] : value;
+          const selectedInterviewers = value;
           setInterviewers(selectedInterviewers);
         }}
       />
