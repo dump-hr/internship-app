@@ -4,3 +4,10 @@
   gap: 10px;
   margin-top: 20px;
 }
+
+.noData {
+  margin-top: 50px;
+  text-align: center;
+  font-style: italic;
+  color: #999;
+}

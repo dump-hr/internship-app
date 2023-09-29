@@ -13,6 +13,7 @@ import {
 } from '@mui/material';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { useEffect, useState } from 'react';
+import toast from 'react-hot-toast';
 
 import { useDeleteInterviewer } from '../../api/useDeleteInterviewer';
 import { useFetchAllInterviewers } from '../../api/useFetchAllInterviewers';
@@ -36,6 +37,7 @@ const InterviewersPage = () => {
     addInterviewer: {
       isOpen: false,
       toggle: () => {
+        if (dialogs.addInterviewer.isOpen) handleDialogClose();
         setDialogs((prevState) => ({
           ...prevState,
           addInterviewer: {
@@ -48,6 +50,7 @@ const InterviewersPage = () => {
     deleteInterviewer: {
       isOpen: false,
       toggle: () => {
+        if (dialogs.deleteInterviewer.isOpen) handleDialogClose();
         setDialogs((prevState) => ({
           ...prevState,
           deleteInterviewer: {
@@ -78,7 +81,7 @@ const InterviewersPage = () => {
 
   const columns: GridColDef[] = [
     { field: 'id', headerName: 'ID', width: 300 },
-    { field: 'name', headerName: 'Ime i prezime', width: 130 },
+    { field: 'name', headerName: 'Ime i prezime', width: 200 },
     {
       field: 'developmentDiscipline',
       headerName: 'DEV',
@@ -112,6 +115,7 @@ const InterviewersPage = () => {
           variant="outlined"
           color="warning"
           onClick={() => {
+            console.log('info', { id: params.row.id, name: params.row.name });
             setInterviewerToDelete({
               id: params.row.id,
               name: params.row.name,
@@ -180,6 +184,13 @@ const InterviewersPage = () => {
         });
       },
       submit: () => {
+        const { isValid, message } = Helper.newInterviewer.validate();
+
+        if (!isValid) {
+          toast.error(message);
+          return;
+        }
+
         const disciplines = Object.keys(newInterviewer.disciplines).filter(
           (discipline) => newInterviewer.disciplines[discipline as Discipline],
         ) as Discipline[];
@@ -190,13 +201,39 @@ const InterviewersPage = () => {
         };
 
         postInterviewer.mutate(newInterviewerData);
+
         dialogs.addInterviewer.toggle();
         window.location.reload();
+      },
+      validate: () => {
+        const messages = [] as string[];
+        let isValid = true;
+
+        if (newInterviewer.name === '') {
+          messages.push('Ime i prezime ne smije biti prazno.');
+          isValid = false;
+        }
+
+        const selectedDisciplines = Object.keys(
+          newInterviewer.disciplines,
+        ).filter(
+          (discipline) => newInterviewer.disciplines[discipline as Discipline],
+        );
+
+        if (selectedDisciplines.length === 0) {
+          messages.push('Izaberi barem jedno područje.');
+          isValid = false;
+        }
+
+        return {
+          isValid,
+          message: messages.join(' '),
+        };
       },
     },
   };
 
-  useEffect(() => {
+  function handleDialogClose() {
     if (!dialogs.addInterviewer.isOpen) {
       Helper.newInterviewer.erase();
     }
@@ -207,7 +244,11 @@ const InterviewersPage = () => {
         name: '',
       });
     }
-  }, [dialogs, Helper.newInterviewer]);
+  }
+
+  useEffect(() => {
+    console.log(interviewerToDelete);
+  }, [interviewerToDelete]);
 
   return (
     <>
@@ -217,18 +258,25 @@ const InterviewersPage = () => {
         <Button onClick={dialogs.addInterviewer.toggle}>
           + Dodaj intervjuera
         </Button>
-        <DataGrid
-          columns={columns}
-          rows={rows || []}
-          disableRowSelectionOnClick
-          initialState={{
-            columns: {
-              columnVisibilityModel: {
-                id: false,
+
+        {rows?.length !== 0 && (
+          <DataGrid
+            columns={columns}
+            rows={rows || []}
+            disableRowSelectionOnClick
+            initialState={{
+              columns: {
+                columnVisibilityModel: {
+                  id: false,
+                },
               },
-            },
-          }}
-        />
+            }}
+          />
+        )}
+
+        {rows?.length === 0 && (
+          <p className={c.noData}>Nema upisanih intervjuera.</p>
+        )}
       </LayoutSpacing>
 
       <Dialog
