@@ -20,33 +20,22 @@ export class InterviewSlotController {
   constructor(private readonly interviewSlotService: InterviewSlotService) {}
 
   @Get()
-  async getAll(
-    @Query('disciplines') disciplines: string,
-    @Query('interviewers') interviewers: string,
-  ) {
-    let interviewSlotsFilteredByDiscipline = [];
-    let interviewSlotsFilteredByInterviewer = [];
-    let allInterviewSlots = [];
-    if (disciplines) {
-      interviewSlotsFilteredByDiscipline =
-        await this.interviewSlotService.getByDisciplines(
-          disciplines ? disciplines.split(',') : [],
-        );
-    }
+  async getAll(@Query('interviewers') interviewers: string) {
+    let interviewSlots = await this.interviewSlotService.getAll();
+
     if (interviewers) {
-      interviewSlotsFilteredByInterviewer =
-        await this.interviewSlotService.getByInterviewers(
-          interviewers ? interviewers.split(',') : [],
-        );
+      const selectedInterviewers = interviewers.split(',');
+
+      interviewSlots = interviewSlots.filter((slot) => {
+        return slot.interviewers.reduce((found, interviewer) => {
+          return (
+            found || selectedInterviewers.includes(interviewer.interviewerId)
+          );
+        }, false);
+      });
     }
-    if (!interviewers && !disciplines) {
-      allInterviewSlots = await this.interviewSlotService.getAll();
-    }
-    return [
-      ...allInterviewSlots,
-      ...interviewSlotsFilteredByDiscipline,
-      ...interviewSlotsFilteredByInterviewer,
-    ];
+
+    return interviewSlots;
   }
 
   @Delete('/:id')

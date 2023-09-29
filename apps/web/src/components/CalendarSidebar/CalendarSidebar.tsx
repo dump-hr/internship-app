@@ -1,4 +1,3 @@
-import { Discipline } from '@internship-app/types';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 
 import { useFetchInterviewers } from '../../api/useFetchInterviewers';
@@ -7,7 +6,6 @@ import { CustomSelectInput } from '../common/SelectInput/CustomSelectInput';
 import styles from './index.module.css';
 
 interface Props {
-  setSelectedDisciplineFilter: (value: string[] | null | undefined) => void;
   setInterviewers: (value: string[] | null) => void;
   setSelectedInterviewerFilter: (value: string[] | null) => void;
   setAdditionalNotesValue: (value: string | undefined) => void;
@@ -15,7 +13,6 @@ interface Props {
 
 export const CalendarSidebar: React.FC<Props> = ({
   setInterviewers,
-  setSelectedDisciplineFilter,
   setSelectedInterviewerFilter,
   setAdditionalNotesValue,
 }: Props) => {
@@ -23,22 +20,6 @@ export const CalendarSidebar: React.FC<Props> = ({
 
   return (
     <div className={styles.wrapper}>
-      <div className={styles.filterSection}>
-        <FilterAltIcon className={styles.filterIcon} />
-        <CustomSelectInput
-          label="Područje"
-          menuOptions={Object.values(Discipline).map((value) => ({
-            key: value,
-            value,
-          }))}
-          isMultiSelect={true}
-          valueHandler={(value) => {
-            setSelectedDisciplineFilter(
-              typeof value === 'string' ? [value] : value,
-            );
-          }}
-        />
-      </div>
       <div className={styles.filterSection}>
         <FilterAltIcon className={styles.filterIcon} />
         <CustomSelectInput

@@ -19,9 +19,6 @@ type MappedEvent = {
 };
 
 export const AdminInterviewPage = () => {
-  const [disciplineFilter, setDisciplineFilter] = useState<
-    string[] | null | undefined
-  >();
   const [interviewFilter, setInterviewFilter] = useState<
     string[] | null | undefined
   >();
@@ -33,10 +30,14 @@ export const AdminInterviewPage = () => {
   >();
   const [events, setEvents] = useState<MappedEvent[]>([]);
   const { data: interviewSlots, refetchInterviewSlots } =
-    useFetchInterviewSlots(disciplineFilter || null, interviewFilter || null);
+    useFetchInterviewSlots(interviewFilter || null);
 
   const deleteInterviewSlotMutation = useDeleteInterviewSlot();
   const createInterviewSlotMutation = useCreateInterviewSlot();
+
+  useEffect(() => {
+    console.log('AdminInterviewPage -- filters useEffect: ', interviewFilter);
+  }, [interviewFilter]);
 
   function deleteEvent(event: Event) {
     if (!event.id) return;
@@ -88,7 +89,6 @@ export const AdminInterviewPage = () => {
         addEvent={addEvent}
       />
       <CalendarSidebar
-        setSelectedDisciplineFilter={setDisciplineFilter}
         setSelectedInterviewerFilter={setInterviewFilter}
         setInterviewers={setSelectedInterviewers}
         setAdditionalNotesValue={setAdditionalNotesValue}
