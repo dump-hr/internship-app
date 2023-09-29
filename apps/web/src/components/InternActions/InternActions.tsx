@@ -1,0 +1,33 @@
+import {
+  Intern,
+  InternAction,
+  InternActionRequest,
+} from '@internship-app/types';
+import { Typography } from '@mui/material';
+
+import { useApplyInternAction } from '../../api/useApplyInternAction';
+import Actions from '../Actions/Actions';
+import { getInternOptions } from './options';
+
+type InternActionsProps = {
+  intern: Intern;
+};
+
+const InternActions: React.FC<InternActionsProps> = ({ intern }) => {
+  const options = getInternOptions(intern);
+  const applyInternAction = useApplyInternAction(intern);
+
+  const actionHandler = (action: InternAction) => {
+    const request: InternActionRequest = { action, internId: intern.id };
+    applyInternAction.mutate(request);
+  };
+
+  return (
+    <>
+      <Typography variant="h4">Akcije</Typography>
+      <Actions options={options} handleSubmit={actionHandler} />
+    </>
+  );
+};
+
+export default InternActions;

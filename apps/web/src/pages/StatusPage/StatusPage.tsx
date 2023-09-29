@@ -70,10 +70,10 @@ const StatusPage = () => {
           Pogledaj slobodne termine za intervju. ovojelink
         </Typography>
       )}
-      {intern.interviewSlot?.status && (
+      {intern.interviewSlot && (
         <Box>
           <Typography>
-            Status: {interviewStatusLabel[intern.interviewSlot.status]}
+            Status: {interviewStatusLabel[intern.interviewStatus]}
           </Typography>
           <Typography>
             Termin: {intern.interviewSlot.start} @ DUMP Ured, FESB

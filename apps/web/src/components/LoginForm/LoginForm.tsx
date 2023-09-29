@@ -11,7 +11,7 @@ const LoginForm = () => {
   const [email, setEmail] = useState('');
   const [isValid, setIsValid] = useState(true);
 
-  const login = useLogin(() => navigate(Path.Home, { replace: true }));
+  const login = useLogin(() => navigate(Path.Dashboard, { replace: true }));
 
   const validateEmail = (email: string) => {
     const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;

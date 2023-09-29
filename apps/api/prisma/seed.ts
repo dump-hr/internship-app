@@ -1,4 +1,10 @@
-import { Discipline, DisciplineStatus, PrismaClient } from '@prisma/client';
+import { TestStatus } from '@internship-app/types';
+import {
+  Discipline,
+  DisciplineStatus,
+  InterviewStatus,
+  PrismaClient,
+} from '@prisma/client';
 import * as bcrypt from 'bcrypt';
 
 const prisma = new PrismaClient();
@@ -10,6 +16,7 @@ async function main() {
         email: 'ante.roca@dump.hr',
         firstName: 'Ante',
         lastName: 'Roca',
+        interviewStatus: InterviewStatus.Done,
         data: {},
         id: 'ante-roca',
       },
@@ -17,6 +24,7 @@ async function main() {
         email: 'ana.kovac@example.com',
         firstName: 'Ana',
         lastName: 'Kovač',
+        interviewStatus: InterviewStatus.Pending,
         data: {},
         id: 'ana-kovac',
       },
@@ -24,6 +32,7 @@ async function main() {
         email: 'ivan.petrovic@example.com',
         firstName: 'Ivan',
         lastName: 'Petrović',
+        interviewStatus: InterviewStatus.NoRight,
         data: {},
         id: 'ivan-petrovic',
       },
@@ -31,6 +40,7 @@ async function main() {
         email: 'marija.juric@example.com',
         firstName: 'Marija',
         lastName: 'Jurić',
+        interviewStatus: InterviewStatus.Done,
         data: {},
         id: 'marija-juric',
       },
@@ -38,6 +48,7 @@ async function main() {
         email: 'marko.horvat@example.com',
         firstName: 'Marko',
         lastName: 'Horvat',
+        interviewStatus: InterviewStatus.Missed,
         data: {},
         id: 'marko-horvat',
       },
@@ -45,6 +56,7 @@ async function main() {
         email: 'petra.milic@example.com',
         firstName: 'Petra',
         lastName: 'Milić',
+        interviewStatus: InterviewStatus.PickTerm,
         data: {},
         id: 'petra-milic',
       },
@@ -52,6 +64,7 @@ async function main() {
         email: 'josip.knez@example.com',
         firstName: 'Josip',
         lastName: 'Knez',
+        interviewStatus: InterviewStatus.PickTerm,
         data: {},
         id: 'josip-knez',
       },
@@ -59,6 +72,7 @@ async function main() {
         email: 'katarina.vidic@example.com',
         firstName: 'Katarina',
         lastName: 'Vidić',
+        interviewStatus: InterviewStatus.PickTerm,
         data: {},
         id: 'katarina-vidic',
       },
@@ -66,6 +80,7 @@ async function main() {
         email: 'tomislav.kos@example.com',
         firstName: 'Tomislav',
         lastName: 'Koš',
+        interviewStatus: InterviewStatus.Done,
         data: {},
         id: 'tomislav-kos',
       },
@@ -73,6 +88,7 @@ async function main() {
         email: 'mia.babic@example.com',
         firstName: 'Mia',
         lastName: 'Babić',
+        interviewStatus: InterviewStatus.Pending,
         data: {},
         id: 'mia-babic',
       },
@@ -85,24 +101,47 @@ async function main() {
         internId: 'ante-roca',
         discipline: Discipline.Development,
         status: DisciplineStatus.Pending,
+        testStatus: TestStatus.Done,
+        testScore: 51,
         priority: 1,
+      },
+      {
+        internId: 'ante-roca',
+        discipline: Discipline.Multimedia,
+        status: DisciplineStatus.Approved,
+        priority: 2,
+      },
+      {
+        internId: 'ante-roca',
+        discipline: Discipline.Design,
+        status: DisciplineStatus.Rejected,
+        testStatus: TestStatus.Missed,
+        priority: 3,
       },
       {
         internId: 'ana-kovac',
         discipline: Discipline.Development,
         status: DisciplineStatus.Pending,
+        testStatus: TestStatus.Done,
         priority: 1,
       },
       {
         internId: 'ivan-petrovic',
         discipline: Discipline.Design,
-        status: DisciplineStatus.Pending,
+        status: DisciplineStatus.Approved,
+        testStatus: TestStatus.Missed,
         priority: 1,
+      },
+      {
+        internId: 'ivan-petrovic',
+        discipline: Discipline.Marketing,
+        status: DisciplineStatus.Pending,
+        priority: 2,
       },
       {
         internId: 'marija-juric',
         discipline: Discipline.Multimedia,
-        status: DisciplineStatus.Pending,
+        status: DisciplineStatus.Rejected,
         priority: 1,
       },
       {
@@ -114,13 +153,15 @@ async function main() {
       {
         internId: 'petra-milic',
         discipline: Discipline.Development,
-        status: DisciplineStatus.Pending,
+        status: DisciplineStatus.Approved,
+        testStatus: TestStatus.Pending,
         priority: 1,
       },
       {
         internId: 'josip-knez',
         discipline: Discipline.Design,
         status: DisciplineStatus.Pending,
+        testStatus: TestStatus.PickTerm,
         priority: 1,
       },
       {
@@ -139,21 +180,63 @@ async function main() {
         internId: 'mia-babic',
         discipline: Discipline.Development,
         status: DisciplineStatus.Pending,
+        testStatus: TestStatus.PickTerm,
         priority: 1,
       },
     ],
   });
 
-  await prisma.interviewSlot.createMany({
+  await prisma.interviewer.createMany({
     data: [
       {
         id: '1',
-        start: new Date('2021-06-01T10:00:00.000Z'),
-        end: new Date('2021-06-01T10:30:00.000Z'),
-        internId: 'ante-roca',
-        answers: {},
+        name: 'Frane',
+        disciplines: [Discipline.Development],
+      },
+      {
+        id: '2',
+        name: 'Duje',
+        disciplines: [Discipline.Development, Discipline.Multimedia],
+      },
+      {
+        id: '3',
+        name: 'Ante',
+        disciplines: [
+          Discipline.Multimedia,
+          Discipline.Development,
+          Discipline.Marketing,
+          Discipline.Design,
+        ],
       },
     ],
+  });
+
+  await prisma.interviewSlot.create({
+    data: {
+      id: '1',
+      start: new Date('2023-10-01T10:00:00.000Z'),
+      end: new Date('2023-10-01T10:30:00.000Z'),
+      answers: {},
+      interviewers: {
+        createMany: {
+          data: [{ interviewerId: '1' }, { interviewerId: '2' }],
+        },
+      },
+    },
+  });
+
+  await prisma.interviewSlot.create({
+    data: {
+      id: '2',
+      start: new Date('2023-10-01T10:30:00.000Z'),
+      end: new Date('2023-10-01T11:00:00.000Z'),
+      answers: {},
+      interviewers: {
+        createMany: {
+          data: [{ interviewerId: '1' }, { interviewerId: '3' }],
+        },
+      },
+    },
   });
 
   await prisma.admin.createMany({
