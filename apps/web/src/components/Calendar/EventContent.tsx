@@ -1,4 +1,4 @@
-import { Discipline, Event } from '@internship-app/types';
+import { Discipline, Event, InterviewSlot } from '@internship-app/types';
 import Tooltip from '@mui/material/Tooltip';
 import clsx from 'clsx';
 
@@ -24,13 +24,13 @@ export const EventContent = ({ event, eventDeleteHandler }: Props) => {
           &#10005;
         </div>
         {calendarHelper.getDisciplinesFromEvent(event).map((discipline) => {
-          const disciplineStyle = clsx(styles.discipline, {
+          const disciplineStyle = clsx(styles.disciplineIndicator, {
             [styles.design]: discipline === Discipline.Design,
             [styles.development]: discipline === Discipline.Development,
             [styles.marketing]: discipline === Discipline.Marketing,
             [styles.multimedia]: discipline === Discipline.Multimedia,
           });
-          return <div className={disciplineStyle} key={event.id} />;
+          return <div className={disciplineStyle} />;
         })}
       </div>
     </Tooltip>

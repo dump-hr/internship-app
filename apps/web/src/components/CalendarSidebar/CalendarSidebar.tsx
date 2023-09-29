@@ -1,6 +1,5 @@
 import { Discipline } from '@internship-app/types';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
-import { useEffect, useState } from 'react';
 
 import { useFetchInterviewers } from '../../api/useFetchInterviewers';
 import { MultilineInput } from '../common/MultilineInput/MultilineInput';
@@ -28,35 +27,46 @@ export const CalendarSidebar: React.FC<Props> = ({
         <FilterAltIcon className={styles.filterIcon} />
         <CustomSelectInput
           label="Područje"
-          menuOptions={Object.values(Discipline)}
+          menuOptions={Object.values(Discipline).map((value) => ({
+            key: value,
+            value,
+          }))}
           isMultiSelect={true}
-          valueHandler={(value) =>
+          valueHandler={(value) => {
             setSelectedDisciplineFilter(
               typeof value === 'string' ? [value] : value,
-            )
-          }
+            );
+          }}
         />
       </div>
       <div className={styles.filterSection}>
         <FilterAltIcon className={styles.filterIcon} />
         <CustomSelectInput
           label="Intervjueri"
-          menuOptions={interviewers?.map((interviewer) => interviewer.name)}
+          menuOptions={interviewers?.map((interviewer) => ({
+            key: interviewer.id,
+            value: interviewer.name,
+          }))}
           isMultiSelect={true}
-          valueHandler={(value) =>
+          valueHandler={(value) => {
             setSelectedInterviewerFilter(
               typeof value === 'string' ? [value] : value,
-            )
-          }
+            );
+          }}
         />
       </div>
       <CustomSelectInput
         label="Intervjueri"
-        menuOptions={interviewers?.map((interviewer) => interviewer.name)}
+        menuOptions={interviewers?.map((interviewer) => ({
+          key: interviewer.id,
+          value: interviewer.name,
+        }))}
         isMultiSelect={true}
-        valueHandler={(value) =>
-          setInterviewers(typeof value === 'string' ? [value] : value)
-        }
+        valueHandler={(value) => {
+          const selectedInterviewers =
+            typeof value === 'string' ? [value] : value;
+          setInterviewers(selectedInterviewers);
+        }}
       />
       <div>
         <div className={styles.notesLabel}>Notes:</div>

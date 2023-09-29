@@ -11,7 +11,7 @@ import styles from './index.module.css';
 
 interface Props {
   label: string;
-  menuOptions: string[] | undefined;
+  menuOptions: { key: string; value: string }[] | undefined;
   isMultiSelect: boolean;
   valueHandler?: (value: string) => void;
 }
@@ -37,9 +37,9 @@ export const CustomSelectInput: React.FC<Props> = ({
         onChange={(e) => setSelectedValues(e.target.value)}
         input={<OutlinedInput label="Multiple Select" />}
       >
-        {menuOptions?.map((option) => (
-          <MenuItem key={option} value={option}>
-            {option}
+        {menuOptions?.map((option, index) => (
+          <MenuItem value={option.key} key={index}>
+            {option.value}
           </MenuItem>
         ))}
       </Select>

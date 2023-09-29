@@ -96,7 +96,7 @@ export type InterviewSlot = {
   answers: Json;
   score?: number;
   notes?: string;
-  interviewers: Interviewer[];
+  interviewers: InterviewMemberParticipation[];
 };
 
 export type InterviewMemberParticipation = {

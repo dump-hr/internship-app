@@ -51,7 +51,6 @@ export const Calendar: React.FC<Props> = ({
   const DragAndDropCalendar = withDragAndDrop(BigCalendar);
 
   const handleTimeSlotAdd = (slotInfo: SlotInfo) => {
-    console.log('SLOT INFO: ', slotInfo);
     if (calendarHelper.checkIfEventExists(events, slotInfo)) return;
 
     const overlappingEvents = calendarHelper.getOverlappingEvents(
@@ -66,7 +65,7 @@ export const Calendar: React.FC<Props> = ({
       slotInfo,
     );
 
-    addEvent(newMergedEvent);
+    addEvent(newMergedEvent as Event);
   };
 
   useEffect(() => {
@@ -94,7 +93,7 @@ export const Calendar: React.FC<Props> = ({
           event: (event) => (
             <>
               <EventContent
-                event={event.event}
+                event={event.event as Event}
                 eventDeleteHandler={deleteEvent}
               />
               <div className="rbc-event-info">

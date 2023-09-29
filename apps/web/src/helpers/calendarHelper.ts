@@ -1,4 +1,4 @@
-import { InterviewSlot } from '@internship-app/types';
+import { Event, InterviewSlot } from '@internship-app/types';
 import moment from 'moment';
 import { SlotInfo } from 'react-big-calendar';
 
@@ -56,7 +56,7 @@ const getMergedEvent = (events: MappedEvent[], newEvent: SlotInfo) => {
   };
 };
 
-export const getDisciplinesFromEvent = (event: InterviewSlot) => {
+export const getDisciplinesFromEvent = (event: Event) => {
   const arrayOfArrays = event.interviewers.map(
     (interviewer) => interviewer.interviewer.disciplines,
   );
