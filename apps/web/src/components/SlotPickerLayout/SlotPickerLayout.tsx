@@ -1,14 +1,14 @@
 import { Box, Typography, useMediaQuery } from '@mui/material';
 import { ReactNode } from 'react';
 
-import { Logo } from '../../components/Logo';
+import { Logo } from '../Logo';
 
 type Props = {
   children?: ReactNode;
   title: string;
 };
 
-export const Layout: React.FC<Props> = ({ children, title }) => {
+const SlotPickerLayout: React.FC<Props> = ({ children, title }) => {
   const isMobile = useMediaQuery('(max-width:400px)');
 
   return (
@@ -39,3 +39,5 @@ export const Layout: React.FC<Props> = ({ children, title }) => {
     </Box>
   );
 };
+
+export default SlotPickerLayout;

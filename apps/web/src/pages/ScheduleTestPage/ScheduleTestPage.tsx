@@ -1,10 +1,10 @@
-import { Slot } from '@internship-app/types';
+import { Discipline, Slot } from '@internship-app/types';
 import { Box, useMediaQuery } from '@mui/material';
 import { useState } from 'react';
 import { useRoute } from 'wouter';
 
-import { useFetchAvailableInterviewSlots } from '../../api/useFetchAvailableInterviewSlots';
-import { useScheduleInterview } from '../../api/useScheduleInterview';
+import { useFetchAvailableTestSlots } from '../../api/useFetchAvailableTestSlots';
+import { useScheduleTest } from '../../api/useScheduleTest';
 import { ConfirmDialog } from '../../components/ConfirmDialog';
 import SlotPickerLayout from '../../components/SlotPickerLayout';
 import {
@@ -12,10 +12,13 @@ import {
   MuiDate,
   TimeSlotPicker,
 } from '../../components/SlotPickers';
+import { disciplineLabel } from '../../constants/internConstants';
 import { Path } from '../../constants/paths';
 
-const ScheduleInterviewPage = () => {
-  const [, params] = useRoute(Path.ScheduleInterview);
+type Params = { internId: string; discipline: Discipline };
+
+const ScheduleTestPage = () => {
+  const [, params] = useRoute<Params>(Path.ScheduleTest);
   const isMobile = useMediaQuery('(max-width:700px)');
 
   const {
@@ -23,9 +26,9 @@ const ScheduleInterviewPage = () => {
     isLoading,
     isError,
     error,
-  } = useFetchAvailableInterviewSlots(params?.internId);
+  } = useFetchAvailableTestSlots(params?.internId, params?.discipline);
 
-  const scheduleInterview = useScheduleInterview();
+  const scheduleTest = useScheduleTest();
 
   const [selectedDate, setSelectedDate] = useState<MuiDate | null>(null);
   const [selectedSlot, setSelectedSlot] = useState<Slot | null>(null);
@@ -34,13 +37,13 @@ const ScheduleInterviewPage = () => {
   const handleSubmit = () => {
     if (!selectedSlot || !params?.internId) return;
 
-    scheduleInterview.mutate({
+    scheduleTest.mutate({
       internId: params.internId,
-      interviewSlotId: selectedSlot.id,
+      testSlotId: selectedSlot.id,
     });
   };
 
-  const interviewSlotDateFormat =
+  const testSlotDateFormat =
     selectedSlot?.start.toLocaleString('hr-HR', {
       timeStyle: 'short',
       dateStyle: 'short',
@@ -52,7 +55,7 @@ const ScheduleInterviewPage = () => {
 
   if (isLoading) return <SlotPickerLayout title="Loading..." />;
 
-  if (isError)
+  if (isError || !params?.discipline || !params.internId)
     return (
       <SlotPickerLayout
         title={`Dogodila se greška (${error}). Molimo kontaktirajte nas na info@dump.hr`}
@@ -61,12 +64,16 @@ const ScheduleInterviewPage = () => {
 
   if (slots?.length === 0) {
     return (
-      <SlotPickerLayout title="Nema dostupnih termina. Molimo kontaktirajte nas na info@dump.hr" />
+      <SlotPickerLayout title="Zasad nema dostupnih termina, ali obavijestit ćemo te mailom kad ih bude." />
     );
   }
 
   return (
-    <SlotPickerLayout title="Odaberi termin za intervju">
+    <SlotPickerLayout
+      title={`Odaberi termin za ispit iz područja ${
+        disciplineLabel[params.discipline]
+      }`}
+    >
       <Box
         sx={{
           display: 'flex',
@@ -103,10 +110,10 @@ const ScheduleInterviewPage = () => {
           setDialogOpen(false);
         }}
         title="Potvrdi odabir termina"
-        description={`Vaš termin bit će rezerviran za ${interviewSlotDateFormat}.`}
+        description={`Vaš termin bit će rezerviran za ${testSlotDateFormat}.`}
       />
     </SlotPickerLayout>
   );
 };
 
-export default ScheduleInterviewPage;
+export default ScheduleTestPage;

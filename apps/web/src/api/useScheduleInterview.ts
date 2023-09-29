@@ -19,7 +19,7 @@ const scheduleInterview = async ({
 export const useScheduleInterview = () => {
   return useMutation(scheduleInterview, {
     onMutate: () => {
-      return { toastId: toast.loading('Zakavivanje intervjua...') };
+      return { toastId: toast.loading('Zakazivanje intervjua...') };
     },
     onSuccess: (data, _variables, context) => {
       toast.success('Intervju uspješno zakazan!', { id: context?.toastId });
