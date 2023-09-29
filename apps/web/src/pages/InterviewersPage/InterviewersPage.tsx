@@ -30,7 +30,6 @@ const InterviewersPage = () => {
   type DialogsState = {
     addInterviewer: DialogState;
     deleteInterviewer: DialogState;
-    editInterviewer: DialogState;
   };
 
   const [dialogs, setDialogs] = useState<DialogsState>({
@@ -58,18 +57,6 @@ const InterviewersPage = () => {
         }));
       },
     },
-    editInterviewer: {
-      isOpen: false,
-      toggle: () => {
-        setDialogs((prevState) => ({
-          ...prevState,
-          editInterviewer: {
-            ...prevState.editInterviewer,
-            isOpen: !prevState.editInterviewer.isOpen,
-          },
-        }));
-      },
-    },
   });
 
   const [newInterviewer, setNewInterviewer] = useState({
@@ -85,17 +72,6 @@ const InterviewersPage = () => {
   const [interviewerToDelete, setInterviewerToDelete] = useState({
     id: '',
     name: '',
-  });
-
-  const [interviewerToEdit, setInterviewerToEdit] = useState({
-    id: '',
-    name: '',
-    disciplines: {
-      [Discipline.Development]: false,
-      [Discipline.Design]: false,
-      [Discipline.Multimedia]: false,
-      [Discipline.Marketing]: false,
-    },
   });
 
   const { data: interviewers } = useFetchAllInterviewers();
@@ -132,32 +108,19 @@ const InterviewersPage = () => {
       headerName: 'Postavke',
       width: 100,
       renderCell: (params) => (
-        <>
-          <Button
-            variant="outlined"
-            color="info"
-            style={{ marginRight: '20px' }}
-            onClick={() => {
-              setInterviewerToEditData(params.row.id);
-              dialogs.editInterviewer.toggle();
-            }}
-          >
-            Uredi
-          </Button>
-          <Button
-            variant="outlined"
-            color="warning"
-            onClick={() => {
-              setInterviewerToDelete({
-                id: params.row.id,
-                name: params.row.name,
-              });
-              dialogs.deleteInterviewer.toggle();
-            }}
-          >
-            Obriši
-          </Button>
-        </>
+        <Button
+          variant="outlined"
+          color="warning"
+          onClick={() => {
+            setInterviewerToDelete({
+              id: params.row.id,
+              name: params.row.name,
+            });
+            dialogs.deleteInterviewer.toggle();
+          }}
+        >
+          Obriši
+        </Button>
       ),
 
       align: 'right',
@@ -202,16 +165,6 @@ const InterviewersPage = () => {
     }));
   }
 
-  function toggleInterviewerToEditDiscipline(discipline: Discipline) {
-    setInterviewerToEdit((prevState) => ({
-      ...prevState,
-      disciplines: {
-        ...prevState.disciplines,
-        [discipline]: !prevState.disciplines[discipline],
-      },
-    }));
-  }
-
   function eraseNewInterviewer() {
     setNewInterviewer({
       name: '',
@@ -220,35 +173,6 @@ const InterviewersPage = () => {
         [Discipline.Design]: false,
         [Discipline.Multimedia]: false,
         [Discipline.Marketing]: false,
-      },
-    });
-  }
-
-  function setInterviewerToEditData(id: string) {
-    const interviewer = interviewers?.find(
-      (interviewer) => interviewer.id === id,
-    );
-
-    if (!interviewer) {
-      return;
-    }
-
-    setInterviewerToEdit({
-      id,
-      name: interviewer.name,
-      disciplines: {
-        [Discipline.Development]: interviewer.disciplines.includes(
-          Discipline.Development,
-        ),
-        [Discipline.Design]: interviewer.disciplines.includes(
-          Discipline.Design,
-        ),
-        [Discipline.Multimedia]: interviewer.disciplines.includes(
-          Discipline.Multimedia,
-        ),
-        [Discipline.Marketing]: interviewer.disciplines.includes(
-          Discipline.Marketing,
-        ),
       },
     });
   }
@@ -264,19 +188,6 @@ const InterviewersPage = () => {
       setInterviewerToDelete({
         id: '',
         name: '',
-      });
-    }
-
-    if (!dialogs.editInterviewer.isOpen) {
-      setInterviewerToEdit({
-        id: '',
-        name: '',
-        disciplines: {
-          [Discipline.Development]: false,
-          [Discipline.Design]: false,
-          [Discipline.Multimedia]: false,
-          [Discipline.Marketing]: false,
-        },
       });
     }
   }, [dialogs]);
@@ -308,9 +219,6 @@ const InterviewersPage = () => {
         <button onClick={() => console.log(newInterviewer)}>
           Log new interviewer
         </button>
-        <button onClick={() => console.log(interviewerToEdit)}>
-          Log interviewer to edit
-        </button>
         <br />
         <Button onClick={dialogs.addInterviewer.toggle}>
           + Dodaj intervjuera
@@ -339,7 +247,6 @@ const InterviewersPage = () => {
             <TextField
               placeholder="Ime i prezime"
               onChange={(e) => setNewInterviewerName(e.target.value)}
-              defaultValue={interviewerToEdit.name}
             />
             <br />
             <DialogContentText>Izaberi područja:</DialogContentText>
@@ -407,62 +314,6 @@ const InterviewersPage = () => {
               Potvrdi
             </Button>
           </div>
-        </DialogContent>
-      </Dialog>
-
-      <Dialog
-        open={dialogs.editInterviewer.isOpen}
-        onClose={dialogs.editInterviewer.toggle}
-      >
-        <DialogTitle>Uredi intervjuera</DialogTitle>
-        <DialogContent>
-          <FormControl>
-            <TextField
-              placeholder="Ime i prezime"
-              onChange={(e) => setNewInterviewerName(e.target.value)}
-              defaultValue={interviewerToEdit.name}
-            />
-            <br />
-            <DialogContentText>Izaberi područja:</DialogContentText>
-            <FormGroup>
-              <FormControlLabel
-                control={<Checkbox />}
-                label="Programiranje"
-                onChange={() =>
-                  toggleInterviewerToEditDiscipline(Discipline.Development)
-                }
-                checked={interviewerToEdit.disciplines[Discipline.Development]}
-              />
-              <FormControlLabel
-                control={<Checkbox />}
-                label="Dizajn"
-                onChange={() =>
-                  toggleInterviewerToEditDiscipline(Discipline.Design)
-                }
-                checked={interviewerToEdit.disciplines[Discipline.Design]}
-              />
-              <FormControlLabel
-                control={<Checkbox />}
-                label="Multimedija"
-                onChange={() =>
-                  toggleInterviewerToEditDiscipline(Discipline.Multimedia)
-                }
-                checked={interviewerToEdit.disciplines[Discipline.Multimedia]}
-              />
-              <FormControlLabel
-                control={<Checkbox />}
-                label="Marketing"
-                onChange={() =>
-                  toggleInterviewerToEditDiscipline(Discipline.Marketing)
-                }
-                checked={interviewerToEdit.disciplines[Discipline.Marketing]}
-              />
-            </FormGroup>
-            <div className={c.dialogButtonWrapper}>
-              <Button onClick={dialogs.editInterviewer.toggle}>Odustani</Button>
-              <Button variant="outlined">Potvrdi</Button>
-            </div>
-          </FormControl>
         </DialogContent>
       </Dialog>
     </>
