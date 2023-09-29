@@ -105,7 +105,7 @@ const InterviewersPage = () => {
     },
     {
       field: 'deleteButton',
-      headerName: 'Postavke',
+      headerName: '',
       width: 100,
       renderCell: (params) => (
         <Button
@@ -148,40 +148,57 @@ const InterviewersPage = () => {
     };
   });
 
-  function setNewInterviewerName(name: string) {
-    setNewInterviewer((prevState) => ({
-      ...prevState,
-      name,
-    }));
-  }
-
-  function toggleNewInterviewerDiscipline(discipline: Discipline) {
-    setNewInterviewer((prevState) => ({
-      ...prevState,
-      disciplines: {
-        ...prevState.disciplines,
-        [discipline]: !prevState.disciplines[discipline],
-      },
-    }));
-  }
-
-  function eraseNewInterviewer() {
-    setNewInterviewer({
-      name: '',
-      disciplines: {
-        [Discipline.Development]: false,
-        [Discipline.Design]: false,
-        [Discipline.Multimedia]: false,
-        [Discipline.Marketing]: false,
-      },
-    });
-  }
-
   const deleteInterviewer = useDeleteInterviewer();
+  const postInterviewer = usePostInterviewer();
+
+  const Helper = {
+    newInterviewer: {
+      setName: (name: string) => {
+        setNewInterviewer((prevState) => ({
+          ...prevState,
+          name,
+        }));
+      },
+      toggleDiscipline: (discipline: Discipline) => {
+        setNewInterviewer((prevState) => ({
+          ...prevState,
+          disciplines: {
+            ...prevState.disciplines,
+            [discipline]: !prevState.disciplines[discipline],
+          },
+        }));
+      },
+      erase: () => {
+        setNewInterviewer({
+          name: '',
+          disciplines: {
+            [Discipline.Development]: false,
+            [Discipline.Design]: false,
+            [Discipline.Multimedia]: false,
+            [Discipline.Marketing]: false,
+          },
+        });
+      },
+      submit: () => {
+        const disciplines = Object.keys(newInterviewer.disciplines).filter(
+          (discipline) => newInterviewer.disciplines[discipline as Discipline],
+        ) as Discipline[];
+
+        const newInterviewerData = {
+          name: newInterviewer.name,
+          disciplines,
+        };
+
+        postInterviewer.mutate(newInterviewerData);
+        dialogs.addInterviewer.toggle();
+        window.location.reload();
+      },
+    },
+  };
 
   useEffect(() => {
     if (!dialogs.addInterviewer.isOpen) {
-      eraseNewInterviewer();
+      Helper.newInterviewer.erase();
     }
 
     if (!dialogs.deleteInterviewer.isOpen) {
@@ -190,24 +207,7 @@ const InterviewersPage = () => {
         name: '',
       });
     }
-  }, [dialogs]);
-
-  const putInterviewer = usePostInterviewer();
-
-  function submitNewInterviewer() {
-    const disciplines = Object.keys(newInterviewer.disciplines).filter(
-      (discipline) => newInterviewer.disciplines[discipline as Discipline],
-    ) as Discipline[];
-
-    const newInterviewerData = {
-      name: newInterviewer.name,
-      disciplines,
-    };
-
-    putInterviewer.mutate(newInterviewerData);
-    dialogs.addInterviewer.toggle();
-    window.location.reload();
-  }
+  }, [dialogs, Helper.newInterviewer]);
 
   return (
     <>
@@ -246,7 +246,7 @@ const InterviewersPage = () => {
           <FormControl>
             <TextField
               placeholder="Ime i prezime"
-              onChange={(e) => setNewInterviewerName(e.target.value)}
+              onChange={(e) => Helper.newInterviewer.setName(e.target.value)}
             />
             <br />
             <DialogContentText>Izaberi područja:</DialogContentText>
@@ -255,34 +255,34 @@ const InterviewersPage = () => {
                 control={<Checkbox />}
                 label="Programiranje"
                 onChange={() =>
-                  toggleNewInterviewerDiscipline(Discipline.Development)
+                  Helper.newInterviewer.toggleDiscipline(Discipline.Development)
                 }
               />
               <FormControlLabel
                 control={<Checkbox />}
                 label="Dizajn"
                 onChange={() =>
-                  toggleNewInterviewerDiscipline(Discipline.Design)
+                  Helper.newInterviewer.toggleDiscipline(Discipline.Design)
                 }
               />
               <FormControlLabel
                 control={<Checkbox />}
                 label="Multimedija"
                 onChange={() =>
-                  toggleNewInterviewerDiscipline(Discipline.Multimedia)
+                  Helper.newInterviewer.toggleDiscipline(Discipline.Multimedia)
                 }
               />
               <FormControlLabel
                 control={<Checkbox />}
                 label="Marketing"
                 onChange={() =>
-                  toggleNewInterviewerDiscipline(Discipline.Marketing)
+                  Helper.newInterviewer.toggleDiscipline(Discipline.Marketing)
                 }
               />
             </FormGroup>
             <div className={c.dialogButtonWrapper}>
               <Button onClick={dialogs.addInterviewer.toggle}>Odustani</Button>
-              <Button onClick={submitNewInterviewer} variant="outlined">
+              <Button onClick={Helper.newInterviewer.submit} variant="outlined">
                 Potvrdi
               </Button>
             </div>
