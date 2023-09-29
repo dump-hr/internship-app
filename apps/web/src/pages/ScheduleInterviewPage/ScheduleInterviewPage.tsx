@@ -1,15 +1,18 @@
+import { Slot } from '@internship-app/types';
 import { Box, useMediaQuery } from '@mui/material';
-import type { InterviewSlot } from '@prisma/client';
 import { useState } from 'react';
 import { useRoute } from 'wouter';
 
 import { useFetchAvailableInterviewSlots } from '../../api/useFetchAvailableInterviewSlots';
 import { useScheduleInterview } from '../../api/useScheduleInterview';
 import { ConfirmDialog } from '../../components/ConfirmDialog';
+import {
+  DatePicker,
+  MuiDate,
+  TimeSlotPicker,
+} from '../../components/SlotPickers';
 import { Path } from '../../constants/paths';
-import { DatePicker, MuiDate } from './DatePicker';
 import { Layout } from './Layout';
-import { TimeSlotPicker } from './TimeSlotPicker';
 
 const ScheduleInterviewPage = () => {
   const [, params] = useRoute(Path.ScheduleInterview);
@@ -25,7 +28,7 @@ const ScheduleInterviewPage = () => {
   const scheduleInterview = useScheduleInterview();
 
   const [selectedDate, setSelectedDate] = useState<MuiDate | null>(null);
-  const [selectedSlot, setSelectedSlot] = useState<InterviewSlot | null>(null);
+  const [selectedSlot, setSelectedSlot] = useState<Slot | null>(null);
   const [dialogOpen, setDialogOpen] = useState(false);
 
   const handleSubmit = () => {
