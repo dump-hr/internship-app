@@ -6,7 +6,7 @@ interface InternInfoProps {
   intern: Intern;
 }
 
-type Item = {
+type Answer = {
   id: string;
   tick: boolean;
   type: string;
@@ -14,6 +14,7 @@ type Item = {
   value: string | number;
   category: string;
 };
+
 const InternInfo = ({ intern }: InternInfoProps) => {
   console.log(intern);
   return (
@@ -21,6 +22,7 @@ const InternInfo = ({ intern }: InternInfoProps) => {
       <h1>
         {intern.firstName} {intern.lastName}
       </h1>
+      <div className={styles.emailContainer}>{intern.email}</div>
 
       <div className={styles.container}>
         <img
@@ -30,34 +32,29 @@ const InternInfo = ({ intern }: InternInfoProps) => {
           }
           alt="Intern image"
         />
-        <div>
-          <div className={styles.atribute}>
-            <h3>Email</h3>
-            <span> {intern.email} </span>
-          </div>
-          <div>
-            {Object.keys(intern.data).map((key: string) => {
-              return (
-                <div className={styles.atribute}>
-                  <h3>{key}</h3>
-                  <span>
-                    {intern.data[key as keyof typeof intern.data].toString()}
-                  </span>
-                </div>
-              );
-            })}
-          </div>
+        <div className={styles.data}>
+          {Object.keys(intern.data).map((key: string) => {
+            return (
+              <div className={styles.atribute} key={key}>
+                <span>
+                  {key}:{' '}
+                  {intern.data[key as keyof typeof intern.data].toString()}
+                </span>
+              </div>
+            );
+          })}
         </div>
       </div>
+
       {JSON.parse(JSON.stringify(intern.interviewSlot?.answers)).map(
-        (item: Item) => {
+        (item: Answer) => {
           return (
             <div
               className={item.tick ? styles.tick : styles.atribute}
               key={item.id}
             >
               <h3>
-                {item.title} {item.tick ? '⚠️' : ''}
+                {item.title} {!item.tick || '⚠️'}
               </h3>
               <span>{item.value}</span>
             </div>
