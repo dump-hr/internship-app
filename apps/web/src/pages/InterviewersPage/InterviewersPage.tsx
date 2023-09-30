@@ -35,6 +35,7 @@ const InterviewersPage = () => {
   type DialogState = {
     isOpen: boolean;
     toggle: () => void;
+    name?: string;
   };
 
   type DialogsState = {
@@ -46,28 +47,36 @@ const InterviewersPage = () => {
     addInterviewer: {
       isOpen: false,
       toggle: () => {
-        if (dialogs.addInterviewer.isOpen) handleDialogClose();
-        setDialogs((prevState) => ({
-          ...prevState,
-          addInterviewer: {
-            ...prevState.addInterviewer,
-            isOpen: !prevState.addInterviewer.isOpen,
-          },
-        }));
+        if (dialogs.addInterviewer.isOpen) Helper.newInterviewer.erase();
+
+        setDialogs((prevState) => {
+          if (prevState.addInterviewer.isOpen) Helper.newInterviewer.erase();
+          return {
+            ...prevState,
+            addInterviewer: {
+              ...prevState.addInterviewer,
+              isOpen: !prevState.addInterviewer.isOpen,
+            },
+          };
+        });
       },
     },
     deleteInterviewer: {
       isOpen: false,
       toggle: () => {
-        if (dialogs.deleteInterviewer.isOpen) handleDialogClose();
-        setDialogs((prevState) => ({
-          ...prevState,
-          deleteInterviewer: {
-            ...prevState.deleteInterviewer,
-            isOpen: !prevState.deleteInterviewer.isOpen,
-          },
-        }));
+        setDialogs((prevState) => {
+          if (prevState.deleteInterviewer.isOpen)
+            Helper.interviewerToDelete.erase();
+          return {
+            ...prevState,
+            deleteInterviewer: {
+              ...prevState.deleteInterviewer,
+              isOpen: !prevState.deleteInterviewer.isOpen,
+            },
+          };
+        });
       },
+      name: '',
     },
   });
 
@@ -145,6 +154,13 @@ const InterviewersPage = () => {
                 id: params.row.id,
                 name: params.row.name,
               });
+              setDialogs((prevState) => ({
+                ...prevState,
+                deleteInterviewer: {
+                  ...prevState.deleteInterviewer,
+                  name: params.row.name,
+                },
+              }));
               dialogs.deleteInterviewer.toggle();
             }}
           >
@@ -254,24 +270,26 @@ const InterviewersPage = () => {
     },
     interviewerToDelete: {
       delete: () => {
-        deleteInterviewer.mutate(interviewerToDelete.id);
         dialogs.deleteInterviewer.toggle();
+        deleteInterviewer.mutate(interviewerToDelete.id);
+      },
+      erase: () => {
+        setInterviewerToDelete({
+          id: '',
+          name: '',
+        });
+        setDialogs((prevState) => ({
+          ...prevState,
+          deleteInterviewer: {
+            ...prevState.deleteInterviewer,
+            data: {
+              name: '',
+            },
+          },
+        }));
       },
     },
   };
-
-  function handleDialogClose() {
-    if (!dialogs.addInterviewer.isOpen) {
-      Helper.newInterviewer.erase();
-    }
-
-    if (!dialogs.deleteInterviewer.isOpen) {
-      setInterviewerToDelete({
-        id: '',
-        name: '',
-      });
-    }
-  }
 
   return (
     <>
@@ -360,7 +378,7 @@ const InterviewersPage = () => {
         onClose={dialogs.deleteInterviewer.toggle}
       >
         <DialogTitle>
-          Obriši intervjuera ({interviewerToDelete.name})
+          Obriši intervjuera ({dialogs.deleteInterviewer.name})
         </DialogTitle>
         <DialogContent>
           <DialogContentText>

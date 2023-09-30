@@ -10,11 +10,7 @@ type InterviewerToCreate = {
 };
 
 const addInterviewer = async (newInterviewer: InterviewerToCreate) => {
-  try {
-    await api.post('/interviewer', newInterviewer);
-  } catch (err) {
-    alert(err);
-  }
+  await api.post('/interviewer', newInterviewer);
 };
 
 export const usePostInterviewer = () => {
@@ -27,8 +23,8 @@ export const usePostInterviewer = () => {
       queryClient.invalidateQueries('interviewer');
       toast.success('Intervjuer uspješno dodan!');
     },
-    onError: () => {
-      toast.error('Greška prilikom dodavanja intervjuera!');
+    onError: (error) => {
+      toast.error(`Greška prilikom dodavanja intervjuera! (${error})`);
     },
   });
 };
