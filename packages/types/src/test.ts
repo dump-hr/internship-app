@@ -10,10 +10,10 @@ export type TestSlotPreviewDto = Omit<TestSlot, 'internDisciplines' | 'testQuest
   questionCount: number;
 }
 
-export type CreateTestSlotDto = {
+export type CreateTestSlotsRequest = {
   discipline: Discipline;
   start: Date;
   end: Date;
   capacity: number;
   location: string;
-}
+}[]

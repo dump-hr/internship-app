@@ -1,5 +1,5 @@
 import {
-  CreateTestSlotDto,
+  CreateTestSlotsRequest,
   ScheduleTestRequest,
   TestSlotPreviewDto,
 } from '@internship-app/types';
@@ -28,8 +28,13 @@ export class TestSlotController {
     return testSlotsDto;
   }
 
+  @Get(':id')
+  async get(@Param('id') id: string) {
+    return await this.testSlotService.get(id);
+  }
+
   @Post()
-  async createTestSlotDto(@Body() testSlotDto: CreateTestSlotDto) {
+  async createTestSlotDto(@Body() testSlotDto: CreateTestSlotsRequest) {
     return await this.testSlotService.create(testSlotDto);
   }
 

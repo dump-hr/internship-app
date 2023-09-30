@@ -1,4 +1,4 @@
-import { CreateTestSlotDto } from '@internship-app/types';
+import { CreateTestSlotsRequest } from '@internship-app/types';
 import {
   BadRequestException,
   Injectable,
@@ -26,28 +26,36 @@ export class TestSlotService {
     return testSlots;
   }
 
-  async create(testSlotDto: CreateTestSlotDto) {
-    const overlappingSlotCount = await this.prisma.testSlot.count({
+  async get(id: string) {
+    return await this.prisma.testSlot.findUniqueOrThrow({
       where: {
-        discipline: testSlotDto.discipline,
-        AND: [
-          { start: { lt: testSlotDto.end } },
-          { end: { gt: testSlotDto.start } },
-        ],
+        id,
+      },
+      include: {
+        testQuestions: true,
+        internDisciplines: {
+          include: {
+            intern: true,
+          },
+        },
       },
     });
-    if (overlappingSlotCount)
-      throw new BadRequestException('Slot se overlappa s postojećim!');
+  }
 
-    return await this.prisma.testSlot.create({
-      data: {
-        capacity: testSlotDto.capacity,
-        discipline: testSlotDto.discipline,
-        start: testSlotDto.start,
-        end: testSlotDto.end,
-        location: testSlotDto.location,
-      },
-    });
+  async create(testSlotDto: CreateTestSlotsRequest) {
+    return await this.prisma.$transaction(
+      testSlotDto.map((slot) =>
+        this.prisma.testSlot.create({
+          data: {
+            capacity: slot.capacity,
+            discipline: slot.discipline,
+            start: slot.start,
+            end: slot.end,
+            location: slot.location,
+          },
+        }),
+      ),
+    );
   }
 
   async getAvailableSlots(internId: string, discipline: Discipline) {

@@ -1,4 +1,4 @@
-import { Box, Button, Input, InputLabel, Typography } from '@mui/material';
+import { Box, Button, InputLabel, TextField, Typography } from '@mui/material';
 import moment from 'moment';
 import { ChangeEvent } from 'react';
 
@@ -10,13 +10,17 @@ type NewSlotEditProps = {
 };
 
 export const NewSlotEdit: React.FC<NewSlotEditProps> = ({ slot, setSlots }) => {
-  const handleFieldChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setSlots((prev) =>
-      prev.map((e) =>
-        e === slot ? { ...slot, [event.target.name]: event.target.value } : e,
-      ),
-    );
-  };
+  const handleFieldChange =
+    (getter: 'value' | 'valueAsNumber') =>
+    (event: ChangeEvent<HTMLInputElement>) => {
+      setSlots((prev) =>
+        prev.map((e) =>
+          e === slot
+            ? { ...slot, [event.target.name]: event.target[getter] }
+            : e,
+        ),
+      );
+    };
 
   const handleDelete = () => {
     setSlots((prev) => prev.filter((e) => e !== slot));
@@ -32,11 +36,17 @@ export const NewSlotEdit: React.FC<NewSlotEditProps> = ({ slot, setSlots }) => {
         Trajanje: {moment(slot.end).diff(slot.start, 'minute')}min
       </Typography>
       <InputLabel>Kapacitet</InputLabel>
-      <Input
+      <TextField
         value={slot.capacity}
         name="capacity"
         type="number"
-        onChange={handleFieldChange}
+        onChange={handleFieldChange('valueAsNumber')}
+      />
+      <InputLabel>Lokacija</InputLabel>
+      <TextField
+        value={slot.location}
+        name="location"
+        onChange={handleFieldChange('value')}
       />
       <Button onClick={handleDelete}>Obriši</Button>
     </Box>
