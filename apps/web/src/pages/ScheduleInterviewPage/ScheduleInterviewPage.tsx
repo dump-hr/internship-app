@@ -1,22 +1,13 @@
 import { Slot } from '@internship-app/types';
-import { Box, useMediaQuery } from '@mui/material';
-import { useState } from 'react';
 import { useRoute } from 'wouter';
 
 import { useFetchAvailableInterviewSlots } from '../../api/useFetchAvailableInterviewSlots';
 import { useScheduleInterview } from '../../api/useScheduleInterview';
-import { ConfirmDialog } from '../../components/ConfirmDialog';
-import SlotPickerLayout from '../../components/SlotPickerLayout';
-import {
-  DatePicker,
-  MuiDate,
-  TimeSlotPicker,
-} from '../../components/SlotPickers';
+import SlotPicker, { SlotPickerLayout } from '../../components/SlotPicker';
 import { Path } from '../../constants/paths';
 
 const ScheduleInterviewPage = () => {
   const [, params] = useRoute(Path.ScheduleInterview);
-  const isMobile = useMediaQuery('(max-width:700px)');
 
   const {
     data: slots,
@@ -27,11 +18,7 @@ const ScheduleInterviewPage = () => {
 
   const scheduleInterview = useScheduleInterview();
 
-  const [selectedDate, setSelectedDate] = useState<MuiDate | null>(null);
-  const [selectedSlot, setSelectedSlot] = useState<Slot | null>(null);
-  const [dialogOpen, setDialogOpen] = useState(false);
-
-  const handleSubmit = () => {
+  const handleSubmit = (selectedSlot: Slot) => {
     if (!selectedSlot || !params?.internId) return;
 
     scheduleInterview.mutate({
@@ -40,19 +27,9 @@ const ScheduleInterviewPage = () => {
     });
   };
 
-  const interviewSlotDateFormat =
-    selectedSlot?.start.toLocaleString('hr-HR', {
-      timeStyle: 'short',
-      dateStyle: 'short',
-    }) +
-    '-' +
-    selectedSlot?.end.toLocaleTimeString('hr-HR', {
-      timeStyle: 'short',
-    });
-
   if (isLoading) return <SlotPickerLayout title="Loading..." />;
 
-  if (isError)
+  if (isError || !slots)
     return (
       <SlotPickerLayout
         title={`Dogodila se greška (${error}). Molimo kontaktirajte nas na info@dump.hr`}
@@ -66,46 +43,11 @@ const ScheduleInterviewPage = () => {
   }
 
   return (
-    <SlotPickerLayout title="Odaberi termin za intervju">
-      <Box
-        sx={{
-          display: 'flex',
-          alignItems: isMobile ? 'center' : 'flex-start',
-          flexDirection: isMobile ? 'column' : 'row',
-        }}
-      >
-        <DatePicker
-          availableDates={slots?.map((s) => s.start) || []}
-          onChange={setSelectedDate}
-        />
-        {!!selectedDate && (
-          <TimeSlotPicker
-            availableTimeSlots={
-              slots?.filter(
-                (slot) =>
-                  slot.start.getDate() === selectedDate.$D &&
-                  slot.start.getMonth() === selectedDate.$M &&
-                  slot.start.getFullYear() === selectedDate.$y,
-              ) || []
-            }
-            isMobile={isMobile}
-            onChange={(slot) => {
-              setSelectedSlot(slot);
-              setDialogOpen(true);
-            }}
-          />
-        )}
-      </Box>
-      <ConfirmDialog
-        open={!!dialogOpen}
-        handleClose={(confirmed) => {
-          if (confirmed) handleSubmit();
-          setDialogOpen(false);
-        }}
-        title="Potvrdi odabir termina"
-        description={`Vaš termin bit će rezerviran za ${interviewSlotDateFormat}.`}
-      />
-    </SlotPickerLayout>
+    <SlotPicker
+      title="Odaberi termin za intervju"
+      slots={slots}
+      handleSubmit={handleSubmit}
+    />
   );
 };
 

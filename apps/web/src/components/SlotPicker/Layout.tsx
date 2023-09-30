@@ -8,7 +8,7 @@ type Props = {
   title: string;
 };
 
-const SlotPickerLayout: React.FC<Props> = ({ children, title }) => {
+export const Layout: React.FC<Props> = ({ children, title }) => {
   const isMobile = useMediaQuery('(max-width:400px)');
 
   return (
@@ -39,5 +39,3 @@ const SlotPickerLayout: React.FC<Props> = ({ children, title }) => {
     </Box>
   );
 };
-
-export default SlotPickerLayout;
