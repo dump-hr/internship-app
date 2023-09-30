@@ -20,3 +20,9 @@
 .filterSection > div {
     margin-bottom: 0 !important;
 }
+
+.saveButton {
+    position: absolute !important;
+    bottom: 35px;
+    right: 35px;
+}

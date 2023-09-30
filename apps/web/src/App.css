@@ -65,4 +65,7 @@
 .rbc-time-view {
     background-color: white;
 }
+.greyed-out-event > .rbc-event {
+    filter: grayscale(100%);
+}
 

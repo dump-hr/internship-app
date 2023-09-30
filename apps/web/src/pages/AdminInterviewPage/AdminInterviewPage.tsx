@@ -1,4 +1,4 @@
-import { Event } from '@internship-app/types';
+import { Event, InterviewMemberParticipation } from '@internship-app/types';
 import moment from 'moment';
 import { useEffect, useState } from 'react';
 
@@ -15,13 +15,14 @@ type MappedEvent = {
   start: Date;
   end: Date;
   additionalInfo: string;
-  interviewers: string[];
+  interviewers: InterviewMemberParticipation[];
 };
 
 export const AdminInterviewPage = () => {
-  const [interviewFilter, setInterviewFilter] = useState<
+  const [interviewerFilter, setInterviewerFilter] = useState<
     string[] | null | undefined
   >();
+  const [filteredEvents, setFilteredEvents] = useState<MappedEvent[]>([]);
   const [selectedInterviewers, setSelectedInterviewers] = useState<
     string[] | null
   >();
@@ -30,7 +31,7 @@ export const AdminInterviewPage = () => {
   >();
   const [events, setEvents] = useState<MappedEvent[]>([]);
   const { data: interviewSlots, refetchInterviewSlots } =
-    useFetchInterviewSlots(interviewFilter || null);
+    useFetchInterviewSlots(null);
 
   const deleteInterviewSlotMutation = useDeleteInterviewSlot();
   const createInterviewSlotMutation = useCreateInterviewSlot();
@@ -77,15 +78,33 @@ export const AdminInterviewPage = () => {
     setEvents(convertedEvents as MappedEvent[]);
   }, [interviewSlots]);
 
+  useEffect(() => {
+    if (!events || !interviewerFilter || interviewerFilter.length === 0) {
+      setFilteredEvents(events);
+    } else {
+      const filtered = events.filter((slot) => {
+        return slot.interviewers.reduce((found, interviewer) => {
+          {
+            return (
+              found || interviewerFilter.includes(interviewer.interviewerId)
+            );
+          }
+        }, false);
+      });
+      setFilteredEvents(filtered);
+    }
+  }, [events, interviewerFilter]);
+
   return (
     <div className={styles.wrapper}>
       <Calendar
+        filteredEvents={filteredEvents}
         existingEvents={events}
         deleteEvent={deleteEvent}
         addEvent={addEvent}
       />
       <CalendarSidebar
-        setSelectedInterviewerFilter={setInterviewFilter}
+        setSelectedInterviewerFilter={setInterviewerFilter}
         setInterviewers={setSelectedInterviewers}
         setAdditionalNotesValue={setAdditionalNotesValue}
       />

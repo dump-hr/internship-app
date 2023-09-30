@@ -7,7 +7,6 @@ import {
   Param,
   Patch,
   Post,
-  Query,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 
@@ -20,22 +19,8 @@ export class InterviewSlotController {
   constructor(private readonly interviewSlotService: InterviewSlotService) {}
 
   @Get()
-  async getAll(@Query('interviewers') interviewers: string) {
-    let interviewSlots = await this.interviewSlotService.getAll();
-
-    if (interviewers) {
-      const selectedInterviewers = interviewers.split(',');
-
-      interviewSlots = interviewSlots.filter((slot) => {
-        return slot.interviewers.reduce((found, interviewer) => {
-          return (
-            found || selectedInterviewers.includes(interviewer.interviewerId)
-          );
-        }, false);
-      });
-    }
-
-    return interviewSlots;
+  async getAll() {
+    return await this.interviewSlotService.getAll();
   }
 
   @Delete('/:id')

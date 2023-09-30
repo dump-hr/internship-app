@@ -1,4 +1,9 @@
-import { Event, InterviewSlot, InterviewStatus } from '@internship-app/types';
+import {
+  Event,
+  InterviewMemberParticipation,
+  InterviewSlot,
+  InterviewStatus,
+} from '@internship-app/types';
 import moment from 'moment';
 import { SlotInfo } from 'react-big-calendar';
 
@@ -7,7 +12,7 @@ type MappedEvent = {
   start: Date;
   end: Date;
   additionalInfo: string;
-  interviewers: string[];
+  interviewers: InterviewMemberParticipation[];
 };
 
 const parseInterviewSlotToCalendarEvent = (interviewSlot: InterviewSlot) => {

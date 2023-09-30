@@ -1,6 +1,6 @@
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 
-import { Event } from '@internship-app/types';
+import { Event, InterviewMemberParticipation } from '@internship-app/types';
 import { format, getDay, parse, startOfWeek } from 'date-fns';
 import hrLocale from 'date-fns/locale/hr';
 import moment from 'moment';
@@ -33,16 +33,18 @@ type MappedEvent = {
   start: Date;
   end: Date;
   additionalInfo: string;
-  interviewers: string[];
+  interviewers: InterviewMemberParticipation[];
 };
 
 interface Props {
+  filteredEvents: MappedEvent[];
   existingEvents: MappedEvent[];
   deleteEvent: (event: Event) => void;
   addEvent: (event: Event) => void;
 }
 
 export const Calendar: React.FC<Props> = ({
+  filteredEvents,
   existingEvents,
   deleteEvent,
   addEvent,
@@ -59,13 +61,13 @@ export const Calendar: React.FC<Props> = ({
     );
 
     if (overlappingEvents.length > 0) return;
+    const newEvent = { start: slotInfo.start, end: slotInfo.end } as Event;
 
-    addEvent({ start: slotInfo.start, end: slotInfo.end } as Event);
+    addEvent(newEvent);
   };
 
   useEffect(() => {
     setEvents(existingEvents);
-    console.log(existingEvents);
   }, [existingEvents]);
 
   return (
@@ -86,19 +88,31 @@ export const Calendar: React.FC<Props> = ({
         onSelectSlot={handleTimeSlotAdd}
         events={events}
         components={{
-          event: (event) => (
-            <>
-              <EventContent
-                event={event.event as Event}
-                eventDeleteHandler={deleteEvent}
-              />
-              <div className="rbc-event-info">
-                <div>{format((event.event as Event).start, 'HH:mm')}</div>
-                <div>-</div>
-                <div>{format((event.event as Event).end, 'HH:mm')}</div>
+          eventWrapper: (props) => {
+            const isNotFiltered = !filteredEvents.includes(
+              props.event as MappedEvent,
+            );
+            return (
+              <div className={isNotFiltered ? 'greyed-out-event' : ''}>
+                {props.children}
               </div>
-            </>
-          ),
+            );
+          },
+          event: (props) => {
+            return (
+              <div>
+                <EventContent
+                  event={props.event as Event}
+                  eventDeleteHandler={deleteEvent}
+                />
+                <div className="rbc-event-info">
+                  <div>{format((props.event as Event).start, 'HH:mm')}</div>
+                  <div>-</div>
+                  <div>{format((props.event as Event).end, 'HH:mm')}</div>
+                </div>
+              </div>
+            );
+          },
         }}
       />
     </div>

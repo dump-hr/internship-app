@@ -3,21 +3,16 @@ import { useQuery, useQueryClient } from 'react-query';
 
 import { api } from '.';
 
-const fetchInterviewSlots = async (interviewers: string[] | null) => {
-  const params: Record<string, string> = {};
-
-  if (interviewers) {
-    params['interviewers'] = interviewers.join(',');
-  }
-  return api.get<never, InterviewSlot[]>('/interview-slot', { params });
+const fetchInterviewSlots = async () => {
+  return api.get<never, InterviewSlot[]>('/interview-slot');
 };
 
-export const useFetchInterviewSlots = (interviewers: string[] | null) => {
+export const useFetchInterviewSlots = () => {
   const queryKey = ['interview-slots'];
   const queryClient = useQueryClient();
 
   const { data, ...queryRest } = useQuery(queryKey, () => {
-    return fetchInterviewSlots(interviewers);
+    return fetchInterviewSlots();
   });
 
   const refetchInterviewSlots = () => {
