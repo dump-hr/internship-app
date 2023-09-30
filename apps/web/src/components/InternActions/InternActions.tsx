@@ -15,7 +15,7 @@ type InternActionsProps = {
 
 const InternActions: React.FC<InternActionsProps> = ({ intern }) => {
   const options = getInternOptions(intern);
-  const applyInternAction = useApplyInternAction(intern);
+  const applyInternAction = useApplyInternAction();
 
   const actionHandler = (action: InternAction) => {
     const request: InternActionRequest = { action, internId: intern.id };
