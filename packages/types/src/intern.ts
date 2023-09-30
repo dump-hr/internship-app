@@ -43,6 +43,14 @@ export enum TestStatus {
   Missed = 'Missed',
 }
 
+export enum CodingLanguage {
+  Python = 'Python',
+  CPP = 'CPP',
+  C = 'C',
+  CS = 'CS',
+  JavaScript = 'JavaScript'
+}
+
 export type Interviewer = {
   id: string;
   name: string;
@@ -86,9 +94,26 @@ export type TestSlot = {
   end: string;
   location: string;
   capacity: number;
-  maxPoints: number;
   internDisciplines: InternDiscipline[];
 };
+
+export type TestQuestion = {
+  id: string;
+  title: string;
+  text: string;
+  points: number;
+  order: number;
+  testSlot: TestSlot;
+}
+
+export type InternQuestionAnswer = {
+  id: string;
+  language: CodingLanguage;
+  code: string;
+  score?: number;
+  question: TestQuestion;
+  internDiscipline: InternDiscipline;
+}
 
 export type InterviewSlot = {
   id: string;

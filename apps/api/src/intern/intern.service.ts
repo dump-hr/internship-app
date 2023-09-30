@@ -77,7 +77,6 @@ export class InternService {
               select: {
                 start: true,
                 end: true,
-                maxPoints: true,
               },
             },
           },

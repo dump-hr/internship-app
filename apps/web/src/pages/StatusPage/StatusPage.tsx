@@ -58,11 +58,7 @@ const StatusPage = () => {
           {!ids.testSlot && ids.testStatus === TestStatus.Pending && (
             <Typography>Provjeri slobodne termine testa. ovojelink</Typography>
           )}
-          {ids.testScore && (
-            <Typography>
-              Rezultat: {ids.testScore}/{ids.testSlot?.maxPoints}
-            </Typography>
-          )}
+          {ids.testScore && <Typography>Rezultat: {ids.testScore}</Typography>}
         </Box>
       ))}
       {hasInterviewRight && (
