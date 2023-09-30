@@ -189,17 +189,17 @@ async function main() {
   await prisma.interviewer.createMany({
     data: [
       {
-        id: '1',
+        id: 'frane',
         name: 'Frane',
         disciplines: [Discipline.Development],
       },
       {
-        id: '2',
+        id: 'duje',
         name: 'Duje',
         disciplines: [Discipline.Development, Discipline.Multimedia],
       },
       {
-        id: '3',
+        id: 'ante',
         name: 'Ante',
         disciplines: [
           Discipline.Multimedia,
@@ -207,6 +207,11 @@ async function main() {
           Discipline.Marketing,
           Discipline.Design,
         ],
+      },
+      {
+        id: 'lovre',
+        name: 'Lovre Tomić',
+        disciplines: [Discipline.Development],
       },
     ],
   });
@@ -219,7 +224,7 @@ async function main() {
       answers: {},
       interviewers: {
         createMany: {
-          data: [{ interviewerId: '1' }, { interviewerId: '2' }],
+          data: [{ interviewerId: 'frane' }, { interviewerId: 'duje' }],
         },
       },
     },
@@ -233,7 +238,7 @@ async function main() {
       answers: {},
       interviewers: {
         createMany: {
-          data: [{ interviewerId: '1' }, { interviewerId: '3' }],
+          data: [{ interviewerId: 'frane' }],
         },
       },
     },
@@ -244,16 +249,6 @@ async function main() {
       {
         email: 'admin@dump.hr',
         password: await bcrypt.hash('dump.1950', 10),
-      },
-    ],
-  });
-
-  await prisma.interviewer.createMany({
-    data: [
-      {
-        id: 'lovre',
-        name: 'Lovre Tomić',
-        disciplines: [Discipline.Development],
       },
     ],
   });

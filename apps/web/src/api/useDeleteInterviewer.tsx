@@ -7,5 +7,5 @@ const deleteInterviewer = async (id: string) => {
 };
 
 export const useDeleteInterviewer = () => {
-  return useMutation({ mutationFn: deleteInterviewer });
+  return useMutation(deleteInterviewer);
 };

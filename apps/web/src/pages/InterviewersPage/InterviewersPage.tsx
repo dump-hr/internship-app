@@ -1,4 +1,5 @@
 import { Discipline } from '@internship-app/types';
+import { Tooltip } from '@mui/joy';
 import {
   Button,
   Checkbox,
@@ -12,8 +13,9 @@ import {
   TextField,
 } from '@mui/material';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import toast from 'react-hot-toast';
+import { useQueryClient } from 'react-query';
 
 import { useDeleteInterviewer } from '../../api/useDeleteInterviewer';
 import { useFetchAllInterviewers } from '../../api/useFetchAllInterviewers';
@@ -23,6 +25,10 @@ import LogoHeader from '../../components/LogoHeader';
 import c from './InterviewersPage.module.css';
 
 const InterviewersPage = () => {
+  const queryClient = useQueryClient();
+  const deleteInterviewer = useDeleteInterviewer();
+  const postInterviewer = usePostInterviewer();
+
   type DialogState = {
     isOpen: boolean;
     toggle: () => void;
@@ -111,19 +117,34 @@ const InterviewersPage = () => {
       headerName: '',
       width: 100,
       renderCell: (params) => (
-        <Button
-          variant="outlined"
-          color="warning"
-          onClick={() => {
-            setInterviewerToDelete({
-              id: params.row.id,
-              name: params.row.name,
-            });
-            dialogs.deleteInterviewer.toggle();
-          }}
-        >
-          Obriši
-        </Button>
+        <>
+          <Tooltip title="Ova funkcionalnost nije implementirana.">
+            <Button
+              disabled
+              variant="contained"
+              sx={{
+                '&.Mui-disabled': {
+                  pointerEvents: 'all',
+                },
+              }}
+            >
+              Disabled
+            </Button>
+          </Tooltip>
+          <Button
+            variant="outlined"
+            color="warning"
+            onClick={() => {
+              setInterviewerToDelete({
+                id: params.row.id,
+                name: params.row.name,
+              });
+              dialogs.deleteInterviewer.toggle();
+            }}
+          >
+            Obriši
+          </Button>
+        </>
       ),
 
       align: 'right',
@@ -150,9 +171,6 @@ const InterviewersPage = () => {
       ),
     };
   });
-
-  const deleteInterviewer = useDeleteInterviewer();
-  const postInterviewer = usePostInterviewer();
 
   const Helper = {
     newInterviewer: {
@@ -202,7 +220,7 @@ const InterviewersPage = () => {
         postInterviewer.mutate(newInterviewerData);
 
         dialogs.addInterviewer.toggle();
-        window.location.reload();
+        queryClient.invalidateQueries({ queryKey: ['interviewer'] });
       },
       validate: () => {
         const messages = [] as string[];
@@ -228,6 +246,13 @@ const InterviewersPage = () => {
           isValid,
           message: messages.join(' '),
         };
+      },
+    },
+    interviewerToDelete: {
+      delete: () => {
+        deleteInterviewer.mutate(interviewerToDelete.id);
+        dialogs.deleteInterviewer.toggle();
+        queryClient.invalidateQueries({ queryKey: ['interviewer'] });
       },
     },
   };
@@ -341,11 +366,7 @@ const InterviewersPage = () => {
           <div className={c.dialogButtonWrapper}>
             <Button onClick={dialogs.deleteInterviewer.toggle}>Odustani</Button>
             <Button
-              onClick={() => {
-                deleteInterviewer.mutate(interviewerToDelete.id);
-                dialogs.deleteInterviewer.toggle();
-                window.location.reload();
-              }}
+              onClick={Helper.interviewerToDelete.delete}
               variant="outlined"
             >
               Potvrdi
