@@ -1,5 +1,5 @@
 import { Discipline } from '@internship-app/types';
-import { useMutation } from 'react-query';
+import { useMutation, useQueryClient } from 'react-query';
 
 import { api } from '.';
 
@@ -17,8 +17,13 @@ const addInterviewer = async (newInterviewer: InterviewerToCreate) => {
 };
 
 export const usePostInterviewer = () => {
+  const queryClient = useQueryClient();
+
   return useMutation({
     mutationFn: addInterviewer,
     mutationKey: ['timesSubmitted'],
+    onSuccess: () => {
+      queryClient.invalidateQueries('interviewer');
+    },
   });
 };

@@ -1,4 +1,4 @@
-import { useMutation } from 'react-query';
+import { useMutation, useQueryClient } from 'react-query';
 
 import { api } from '.';
 
@@ -7,5 +7,11 @@ const deleteInterviewer = async (id: string) => {
 };
 
 export const useDeleteInterviewer = () => {
-  return useMutation(deleteInterviewer);
+  const queryClient = useQueryClient();
+
+  return useMutation(deleteInterviewer, {
+    onSuccess: () => {
+      queryClient.invalidateQueries('interviewer');
+    },
+  });
 };

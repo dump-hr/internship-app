@@ -15,19 +15,22 @@ import {
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { useState } from 'react';
 import toast from 'react-hot-toast';
-import { useQueryClient } from 'react-query';
 
 import { useDeleteInterviewer } from '../../api/useDeleteInterviewer';
 import { useFetchAllInterviewers } from '../../api/useFetchAllInterviewers';
+import { useFetchInterviewMemberParticipations } from '../../api/useFetchInterviewMemberParticipations';
 import { usePostInterviewer } from '../../api/usePostInterviewer';
 import LayoutSpacing from '../../components/LayoutSpacing/LayoutSpacing';
 import LogoHeader from '../../components/LogoHeader';
 import c from './InterviewersPage.module.css';
 
 const InterviewersPage = () => {
-  const queryClient = useQueryClient();
   const deleteInterviewer = useDeleteInterviewer();
   const postInterviewer = usePostInterviewer();
+
+  const { data: interviewers } = useFetchAllInterviewers();
+  const { data: interviewMemberParticipations } =
+    useFetchInterviewMemberParticipations();
 
   type DialogState = {
     isOpen: boolean;
@@ -83,8 +86,6 @@ const InterviewersPage = () => {
     name: '',
   });
 
-  const { data: interviewers } = useFetchAllInterviewers();
-
   const columns: GridColDef[] = [
     { field: 'id', headerName: 'ID', width: 300 },
     { field: 'name', headerName: 'Ime i prezime', width: 200 },
@@ -116,9 +117,13 @@ const InterviewersPage = () => {
       field: 'deleteButton',
       headerName: '',
       width: 100,
-      renderCell: (params) => (
-        <>
-          <Tooltip title="Ova funkcionalnost nije implementirana.">
+      renderCell: (params) => {
+        const participatesInInterview = interviewMemberParticipations?.some(
+          (participation) => participation.interviewerId === params.row.id,
+        );
+
+        return participatesInInterview ? (
+          <Tooltip title="Intervjuer sudjeluje u barem jednom intervjuu.">
             <Button
               disabled
               variant="contained"
@@ -128,9 +133,10 @@ const InterviewersPage = () => {
                 },
               }}
             >
-              Disabled
+              Obriši
             </Button>
           </Tooltip>
+        ) : (
           <Button
             variant="outlined"
             color="warning"
@@ -144,9 +150,8 @@ const InterviewersPage = () => {
           >
             Obriši
           </Button>
-        </>
-      ),
-
+        );
+      },
       align: 'right',
       headerAlign: 'right',
       flex: 1,
@@ -220,7 +225,6 @@ const InterviewersPage = () => {
         postInterviewer.mutate(newInterviewerData);
 
         dialogs.addInterviewer.toggle();
-        queryClient.invalidateQueries({ queryKey: ['interviewer'] });
       },
       validate: () => {
         const messages = [] as string[];
@@ -252,7 +256,6 @@ const InterviewersPage = () => {
       delete: () => {
         deleteInterviewer.mutate(interviewerToDelete.id);
         dialogs.deleteInterviewer.toggle();
-        queryClient.invalidateQueries({ queryKey: ['interviewer'] });
       },
     },
   };
