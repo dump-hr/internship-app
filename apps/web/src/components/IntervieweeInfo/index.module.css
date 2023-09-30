@@ -1,5 +1,4 @@
 .container {
-  font-size: 18px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -21,13 +20,8 @@ h1 {
   box-sizing: border-box;
 }
 
-h3 {
-  font-size: medium;
-  margin: 0 0 5px 0;
-}
-
 .atribute {
-  padding: 5px 0;
-  margin: 5px 0;
+  padding: 10px 0;
+  margin: 10px 0;
   width: 100%;
 }

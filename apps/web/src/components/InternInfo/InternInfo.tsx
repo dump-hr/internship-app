@@ -1,4 +1,4 @@
-import { Intern, Question } from '@internship-app/types';
+import { Intern, InternDiscipline, Question } from '@internship-app/types';
 
 import styles from './index.module.css';
 
@@ -9,13 +9,27 @@ interface InternInfoProps {
 type Answer = Question & { tick: boolean; value: string | number | boolean };
 
 const InternInfo = ({ intern }: InternInfoProps) => {
-  console.log(intern);
   return (
     <div className={styles.page}>
       <h1>
         {intern.firstName} {intern.lastName}
       </h1>
-      <div className={styles.emailContainer}>{intern.email}</div>
+
+      <div className={styles.emailContainer}>
+        <div>{intern.email}</div>
+
+        {Array.isArray(intern.internDisciplines) &&
+          intern.internDisciplines.map(
+            (discipline: InternDiscipline, index: number) => {
+              return (
+                <span key={discipline.discipline}>
+                  {discipline.discipline}
+                  {index !== intern.internDisciplines.length - 1 && ', '}
+                </span>
+              );
+            },
+          )}
+      </div>
 
       <div className={styles.container}>
         <img
@@ -30,7 +44,7 @@ const InternInfo = ({ intern }: InternInfoProps) => {
             return (
               <div className={styles.atribute} key={key}>
                 <span>
-                  {key}:{' '}
+                  <b>{key}: </b>
                   {intern.data[key as keyof typeof intern.data].toString()}
                 </span>
               </div>
@@ -39,23 +53,27 @@ const InternInfo = ({ intern }: InternInfoProps) => {
         </div>
       </div>
 
-      <div className={styles.atribute}>
-        <span>Score: {intern.interviewSlot?.score}</span>
-      </div>
-      {JSON.parse(JSON.stringify(intern.interviewSlot?.answers)).map(
-        (item: Answer) => {
-          return (
-            <div
-              className={item.tick ? styles.tick : styles.atribute}
-              key={item.id}
-            >
-              <h3>
-                {item.title} {!item.tick || '⚠️'}
-              </h3>
-              <span>{item.value}</span>
-            </div>
-          );
-        },
+      {intern.interviewSlot && (
+        <div className={styles.atribute}>
+          <span>
+            <b>Score:</b> {intern.interviewSlot?.score}
+          </span>
+
+          {Array.isArray(intern.interviewSlot?.answers) &&
+            intern.interviewSlot?.answers.map((item: Answer) => {
+              return (
+                <div
+                  className={item.tick ? styles.tick : styles.atribute}
+                  key={item.id}
+                >
+                  <h3>
+                    {item.title} {!item.tick || '⚠️'}
+                  </h3>
+                  <span>{item.value}</span>
+                </div>
+              );
+            })}
+        </div>
       )}
     </div>
   );

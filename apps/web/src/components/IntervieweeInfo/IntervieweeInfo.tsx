@@ -16,8 +16,8 @@ const IntervieweeInfo = ({ image, setImage, intern }: IntervieweeInfoProps) => {
         {Object.keys(intern.data).map((key: string) => {
           return (
             <div className={styles.atribute} key={key}>
-              <h3>{key}:</h3>
               <span>
+                <b>{key}: </b>
                 {intern.data[key as keyof typeof intern.data].toString()}
               </span>
             </div>
