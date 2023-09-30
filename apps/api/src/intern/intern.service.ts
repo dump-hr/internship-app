@@ -37,6 +37,7 @@ export class InternService {
       where: { id },
       include: {
         internDisciplines: true,
+        interviewSlot: true,
       },
     });
   }

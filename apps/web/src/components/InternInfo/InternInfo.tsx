@@ -6,17 +6,21 @@ interface InternInfoProps {
   intern: Intern;
 }
 
+type Item = {
+  id: string;
+  tick: boolean;
+  type: string;
+  title: string;
+  value: string | number;
+  category: string;
+};
 const InternInfo = ({ intern }: InternInfoProps) => {
+  console.log(intern);
   return (
     <div className={styles.page}>
       <h1>
         {intern.firstName} {intern.lastName}
       </h1>
-
-      {/*<div className={styles.datesContainer}> not sure if we need dates but they break the app
-        <div>Created at: {intern.createdAt}</div>
-        <div>Updated at: {intern.updatedAt}</div>
-  </div>*/}
 
       <div className={styles.container}>
         <img
@@ -45,6 +49,21 @@ const InternInfo = ({ intern }: InternInfoProps) => {
           </div>
         </div>
       </div>
+      {JSON.parse(JSON.stringify(intern.interviewSlot?.answers)).map(
+        (item: Item) => {
+          return (
+            <div
+              className={item.tick ? styles.tick : styles.atribute}
+              key={item.id}
+            >
+              <h3>
+                {item.title} {item.tick ? '⚠️' : ''}
+              </h3>
+              <span>{item.value}</span>
+            </div>
+          );
+        },
+      )}
     </div>
   );
 };
