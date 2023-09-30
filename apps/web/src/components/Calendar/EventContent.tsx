@@ -44,15 +44,17 @@ export const EventContent = ({ event, eventDeleteHandler }: Props) => {
         <div onClick={handleRemoveClick} className={styles.deleteEventButton}>
           &#10005;
         </div>
-        {calendarHelper.getDisciplinesFromEvent(event).map((discipline) => {
-          const disciplineStyle = clsx(styles.disciplineIndicator, {
-            [styles.design]: discipline === Discipline.Design,
-            [styles.development]: discipline === Discipline.Development,
-            [styles.marketing]: discipline === Discipline.Marketing,
-            [styles.multimedia]: discipline === Discipline.Multimedia,
-          });
-          return <div className={disciplineStyle} />;
-        })}
+        {calendarHelper
+          .getDisciplinesFromEvent(event)
+          .map((discipline, index) => {
+            const disciplineStyle = clsx(styles.disciplineIndicator, {
+              [styles.design]: discipline === Discipline.Design,
+              [styles.development]: discipline === Discipline.Development,
+              [styles.marketing]: discipline === Discipline.Marketing,
+              [styles.multimedia]: discipline === Discipline.Multimedia,
+            });
+            return <div className={disciplineStyle} key={index} />;
+          })}
       </div>
     </Tooltip>
   );
