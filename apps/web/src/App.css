@@ -55,8 +55,7 @@
 }
 .rbc-event {
   width: 100% !important;
-  opacity: 0.54;
-  background: var(--main-calendar-color) !important;
+  opacity: 0.54; 
   border: none !important;
   border-radius: 0px !important;
 }

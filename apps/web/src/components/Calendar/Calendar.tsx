@@ -65,6 +65,7 @@ export const Calendar: React.FC<Props> = ({
 
   useEffect(() => {
     setEvents(existingEvents);
+    console.log(existingEvents);
   }, [existingEvents]);
 
   return (

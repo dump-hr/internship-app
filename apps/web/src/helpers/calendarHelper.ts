@@ -1,4 +1,4 @@
-import { Event, InterviewSlot } from '@internship-app/types';
+import { Event, InterviewSlot, InterviewStatus } from '@internship-app/types';
 import moment from 'moment';
 import { SlotInfo } from 'react-big-calendar';
 
@@ -19,6 +19,7 @@ const parseInterviewSlotToCalendarEvent = (interviewSlot: InterviewSlot) => {
     additionalInfo: `Interviewers: ${interviewSlot.interviewers
       .map((interviewer) => interviewer.interviewer.name)
       .join(', ')}\nNotes: ${interviewSlot?.notes ?? 'None'}`,
+    status: interviewSlot.intern?.interviewStatus ?? InterviewStatus.PickTerm,
   };
 };
 
@@ -49,6 +50,23 @@ export const getDisciplinesFromEvent = (event: Event) => {
   const uniqueDisciplines = [...new Set(flattenedArray)];
 
   return uniqueDisciplines;
+};
+
+export const getColorBasedOnInterviewStatus = (status: InterviewStatus) => {
+  switch (status) {
+    case InterviewStatus.PickTerm:
+      return '#FFC107';
+    case InterviewStatus.NoRight:
+      return '#28A745';
+    case InterviewStatus.Done:
+      return '#17A2B8';
+    case InterviewStatus.Missed:
+      return '#DC3545';
+    case InterviewStatus.Pending:
+      return '#FFC107';
+    default:
+      return '#FFC107';
+  }
 };
 
 export const calendarHelper = {

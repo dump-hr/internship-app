@@ -97,6 +97,7 @@ export type InterviewSlot = {
   score?: number;
   notes?: string;
   interviewers: InterviewMemberParticipation[];
+  intern: Intern
 };
 
 export type InterviewMemberParticipation = {
@@ -115,6 +116,7 @@ export type Event = {
   additionalInfo: string;
   interviewers: InterviewMemberParticipation[];
   notes: string;
+  status: InterviewStatus;
 };
 
 export type CreateInterviewSlotDto = {

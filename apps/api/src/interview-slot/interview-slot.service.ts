@@ -15,6 +15,7 @@ export class InterviewSlotService {
   async getAll() {
     const interviewSlots = await this.prisma.interviewSlot.findMany({
       include: {
+        intern: true,
         interviewers: {
           include: {
             interviewer: true,
