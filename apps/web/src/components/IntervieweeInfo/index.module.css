@@ -6,11 +6,11 @@
   align-items: start;
   width: 100%;
   margin: 50px 0;
-  font-family: 'Roboto,Helvetica,Arial'; 
+  font-family: 'Roboto,Helvetica,Arial';
 }
 
-h1{
-  margin: 0
+h1 {
+  margin: 0;
 }
 
 .interviewInfo {
@@ -21,13 +21,13 @@ h1{
   box-sizing: border-box;
 }
 
-.interviewInfoCol {
-  margin-top: 15px;
-  width: 100%;
-  padding-right: 50px;
+h3 {
+  font-size: medium;
+  margin: 0 0 5px 0;
 }
 
-.interviewInfoRow {
-  flex-direction: row;
-  display: flex;
+.atribute {
+  padding: 5px 0;
+  margin: 5px 0;
+  width: 100%;
 }
