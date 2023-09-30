@@ -14,6 +14,7 @@ import LoginPage from './pages/LoginPage';
 import { NotFoundPage } from './pages/NotFoundPage';
 import ScheduleInterviewPage from './pages/ScheduleInterviewPage';
 import StatusPage from './pages/StatusPage';
+import TestSlotManager from './pages/TestSlotManager';
 
 const queryClient = new QueryClient();
 
@@ -35,6 +36,7 @@ export const App = () => {
               component={ScheduleInterviewPage}
             />
             <Route path={Path.Intern} component={InternInfoPage} />
+            <Route path={Path.TestSlotManager} component={TestSlotManager} />
             <Route path={Path.Dashboard} component={DashboardPage} />
             <Route path={Path.Login} component={LoginPage} />
             <Route path={Path.CatchAll} component={NotFoundPage} />
