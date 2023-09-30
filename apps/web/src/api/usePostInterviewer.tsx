@@ -1,4 +1,5 @@
 import { Discipline } from '@internship-app/types';
+import toast from 'react-hot-toast';
 import { useMutation, useQueryClient } from 'react-query';
 
 import { api } from '.';
@@ -24,6 +25,10 @@ export const usePostInterviewer = () => {
     mutationKey: ['timesSubmitted'],
     onSuccess: () => {
       queryClient.invalidateQueries('interviewer');
+      toast.success('Intervjuer uspješno dodan!');
+    },
+    onError: () => {
+      toast.error('Greška prilikom dodavanja intervjuera!');
     },
   });
 };

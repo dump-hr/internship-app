@@ -1,3 +1,4 @@
+import toast from 'react-hot-toast';
 import { useMutation, useQueryClient } from 'react-query';
 
 import { api } from '.';
@@ -12,6 +13,10 @@ export const useDeleteInterviewer = () => {
   return useMutation(deleteInterviewer, {
     onSuccess: () => {
       queryClient.invalidateQueries('interviewer');
+      toast.success('Intervjuer uspješno obrisan!');
+    },
+    onError: () => {
+      toast.error('Greška prilikom brisanja intervjuera!');
     },
   });
 };
