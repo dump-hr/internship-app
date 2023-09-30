@@ -11,13 +11,15 @@ export const SlotQuestionList: React.FC<SlotQuestionListProps> = ({ slot }) => {
       <Typography variant="h4">Pitanja</Typography>
       <Box display="flex" flexDirection="column" gap="6px">
         {slot.testQuestions
-          .sort((q) => q.order)
+          .sort((a, b) => a.order - b.order)
           .map((q) => (
             <Box
               style={{ background: '#ccc', border: '3px solid black' }}
               key={q.id}
             >
-              <Typography variant="caption">{q.title}</Typography>
+              <Typography fontWeight="600">
+                {q.order}. {q.title}
+              </Typography>
               <Typography>{q.text}</Typography>
             </Box>
           ))}

@@ -5,6 +5,7 @@ import { useFetchTestSlot } from '../../api/useFetchTestSlot';
 import LayoutSpacing from '../../components/LayoutSpacing/LayoutSpacing';
 import TestSlotInfo from '../../components/TestSlotInfo';
 import { Path } from '../../constants/paths';
+import { TestSlotEditForm } from './TestSlotEditForm';
 
 const TestOverviewPage = () => {
   const [, params] = useRoute(Path.TestOverview);
@@ -16,6 +17,7 @@ const TestOverviewPage = () => {
   return (
     <LayoutSpacing>
       <TestSlotInfo slot={slot} />
+      <TestSlotEditForm slot={slot} />
     </LayoutSpacing>
   );
 };
