@@ -10,36 +10,19 @@ type IntervieweeInfoProps = {
 };
 
 const IntervieweeInfo = ({ image, setImage, intern }: IntervieweeInfoProps) => {
-  const info = intern.data as { [key: string]: string };
-
   return (
     <div className={styles.container}>
       <div className={styles.interviewInfo}>
-        <h1>
-          {intern.firstName} {intern.lastName}
-        </h1>
-        <div className={styles.interviewInfoCol}>
-          <div>Email: {intern.email}</div>
-          <div>Mobitel: {info.phoneNumber} </div>
-          <div>Datum rođenja: {info.dateOfBirth}</div>
-          <div>
-            {info.educationOrEmploymentStatus}, {info.highSchoolOrCollegeName},{' '}
-            {info.yearOfStudy}
-          </div>
-        </div>
-
-        <div className={styles.interviewInfoCol}>
-          <div>
-            Područja:{' '}
-            {intern.internDisciplines.map((id) => id.discipline).join(', ')}
-          </div>
-          <div>
-            Kako si saznao/la za internship: {info.foundOutAboutInternshipBy}
-          </div>
-          <div>
-            Zašto se prijavljuješ na internships: {info.reasonForApplying}
-          </div>
-        </div>
+        {Object.keys(intern.data).map((key: string) => {
+          return (
+            <div className={styles.atribute} key={key}>
+              <span>
+                <b>{key}: </b>
+                {intern.data[key as keyof typeof intern.data].toString()}
+              </span>
+            </div>
+          );
+        })}
       </div>
       <Webcamera image={image} setImage={setImage} />
     </div>
