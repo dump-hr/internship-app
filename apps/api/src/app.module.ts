@@ -16,6 +16,7 @@ import { InterviewerController } from './interviewer/interviewer.controller';
 import { InterviewerModule } from './interviewer/interviewer.module';
 import { InterviewerService } from './interviewer/interviewer.service';
 import { PrismaService } from './prisma.service';
+import { TestSlotModule } from './test-slot/test-slot.module';
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import { PrismaService } from './prisma.service';
     InterviewSlotModule,
     InterviewerModule,
     InterviewMemberParticipationModule,
+    TestSlotModule,
   ],
   controllers: [
     AppController,

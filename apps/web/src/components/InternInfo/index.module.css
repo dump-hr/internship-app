@@ -5,17 +5,9 @@
   width: 100%;
 }
 
-.page {
-  padding: 50px 8%;
-}
-
-.container > :first-child {
-  width: 35%;
-  padding: 0 20px 0 0;
-}
-
-.container > :last-child {
-  width: 65%;
+.container {
+  display: flex;
+  gap: 24px;
 }
 
 @media screen and (max-width: 360px) {
@@ -32,7 +24,9 @@
 .image {
   width: 100%;
   aspect-ratio: calc(16 / 9);
+  width: 650px;
 }
+
 .container > div > * {
   max-width: 100%;
 }

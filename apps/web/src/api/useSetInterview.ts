@@ -12,9 +12,7 @@ const setInterview = async (req: SetInterviewRequest) => {
 };
 
 export const useSetInterview = (navigate: () => void) => {
-  return useMutation({
-    mutationFn: setInterview,
-    mutationKey: ['timesSubmitted'],
+  return useMutation(setInterview, {
     onSuccess: () => {
       toast.success('Intervju uspješno pohranjen!');
       navigate();

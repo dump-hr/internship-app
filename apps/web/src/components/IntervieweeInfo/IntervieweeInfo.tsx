@@ -4,11 +4,12 @@ import Webcamera from '../Webcamera';
 import styles from './index.module.css';
 
 type IntervieweeInfoProps = {
-  setUrl: (image: string) => void;
+  image: string;
+  setImage: (image: string) => void;
   intern: Intern;
 };
 
-const IntervieweeInfo = ({ setUrl, intern }: IntervieweeInfoProps) => {
+const IntervieweeInfo = ({ image, setImage, intern }: IntervieweeInfoProps) => {
   const info = intern.data as { [key: string]: string };
 
   return (
@@ -40,7 +41,7 @@ const IntervieweeInfo = ({ setUrl, intern }: IntervieweeInfoProps) => {
           </div>
         </div>
       </div>
-      <Webcamera setUrl={setUrl} />
+      <Webcamera image={image} setImage={setImage} />
     </div>
   );
 };
