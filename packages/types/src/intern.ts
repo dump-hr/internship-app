@@ -79,24 +79,24 @@ export type InternDiscipline = {
   intern: Intern;
 };
 
-export type TestSlot = {
+export type Slot = {
   id: string;
+  start: Date;
+  end: Date;
+}
+
+export type TestSlot = {
   discipline: Discipline;
-  start: string;
-  end: string;
   location: string;
   capacity: number;
   maxPoints: number;
   internDisciplines: InternDiscipline[];
-};
+} & Slot;
 
 export type InterviewSlot = {
-  id: string;
-  start: string;
-  end: string;
   answers: Json;
   score?: number;
-};
+} & Slot;
 
 export enum InternStatus {
   Approved = 'Approved',

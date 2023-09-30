@@ -10,6 +10,7 @@ import { EmailModule } from './email/email.module';
 import { InternModule } from './intern/intern.module';
 import { InterviewSlotModule } from './interview-slot/interview-slot.module';
 import { PrismaService } from './prisma.service';
+import { TestSlotModule } from './test-slot/test-slot.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { PrismaService } from './prisma.service';
     EmailModule,
     AuthModule,
     InterviewSlotModule,
+    TestSlotModule,
   ],
   controllers: [AppController, AuthController],
   providers: [AppService, PrismaService],
