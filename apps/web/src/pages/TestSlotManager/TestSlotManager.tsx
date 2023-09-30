@@ -1,12 +1,16 @@
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 
-import { TestSlot } from '@internship-app/types';
+import { TestSlotPreviewDto } from '@internship-app/types';
+import { Box, Typography } from '@mui/material';
 import { format, getDay, parse, startOfWeek } from 'date-fns';
 import hrLocale from 'date-fns/locale/hr';
 import moment from 'moment';
 import { useState } from 'react';
 import { Calendar } from 'react-big-calendar';
 import { dateFnsLocalizer } from 'react-big-calendar';
+import { LoaderIcon } from 'react-hot-toast';
+
+import { useFetchAllTestSlots } from '../../api/useFetchAllTestSlots';
 
 moment.locale('hr');
 const locales = {
@@ -30,13 +34,11 @@ const initialEvents = [
 ];
 
 const TestSlotManager = () => {
-  const [events, setEvents] = useState<
-    {
-      start: Date;
-      end: Date;
-      id: string;
-    }[]
-  >(initialEvents);
+  const [slotToAdd, setSlotToAdd] = useState<TestSlotPreviewDto>();
+  const { data: allSlots, isLoading, isError, error } = useFetchAllTestSlots();
+
+  if (isLoading) return <LoaderIcon />;
+  if (isError || allSlots === undefined) return <>Greška: {error}</>;
 
   return (
     <>
@@ -50,14 +52,21 @@ const TestSlotManager = () => {
         selectable={true}
         longPressThreshold={1}
         culture="hr"
-        events={events}
+        events={slotToAdd ? [...allSlots, slotToAdd] : allSlots}
         onSelectSlot={(slot) => console.log(slot)}
         onSelectEvent={(event) => console.log(event.id)}
         eventPropGetter={(event) => ({
           style: { background: 'purple' },
         })}
         components={{
-          event: (event) => <div>{event.event.id}</div>,
+          event: ({ event }) => (
+            <Box>
+              <Typography>
+                Zauzeto {event.internCount}/{event.capacity}
+              </Typography>
+              <Typography>Pitanja: {event.questionCount}</Typography>
+            </Box>
+          ),
         }}
       />
     </>

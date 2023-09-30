@@ -1,3 +1,4 @@
+import { CreateTestSlotDto } from '@internship-app/types';
 import {
   BadRequestException,
   Injectable,
@@ -11,8 +12,42 @@ export class TestSlotService {
   constructor(private readonly prisma: PrismaService) {}
 
   async getAll() {
-    const testSlots = await this.prisma.testSlot.findMany();
+    const testSlots = await this.prisma.testSlot.findMany({
+      include: {
+        _count: {
+          select: {
+            internDisciplines: true,
+            testQuestions: true,
+          },
+        },
+      },
+    });
+
     return testSlots;
+  }
+
+  async create(testSlotDto: CreateTestSlotDto) {
+    const overlappingSlotCount = await this.prisma.testSlot.count({
+      where: {
+        discipline: testSlotDto.discipline,
+        AND: [
+          { start: { lt: testSlotDto.end } },
+          { end: { gt: testSlotDto.start } },
+        ],
+      },
+    });
+    if (overlappingSlotCount)
+      throw new BadRequestException('Slot se overlappa s postojećim!');
+
+    return await this.prisma.testSlot.create({
+      data: {
+        capacity: testSlotDto.capacity,
+        discipline: testSlotDto.discipline,
+        start: testSlotDto.start,
+        end: testSlotDto.end,
+        location: testSlotDto.location,
+      },
+    });
   }
 
   async getAvailableSlots(internId: string, discipline: Discipline) {
@@ -50,14 +85,14 @@ export class TestSlotService {
       include: {
         _count: {
           select: {
-            InternDiscipline: true,
+            internDisciplines: true,
           },
         },
       },
     });
 
     const availableSlots = slots.filter(
-      (s) => s._count.InternDiscipline < s.capacity,
+      (s) => s._count.internDisciplines < s.capacity,
     );
 
     return availableSlots;
@@ -69,13 +104,13 @@ export class TestSlotService {
       include: {
         _count: {
           select: {
-            InternDiscipline: true,
+            internDisciplines: true,
           },
         },
       },
     });
 
-    if (slot._count.InternDiscipline > slot.capacity) {
+    if (slot._count.internDisciplines > slot.capacity) {
       throw new NotFoundException('Slot is already taken');
     }
 

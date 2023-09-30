@@ -42,46 +42,46 @@ model Intern {
 }
 
 model InternDiscipline {
-  internId             String
-  intern               Intern                 @relation(fields: [internId], references: [id])
-  discipline           Discipline
-  priority             Int
-  status               DisciplineStatus
-  testSlot             TestSlot?              @relation(fields: [testSlotId], references: [id])
-  testSlotId           String?
-  testStatus           TestStatus?
-  testScore            Int?
-  createdAt            DateTime               @default(now())
-  updatedAt            DateTime               @updatedAt
-  InternQuestionAnswer InternQuestionAnswer[]
+  internId              String
+  intern                Intern                 @relation(fields: [internId], references: [id])
+  discipline            Discipline
+  priority              Int
+  status                DisciplineStatus
+  testSlot              TestSlot?              @relation(fields: [testSlotId], references: [id])
+  testSlotId            String?
+  testStatus            TestStatus?
+  testScore             Int?
+  createdAt             DateTime               @default(now())
+  updatedAt             DateTime               @updatedAt
+  internQuestionAnswers InternQuestionAnswer[]
 
   @@id([internId, discipline])
 }
 
 model TestSlot {
-  id               String             @id @default(uuid())
-  discipline       Discipline
-  start            DateTime
-  end              DateTime
-  location         String
-  capacity         Int
-  InternDiscipline InternDiscipline[]
-  TestQuestion     TestQuestion[]
-  createdAt        DateTime           @default(now())
-  updatedAt        DateTime           @updatedAt
+  id                String             @id @default(uuid())
+  discipline        Discipline
+  start             DateTime
+  end               DateTime
+  location          String
+  capacity          Int
+  internDisciplines InternDiscipline[]
+  testQuestions     TestQuestion[]
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @updatedAt
 }
 
 model TestQuestion {
-  id                   String                 @id @default(uuid())
-  title                String
-  text                 String
-  points               Int
-  order                Int
-  testSlot             TestSlot               @relation(fields: [testSlotId], references: [id])
-  testSlotId           String
-  createdAt            DateTime               @default(now())
-  updatedAt            DateTime               @updatedAt
-  InternQuestionAnswer InternQuestionAnswer[]
+  id                    String                 @id @default(uuid())
+  title                 String
+  text                  String
+  points                Int
+  order                 Int
+  testSlot              TestSlot               @relation(fields: [testSlotId], references: [id])
+  testSlotId            String
+  createdAt             DateTime               @default(now())
+  updatedAt             DateTime               @updatedAt
+  internQuestionAnswers InternQuestionAnswer[]
 }
 
 model InternQuestionAnswer {

@@ -98,6 +98,7 @@ export type TestSlot = {
   location: string;
   capacity: number;
   internDisciplines: InternDiscipline[];
+  testQuestions: TestQuestion[];
 } & Slot;
 
 export type TestQuestion = {

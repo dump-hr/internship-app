@@ -1,7 +1,11 @@
-import { ScheduleTestRequest } from '@internship-app/types';
-import { Body, Controller, Get, Param, Patch } from '@nestjs/common';
+import {
+  CreateTestSlotDto,
+  ScheduleTestRequest,
+  TestSlotPreviewDto,
+} from '@internship-app/types';
+import { Discipline } from '@internship-app/types';
+import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { Discipline } from '@prisma/client';
 
 import { TestSlotService } from './test-slot.service';
 
@@ -12,7 +16,20 @@ export class TestSlotController {
 
   @Get()
   async getAll() {
-    return await this.testSlotService.getAll();
+    const allSlots = await this.testSlotService.getAll();
+    const testSlotsDto: TestSlotPreviewDto[] = allSlots.map((ts) => ({
+      ...ts,
+      discipline: ts.discipline as Discipline,
+      internCount: ts._count.internDisciplines,
+      questionCount: ts._count.testQuestions,
+    }));
+
+    return testSlotsDto;
+  }
+
+  @Post()
+  async createTestSlotDto(@Body() testSlotDto: CreateTestSlotDto) {
+    return await this.testSlotService.create(testSlotDto);
   }
 
   @Get('available/:discipline/:internId')
