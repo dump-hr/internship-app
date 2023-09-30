@@ -1,9 +1,9 @@
+import type { Slot } from '@internship-app/types';
 import { List, ListItem, ListItemButton, ListItemText } from '@mui/material';
-import type { InterviewSlot } from '@prisma/client';
 
 type Props = {
-  availableTimeSlots: InterviewSlot[];
-  onChange: (date: InterviewSlot) => void;
+  availableTimeSlots: Slot[];
+  onChange: (date: Slot) => void;
   isMobile: boolean;
 };
 

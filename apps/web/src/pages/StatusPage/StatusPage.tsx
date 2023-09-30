@@ -32,7 +32,7 @@ const StatusPage = () => {
     intern.internDisciplines.every(
       (ind) => ind.testStatus !== TestStatus.Pending,
     );
-
+  //ovo se ionako treba iznova
   return (
     <Box maxWidth="1280px" margin="auto">
       <Typography variant="h1">Status prijave</Typography>
@@ -50,10 +50,7 @@ const StatusPage = () => {
             <Typography>Test: {testStatusLabel[ids.testStatus]}</Typography>
           )}
           {ids.testSlot && (
-            <Typography>
-              Termin: {ids.testSlot.start} - {ids.testSlot.end} @{' '}
-              {ids.testSlot.location}
-            </Typography>
+            <Typography>Termin: @ {ids.testSlot.location}</Typography>
           )}
           {!ids.testSlot && ids.testStatus === TestStatus.Pending && (
             <Typography>Provjeri slobodne termine testa. ovojelink</Typography>
@@ -71,9 +68,7 @@ const StatusPage = () => {
           <Typography>
             Status: {interviewStatusLabel[intern.interviewStatus]}
           </Typography>
-          <Typography>
-            Termin: {intern.interviewSlot.start} @ DUMP Ured, FESB
-          </Typography>
+          <Typography>Termin: {} @ DUMP Ured, FESB</Typography>
         </Box>
       )}
     </Box>
