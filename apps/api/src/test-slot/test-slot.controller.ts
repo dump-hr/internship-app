@@ -3,9 +3,10 @@ import {
   ScheduleTestRequest,
   TestSlotPreviewDto,
 } from '@internship-app/types';
-import { Discipline } from '@internship-app/types';
+import { Discipline as DisciplineFE } from '@internship-app/types';
 import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
+import { Discipline } from '@prisma/client';
 
 import { TestSlotService } from './test-slot.service';
 
@@ -19,7 +20,7 @@ export class TestSlotController {
     const allSlots = await this.testSlotService.getAll();
     const testSlotsDto: TestSlotPreviewDto[] = allSlots.map((ts) => ({
       ...ts,
-      discipline: ts.discipline as Discipline,
+      discipline: ts.discipline as DisciplineFE,
       internCount: ts._count.internDisciplines,
       questionCount: ts._count.testQuestions,
     }));

@@ -6,11 +6,12 @@ import { format, getDay, parse, startOfWeek } from 'date-fns';
 import hrLocale from 'date-fns/locale/hr';
 import moment from 'moment';
 import { useState } from 'react';
-import { Calendar } from 'react-big-calendar';
+import { Calendar, SlotInfo } from 'react-big-calendar';
 import { dateFnsLocalizer } from 'react-big-calendar';
-import { LoaderIcon } from 'react-hot-toast';
+import toast, { LoaderIcon } from 'react-hot-toast';
 
 import { useFetchAllTestSlots } from '../../api/useFetchAllTestSlots';
+import { NewSlotEdit } from './NewSlotEdit';
 
 moment.locale('hr');
 const locales = {
@@ -24,21 +25,51 @@ const localizer = dateFnsLocalizer({
   locales,
 });
 
-const initialEvents = [
-  {
-    start: new Date('2023-10-10 12:00'),
-    end: new Date('2023-10-10 14:00'),
-    title: 'Dev ispit',
-    id: 'ydhasuhf',
-  },
-];
+enum SlotCardType {
+  Existing = 'Existing',
+  AboutToAdd = 'AboutToAdd',
+}
+
+type TestSlotCard = TestSlotPreviewDto & {
+  type: SlotCardType;
+};
 
 const TestSlotManager = () => {
-  const [slotToAdd, setSlotToAdd] = useState<TestSlotPreviewDto>();
+  const [slotsToAdd, setSlotsToAdd] = useState<TestSlotCard[]>([]);
+  const [selectedEventStart, setSelectedEventStart] = useState<Date>();
   const { data: allSlots, isLoading, isError, error } = useFetchAllTestSlots();
 
   if (isLoading) return <LoaderIcon />;
   if (isError || allSlots === undefined) return <>Greška: {error}</>;
+
+  const handleSelectSlot = (slot: SlotInfo) => {
+    const anyOverlap = slotsToShow.some(
+      (sta) => !(sta.start >= slot.end || slot.start >= sta.end),
+    );
+    if (anyOverlap) return toast.error('Nema preklapanja!');
+
+    setSlotsToAdd((prev) => [
+      ...prev,
+      {
+        start: slot.start,
+        end: slot.end,
+        capacity: 0,
+        type: SlotCardType.AboutToAdd,
+      } as TestSlotCard,
+    ]);
+  };
+
+  const allSlotsMapped = allSlots.map(
+    (s) =>
+      ({
+        ...s,
+        type: SlotCardType.Existing,
+      }) as TestSlotCard,
+  );
+  const slotsToShow = [...allSlotsMapped, ...slotsToAdd];
+  const selectedEvent = slotsToShow.find(
+    (s) => s.start === selectedEventStart,
+  )!;
 
   return (
     <>
@@ -52,23 +83,33 @@ const TestSlotManager = () => {
         selectable={true}
         longPressThreshold={1}
         culture="hr"
-        events={slotToAdd ? [...allSlots, slotToAdd] : allSlots}
-        onSelectSlot={(slot) => console.log(slot)}
-        onSelectEvent={(event) => console.log(event.id)}
-        eventPropGetter={(event) => ({
-          style: { background: 'purple' },
-        })}
+        events={slotsToShow}
+        onSelectSlot={handleSelectSlot}
+        onSelectEvent={(event) => setSelectedEventStart(event.start)}
         components={{
-          event: ({ event }) => (
-            <Box>
-              <Typography>
-                Zauzeto {event.internCount}/{event.capacity}
-              </Typography>
-              <Typography>Pitanja: {event.questionCount}</Typography>
-            </Box>
-          ),
+          event: ({ event }) =>
+            event.type === SlotCardType.Existing ? (
+              <Box>
+                <Typography fontSize="10px">
+                  Zauzeto: {event.internCount}/{event.capacity}
+                </Typography>
+                <Typography fontSize="10px">
+                  Pitanja: {event.questionCount}
+                </Typography>
+              </Box>
+            ) : (
+              <Box>
+                <Typography>Novi event</Typography>
+                <Typography fontSize="10px">
+                  Kapacitet: {event.capacity}
+                </Typography>
+              </Box>
+            ),
         }}
       />
+      {selectedEvent?.type === SlotCardType.AboutToAdd ? (
+        <NewSlotEdit slot={selectedEvent} setSlots={setSlotsToAdd} />
+      ) : null}
     </>
   );
 };
