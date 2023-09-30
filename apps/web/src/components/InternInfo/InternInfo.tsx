@@ -1,4 +1,4 @@
-import { Intern } from '@internship-app/types';
+import { Intern, Question } from '@internship-app/types';
 
 import styles from './index.module.css';
 
@@ -6,14 +6,7 @@ interface InternInfoProps {
   intern: Intern;
 }
 
-type Answer = {
-  id: string;
-  tick: boolean;
-  type: string;
-  title: string;
-  value: string | number;
-  category: string;
-};
+type Answer = Question & { tick: boolean; value: string | number | boolean };
 
 const InternInfo = ({ intern }: InternInfoProps) => {
   console.log(intern);
@@ -46,6 +39,9 @@ const InternInfo = ({ intern }: InternInfoProps) => {
         </div>
       </div>
 
+      <div className={styles.atribute}>
+        <span>Score: {intern.interviewSlot?.score}</span>
+      </div>
       {JSON.parse(JSON.stringify(intern.interviewSlot?.answers)).map(
         (item: Answer) => {
           return (
