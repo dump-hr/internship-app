@@ -34,7 +34,7 @@ export const CustomSelectInput: React.FC<Props> = ({
       <Select
         multiple={isMultiSelect}
         value={selectedValues}
-        onChange={(e) => setSelectedValues(e.target.value)}
+        onChange={(e) => setSelectedValues(e.target.value as never[])}
         input={<OutlinedInput label="Multiple Select" />}
       >
         {menuOptions?.map((option, index) => (

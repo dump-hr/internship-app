@@ -66,19 +66,13 @@ export class InterviewSlotService {
 
       interviewSlots.push(interviewSlot);
 
-      for (const interviewerName of interviewSlotDto.interviewers) {
-        const interviewer = await this.prisma.interviewer.findFirst({
-          where: { name: interviewerName },
+      for (const interviewerId of interviewSlotDto.interviewers) {
+        await this.prisma.interviewMemberParticipation.create({
+          data: {
+            interviewSlotId: interviewSlot.id,
+            interviewerId: interviewerId,
+          },
         });
-
-        if (interviewer) {
-          await this.prisma.interviewMemberParticipation.create({
-            data: {
-              interviewSlotId: interviewSlot.id,
-              interviewerId: interviewer.id,
-            },
-          });
-        }
       }
     }
     return interviewSlots;

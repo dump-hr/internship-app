@@ -35,10 +35,6 @@ export const AdminInterviewPage = () => {
   const deleteInterviewSlotMutation = useDeleteInterviewSlot();
   const createInterviewSlotMutation = useCreateInterviewSlot();
 
-  useEffect(() => {
-    console.log('AdminInterviewPage -- filters useEffect: ', interviewFilter);
-  }, [interviewFilter]);
-
   function deleteEvent(event: Event) {
     if (!event.id) return;
     deleteInterviewSlotMutation.mutate(event.id, {
