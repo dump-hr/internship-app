@@ -54,6 +54,7 @@ export type Intern = {
   firstName: string;
   lastName: string;
   email: string;
+  image?: string;
   data: Json;
   interviewStatus: InterviewStatus;
   interviewSlot?: InterviewSlot;
@@ -78,21 +79,24 @@ export type InternDiscipline = {
   intern: Intern;
 };
 
-export type TestSlot = {
+export type Slot = {
   id: string;
+  start: Date;
+  end: Date;
+}
+
+export type TestSlot = {
   discipline: Discipline;
-  start: string;
-  end: string;
   location: string;
   capacity: number;
   maxPoints: number;
   internDisciplines: InternDiscipline[];
-};
+} & Slot;
 
 export type InterviewSlot = {
   id: string;
-  start: string;
-  end: string;
+  start: Date;
+  end: Date;
   answers: Json;
   score?: number;
   notes?: string;
@@ -132,12 +136,12 @@ export enum InternStatus {
   Rejected = 'Rejected',
 }
 
-export type InternWithStatus = Intern & {status: InternStatus}
+export type InternWithStatus = Intern & { status: InternStatus };
 
 export type InternDecisionRequest = {
-  internId: string,
+  internId: string;
   disciplines: {
-    discipline: Discipline,
-    status: DisciplineStatus
-  }[]
-}
+    discipline: Discipline;
+    status: DisciplineStatus;
+  }[];
+};

@@ -5,7 +5,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  eslint-web:
+  eslint_web:
     name: Run ESLint (web)
     runs-on: ubuntu-latest
 
@@ -17,7 +17,7 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: 18.x
-          cache: "yarn"
+          cache: 'yarn'
 
       - name: Install dependencies
         run: yarn install --immutable
@@ -25,7 +25,7 @@ jobs:
       - name: Run ESLint
         run: yarn workspace web run lint
 
-  eslint-api:
+  eslint_api:
     name: Run ESLint (api)
     runs-on: ubuntu-latest
 
@@ -37,7 +37,7 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: 18.x
-          cache: "yarn"
+          cache: 'yarn'
 
       - name: Install dependencies
         run: yarn install --immutable

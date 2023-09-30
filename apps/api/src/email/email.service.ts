@@ -35,7 +35,6 @@ export class EmailService {
         },
       },
     });
-    console.log(JSON.stringify(interns, null, 2));
     const template = nunjucks.compile(emailText);
     return interns.map((intern) => template.render({ intern }));
   }

@@ -32,6 +32,7 @@ model Intern {
   firstName         String
   lastName          String
   email             String             @unique
+  image             String?
   data              Json
   interviewStatus   InterviewStatus    @default(NoRight)
   interviewSlot     InterviewSlot?

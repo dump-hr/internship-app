@@ -1,9 +1,15 @@
+import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
 import {
   BoardAction,
+  InternAction,
   InternDecisionRequest,
   SetInterviewRequest,
 } from '@internship-app/types';
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  InternalServerErrorException,
+} from '@nestjs/common';
 import {
   Discipline,
   DisciplineStatus,
@@ -17,6 +23,14 @@ import { CreateInternDto } from './dto/createIntern.dto';
 @Injectable()
 export class InternService {
   constructor(private readonly prisma: PrismaService) {}
+
+  private s3 = new S3Client({
+    credentials: {
+      accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+      secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+    },
+    region: 'eu-central-1',
+  });
 
   async get(id: string) {
     return await this.prisma.intern.findUnique({
@@ -102,11 +116,6 @@ export class InternService {
       ? InterviewStatus.NoRight
       : InterviewStatus.PickTerm;
 
-    const getInitialTestStatus = (discipline) =>
-      [Discipline.Development, Discipline.Design].includes(discipline)
-        ? TestStatus.PickTerm
-        : null;
-
     const newIntern = await this.prisma.intern.create({
       data: {
         firstName: internToCreate.firstName,
@@ -120,7 +129,7 @@ export class InternService {
               discipline: dis,
               priority: index,
               status: DisciplineStatus.Pending,
-              testStatus: getInitialTestStatus(dis),
+              testStatus: this.getInitialTestStatus(dis),
             })),
           },
         },
@@ -142,6 +151,84 @@ export class InternService {
         },
       },
     });
+  }
+
+  async setImage(internId: string, buffer: Buffer) {
+    const key = `intern-images/${internId}-${new Date().getTime()}.png`;
+    const command = new PutObjectCommand({
+      Bucket: 'internship-app-uploads',
+      Key: key,
+      Body: buffer,
+      ContentType: 'image/png',
+    });
+
+    try {
+      await this.s3.send(command);
+
+      const image = `https://internship-app-uploads.dump.hr/${key}`;
+
+      await this.prisma.intern.update({
+        where: {
+          id: internId,
+        },
+        data: {
+          image,
+        },
+      });
+
+      return image;
+    } catch (err) {
+      console.error(err);
+      throw new InternalServerErrorException(err.message);
+    }
+  }
+
+  async applyAction(internId: string, action: InternAction) {
+    switch (action.actionType) {
+      case 'AddDiscipline':
+        return await this.prisma.intern.update({
+          where: {
+            id: internId,
+            internDisciplines: {
+              none: {
+                discipline: action.discipline,
+              },
+            },
+          },
+          data: {
+            internDisciplines: {
+              create: {
+                discipline: action.discipline,
+                status: DisciplineStatus.Pending,
+                testStatus: this.getInitialTestStatus(action.discipline),
+                priority: -1,
+              },
+            },
+          },
+        });
+
+      case 'RemoveDiscipline':
+        const internDisciplines = await this.prisma.internDiscipline.findMany({
+          where: { internId },
+          select: { discipline: true },
+        });
+        if (internDisciplines.length < 2)
+          throw new BadRequestException(
+            'Intern should have at least 2 disciplines!',
+          );
+
+        return this.prisma.internDiscipline.delete({
+          where: {
+            internId_discipline: {
+              internId: internId,
+              discipline: action.discipline,
+            },
+          },
+        });
+
+      default:
+        throw new BadRequestException();
+    }
   }
 
   async applyBoardAction(action: BoardAction, internIds: string[]) {
@@ -237,7 +324,7 @@ export class InternService {
         });
 
       default:
-        return new BadRequestException();
+        throw new BadRequestException();
     }
   }
 
@@ -257,5 +344,11 @@ export class InternService {
         }),
       ),
     );
+  }
+
+  private getInitialTestStatus(discipline) {
+    return [Discipline.Development, Discipline.Design].includes(discipline)
+      ? TestStatus.PickTerm
+      : null;
   }
 }

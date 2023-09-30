@@ -11,17 +11,19 @@ import { InternModule } from './intern/intern.module';
 import { InterviewSlotModule } from './interview-slot/interview-slot.module';
 import { InterviewerModule } from './interviewer/interviewer.module';
 import { PrismaService } from './prisma.service';
+import { TestSlotModule } from './test-slot/test-slot.module';
 
 @Module({
   imports: [
     ServeStaticModule.forRoot({
-      rootPath: join(__dirname, '..', '..', '..', 'client', 'dist'),
+      rootPath: join(__dirname, '..', '..', '..', 'web', 'dist'),
       exclude: ['/api/(.*)'],
     }),
     InternModule,
     EmailModule,
     AuthModule,
     InterviewSlotModule,
+    TestSlotModule,
     InterviewerModule,
   ],
   controllers: [AppController, AuthController],
