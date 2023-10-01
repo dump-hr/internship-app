@@ -1,5 +1,4 @@
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
-import { Button } from '@mui/material';
 
 import { useFetchInterviewers } from '../../api/useFetchInterviewers';
 import { MultilineInput } from '../common/MultilineInput/MultilineInput';
@@ -57,9 +56,6 @@ export const CalendarSidebar: React.FC<Props> = ({
         <div className={styles.notesLabel}>Notes:</div>
         <MultilineInput onValueChange={setAdditionalNotesValue} />
       </div>
-      <Button variant="contained" color="primary" className={styles.saveButton}>
-        Save
-      </Button>
     </div>
   );
 };
