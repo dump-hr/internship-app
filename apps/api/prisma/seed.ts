@@ -191,16 +191,19 @@ async function main() {
       {
         id: 'frane',
         name: 'Frane',
+        email: 'frane@dump.hr',
         disciplines: [Discipline.Development],
       },
       {
         id: 'duje',
         name: 'Duje',
+        email: 'duje@dump.hr',
         disciplines: [Discipline.Development, Discipline.Multimedia],
       },
       {
         id: 'ante',
         name: 'Ante',
+        email: 'ante@dump.hr',
         disciplines: [
           Discipline.Multimedia,
           Discipline.Development,
@@ -211,6 +214,7 @@ async function main() {
       {
         id: 'lovre',
         name: 'Lovre Tomić',
+        email: 'lovre@dump.hr',
         disciplines: [Discipline.Development],
       },
     ],

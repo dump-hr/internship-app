@@ -22,7 +22,7 @@ model Interviewer {
   id          String                         @id @default(uuid())
   name        String
   disciplines Discipline[]
-  email       String?                        @unique
+  email       String                         @unique
   createdAt   DateTime                       @default(now())
   updatedAt   DateTime                       @updatedAt
   interviews  InterviewMemberParticipation[]

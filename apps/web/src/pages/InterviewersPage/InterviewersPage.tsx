@@ -256,11 +256,20 @@ const InterviewersPage = () => {
       },
       validate: () => {
         const messages = [] as string[];
-        let isValid = true;
 
         if (newInterviewer.name === '') {
           messages.push('Ime i prezime ne smije biti prazno.');
-          isValid = false;
+        }
+
+        if (newInterviewer.email === '') {
+          messages.push('Email ne smije biti prazan.');
+        }
+
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        const isValidEmail = emailRegex.test(newInterviewer.email);
+
+        if (!isValidEmail && newInterviewer.email !== '') {
+          messages.push('Email nije ispravan.');
         }
 
         const selectedDisciplines = Object.keys(
@@ -271,12 +280,11 @@ const InterviewersPage = () => {
 
         if (selectedDisciplines.length === 0) {
           messages.push('Izaberi barem jedno područje.');
-          isValid = false;
         }
 
         return {
-          isValid,
-          message: messages.join(' '),
+          isValid: messages.length === 0,
+          message: messages.join('\n'),
         };
       },
     },
