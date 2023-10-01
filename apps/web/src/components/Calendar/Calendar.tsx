@@ -15,6 +15,7 @@ import {
   SlotInfo,
 } from 'react-big-calendar';
 import withDragAndDrop from 'react-big-calendar/lib/addons/dragAndDrop';
+import toast from 'react-hot-toast';
 
 import { calendarHelper } from '../../helpers/calendarHelper';
 import { EventContent } from './EventContent';
@@ -68,7 +69,10 @@ export const Calendar: React.FC<Props> = ({
       slotInfo,
     );
 
-    if (overlappingEvents.length > 0) return;
+    if (overlappingEvents.length > 0) {
+      toast.error('You cannot add overlapping events!');
+      return;
+    }
     const newEvent = {
       start: slotInfo.start,
       end: slotInfo.end,
