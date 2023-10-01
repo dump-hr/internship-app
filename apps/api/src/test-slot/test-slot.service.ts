@@ -1,4 +1,6 @@
-import { CreateTestSlotsRequest } from '@internship-app/types';
+import test from 'node:test';
+
+import { CreateTestSlotsRequest, TestSlot } from '@internship-app/types';
 import {
   BadRequestException,
   Injectable,
@@ -56,6 +58,29 @@ export class TestSlotService {
         }),
       ),
     );
+  }
+
+  async update(id: string, testSlot: TestSlot) {
+    await this.prisma.testSlot.update({
+      where: { id },
+      data: {
+        start: testSlot.start,
+        end: testSlot.end,
+        capacity: testSlot.capacity,
+        location: testSlot.location,
+        testQuestions: {
+          deleteMany: {
+            testSlotId: id,
+            NOT: testSlot.testQuestions.map((tq) => ({ id: tq.id })),
+          },
+          upsert: testSlot.testQuestions.map((tq) => ({
+            where: { id: tq.id || '' },
+            create: tq,
+            update: tq,
+          })),
+        },
+      },
+    });
   }
 
   async getAvailableSlots(internId: string, discipline: Discipline) {

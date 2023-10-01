@@ -66,7 +66,13 @@ const getInputComponent = (
     case QuestionType.DateTime:
       return <TextField {...field} type="datetime-local" />;
     case QuestionType.Number:
-      return <TextField {...field} type="number" />;
+      return (
+        <TextField
+          {...field}
+          type="number"
+          onChange={(e) => field.onChange(+e.target.value)}
+        />
+      );
     default:
       return <></>;
   }

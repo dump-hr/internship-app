@@ -1,12 +1,25 @@
 import {
   CreateTestSlotsRequest,
   ScheduleTestRequest,
+  SetInterviewRequest,
+  TestSlot,
   TestSlotPreviewDto,
+  UpdateTestSlotRequest,
 } from '@internship-app/types';
 import { Discipline as DisciplineFE } from '@internship-app/types';
-import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Patch,
+  Post,
+  Put,
+  UseGuards,
+} from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { Discipline } from '@prisma/client';
+import { JwtAuthGuard } from 'src/auth/jwt-auth-guard';
 
 import { TestSlotService } from './test-slot.service';
 
@@ -34,8 +47,17 @@ export class TestSlotController {
   }
 
   @Post()
-  async createTestSlotDto(@Body() testSlotDto: CreateTestSlotsRequest) {
+  async createTestSlot(@Body() testSlotDto: CreateTestSlotsRequest) {
     return await this.testSlotService.create(testSlotDto);
+  }
+
+  @Put(':testSlotId')
+  @UseGuards(JwtAuthGuard)
+  async updateTestSlot(
+    @Param('testSlotId') testSlotId: string,
+    @Body() { data }: UpdateTestSlotRequest,
+  ) {
+    return await this.testSlotService.update(testSlotId, data);
   }
 
   @Get('available/:discipline/:internId')

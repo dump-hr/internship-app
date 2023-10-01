@@ -17,3 +17,8 @@ export type CreateTestSlotsRequest = {
   capacity: number;
   location: string;
 }[]
+
+export type UpdateTestSlotRequest = {
+  testSlotId: string;
+  data: TestSlot;
+}

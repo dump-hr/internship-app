@@ -1,13 +1,20 @@
 import { Question, QuestionType, TestSlot } from '@internship-app/types';
 import { Box, Button, Typography } from '@mui/material';
 import moment from 'moment';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
+import { useUpdateTestSlot } from '../../api/useUpdateTestSlot';
 import InputHandler from '../../components/InputHandler';
 
 type TestSlotEditFormProps = {
   slot: TestSlot;
+};
+
+type TestQuestionBlock = {
+  registerId: string;
+  id?: string;
+  formQuestions: Question[];
 };
 
 const getMainQuestions = (slot: TestSlot): Question[] => [
@@ -24,6 +31,12 @@ const getMainQuestions = (slot: TestSlot): Question[] => [
     registerValue: moment(slot.end).format('YYYY-MM-DD hh:mm'),
   },
   {
+    id: 'location',
+    title: 'Lokacija',
+    type: QuestionType.Field,
+    registerValue: slot.location,
+  },
+  {
     id: 'capacity',
     title: 'Kapacitet',
     type: QuestionType.Number,
@@ -35,28 +48,29 @@ const getInitialTestQuestions = (slot: TestSlot) =>
   slot.testQuestions
     .sort((a, b) => a.order - b.order)
     .map((tq) => ({
-      registerId: `initial.${tq.id}`,
+      registerId: `testQuestions.${tq.id}`,
+      id: tq.id,
       formQuestions: [
         {
-          id: `initial.${tq.id}.title`,
+          id: `testQuestions.${tq.id}.title`,
           title: 'Naziv',
           type: QuestionType.Field,
           registerValue: tq.title,
         },
         {
-          id: `initial.${tq.id}.text`,
+          id: `testQuestions.${tq.id}.text`,
           title: 'Sadržaj',
           type: QuestionType.TextArea,
           registerValue: tq.text,
         },
         {
-          id: `initial.${tq.id}.order`,
+          id: `testQuestions.${tq.id}.order`,
           title: 'Poredak',
           type: QuestionType.Number,
           registerValue: tq.order,
         },
         {
-          id: `initial.${tq.id}.points`,
+          id: `testQuestions.${tq.id}.points`,
           title: 'Bodovi',
           type: QuestionType.Number,
           registerValue: tq.points,
@@ -68,42 +82,51 @@ const getNewTestQuestion = () => {
   const randomId = crypto.randomUUID();
 
   return {
-    registerId: `new.${randomId}`,
+    registerId: `testQuestions.${randomId}`,
     formQuestions: [
       {
-        id: `new.${randomId}.title`,
+        id: `testQuestions.${randomId}.title`,
         title: 'Naziv',
         type: QuestionType.Field,
         registerValue: '',
       },
       {
-        id: `new.${randomId}.text`,
+        id: `testQuestions.${randomId}.text`,
         title: 'Sadržaj',
         type: QuestionType.TextArea,
         registerValue: '',
       },
       {
-        id: `new.${randomId}.order`,
+        id: `testQuestions.${randomId}.order`,
         title: 'Poredak',
         type: QuestionType.Number,
-        registerValue: 0,
+        registerValue: -1,
       },
       {
-        id: `new.${randomId}.points`,
+        id: `testQuestions.${randomId}.points`,
         title: 'Bodovi',
         type: QuestionType.Number,
-        registerValue: 0,
+        registerValue: 10,
       },
     ] as Question[],
   };
 };
 
 export const TestSlotEditForm: React.FC<TestSlotEditFormProps> = ({ slot }) => {
+  const updateTestSlot = useUpdateTestSlot();
+
   const form = useForm();
   const mainQuestions = getMainQuestions(slot);
 
   const initialTestQuestions = getInitialTestQuestions(slot);
-  const [testQuestions, setTestQuestions] = useState(initialTestQuestions);
+  const [testQuestions, setTestQuestions] =
+    useState<TestQuestionBlock[]>(initialTestQuestions);
+
+  useEffect(() => {
+    testQuestions.map(
+      (tq) => tq.id && form.setValue(`${tq.registerId}.id`, tq.id),
+    );
+  });
 
   const handleDeleteQuestion = (registerId: string) => {
     form.unregister(registerId);
@@ -115,9 +138,19 @@ export const TestSlotEditForm: React.FC<TestSlotEditFormProps> = ({ slot }) => {
     setTestQuestions((prev) => [newQuestion, ...prev]);
   };
 
+  const handleSubmit = form.handleSubmit((data) => {
+    const slotToSend = { id: slot.id, ...data } as TestSlot;
+    slotToSend.testQuestions = Object.values(data.testQuestions);
+
+    const request = { testSlotId: slot.id, data: slotToSend };
+    updateTestSlot.mutate(request, {
+      onSuccess: () => console.log('ajoj'),
+    });
+  });
+
   return (
     <Box>
-      <Button onClick={form.handleSubmit((s) => console.log(s))}>xax</Button>
+      <Button onClick={handleSubmit}>Podnesi</Button>
       <Typography variant="h4">Osnovne informacije</Typography>
       {mainQuestions.map((q) => (
         <InputHandler form={form} question={q} key={q.id} />
