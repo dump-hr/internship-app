@@ -67,7 +67,7 @@ const InternInfo = ({ intern }: InternInfoProps) => {
                   className={item.tick ? styles.tick : styles.atribute}
                   key={item.id}
                 >
-                  <h3>
+                  <h3 className={styles.itemTitle}>
                     {item.title} {!item.tick || '⚠️'}
                   </h3>
                   <span>{item.value}</span>
