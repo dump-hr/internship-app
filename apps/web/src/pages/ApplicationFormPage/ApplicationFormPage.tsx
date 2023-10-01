@@ -115,8 +115,8 @@ export const ApplicationFormPage = () => {
           Prijava na DUMP Internship
         </h2>
         <div className={classes.applicationFormAdditional}>
-          Popunite ovu formu s vašim osobnim podacima. Postupak može potrajati
-          nekoliko minuta.
+          Ispuni ovu formu osobnim podatcima. Postupak može potrajati nekoliko
+          minuta.
         </div>
         <form onSubmit={handleSubmit(onSubmit)} noValidate>
           <div className={classes.formQuestionWrapper}>
