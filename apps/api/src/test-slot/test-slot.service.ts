@@ -1,5 +1,3 @@
-import test from 'node:test';
-
 import { CreateTestSlotsRequest, TestSlot } from '@internship-app/types';
 import {
   BadRequestException,
@@ -81,6 +79,19 @@ export class TestSlotService {
         },
       },
     });
+  }
+
+  async delete(id: string) {
+    const internsOnSlotCount = await this.prisma.internDiscipline.count({
+      where: { testSlotId: id },
+    });
+
+    if (internsOnSlotCount)
+      throw new BadRequestException(
+        'Test with linked interns cannot be removed! Try manually cancelling intern test slots.',
+      );
+
+    return await this.prisma.testSlot.delete({ where: { id } });
   }
 
   async getAvailableSlots(internId: string, discipline: Discipline) {

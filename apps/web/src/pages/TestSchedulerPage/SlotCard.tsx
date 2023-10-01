@@ -1,15 +1,7 @@
-import { TestSlotPreviewDto } from '@internship-app/types';
 import { Box, Typography } from '@mui/material';
 import React from 'react';
 
-export enum SlotCardType {
-  Existing = 'Existing',
-  AboutToAdd = 'AboutToAdd',
-}
-
-export type TestSlotCard = TestSlotPreviewDto & {
-  type: SlotCardType;
-};
+import { SlotCardType, TestSlotCard } from './types';
 
 type SlotCardProps = {
   slot: TestSlotCard;

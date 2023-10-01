@@ -2,7 +2,7 @@ import { Box, Button, InputLabel, TextField, Typography } from '@mui/material';
 import moment from 'moment';
 import { ChangeEvent } from 'react';
 
-import { TestSlotCard } from './SlotCard';
+import { TestSlotCard } from './types';
 
 type NewSlotEditProps = {
   slot: TestSlotCard;
@@ -16,7 +16,7 @@ export const NewSlotEdit: React.FC<NewSlotEditProps> = ({ slot, setSlots }) => {
       setSlots((prev) =>
         prev.map((e) =>
           e === slot
-            ? { ...slot, [event.target.name]: event.target[getter] }
+            ? { ...slot, [event.target.name]: event.target[getter] || '' }
             : e,
         ),
       );

@@ -77,7 +77,7 @@ model TestQuestion {
   text                  String
   points                Int
   order                 Int
-  testSlot              TestSlot               @relation(fields: [testSlotId], references: [id])
+  testSlot              TestSlot               @relation(fields: [testSlotId], references: [id], onDelete: Cascade)
   testSlotId            String
   createdAt             DateTime               @default(now())
   updatedAt             DateTime               @updatedAt

@@ -70,6 +70,7 @@ const getInputComponent = (
         <TextField
           {...field}
           type="number"
+          InputProps={{ inputProps: { min: question.min, max: question.max } }}
           onChange={(e) => field.onChange(+e.target.value)}
         />
       );

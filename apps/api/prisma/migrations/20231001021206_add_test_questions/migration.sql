@@ -40,7 +40,7 @@ CREATE TABLE "InternQuestionAnswer" (
 );
 
 -- AddForeignKey
-ALTER TABLE "TestQuestion" ADD CONSTRAINT "TestQuestion_testSlotId_fkey" FOREIGN KEY ("testSlotId") REFERENCES "TestSlot"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "TestQuestion" ADD CONSTRAINT "TestQuestion_testSlotId_fkey" FOREIGN KEY ("testSlotId") REFERENCES "TestSlot"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "InternQuestionAnswer" ADD CONSTRAINT "InternQuestionAnswer_questionId_fkey" FOREIGN KEY ("questionId") REFERENCES "TestQuestion"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

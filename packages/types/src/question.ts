@@ -19,7 +19,7 @@ export type Question = { id: string; title?: string, required?: boolean, registe
   | { type: QuestionType.Date }
   | { type: QuestionType.DateTime}
   | { type: QuestionType.Radio; options: string[] }
-  | { type: QuestionType.Number }
+  | { type: QuestionType.Number, min?: number, max?: number }
 );
 
 export type MultistepQuestion<T> = Question & {

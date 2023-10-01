@@ -9,6 +9,7 @@ import InputHandler from '../../components/InputHandler';
 
 type TestSlotEditFormProps = {
   slot: TestSlot;
+  closeEdit: () => void;
 };
 
 type TestQuestionBlock = {
@@ -22,13 +23,13 @@ const getMainQuestions = (slot: TestSlot): Question[] => [
     id: 'start',
     title: 'Početak',
     type: QuestionType.DateTime,
-    registerValue: moment(slot.start).format('YYYY-MM-DD hh:mm'),
+    registerValue: moment(slot.start).format('YYYY-MM-DDThh:mm:ss'),
   },
   {
     id: 'end',
     title: 'Kraj',
     type: QuestionType.DateTime,
-    registerValue: moment(slot.end).format('YYYY-MM-DD hh:mm'),
+    registerValue: moment(slot.end).format('YYYY-MM-DDThh:mm:ss'),
   },
   {
     id: 'location',
@@ -40,6 +41,7 @@ const getMainQuestions = (slot: TestSlot): Question[] => [
     id: 'capacity',
     title: 'Kapacitet',
     type: QuestionType.Number,
+    min: slot.internDisciplines.length,
     registerValue: slot.capacity,
   },
 ];
@@ -112,7 +114,10 @@ const getNewTestQuestion = () => {
   };
 };
 
-export const TestSlotEditForm: React.FC<TestSlotEditFormProps> = ({ slot }) => {
+export const TestSlotEditForm: React.FC<TestSlotEditFormProps> = ({
+  slot,
+  closeEdit: close,
+}) => {
   const updateTestSlot = useUpdateTestSlot();
 
   const form = useForm();
@@ -139,18 +144,26 @@ export const TestSlotEditForm: React.FC<TestSlotEditFormProps> = ({ slot }) => {
   };
 
   const handleSubmit = form.handleSubmit((data) => {
-    const slotToSend = { id: slot.id, ...data } as TestSlot;
-    slotToSend.testQuestions = Object.values(data.testQuestions);
+    const slotToSend = {
+      ...data,
+      id: slot.id,
+      start: new Date(data.start),
+      end: new Date(data.end),
+    } as TestSlot;
+    slotToSend.testQuestions = Object.values(data.testQuestions || {});
 
     const request = { testSlotId: slot.id, data: slotToSend };
     updateTestSlot.mutate(request, {
-      onSuccess: () => console.log('ajoj'),
+      onSuccess: close,
     });
   });
 
   return (
     <Box>
-      <Button onClick={handleSubmit}>Podnesi</Button>
+      <Typography variant="h2">Uredi event</Typography>
+      <Button variant="contained" onClick={handleSubmit}>
+        Podnesi
+      </Button>
       <Typography variant="h4">Osnovne informacije</Typography>
       {mainQuestions.map((q) => (
         <InputHandler form={form} question={q} key={q.id} />

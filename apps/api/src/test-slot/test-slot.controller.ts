@@ -10,6 +10,7 @@ import { Discipline as DisciplineFE } from '@internship-app/types';
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   Patch,
@@ -51,13 +52,18 @@ export class TestSlotController {
     return await this.testSlotService.create(testSlotDto);
   }
 
-  @Put(':testSlotId')
+  @Put(':id')
   @UseGuards(JwtAuthGuard)
   async updateTestSlot(
-    @Param('testSlotId') testSlotId: string,
+    @Param('id') testSlotId: string,
     @Body() { data }: UpdateTestSlotRequest,
   ) {
     return await this.testSlotService.update(testSlotId, data);
+  }
+
+  @Delete(':id')
+  async delete(@Param('id') id: string) {
+    return await this.testSlotService.delete(id);
   }
 
   @Get('available/:discipline/:internId')
@@ -68,9 +74,9 @@ export class TestSlotController {
     return await this.testSlotService.getAvailableSlots(internId, discipline);
   }
 
-  @Patch('schedule/:slotId')
+  @Patch('schedule/:id')
   async scheduleTest(
-    @Param('slotId') slotId: string,
+    @Param('id') slotId: string,
     @Body() { internId }: ScheduleTestRequest,
   ) {
     return await this.testSlotService.scheduleTest(slotId, internId);
