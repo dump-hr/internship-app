@@ -112,7 +112,7 @@ export type InterviewMemberParticipation = {
   interviewSlot: InterviewSlot;
 };
 
-export type Event = {
+export type InterviewEvent = {
   id: string;
   start: Date;
   end: Date;

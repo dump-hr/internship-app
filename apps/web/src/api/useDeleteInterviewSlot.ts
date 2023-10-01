@@ -1,3 +1,4 @@
+import toast from 'react-hot-toast';
 import { useMutation, useQueryClient } from 'react-query';
 
 import { api } from '.';
@@ -11,6 +12,9 @@ export const useDeleteInterviewSlot = () => {
   return useMutation(deleteInterviewSlot, {
     onSuccess: () => {
       void queryClient.invalidateQueries(['interview-slot']);
+    },
+    onError: (error: string) => {
+      toast.error(error);
     },
   });
 };

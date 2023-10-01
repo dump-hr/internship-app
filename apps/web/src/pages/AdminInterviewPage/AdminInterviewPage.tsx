@@ -1,6 +1,10 @@
-import { Event, InterviewMemberParticipation } from '@internship-app/types';
+import {
+  InterviewEvent,
+  InterviewMemberParticipation,
+} from '@internship-app/types';
 import moment from 'moment';
 import { useEffect, useState } from 'react';
+import toast from 'react-hot-toast';
 
 import { useCreateInterviewSlot } from '../../api/useCreateInterviewSlot';
 import { useDeleteInterviewSlot } from '../../api/useDeleteInterviewSlot';
@@ -36,7 +40,7 @@ export const AdminInterviewPage = () => {
   const deleteInterviewSlotMutation = useDeleteInterviewSlot();
   const createInterviewSlotMutation = useCreateInterviewSlot();
 
-  function deleteEvent(event: Event) {
+  function deleteEvent(event: InterviewEvent) {
     if (!event.id) return;
     deleteInterviewSlotMutation.mutate(event.id, {
       onSuccess: () => {
@@ -45,7 +49,7 @@ export const AdminInterviewPage = () => {
     });
   }
 
-  function addEvent(event: Event) {
+  function addEvent(event: InterviewEvent) {
     if (!event || !selectedInterviewers || !selectedInterviewers.length) {
       return;
     }
@@ -66,6 +70,7 @@ export const AdminInterviewPage = () => {
 
   useEffect(() => {
     if (!interviewSlots || !interviewSlots.every((slot) => slot.interviewers)) {
+      toast.error('Interviewers must be selected!');
       return;
     }
 

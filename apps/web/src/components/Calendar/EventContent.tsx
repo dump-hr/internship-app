@@ -1,4 +1,8 @@
-import { Discipline, Event, InterviewStatus } from '@internship-app/types';
+import {
+  Discipline,
+  InterviewEvent,
+  InterviewStatus,
+} from '@internship-app/types';
 import Tooltip from '@mui/material/Tooltip';
 import clsx from 'clsx';
 import { useEffect, useRef } from 'react';
@@ -7,8 +11,8 @@ import { calendarHelper } from '../../helpers/calendarHelper';
 import styles from './index.module.css';
 
 interface Props {
-  event: Event;
-  eventDeleteHandler: (event: Event) => void;
+  event: InterviewEvent;
+  eventDeleteHandler: (event: InterviewEvent) => void;
 }
 
 export const EventContent = ({ event, eventDeleteHandler }: Props) => {

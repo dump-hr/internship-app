@@ -1,5 +1,5 @@
 import {
-  Event,
+  InterviewEvent,
   InterviewMemberParticipation,
   InterviewSlot,
   InterviewStatus,
@@ -46,7 +46,7 @@ const getOverlappingEvents = (events: MappedEvent[], newEvent: SlotInfo) => {
   });
 };
 
-export const getDisciplinesFromEvent = (event: Event) => {
+export const getDisciplinesFromEvent = (event: InterviewEvent) => {
   const arrayOfArrays = event.interviewers.map(
     (interviewer) => interviewer.interviewer.disciplines,
   );

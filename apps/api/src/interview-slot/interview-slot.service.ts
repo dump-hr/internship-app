@@ -35,7 +35,11 @@ export class InterviewSlotService {
       },
     });
 
-    if (interviewToDelete.intern) return;
+    if (interviewToDelete.intern) {
+      throw new BadRequestException(
+        'Interview is already scheduled! Cancel the interview first!',
+      );
+    }
 
     return await this.prisma.interviewSlot.delete({
       where: { id: interviewToDelete.id },
@@ -60,7 +64,7 @@ export class InterviewSlotService {
         data: {
           start: slotStart,
           end: slotEnd,
-          answers: JSON.stringify({}),
+          answers: {},
           notes: interviewSlotDto.notes,
         },
       });

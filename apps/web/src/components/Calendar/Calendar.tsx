@@ -1,6 +1,9 @@
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 
-import { Event, InterviewMemberParticipation } from '@internship-app/types';
+import {
+  InterviewEvent,
+  InterviewMemberParticipation,
+} from '@internship-app/types';
 import { format, getDay, parse, startOfWeek } from 'date-fns';
 import hrLocale from 'date-fns/locale/hr';
 import moment from 'moment';
@@ -44,8 +47,8 @@ interface CustomEventWrapperProps extends EventWrapperProps {
 interface Props {
   filteredEvents: MappedEvent[];
   existingEvents: MappedEvent[];
-  deleteEvent: (event: Event) => void;
-  addEvent: (event: Event) => void;
+  deleteEvent: (event: InterviewEvent) => void;
+  addEvent: (event: InterviewEvent) => void;
 }
 
 export const Calendar: React.FC<Props> = ({
@@ -66,7 +69,10 @@ export const Calendar: React.FC<Props> = ({
     );
 
     if (overlappingEvents.length > 0) return;
-    const newEvent = { start: slotInfo.start, end: slotInfo.end } as Event;
+    const newEvent = {
+      start: slotInfo.start,
+      end: slotInfo.end,
+    } as InterviewEvent;
 
     addEvent(newEvent);
   };
@@ -107,13 +113,17 @@ export const Calendar: React.FC<Props> = ({
             return (
               <div>
                 <EventContent
-                  event={props.event as Event}
+                  event={props.event as InterviewEvent}
                   eventDeleteHandler={deleteEvent}
                 />
                 <div className="rbc-event-info">
-                  <div>{format((props.event as Event).start, 'HH:mm')}</div>
+                  <div>
+                    {format((props.event as InterviewEvent).start, 'HH:mm')}
+                  </div>
                   <div>-</div>
-                  <div>{format((props.event as Event).end, 'HH:mm')}</div>
+                  <div>
+                    {format((props.event as InterviewEvent).end, 'HH:mm')}
+                  </div>
                 </div>
               </div>
             );
