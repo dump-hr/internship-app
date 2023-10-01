@@ -14,16 +14,18 @@ export class InterviewerService {
   }
 
   async create(interviewerToCreate: CreateInterviewerDto) {
-    const interviewerWithTheSameName = await this.prisma.interviewer.findFirst({
-      where: {
-        name: {
-          equals: interviewerToCreate.name,
-          mode: 'insensitive',
+    const interviewerWithTheSameEmail = await this.prisma.interviewer.findFirst(
+      {
+        where: {
+          email: {
+            equals: interviewerToCreate.email,
+            mode: 'insensitive',
+          },
         },
       },
-    });
+    );
 
-    if (interviewerWithTheSameName) {
+    if (interviewerWithTheSameEmail) {
       throw new BadRequestException(
         'Interviewer with the same name already exists',
       );

@@ -82,6 +82,7 @@ const InterviewersPage = () => {
 
   const [newInterviewer, setNewInterviewer] = useState({
     name: '',
+    email: '',
     disciplines: {
       [Discipline.Development]: false,
       [Discipline.Design]: false,
@@ -98,6 +99,7 @@ const InterviewersPage = () => {
   const columns: GridColDef[] = [
     { field: 'id', headerName: 'ID', width: 300 },
     { field: 'name', headerName: 'Ime i prezime', width: 200 },
+    { field: 'email', headerName: 'Email', width: 200 },
     {
       field: 'developmentDiscipline',
       headerName: 'DEV',
@@ -180,6 +182,7 @@ const InterviewersPage = () => {
     return {
       id: interviewer.id,
       name: interviewer.name,
+      email: interviewer.email || '/',
       developmentDiscipline: interviewer.disciplines.includes(
         Discipline.Development,
       ),
@@ -201,6 +204,12 @@ const InterviewersPage = () => {
           name,
         }));
       },
+      setEmail: (email: string) => {
+        setNewInterviewer((prevState) => ({
+          ...prevState,
+          email,
+        }));
+      },
       toggleDiscipline: (discipline: Discipline) => {
         setNewInterviewer((prevState) => ({
           ...prevState,
@@ -213,6 +222,7 @@ const InterviewersPage = () => {
       erase: () => {
         setNewInterviewer({
           name: '',
+          email: '',
           disciplines: {
             [Discipline.Development]: false,
             [Discipline.Design]: false,
@@ -222,6 +232,7 @@ const InterviewersPage = () => {
         });
       },
       submit: () => {
+        console.log(newInterviewer);
         const { isValid, message } = Helper.newInterviewer.validate();
 
         if (!isValid) {
@@ -235,6 +246,7 @@ const InterviewersPage = () => {
 
         const newInterviewerData = {
           name: newInterviewer.name,
+          email: newInterviewer.email || undefined,
           disciplines,
         };
 
@@ -330,6 +342,11 @@ const InterviewersPage = () => {
             <TextField
               placeholder="Ime i prezime"
               onChange={(e) => Helper.newInterviewer.setName(e.target.value)}
+            />
+            <br />
+            <TextField
+              placeholder="Email"
+              onChange={(e) => Helper.newInterviewer.setEmail(e.target.value)}
             />
             <br />
             <DialogContentText>Izaberi područja:</DialogContentText>

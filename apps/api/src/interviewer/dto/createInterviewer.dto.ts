@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Discipline } from '@prisma/client';
-import { IsString, MinLength } from 'class-validator';
+import { IsEmail, IsString, MinLength } from 'class-validator';
 
 export class CreateInterviewerDto {
   @IsString()
@@ -10,4 +10,8 @@ export class CreateInterviewerDto {
 
   @ApiProperty()
   disciplines: Discipline[];
+
+  @IsEmail()
+  @ApiProperty()
+  email: string;
 }

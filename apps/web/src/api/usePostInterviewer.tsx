@@ -7,6 +7,7 @@ import { api } from '.';
 type InterviewerToCreate = {
   name: string;
   disciplines: Discipline[];
+  email?: string;
 };
 
 const addInterviewer = async (newInterviewer: InterviewerToCreate) => {
