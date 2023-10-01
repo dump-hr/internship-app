@@ -68,6 +68,7 @@ export class InternService {
         firstName: true,
         lastName: true,
         email: true,
+        interviewStatus: true,
         internDisciplines: {
           select: {
             discipline: true,

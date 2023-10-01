@@ -6,11 +6,11 @@ import { breakpoints, colors } from '../../styles/variables';
 export const mainInfo = styled.main`
   display: flex;
   flex-direction: column;
-  gap: 24;
+  gap: 24px;
 
   @media screen and (min-width: ${breakpoints.tablet}) {
-    padding: 64;
-    gap: 16;
+    padding: 64px;
+    gap: 16px;
 
     border-radius: 24px;
     box-shadow:
@@ -40,14 +40,63 @@ export const description = styled.p`
   line-height: 22px;
 `;
 
+export const infoSection = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  @media screen and (min-width: ${breakpoints.tablet}) {
+    padding: 16px;
+    border: 1px solid ${colors.lightGray};
+    border-radius: 8px;
+  }
+`;
+
+export const interviewSection = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid ${colors.lightGray};
+`;
+
 export const infoTitle = styled.h4`
   ${fuseDisplay}
+  color: ${colors.darkGray};
   font-size: 18px;
   line-height: 28px;
 `;
 
-export const infoItem = styled.div`
+export const infoText = styled.p`
+  ${fuseDisplay}
+  color: ${colors.gray};
+  font-size: 13px;
+  line-height: 18px;
+`;
+
+export const disciplinesSection = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+`;
+
+export const disciplineItem = styled.div`
   display: flex;
   flex-direction: column;
   gap: 8px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid ${colors.lightGray};
+`;
+
+export const disciplineLabel = styled.p`
+  ${fuseDisplayBold}
+  color: ${colors.green};
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 18px;
+`;
+
+export const spacedBetween = styled.div`
+  display: flex;
+  justify-content: space-between;
 `;
