@@ -17,9 +17,7 @@ const addInterviewer = async (newInterviewer: InterviewerToCreate) => {
 export const usePostInterviewer = () => {
   const queryClient = useQueryClient();
 
-  return useMutation({
-    mutationFn: addInterviewer,
-    mutationKey: ['timesSubmitted'],
+  return useMutation(addInterviewer, {
     onSuccess: () => {
       queryClient.invalidateQueries('interviewer');
       toast.success('Intervjuer uspješno dodan!');
