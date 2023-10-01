@@ -1,8 +1,6 @@
 import {
   CreateTestSlotsRequest,
   ScheduleTestRequest,
-  SetInterviewRequest,
-  TestSlot,
   TestSlotPreviewDto,
   UpdateTestSlotRequest,
 } from '@internship-app/types';

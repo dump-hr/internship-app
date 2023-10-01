@@ -23,13 +23,13 @@ const getMainQuestions = (slot: TestSlot): Question[] => [
     id: 'start',
     title: 'Početak',
     type: QuestionType.DateTime,
-    registerValue: moment(slot.start).format('YYYY-MM-DDThh:mm:ss'),
+    registerValue: moment(slot.start).format('YYYY-MM-DDTHH:mm:ss'),
   },
   {
     id: 'end',
     title: 'Kraj',
     type: QuestionType.DateTime,
-    registerValue: moment(slot.end).format('YYYY-MM-DDThh:mm:ss'),
+    registerValue: moment(slot.end).format('YYYY-MM-DDTHH:mm:ss'),
   },
   {
     id: 'location',

@@ -15,8 +15,8 @@ const TestSlotInfo: React.FC<TestSlotInfoProps> = ({ slot }) => {
       <Box>
         <Typography variant="h4">{slot.discipline} ispit</Typography>
         <Typography>
-          {moment(slot.start).format('DD/MM/YYYY hh:mm')} -{' '}
-          {moment(slot.end).format('hh:mm')} @ {slot.location}
+          {moment(slot.start).format('DD/MM/YYYY HH:mm')} -{' '}
+          {moment(slot.end).format('HH:mm')} @ {slot.location}
         </Typography>
         <Typography>
           Kapacitet: {slot.internDisciplines.length}/{slot.capacity}

@@ -29,9 +29,9 @@ export const NewSlotEdit: React.FC<NewSlotEditProps> = ({ slot, setSlots }) => {
   return (
     <Box>
       <Typography>
-        Početak: {moment(slot.start).format('MM/DD hh:mm')}
+        Početak: {moment(slot.start).format('MM/DD HH:mm')}
       </Typography>
-      <Typography>Kraj: {moment(slot.end).format('MM/DD hh:mm')}</Typography>
+      <Typography>Kraj: {moment(slot.end).format('MM/DD HH:mm')}</Typography>
       <Typography>
         Trajanje: {moment(slot.end).diff(slot.start, 'minute')}min
       </Typography>
