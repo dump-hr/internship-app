@@ -23,6 +23,7 @@ import { usePostInterviewer } from '../../api/usePostInterviewer';
 import LayoutSpacing from '../../components/LayoutSpacing/LayoutSpacing';
 import LogoHeader from '../../components/LogoHeader';
 import c from './InterviewersPage.module.css';
+import { DialogsState } from './types';
 
 const InterviewersPage = () => {
   const deleteInterviewer = useDeleteInterviewer();
@@ -32,53 +33,29 @@ const InterviewersPage = () => {
   const { data: interviewMemberParticipations } =
     useFetchInterviewMemberParticipations();
 
-  type DialogState = {
-    isOpen: boolean;
-    toggle: () => void;
-    name?: string;
-  };
-
-  type DialogsState = {
-    addInterviewer: DialogState;
-    deleteInterviewer: DialogState;
-  };
-
   const [dialogs, setDialogs] = useState<DialogsState>({
     addInterviewer: {
       isOpen: false,
-      toggle: () => {
-        if (dialogs.addInterviewer.isOpen) Helper.newInterviewer.erase();
-
-        setDialogs((prevState) => {
-          if (prevState.addInterviewer.isOpen) Helper.newInterviewer.erase();
-          return {
-            ...prevState,
-            addInterviewer: {
-              ...prevState.addInterviewer,
-              isOpen: !prevState.addInterviewer.isOpen,
-            },
-          };
-        });
-      },
     },
     deleteInterviewer: {
       isOpen: false,
-      toggle: () => {
-        setDialogs((prevState) => {
-          if (prevState.deleteInterviewer.isOpen)
-            Helper.interviewerToDelete.erase();
-          return {
-            ...prevState,
-            deleteInterviewer: {
-              ...prevState.deleteInterviewer,
-              isOpen: !prevState.deleteInterviewer.isOpen,
-            },
-          };
-        });
-      },
       name: '',
     },
   });
+
+  function toggleDialog(dialog: keyof DialogsState) {
+    setDialogs((prevState) => {
+      if (prevState[dialog].isOpen) Helper.eraseAll();
+
+      return {
+        ...prevState,
+        [dialog]: {
+          ...prevState[dialog],
+          isOpen: !prevState[dialog].isOpen,
+        },
+      };
+    });
+  }
 
   const [newInterviewer, setNewInterviewer] = useState({
     name: '',
@@ -133,7 +110,7 @@ const InterviewersPage = () => {
           (participation) => participation.interviewerId === params.row.id,
         );
 
-        return participatesInInterview ? (
+        const DisabledButton = () => (
           <Tooltip title="Intervjuer sudjeluje u barem jednom intervjuu.">
             <Button
               disabled
@@ -147,7 +124,9 @@ const InterviewersPage = () => {
               Obriši
             </Button>
           </Tooltip>
-        ) : (
+        );
+
+        const DeleteButton = () => (
           <Button
             variant="outlined"
             color="warning"
@@ -163,12 +142,14 @@ const InterviewersPage = () => {
                   name: params.row.name,
                 },
               }));
-              dialogs.deleteInterviewer.toggle();
+              toggleDialog('deleteInterviewer');
             }}
           >
             Obriši
           </Button>
         );
+
+        return participatesInInterview ? <DisabledButton /> : <DeleteButton />;
       },
       align: 'right',
       headerAlign: 'right',
@@ -252,7 +233,7 @@ const InterviewersPage = () => {
 
         postInterviewer.mutate(newInterviewerData);
 
-        dialogs.addInterviewer.toggle();
+        toggleDialog('addInterviewer');
       },
       validate: () => {
         const messages = [] as string[];
@@ -290,7 +271,7 @@ const InterviewersPage = () => {
     },
     interviewerToDelete: {
       delete: () => {
-        dialogs.deleteInterviewer.toggle();
+        toggleDialog('deleteInterviewer');
         deleteInterviewer.mutate(interviewerToDelete.id);
       },
       erase: () => {
@@ -309,6 +290,10 @@ const InterviewersPage = () => {
         }));
       },
     },
+    eraseAll: () => {
+      Helper.newInterviewer.erase();
+      Helper.interviewerToDelete.erase();
+    },
   };
 
   return (
@@ -316,7 +301,7 @@ const InterviewersPage = () => {
       <LogoHeader text="Intervjueri" />
       <br />
       <LayoutSpacing>
-        <Button onClick={dialogs.addInterviewer.toggle}>
+        <Button onClick={() => toggleDialog('addInterviewer')}>
           + Dodaj intervjuera
         </Button>
 
@@ -342,7 +327,7 @@ const InterviewersPage = () => {
 
       <Dialog
         open={dialogs.addInterviewer.isOpen}
-        onClose={dialogs.addInterviewer.toggle}
+        onClose={() => toggleDialog('addInterviewer')}
       >
         <DialogTitle>Dodaj intervjuera</DialogTitle>
         <DialogContent>
@@ -389,7 +374,9 @@ const InterviewersPage = () => {
               />
             </FormGroup>
             <div className={c.dialogButtonWrapper}>
-              <Button onClick={dialogs.addInterviewer.toggle}>Odustani</Button>
+              <Button onClick={() => toggleDialog('addInterviewer')}>
+                Odustani
+              </Button>
               <Button onClick={Helper.newInterviewer.submit} variant="outlined">
                 Potvrdi
               </Button>
@@ -400,7 +387,7 @@ const InterviewersPage = () => {
 
       <Dialog
         open={dialogs.deleteInterviewer.isOpen}
-        onClose={dialogs.deleteInterviewer.toggle}
+        onClose={() => toggleDialog('deleteInterviewer')}
       >
         <DialogTitle>
           Obriši intervjuera ({dialogs.deleteInterviewer.name})
@@ -410,7 +397,9 @@ const InterviewersPage = () => {
             Jesi li siguran da želiš obrisati intervjuera?
           </DialogContentText>
           <div className={c.dialogButtonWrapper}>
-            <Button onClick={dialogs.deleteInterviewer.toggle}>Odustani</Button>
+            <Button onClick={() => toggleDialog('deleteInterviewer')}>
+              Odustani
+            </Button>
             <Button
               onClick={Helper.interviewerToDelete.delete}
               variant="outlined"
