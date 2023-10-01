@@ -9,10 +9,8 @@ body {
 }
 
 .applicationFormPageWrapper {
-  padding: 20px;
-  width: 100%;
-  max-width: 600px;
-  margin: 0 auto;
+  background-color: white;
+  display: flex;      
 }
 
 .applicationFormTitle {
@@ -100,4 +98,14 @@ input {
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+
+.applicationFormWelcomeImage {  
+  object-fit: contain;
+  aspect-ratio: unset;
+  width: unset;
+}
+
+.applicationFormIntroSection {
+  width: 592px;
 }

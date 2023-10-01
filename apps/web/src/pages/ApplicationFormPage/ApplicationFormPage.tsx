@@ -10,7 +10,9 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { usePostIntern } from '../../api/usePostIntern';
+import formWelcomeImage from '../../assets/form-welcome-image.png';
 import { ApplicationFormInputHandler } from '../../components/ApplicationFormInputHandler/ApplicationFormInputHandler';
+import { Logo } from '../../components/Logo';
 import { SortableDisciplinesContainer } from '../../components/SoratableDisciplinesContainer';
 import { disciplineLabel } from '../../constants/internConstants';
 import { applicationFormDataQuestions } from './constants/ApplicationFormQuestions';
@@ -99,9 +101,17 @@ export const ApplicationFormPage = () => {
 
   return (
     <div className={classes.applicationFormPageWrapper}>
-      <h1 className={classes.applicationFormTitle}>
-        Prijava na DUMP Internship
-      </h1>
+      <div className={classes.applicationFormIntroSection}>
+        <Logo />
+        <h1 className={classes.applicationFormTitle}>Postani dumpovac!</h1>
+        <img
+          className={classes.applicationFormWelcomeImage}
+          src={formWelcomeImage}
+          alt="form-welcome-image"
+        />
+      </div>
+      <div></div>
+
       <form
         className={classes.formClass}
         onSubmit={handleSubmit(onSubmit)}
@@ -230,9 +240,6 @@ export const ApplicationFormPage = () => {
           </Button>
         </div>
       </form>
-      <h3 className={classes.applicationFooterText}>
-        DUMP Udruga mladih programera
-      </h3>
     </div>
   );
 };
