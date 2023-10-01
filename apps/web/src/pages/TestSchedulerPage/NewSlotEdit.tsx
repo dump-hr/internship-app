@@ -48,7 +48,9 @@ export const NewSlotEdit: React.FC<NewSlotEditProps> = ({ slot, setSlots }) => {
         name="location"
         onChange={handleFieldChange('value')}
       />
-      <Button onClick={handleDelete}>Obriši</Button>
+      <Button variant="contained" color="error" onClick={handleDelete}>
+        Obriši
+      </Button>
     </Box>
   );
 };
