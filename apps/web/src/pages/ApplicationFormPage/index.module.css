@@ -1,25 +1,28 @@
 * {
-  font-family: 'Roboto', sans-serif;
+  font-family: 'FuseV2Display-Regular', sans-serif;
   box-sizing: border-box;
 }
 
 body {
   margin: 0;
-  background-color: #e5e5e5;
+  background-color: white;
 }
 
 .applicationFormPageWrapper {
-  background-color: white;
-  display: flex;      
+  display: flex;
+  margin-top: 80px;
+  justify-content: center;
 }
 
 .applicationFormTitle {
-  font-family: FuseH2;
-  font-size: 33px;
-  font-weight: 500;
-  color: #000;
-  margin-bottom: 20px;
-  margin-top: 20px;
+  margin-top: 44px;
+  font-family: FuseV2Display-ExtraBold;
+  font-size: 96px;
+  font-style: normal;
+  font-weight: 800;
+  line-height: 100%;
+  color: #282d30;
+  margin-bottom: 40px;
 }
 
 .formQuestionWrapper {
@@ -68,13 +71,11 @@ input {
 }
 
 .submitButton {
-  width: 100px;
-  height: 30px;
-  background-color: #fff;
-  border: 1px solid #000;
-  border-radius: 5px;
-  cursor: pointer;
-  margin-top: 20px;
+  width: 161px !important;
+  height: 44px !important;
+  border-radius: 8px !important;
+  background: #5cc2a0 !important;
+  box-shadow: none !important;
 }
 
 .applicationFooterText {
@@ -96,7 +97,7 @@ input {
   align-items: center;
 }
 
-.applicationFormWelcomeImage {  
+.applicationFormWelcomeImage {
   object-fit: contain;
   aspect-ratio: unset;
   width: unset;
@@ -105,17 +106,74 @@ input {
 .applicationFormIntroSection {
   width: 592px;
   position: sticky;
-  top: 0;  
+  top: 80px;
   height: 100%;
 }
 
 .applicationForm {
-  width: 584px;  
+  width: 584px;
   display: inline-flex;
   padding: 64px;
   flex-direction: column;
   align-items: flex-start;
   gap: 16px;
   border-radius: 24px;
-  box-shadow: 0px 8px 40px 0px rgba(214, 224, 233, 0.31), 0px 4px 16px 0px rgba(214, 224, 233, 0.12), 0px 2px 6px 0px rgba(214, 224, 233, 0.06);
+  box-shadow:
+    0px 8px 40px 0px rgba(214, 224, 233, 0.31),
+    0px 4px 16px 0px rgba(214, 224, 233, 0.12),
+    0px 2px 6px 0px rgba(214, 224, 233, 0.06);
+  margin-bottom: 80px;
+}
+
+.applicationFormSubtitle {
+  color: #242731;
+  font-family: FuseV2Display-ExtraBold;
+  font-size: 32px;
+  font-style: normal;
+  font-weight: 800;
+  line-height: 36px;
+}
+
+.applicationFormAdditional {
+  color: #575f6e;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 22px;
+}
+
+@media screen and (max-width: 1054px) {
+  .applicationFormPageWrapper {
+    flex-direction: column;
+    align-items: center;
+  }
+  .applicationFormIntroSection {
+    position: unset;
+    margin-bottom: 44px;
+  }
+}
+
+@media screen and (max-width: 630px) {
+  .applicationFormTitle {
+    display: none;
+  }
+  .applicationFormWelcomeImage {
+    display: none;
+  }
+  .applicationFormPageWrapper {
+    margin-top: 8px;
+    margin-left: 24px;
+    margin-right: 24px;
+  }
+  .applicationForm {
+    box-shadow: unset;
+    width: 100%;
+    padding: 0;
+  }
+  .applicationFormIntroSection {
+    width: 100%;
+    margin-left: 24px;
+    margin-top: 20px;
+    overflow-x: hidden;
+  }
 }

@@ -111,8 +111,10 @@ export const ApplicationFormPage = () => {
         />
       </div>
       <div className={classes.applicationForm}>
-        <h2>Prijava na DUMP Internship</h2>
-        <div>
+        <h2 className={classes.applicationFormSubtitle}>
+          Prijava na DUMP Internship
+        </h2>
+        <div className={classes.applicationFormAdditional}>
           Popunite ovu formu s vašim osobnim podacima. Postupak može potrajati
           nekoliko minuta.
         </div>
@@ -238,7 +240,7 @@ export const ApplicationFormPage = () => {
               variant="contained"
               className={classes.submitButton}
             >
-              Submit
+              Pridruži nam se
             </Button>
           </div>
         </form>
