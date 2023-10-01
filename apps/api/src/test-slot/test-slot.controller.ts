@@ -28,6 +28,7 @@ export class TestSlotController {
   constructor(private readonly testSlotService: TestSlotService) {}
 
   @Get()
+  @UseGuards(JwtAuthGuard)
   async getAll() {
     const allSlots = await this.testSlotService.getAll();
     const testSlotsDto: TestSlotPreviewDto[] = allSlots.map((ts) => ({
@@ -41,11 +42,13 @@ export class TestSlotController {
   }
 
   @Get(':id')
+  @UseGuards(JwtAuthGuard)
   async get(@Param('id') id: string) {
     return await this.testSlotService.get(id);
   }
 
   @Post()
+  @UseGuards(JwtAuthGuard)
   async createTestSlot(@Body() testSlotDto: CreateTestSlotsRequest) {
     return await this.testSlotService.create(testSlotDto);
   }
@@ -60,6 +63,7 @@ export class TestSlotController {
   }
 
   @Delete(':id')
+  @UseGuards(JwtAuthGuard)
   async delete(@Param('id') id: string) {
     return await this.testSlotService.delete(id);
   }

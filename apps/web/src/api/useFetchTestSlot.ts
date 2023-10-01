@@ -11,6 +11,7 @@ const fetchTestSlot = async (id: string) => {
     end: new Date(slot.end),
   } as TestSlot;
 };
+
 export const useFetchTestSlot = (id: string | undefined) => {
   return useQuery(['test-slot', id], () => fetchTestSlot(id as string), {
     enabled: !!id,

@@ -164,15 +164,18 @@ export const TestSlotEditForm: React.FC<TestSlotEditFormProps> = ({
       <Button variant="contained" onClick={handleSubmit}>
         Podnesi
       </Button>
+
       <Typography variant="h4">Osnovne informacije</Typography>
       {mainQuestions.map((q) => (
         <InputHandler form={form} question={q} key={q.id} />
       ))}
+
       <Typography variant="h4">Pitanja</Typography>
       <Box display="flex" flexDirection="column" gap="20px">
         <Button variant="contained" onClick={handleAddQuestion}>
           Dodaj
         </Button>
+
         {testQuestions.map((q) => (
           <Box
             style={{ background: '#ccc', border: '3px solid black' }}
