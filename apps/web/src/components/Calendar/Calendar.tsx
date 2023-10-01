@@ -4,10 +4,11 @@ import { Event, InterviewMemberParticipation } from '@internship-app/types';
 import { format, getDay, parse, startOfWeek } from 'date-fns';
 import hrLocale from 'date-fns/locale/hr';
 import moment from 'moment';
-import { useEffect, useState } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
 import {
   Calendar as BigCalendar,
   dateFnsLocalizer,
+  EventWrapperProps,
   SlotInfo,
 } from 'react-big-calendar';
 import withDragAndDrop from 'react-big-calendar/lib/addons/dragAndDrop';
@@ -35,6 +36,10 @@ type MappedEvent = {
   additionalInfo: string;
   interviewers: InterviewMemberParticipation[];
 };
+
+interface CustomEventWrapperProps extends EventWrapperProps {
+  children?: ReactNode;
+}
 
 interface Props {
   filteredEvents: MappedEvent[];
@@ -88,7 +93,7 @@ export const Calendar: React.FC<Props> = ({
         onSelectSlot={handleTimeSlotAdd}
         events={events}
         components={{
-          eventWrapper: (props) => {
+          eventWrapper: (props: CustomEventWrapperProps) => {
             const isNotFiltered = !filteredEvents.includes(
               props.event as MappedEvent,
             );

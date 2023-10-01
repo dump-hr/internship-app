@@ -31,7 +31,7 @@ export const AdminInterviewPage = () => {
   >();
   const [events, setEvents] = useState<MappedEvent[]>([]);
   const { data: interviewSlots, refetchInterviewSlots } =
-    useFetchInterviewSlots(null);
+    useFetchInterviewSlots();
 
   const deleteInterviewSlotMutation = useDeleteInterviewSlot();
   const createInterviewSlotMutation = useCreateInterviewSlot();
