@@ -14,8 +14,7 @@ export const HomePage = () => {
 
   return (
     <div>
-      <Typography>internship-app</Typography>
-      <Typography>Redircting to dump.hr/internship</Typography>
+      <Typography>Redirecting to dump.hr/internship...</Typography>
     </div>
   );
 };
