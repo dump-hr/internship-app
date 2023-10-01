@@ -35,7 +35,7 @@ export class InterviewSlotService {
       },
     });
 
-    if (interviewToDelete.internId) return;
+    if (interviewToDelete.intern) return;
 
     return await this.prisma.interviewSlot.delete({
       where: { id: interviewToDelete.id },

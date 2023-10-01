@@ -7,8 +7,10 @@ import {
   Param,
   Patch,
   Post,
+  UseGuards,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
+import { JwtAuthGuard } from 'src/auth/jwt-auth-guard';
 
 import { CreateInterviewSlotDto } from './dto/createInterviewSlot.dto';
 import { InterviewSlotService } from './interview-slot.service';
@@ -24,11 +26,13 @@ export class InterviewSlotController {
   }
 
   @Delete('/:id')
+  @UseGuards(JwtAuthGuard)
   async deleteInterviewSlot(@Param('id') id: string) {
     return await this.interviewSlotService.deleteInterviewSlot(id);
   }
 
   @Post()
+  @UseGuards(JwtAuthGuard)
   async createInterviewSlot(@Body() interviewSlotDto: CreateInterviewSlotDto) {
     return await this.interviewSlotService.createInterviewSlot(
       interviewSlotDto,
