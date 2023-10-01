@@ -26,4 +26,9 @@ export class InterviewerController {
     const deletedInterviewer = await this.interviewerService.delete(id);
     return deletedInterviewer;
   }
+
+  @Get('participations')
+  async getInterviewersParticipations() {
+    return await this.interviewerService.getInterviewersParticipations();
+  }
 }

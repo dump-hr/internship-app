@@ -57,4 +57,8 @@ export class InterviewerService {
 
     return deletedInterviewer;
   }
+
+  async getInterviewersParticipations() {
+    return await this.prisma.interviewMemberParticipation.findMany();
+  }
 }

@@ -213,7 +213,6 @@ const InterviewersPage = () => {
         });
       },
       submit: () => {
-        console.log(newInterviewer);
         const { isValid, message } = Helper.newInterviewer.validate();
 
         if (!isValid) {
