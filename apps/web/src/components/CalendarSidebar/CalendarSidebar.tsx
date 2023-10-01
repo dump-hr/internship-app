@@ -7,9 +7,15 @@ import { CustomSelectInput } from '../common/SelectInput/CustomSelectInput';
 import styles from './index.module.css';
 
 interface Props {
-  setInterviewers: (value: string[] | null) => void;
-  setSelectedInterviewerFilter: (value: string[] | null) => void;
-  setAdditionalNotesValue: (value: string | undefined) => void;
+  setInterviewers: React.Dispatch<
+    React.SetStateAction<string[] | null | undefined>
+  >;
+  setSelectedInterviewerFilter: React.Dispatch<
+    React.SetStateAction<string[] | null | undefined>
+  >;
+  setAdditionalNotesValue: React.Dispatch<
+    React.SetStateAction<string | undefined>
+  >;
 }
 
 export const CalendarSidebar: React.FC<Props> = ({
