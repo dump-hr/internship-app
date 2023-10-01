@@ -21,7 +21,13 @@ export const EmailPage = ({ emails, on, close }: Props) => {
   const [subject, setSubject] = useState<string>('');
   const [emailPreviewOpen, setEmailPreviewOpen] = useState<boolean>(false);
   const [emailList, setEmailList] = useState<string[]>([]);
-  const [text, setText] = useState<string>('');
+  const [text, setText] = useState<string>(`
+  pozdrav {{ intern.firstName }},
+
+  ovo su tvoja podrucja:
+  {% for internDiscipline in intern.internDisciplines -%}
+  - {{ internDiscipline.discipline }}
+  {% endfor %}`);
 
   const makeEmails = async () => {
     const createdEmails = await makeEmailsMutation({ emails, text });
