@@ -1,8 +1,9 @@
-import { DisciplineStatus, TestStatus } from '@internship-app/types';
-import { Box, Typography } from '@mui/material';
+import { Typography } from '@mui/material';
+import moment from 'moment';
 import { useRoute } from 'wouter';
 
 import { useFetchStatus } from '../../api/useFetchStatus';
+import PublicLayout from '../../components/PublicLayout';
 import {
   disciplineLabel,
   disciplineStatusLabel,
@@ -10,6 +11,8 @@ import {
   testStatusLabel,
 } from '../../constants/internConstants';
 import { Path } from '../../constants/paths';
+import { DisciplineCard } from './DisciplineCard';
+import * as styled from './styled';
 
 const StatusPage = () => {
   const [, params] = useRoute(Path.Status);
@@ -24,54 +27,73 @@ const StatusPage = () => {
     return <Typography>Ne postoji prijava s tim ID-em!</Typography>;
   }
 
-  const hasInterviewRight =
-    !intern.interviewSlot &&
-    intern.internDisciplines.some(
-      (ind) => ind.status === DisciplineStatus.Pending,
-    ) &&
-    intern.internDisciplines.every(
-      (ind) => ind.testStatus !== TestStatus.Pending,
-    );
-  //ovo se ionako treba iznova
   return (
-    <Box maxWidth="1280px" margin="auto">
-      <Typography variant="h1">Status prijave</Typography>
-      <Box>
-        <Typography>
-          {intern.firstName} {intern.lastName}
-        </Typography>
-        <Typography>{intern.email}</Typography>
-      </Box>
-      {intern.internDisciplines.map((ids) => (
-        <Box key={ids.discipline}>
-          <Typography>{disciplineLabel[ids.discipline]}</Typography>
-          <Typography>Status: {disciplineStatusLabel[ids.status]}</Typography>
-          {ids.testStatus && (
-            <Typography>Test: {testStatusLabel[ids.testStatus]}</Typography>
-          )}
-          {ids.testSlot && (
-            <Typography>Termin: @ {ids.testSlot.location}</Typography>
-          )}
-          {!ids.testSlot && ids.testStatus === TestStatus.Pending && (
-            <Typography>Provjeri slobodne termine testa. ovojelink</Typography>
-          )}
-          {ids.testScore && <Typography>Rezultat: {ids.testScore}</Typography>}
-        </Box>
-      ))}
-      {hasInterviewRight && (
-        <Typography>
-          Pogledaj slobodne termine za intervju. ovojelink
-        </Typography>
-      )}
-      {intern.interviewSlot && (
-        <Box>
-          <Typography>
-            Status: {interviewStatusLabel[intern.interviewStatus]}
-          </Typography>
-          <Typography>Termin: {} @ DUMP Ured, FESB</Typography>
-        </Box>
-      )}
-    </Box>
+    <PublicLayout>
+      <styled.layout>
+        <styled.mainInfo>
+          <styled.header>
+            <styled.greetTitle>Bok {intern.firstName}!</styled.greetTitle>
+            <styled.description>
+              Ovdje možeš pratiti svoj trenutni status i rezultate ispita. O
+              upadu na DUMP Internship i terminu intervjua obavijestit ćemo te
+              mailom.
+            </styled.description>
+          </styled.header>
+          <styled.infoSection>
+            <styled.interviewSection>
+              <styled.infoTitle>Intervju</styled.infoTitle>
+              <styled.spacedBetween>
+                <styled.infoText>
+                  {interviewStatusLabel[intern.interviewStatus]}
+                </styled.infoText>
+                {intern.interviewSlot?.start && (
+                  <styled.infoText>
+                    {moment(intern.interviewSlot.start).format(
+                      'DD/MM/YYYY | HH-mm',
+                    )}
+                  </styled.infoText>
+                )}
+              </styled.spacedBetween>
+            </styled.interviewSection>
+            <styled.disciplinesSection>
+              <styled.infoTitle>Prijavljena područja</styled.infoTitle>
+              {intern.internDisciplines.map((ind) => (
+                <styled.disciplineItem key={ind.discipline}>
+                  <styled.disciplineLabel>
+                    {disciplineLabel[ind.discipline]}
+                  </styled.disciplineLabel>
+                  <styled.spacedBetween>
+                    <styled.infoText>Status</styled.infoText>
+                    <styled.infoText>
+                      {disciplineStatusLabel[ind.status]}
+                    </styled.infoText>
+                  </styled.spacedBetween>
+                  {ind.testStatus && (
+                    <styled.spacedBetween>
+                      <styled.infoText>
+                        Test: {testStatusLabel[ind.testStatus].toLowerCase()}
+                      </styled.infoText>
+                      {ind.testSlot && (
+                        <styled.infoText>
+                          {moment(ind.testSlot.start).format(
+                            'DD/MM/YYYY | HH-mm',
+                          )}
+                        </styled.infoText>
+                      )}
+                    </styled.spacedBetween>
+                  )}
+                </styled.disciplineItem>
+              ))}
+            </styled.disciplinesSection>
+          </styled.infoSection>
+        </styled.mainInfo>
+        <styled.disciplineCardList>
+          {intern.internDisciplines.map((ind) => (
+            <DisciplineCard internDiscipline={ind} key={ind.discipline} />
+          ))}
+        </styled.disciplineCardList>
+      </styled.layout>
+    </PublicLayout>
   );
 };
 

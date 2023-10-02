@@ -21,8 +21,7 @@
   }
 }
 
-img {
-  width: 100%;
+.image {
   aspect-ratio: calc(16 / 9);
   width: 650px;
 }
@@ -31,19 +30,36 @@ img {
   max-width: 100%;
 }
 
-.datesContainer {
+.emailContainer {
   padding: 0 0 15px 0;
   margin: 0;
   color: gray;
   font-size: 14px;
 }
 
-h1 {
+.internFullName {
   padding: 0;
   margin: 0;
   font-size: 40px;
 }
 
-.atribute:first-child > h3 {
+.itemTitle {
+  font-size: medium;
+  margin: 0 0 15px 0;
+}
+
+.atribute,
+.tick {
+  padding: 10px 0;
+  margin: 10px 0;
+  width: 100%;
+}
+
+.tick {
+  background-color: rgba(228, 202, 181, 0.82);
+}
+
+.data > :first-child {
   margin-top: 0;
+  padding-top: 0;
 }

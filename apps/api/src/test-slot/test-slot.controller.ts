@@ -29,6 +29,7 @@ export class TestSlotController {
 
   @Get()
   @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard)
   async getAll() {
     const allSlots = await this.testSlotService.getAll();
     const testSlotsDto: TestSlotPreviewDto[] = allSlots.map((ts) => ({

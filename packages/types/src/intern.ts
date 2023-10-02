@@ -55,6 +55,7 @@ export type Interviewer = {
   id: string;
   name: string;
   disciplines: Discipline[];
+  email?: string;
 };
 
 export type Intern = {
@@ -91,7 +92,7 @@ export type Slot = {
   id: string;
   start: Date;
   end: Date;
-}
+};
 
 export type TestSlot = {
   discipline: Discipline;

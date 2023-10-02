@@ -22,7 +22,7 @@ export const useFetchAvailableTestSlots = (
   discipline: Discipline | undefined,
 ) => {
   return useQuery(
-    ['test-slot', internId],
+    ['test-slot', discipline, internId],
     () => fetchAvailableTestSlots(internId!, discipline!),
     {
       enabled: !!internId,

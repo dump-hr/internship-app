@@ -1,4 +1,4 @@
-import { Intern } from '@internship-app/types';
+import { Intern, InternDiscipline, Question } from '@internship-app/types';
 
 import styles from './index.module.css';
 
@@ -6,45 +6,76 @@ interface InternInfoProps {
   intern: Intern;
 }
 
+type Answer = Question & { tick: boolean; value: string | number | boolean };
+
 const InternInfo = ({ intern }: InternInfoProps) => {
   return (
     <div className={styles.page}>
-      <h1>
+      <h1 className={styles.internFullName}>
         {intern.firstName} {intern.lastName}
       </h1>
 
-      {/*<div className={styles.datesContainer}> not sure if we need dates but they break the app
-        <div>Created at: {intern.createdAt}</div>
-        <div>Updated at: {intern.updatedAt}</div>
-  </div>*/}
+      <div className={styles.emailContainer}>
+        <div>{intern.email}</div>
+
+        {Array.isArray(intern.internDisciplines) &&
+          intern.internDisciplines.map(
+            (discipline: InternDiscipline, index: number) => {
+              return (
+                <span key={discipline.discipline}>
+                  {discipline.discipline}
+                  {index !== intern.internDisciplines.length - 1 && ', '}
+                </span>
+              );
+            },
+          )}
+      </div>
 
       <div className={styles.container}>
         <img
+          className={styles.image}
           src={
             intern.image ||
             'https://images.placeholders.dev/?width=650&height=365'
           }
           alt="Intern image"
         />
-        <div>
-          <div className={styles.atribute}>
-            <h3>Email</h3>
-            <span> {intern.email} </span>
-          </div>
-          <div>
-            {Object.keys(intern.data).map((key: string) => {
+        <div className={styles.data}>
+          {Object.keys(intern.data).map((key: string) => {
+            return (
+              <div className={styles.atribute} key={key}>
+                <span>
+                  <b>{key}: </b>
+                  {intern.data[key as keyof typeof intern.data].toString()}
+                </span>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      {intern.interviewSlot && (
+        <div className={styles.atribute}>
+          <span>
+            <b>Score:</b> {intern.interviewSlot?.score}
+          </span>
+
+          {Array.isArray(intern.interviewSlot?.answers) &&
+            intern.interviewSlot?.answers.map((item: Answer) => {
               return (
-                <div className={styles.atribute}>
-                  <h3>{key}</h3>
-                  <span>
-                    {intern.data[key as keyof typeof intern.data].toString()}
-                  </span>
+                <div
+                  className={item.tick ? styles.tick : styles.atribute}
+                  key={item.id}
+                >
+                  <h3 className={styles.itemTitle}>
+                    {item.title} {!item.tick || '⚠️'}
+                  </h3>
+                  <span>{item.value}</span>
                 </div>
               );
             })}
-          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 };
