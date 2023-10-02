@@ -1,7 +1,20 @@
 import styled from '@emotion/styled';
+import { Discipline } from '@internship-app/types';
 
 import { fuseDisplay, fuseDisplayBold } from '../../styles/fonts';
-import { breakpoints, colors } from '../../styles/variables';
+import { breakpoints, colors, disciplineColors } from '../../styles/variables';
+
+export const layout = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 56px;
+
+  @media screen and (min-width: ${breakpoints.tablet}) {
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 80px;
+  }
+`;
 
 export const mainInfo = styled.main`
   display: flex;
@@ -99,4 +112,61 @@ export const disciplineLabel = styled.p`
 export const spacedBetween = styled.div`
   display: flex;
   justify-content: space-between;
+`;
+
+export const disciplineCardList = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+
+  @media screen and (min-width: ${breakpoints.tablet}) {
+    min-width: 456px;
+  }
+`;
+
+export const disciplineCard = styled.div<{ discipline: Discipline }>`
+  display: flex;
+  flex-direction: column;
+  padding: 32px;
+  gap: 20px;
+  color: ${colors.dumpWhite};
+  border-radius: 8px;
+
+  background: ${({ discipline }) => disciplineColors[discipline]};
+`;
+
+export const disciplineCardLabel = styled.h3`
+  ${fuseDisplayBold}
+  font-size: 36px;
+  margin: 0px;
+  line-height: 44px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid ${colors.dumpWhite}44;
+`;
+
+export const statusSection = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+`;
+
+export const statusLabel = styled.p`
+  ${fuseDisplayBold}
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+`;
+
+export const statusValue = styled.p`
+  ${fuseDisplay}
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 32px;
+`;
+
+export const statusBox = styled.div`
+  padding: 16px;
+  border-radius: 12px;
+  background: rgba(0, 0, 0, 0.12);
 `;

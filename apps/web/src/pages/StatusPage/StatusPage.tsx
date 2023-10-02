@@ -11,6 +11,7 @@ import {
   testStatusLabel,
 } from '../../constants/internConstants';
 import { Path } from '../../constants/paths';
+import { DisciplineCard } from './DisciplineCard';
 import * as styled from './styled';
 
 const StatusPage = () => {
@@ -28,62 +29,70 @@ const StatusPage = () => {
 
   return (
     <PublicLayout>
-      <styled.mainInfo>
-        <styled.header>
-          <styled.greetTitle>Bok {intern.firstName}!</styled.greetTitle>
-          <styled.description>
-            Ovdje možeš pratiti svoj trenutni status i rezultate ispita. O upadu
-            na DUMP Internship bit ćeš obaviješten e-mailom.
-          </styled.description>
-        </styled.header>
-        <styled.infoSection>
-          <styled.interviewSection>
-            <styled.infoTitle>Intervju</styled.infoTitle>
-            <styled.spacedBetween>
-              <styled.infoText>
-                {interviewStatusLabel[intern.interviewStatus]}
-              </styled.infoText>
-              {intern.interviewSlot?.start && (
+      <styled.layout>
+        <styled.mainInfo>
+          <styled.header>
+            <styled.greetTitle>Bok {intern.firstName}!</styled.greetTitle>
+            <styled.description>
+              Ovdje možeš pratiti svoj trenutni status i rezultate ispita. O
+              upadu na DUMP Internship i terminu intervjua obavijestit ćemo te
+              mailom.
+            </styled.description>
+          </styled.header>
+          <styled.infoSection>
+            <styled.interviewSection>
+              <styled.infoTitle>Intervju</styled.infoTitle>
+              <styled.spacedBetween>
                 <styled.infoText>
-                  {moment(intern.interviewSlot.start).format(
-                    'DD/MM/YYYY | HH-mm',
-                  )}
+                  {interviewStatusLabel[intern.interviewStatus]}
                 </styled.infoText>
-              )}
-            </styled.spacedBetween>
-          </styled.interviewSection>
-          <styled.disciplinesSection>
-            <styled.infoTitle>Prijavljena područja</styled.infoTitle>
-            {intern.internDisciplines.map((ind) => (
-              <styled.disciplineItem>
-                <styled.disciplineLabel>
-                  {disciplineLabel[ind.discipline]}
-                </styled.disciplineLabel>
-                <styled.spacedBetween>
-                  <styled.infoText>Status</styled.infoText>
+                {intern.interviewSlot?.start && (
                   <styled.infoText>
-                    {disciplineStatusLabel[ind.status]}
-                  </styled.infoText>
-                </styled.spacedBetween>
-                {ind.testStatus && (
-                  <styled.spacedBetween>
-                    <styled.infoText>
-                      Test: {testStatusLabel[ind.testStatus].toLowerCase()}
-                    </styled.infoText>
-                    {ind.testSlot && (
-                      <styled.infoText>
-                        {moment(ind.testSlot.start).format(
-                          'DD/MM/YYYY | HH-mm',
-                        )}
-                      </styled.infoText>
+                    {moment(intern.interviewSlot.start).format(
+                      'DD/MM/YYYY | HH-mm',
                     )}
-                  </styled.spacedBetween>
+                  </styled.infoText>
                 )}
-              </styled.disciplineItem>
-            ))}
-          </styled.disciplinesSection>
-        </styled.infoSection>
-      </styled.mainInfo>
+              </styled.spacedBetween>
+            </styled.interviewSection>
+            <styled.disciplinesSection>
+              <styled.infoTitle>Prijavljena područja</styled.infoTitle>
+              {intern.internDisciplines.map((ind) => (
+                <styled.disciplineItem key={ind.discipline}>
+                  <styled.disciplineLabel>
+                    {disciplineLabel[ind.discipline]}
+                  </styled.disciplineLabel>
+                  <styled.spacedBetween>
+                    <styled.infoText>Status</styled.infoText>
+                    <styled.infoText>
+                      {disciplineStatusLabel[ind.status]}
+                    </styled.infoText>
+                  </styled.spacedBetween>
+                  {ind.testStatus && (
+                    <styled.spacedBetween>
+                      <styled.infoText>
+                        Test: {testStatusLabel[ind.testStatus].toLowerCase()}
+                      </styled.infoText>
+                      {ind.testSlot && (
+                        <styled.infoText>
+                          {moment(ind.testSlot.start).format(
+                            'DD/MM/YYYY | HH-mm',
+                          )}
+                        </styled.infoText>
+                      )}
+                    </styled.spacedBetween>
+                  )}
+                </styled.disciplineItem>
+              ))}
+            </styled.disciplinesSection>
+          </styled.infoSection>
+        </styled.mainInfo>
+        <styled.disciplineCardList>
+          {intern.internDisciplines.map((ind) => (
+            <DisciplineCard internDiscipline={ind} key={ind.discipline} />
+          ))}
+        </styled.disciplineCardList>
+      </styled.layout>
     </PublicLayout>
   );
 };

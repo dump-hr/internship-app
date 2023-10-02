@@ -21,7 +21,7 @@ export const main = styled.div`
 
   @media screen and (min-width: ${breakpoints.tablet}) {
     padding: 80px;
-    max-width: 1200px;
+    max-width: 1300px;
   }
 `;
 
