@@ -39,6 +39,11 @@ export class InternController {
     return interns;
   }
 
+  @Get('count')
+  async count() {
+    return await this.internService.count();
+  }
+
   @Get(':id')
   @UseGuards(JwtAuthGuard)
   async get(@Param('id') id: string) {

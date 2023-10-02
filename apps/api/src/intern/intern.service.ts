@@ -369,6 +369,10 @@ dump.hr`,
     );
   }
 
+  async count() {
+    return await this.prisma.intern.count();
+  }
+
   private getInitialTestStatus(discipline) {
     return [Discipline.Development, Discipline.Design].includes(discipline)
       ? TestStatus.PickTerm
