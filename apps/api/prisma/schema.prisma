@@ -65,6 +65,7 @@ model TestSlot {
   end               DateTime
   location          String
   capacity          Int
+  maxPoints         Int
   internDisciplines InternDiscipline[]
   testQuestions     TestQuestion[]
   createdAt         DateTime           @default(now())

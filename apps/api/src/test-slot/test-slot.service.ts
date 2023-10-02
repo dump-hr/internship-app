@@ -52,6 +52,7 @@ export class TestSlotService {
             start: slot.start,
             end: slot.end,
             location: slot.location,
+            maxPoints: 0,
           },
         }),
       ),
@@ -66,6 +67,7 @@ export class TestSlotService {
         end: testSlot.end,
         capacity: testSlot.capacity,
         location: testSlot.location,
+        maxPoints: testSlot.maxPoints,
         testQuestions: {
           deleteMany: {
             testSlotId: id,

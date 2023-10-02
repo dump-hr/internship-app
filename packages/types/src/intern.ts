@@ -97,6 +97,7 @@ export type TestSlot = {
   discipline: Discipline;
   location: string;
   capacity: number;
+  maxPoints: number;
   internDisciplines: InternDiscipline[];
   testQuestions: TestQuestion[];
 } & Slot;

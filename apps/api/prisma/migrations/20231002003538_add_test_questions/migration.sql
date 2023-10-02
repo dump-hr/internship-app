@@ -1,14 +1,5 @@
-/*
-  Warnings:
-
-  - You are about to drop the column `maxPoints` on the `TestSlot` table. All the data in the column will be lost.
-
-*/
 -- CreateEnum
 CREATE TYPE "CodingLanguage" AS ENUM ('Python', 'CPP', 'C', 'CS', 'JavaScript');
-
--- AlterTable
-ALTER TABLE "TestSlot" DROP COLUMN "maxPoints";
 
 -- CreateTable
 CREATE TABLE "TestQuestion" (

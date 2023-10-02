@@ -44,6 +44,13 @@ const getMainQuestions = (slot: TestSlot): Question[] => [
     min: slot.internDisciplines.length,
     registerValue: slot.capacity,
   },
+  {
+    id: 'maxPoints',
+    title: 'Max broj bodova',
+    type: QuestionType.Number,
+    min: 0,
+    registerValue: slot.maxPoints,
+  },
 ];
 
 const getInitialTestQuestions = (slot: TestSlot) =>
