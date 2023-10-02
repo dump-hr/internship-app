@@ -341,7 +341,7 @@ dump.hr`,
             testStatus: TestStatus.Pending,
           },
           data: {
-            testStatus: TestStatus.PickTerm,
+            testStatus: this.getInitialTestStatus(action.discipline),
             testSlotId: null,
           },
         });
@@ -370,7 +370,7 @@ dump.hr`,
   }
 
   private getInitialTestStatus(discipline) {
-    return [Discipline.Development, Discipline.Design].includes(discipline)
+    return [Discipline.Development].includes(discipline)
       ? TestStatus.PickTerm
       : null;
   }
