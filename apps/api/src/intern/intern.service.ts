@@ -16,6 +16,7 @@ import {
   InterviewStatus,
   TestStatus,
 } from '@prisma/client';
+import { readFile } from 'fs/promises';
 import { PrismaService } from 'src/prisma.service';
 
 import { CreateInternDto } from './dto/createIntern.dto';
@@ -127,6 +128,23 @@ export class InternService {
 
     if (internAgeInMiliseconds / milisecondsInYear > 24) {
       throw new BadRequestException('Intern should be at most 24 years old');
+    }
+
+    let blockList: string[];
+
+    const isDisposableEmail = async (email) => {
+      const content = await readFile(
+        './disposable-email-blocklist.conf',
+        'utf-8',
+      );
+
+      blockList = content.split('\r\n').slice(0, -1);
+
+      return blockList.includes(email.split('@')[1]);
+    };
+
+    if (await isDisposableEmail(internToCreate.email)) {
+      throw new BadRequestException('Disposable email is not allowed');
     }
 
     const initialInterviewStatus = internToCreate.disciplines.some(
