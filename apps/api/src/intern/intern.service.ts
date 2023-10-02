@@ -146,7 +146,7 @@ export class InternService {
       Subject: 'Prijava na DUMP Internship',
       TextBody: `Pozdrav ${internToCreate.firstName},
 
-Hvala na prijavi na DUMP Internship 2023. Uskoro ćeš biti obavješten o sljedećim koracima prijave.
+Hvala na prijavi na DUMP Internship 2023. Uskoro ćeš biti obaviješten o sljedećim koracima prijave.
 Ako imaš pitanja oko internshipa ili procesa prijave slobodno nam se javi na info@dump.hr
 
 U svakom trenutku možeš provjeriti status svoje prijave na https://internship.dump.hr/status/${newIntern.id}
@@ -337,10 +337,12 @@ dump.hr`,
           where: {
             internId: { in: internIds },
             discipline: action.discipline,
-            testStatus: TestStatus.Pending,
+            testStatus: {
+              in: [TestStatus.PickTerm, TestStatus.Pending],
+            },
           },
           data: {
-            testStatus: TestStatus.PickTerm,
+            testStatus: this.getInitialTestStatus(action.discipline),
             testSlotId: null,
           },
         });
@@ -368,8 +370,12 @@ dump.hr`,
     );
   }
 
+  async count() {
+    return await this.prisma.intern.count();
+  }
+
   private getInitialTestStatus(discipline) {
-    return [Discipline.Development, Discipline.Design].includes(discipline)
+    return [Discipline.Development].includes(discipline)
       ? TestStatus.PickTerm
       : null;
   }
