@@ -5,7 +5,7 @@ export const HomePage = () => {
   useEffect(() => {
     const redirect = setTimeout(() => {
       window.location.href = 'https://dump.hr/internship';
-    }, 3000);
+    }, 1000);
 
     return () => {
       clearTimeout(redirect);
