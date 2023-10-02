@@ -1,15 +1,26 @@
 .layout {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   height: 100px;
-}
 
-.logo {
-  height: 30px;
-  margin-right: 20px;
-}
+  .logoContainer {
+    display: flex;
+    align-items: center;
 
-.text {
-  font-size: 25px;
-  font-weight: 400;
+    .logo {
+      height: 30px;
+      margin-right: 20px;
+    }
+
+    .text {
+      font-size: 25px;
+      font-weight: 400;
+    }
+  }
+
+  .navigation {
+    display: flex;
+    gap: 10px;
+  }
 }
