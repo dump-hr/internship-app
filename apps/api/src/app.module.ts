@@ -23,6 +23,7 @@ import { TestSlotModule } from './test-slot/test-slot.module';
     EmailModule,
     AuthModule,
     InterviewSlotModule,
+    InterviewerModule,
     TestSlotModule,
     InterviewerModule,
   ],

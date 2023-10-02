@@ -21,7 +21,7 @@
   }
 }
 
-img {
+.image {
   aspect-ratio: calc(16 / 9);
   width: 650px;
 }
@@ -37,13 +37,13 @@ img {
   font-size: 14px;
 }
 
-h1 {
+.internFullName {
   padding: 0;
   margin: 0;
   font-size: 40px;
 }
 
-h3 {
+.itemTitle {
   font-size: medium;
   margin: 0 0 15px 0;
 }

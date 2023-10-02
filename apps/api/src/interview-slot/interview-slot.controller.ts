@@ -21,6 +21,7 @@ export class InterviewSlotController {
   constructor(private readonly interviewSlotService: InterviewSlotService) {}
 
   @Get()
+  @UseGuards(JwtAuthGuard)
   async getAll() {
     return await this.interviewSlotService.getAll();
   }
