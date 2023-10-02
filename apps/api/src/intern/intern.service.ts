@@ -147,7 +147,7 @@ export class InternService {
       Subject: 'Prijava na DUMP Internship',
       TextBody: `Pozdrav ${internToCreate.firstName},
 
-Hvala na prijavi na DUMP Internship 2023. Uskoro ćeš biti obavješten o sljedećim koracima prijave.
+Hvala na prijavi na DUMP Internship 2023. Uskoro ćeš biti obaviješten o sljedećim koracima prijave.
 Ako imaš pitanja oko internshipa ili procesa prijave slobodno nam se javi na info@dump.hr
 
 U svakom trenutku možeš provjeriti status svoje prijave na https://internship.dump.hr/status/${newIntern.id}
