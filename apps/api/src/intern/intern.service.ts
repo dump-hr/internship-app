@@ -338,7 +338,9 @@ dump.hr`,
           where: {
             internId: { in: internIds },
             discipline: action.discipline,
-            testStatus: TestStatus.Pending,
+            testStatus: {
+              in: [TestStatus.PickTerm, TestStatus.Pending],
+            },
           },
           data: {
             testStatus: this.getInitialTestStatus(action.discipline),
