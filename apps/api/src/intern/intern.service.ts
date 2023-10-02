@@ -16,6 +16,7 @@ import {
   InterviewStatus,
   TestStatus,
 } from '@prisma/client';
+import * as postmark from 'postmark';
 import { PrismaService } from 'src/prisma.service';
 
 import { CreateInternDto } from './dto/createIntern.dto';
@@ -31,6 +32,8 @@ export class InternService {
     },
     region: 'eu-central-1',
   });
+
+  private postmark = new postmark.ServerClient(process.env.POSTMARK_API_TOKEN);
 
   async get(id: string) {
     return await this.prisma.intern.findUnique({
@@ -136,6 +139,24 @@ export class InternService {
           },
         },
       },
+    });
+
+    this.postmark.sendEmail({
+      From: 'info@dump.hr',
+      To: internToCreate.email,
+      Subject: 'Prijava na DUMP Internship',
+      TextBody: `Pozdrav ${internToCreate.firstName},
+
+Hvala na prijavi na DUMP Internship 2023. Uskoro ćeš biti obavješten o sljedećim koracima prijave.
+Ako imaš pitanja oko internshipa ili procesa prijave slobodno nam se javi na info@dump.hr
+
+U svakom trenutku možeš provjeriti status svoje prijave na https://internship.dump.hr/status/${newIntern.id}
+
+Lijep pozdrav,
+
+DUMP Udruga mladih programera
+dump.hr`,
+      MessageStream: 'outbound',
     });
 
     return newIntern;
