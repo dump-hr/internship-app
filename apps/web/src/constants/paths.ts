@@ -10,6 +10,8 @@ export enum Path {
   Interview = '/admin/interview/:internId',
   Interviewers = '/admin/interviewers',
   Intern = '/admin/intern/:internId',
+  TestScheduler = '/admin/test-scheduler',
+  TestOverview = '/admin/test-overview/:testSlotId',
   Counter = '/admin/counter',
 
   CatchAll = '/:path*',

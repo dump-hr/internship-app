@@ -17,6 +17,8 @@ import { NotFoundPage } from './pages/NotFoundPage';
 import ScheduleInterviewPage from './pages/ScheduleInterviewPage';
 import ScheduleTestPage from './pages/ScheduleTestPage';
 import StatusPage from './pages/StatusPage';
+import TestOverviewPage from './pages/TestOverviewPage';
+import TestSchedulerPage from './pages/TestSchedulerPage';
 
 const queryClient = new QueryClient();
 
@@ -39,6 +41,8 @@ export const App = () => {
             />
             <Route path={Path.ScheduleTest} component={ScheduleTestPage} />
             <Route path={Path.Intern} component={InternInfoPage} />
+            <Route path={Path.TestScheduler} component={TestSchedulerPage} />
+            <Route path={Path.TestOverview} component={TestOverviewPage} />
             <Route path={Path.Dashboard} component={DashboardPage} />
             <Route path={Path.Login} component={LoginPage} />
             <Route path={Path.Interviewers} component={InterviewersPage} />
