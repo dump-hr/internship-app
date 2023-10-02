@@ -11,7 +11,7 @@ type Answer = Question & { tick: boolean; value: string | number | boolean };
 const InternInfo = ({ intern }: InternInfoProps) => {
   return (
     <div className={styles.page}>
-      <h1>
+      <h1 className={styles.internFullName}>
         {intern.firstName} {intern.lastName}
       </h1>
 
@@ -33,6 +33,7 @@ const InternInfo = ({ intern }: InternInfoProps) => {
 
       <div className={styles.container}>
         <img
+          className={styles.image}
           src={
             intern.image ||
             'https://images.placeholders.dev/?width=650&height=365'
@@ -66,7 +67,7 @@ const InternInfo = ({ intern }: InternInfoProps) => {
                   className={item.tick ? styles.tick : styles.atribute}
                   key={item.id}
                 >
-                  <h3>
+                  <h3 className={styles.itemTitle}>
                     {item.title} {!item.tick || '⚠️'}
                   </h3>
                   <span>{item.value}</span>

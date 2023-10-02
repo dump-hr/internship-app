@@ -1,7 +1,8 @@
 import { ScheduleTestRequest } from '@internship-app/types';
-import { Body, Controller, Get, Param, Patch } from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch, UseGuards } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { Discipline } from '@prisma/client';
+import { JwtAuthGuard } from 'src/auth/jwt-auth-guard';
 
 import { TestSlotService } from './test-slot.service';
 
@@ -11,6 +12,7 @@ export class TestSlotController {
   constructor(private readonly testSlotService: TestSlotService) {}
 
   @Get()
+  @UseGuards(JwtAuthGuard)
   async getAll() {
     return await this.testSlotService.getAll();
   }

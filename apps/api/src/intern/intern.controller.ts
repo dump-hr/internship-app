@@ -97,6 +97,7 @@ export class InternController {
   }
 
   @Put('action/:internId')
+  @UseGuards(JwtAuthGuard)
   async applyAction(
     @Param('internId') internId: string,
     @Body() { action }: InternActionRequest,
@@ -105,11 +106,13 @@ export class InternController {
   }
 
   @Put('boardAction')
+  @UseGuards(JwtAuthGuard)
   async applyBoardAction(@Body() { action, internIds }: BoardActionRequest) {
     return await this.internService.applyBoardAction(action, internIds);
   }
 
   @Put('setDecision/:internId')
+  @UseGuards(JwtAuthGuard)
   async setDecision(
     @Param('internId') internId: string,
     @Body() data: InternDecisionRequest,
