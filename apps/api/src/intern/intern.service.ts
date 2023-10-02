@@ -111,6 +111,24 @@ export class InternService {
       );
     }
 
+    const todayDate = new Date();
+
+    const internDateOfBirth = new Date(
+      internToCreate.data.dateOfBirth as string,
+    );
+
+    const milisecondsInYear = 1000 * 60 * 60 * 24 * 365;
+    const internAgeInMiliseconds =
+      todayDate.getTime() - internDateOfBirth.getTime();
+
+    if (internAgeInMiliseconds / milisecondsInYear < 16) {
+      throw new BadRequestException('Intern should be at least 16 years old');
+    }
+
+    if (internAgeInMiliseconds / milisecondsInYear > 24) {
+      throw new BadRequestException('Intern should be at most 24 years old');
+    }
+
     const initialInterviewStatus = internToCreate.disciplines.some(
       (dis) => dis === Discipline.Development,
     )
