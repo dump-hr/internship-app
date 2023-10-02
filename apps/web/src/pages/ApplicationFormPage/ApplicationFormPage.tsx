@@ -115,7 +115,7 @@ export const ApplicationFormPage = () => {
           Prijava na DUMP Internship
         </h2>
         <div className={classes.applicationFormAdditional}>
-          Ispuni ovu formu osobnim podacima. Postupak može potrajati nekoliko
+          Ispuni ovu formu osobnim podatcima. Postupak može potrajati nekoliko
           minuta.
         </div>
         <form onSubmit={handleSubmit(onSubmit)} noValidate>
@@ -159,7 +159,7 @@ export const ApplicationFormPage = () => {
           </div>
           <div className={classes.formQuestionWrapper}>
             <label className={classes.marginBottom30px} htmlFor="email">
-              Email
+              Email:
             </label>
             <Input
               placeholder="Your answer"
