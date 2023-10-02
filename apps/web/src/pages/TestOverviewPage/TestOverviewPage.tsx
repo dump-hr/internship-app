@@ -5,8 +5,8 @@ import { useRoute } from 'wouter';
 
 import { useDeleteTestSlot } from '../../api/useDeleteTestSlot';
 import { useFetchTestSlot } from '../../api/useFetchTestSlot';
+import AdminPage from '../../components/AdminPage';
 import { ConfirmDialog } from '../../components/ConfirmDialog';
-import LayoutSpacing from '../../components/LayoutSpacing/LayoutSpacing';
 import TestSlotInfo from '../../components/TestSlotInfo';
 import { Path } from '../../constants/paths';
 import { TestSlotEditForm } from './TestSlotEditForm';
@@ -23,7 +23,7 @@ const TestOverviewPage = () => {
   if (error || !slot) return <>Error: {error}</>;
 
   return (
-    <LayoutSpacing>
+    <AdminPage>
       <ConfirmDialog
         open={dialogOpen}
         handleClose={(confirmed) => {
@@ -57,7 +57,7 @@ const TestOverviewPage = () => {
           closeEdit={() => setIsEditOpened(false)}
         />
       )}
-    </LayoutSpacing>
+    </AdminPage>
   );
 };
 export default TestOverviewPage;

@@ -12,6 +12,7 @@ import toast, { LoaderIcon } from 'react-hot-toast';
 
 import { useCreateTestSlots } from '../../api/useCreateTestSlots';
 import { useFetchAllTestSlots } from '../../api/useFetchAllTestSlots';
+import AdminPage from '../../components/AdminPage';
 import { ExistingSlotInfo } from './ExistingSlotInfo';
 import { NewSlotEdit } from './NewSlotEdit';
 import { SlotCard } from './SlotCard';
@@ -84,31 +85,34 @@ const TestSchedulerPage = () => {
   };
 
   return (
-    <Box display="flex" gap="40px" margin="50px auto">
-      <Box>
-        <Button variant="contained" onClick={handleSubmit}>
-          Pohrani
-        </Button>
-        <Calendar
-          localizer={localizer}
-          step={10}
-          style={{ height: 618, width: 1000 }}
-          defaultView="week"
-          views={['week']}
-          selectable={true}
-          culture="hr"
-          events={slotsToShow}
-          onSelectSlot={handleSelectSlot}
-          onSelectEvent={(event) => setSelectedEventStart(event.start)}
-          components={{
-            event: ({ event }) => <SlotCard slot={event} />,
-          }}
-        />
+    <AdminPage>
+      <Typography variant="h2">Testovi ({slotsToShow.length})</Typography>
+      <Box display="flex" gap="40px">
+        <Box>
+          <Button variant="contained" onClick={handleSubmit}>
+            Pohrani
+          </Button>
+          <Calendar
+            localizer={localizer}
+            step={10}
+            style={{ height: 618, width: 1000 }}
+            defaultView="week"
+            views={['week']}
+            selectable={true}
+            culture="hr"
+            events={slotsToShow}
+            onSelectSlot={handleSelectSlot}
+            onSelectEvent={(event) => setSelectedEventStart(event.start)}
+            components={{
+              event: ({ event }) => <SlotCard slot={event} />,
+            }}
+          />
+        </Box>
+        <Box width="200px" marginTop="100px">
+          {getSidebar(selectedEvent)}
+        </Box>
       </Box>
-      <Box width="200px" marginTop="100px">
-        {getSidebar(selectedEvent)}
-      </Box>
-    </Box>
+    </AdminPage>
   );
 };
 
