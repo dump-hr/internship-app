@@ -27,7 +27,7 @@ export class InterviewerService {
 
     if (interviewerWithTheSameEmail) {
       throw new BadRequestException(
-        'Interviewer with the same name already exists',
+        'Interviewer with the same email already exists',
       );
     }
 
