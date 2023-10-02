@@ -9,6 +9,7 @@ import { ApplicationFormPage } from './pages/ApplicationFormPage/ApplicationForm
 import DashboardPage from './pages/DashboardPage';
 import { HomePage } from './pages/HomePage';
 import InternInfoPage from './pages/InternInfoPage';
+import InterviewersPage from './pages/InterviewersPage';
 import InterviewPage from './pages/InterviewPage';
 import LoginPage from './pages/LoginPage';
 import { NotFoundPage } from './pages/NotFoundPage';
@@ -39,6 +40,7 @@ export const App = () => {
             <Route path={Path.Intern} component={InternInfoPage} />
             <Route path={Path.Dashboard} component={DashboardPage} />
             <Route path={Path.Login} component={LoginPage} />
+            <Route path={Path.Interviewers} component={InterviewersPage} />
             <Route path={Path.CatchAll} component={NotFoundPage} />
           </Switch>
           <Toaster />

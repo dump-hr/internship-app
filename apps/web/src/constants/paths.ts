@@ -8,6 +8,7 @@ export enum Path {
   Dashboard = '/admin',
   Login = '/admin/login',
   Interview = '/admin/interview/:internId',
+  Interviewers = '/admin/interviewers',
   Intern = '/admin/intern/:internId',
 
   CatchAll = '/:path*',
