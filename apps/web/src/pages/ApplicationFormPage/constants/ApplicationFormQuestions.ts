@@ -37,7 +37,7 @@ export const applicationFormDataQuestions: Question[] = [
   },
   {
     id: 'dq6',
-    title: 'Za DUMP internship si saznao/la putem:',
+    title: 'Za DUMP Internship si saznao/la putem:',
     type: QuestionType.Radio,
     options: [
       'Prijatelja ili poznanika',
@@ -51,7 +51,7 @@ export const applicationFormDataQuestions: Question[] = [
   },
   {
     id: 'dq7',
-    title: 'Zašto se prijavljuješ na DUMP internship?',
+    title: 'Zašto se prijavljuješ na DUMP Internship?',
     type: QuestionType.Field,
     required: true,
     registerValue: 'reasonForApplying',

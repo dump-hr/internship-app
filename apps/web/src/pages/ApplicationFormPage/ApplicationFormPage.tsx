@@ -159,7 +159,7 @@ export const ApplicationFormPage = () => {
           </div>
           <div className={classes.formQuestionWrapper}>
             <label className={classes.marginBottom30px} htmlFor="email">
-              Email
+              Email:
             </label>
             <Input
               placeholder="Your answer"
