@@ -14,6 +14,6 @@ export enum Path {
   TestOverview = '/admin/test-overview/:testSlotId',
   Counter = '/admin/counter',
   AdminInterviewPicker = '/admin/interview-scheduler',
-  
+
   CatchAll = '/:path*',
 }
