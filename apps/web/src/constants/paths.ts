@@ -7,13 +7,13 @@ export enum Path {
 
   Dashboard = '/admin',
   Login = '/admin/login',
+  Intern = '/admin/intern/:internId',
   Interview = '/admin/interview/:internId',
   Interviewers = '/admin/interviewers',
-  Intern = '/admin/intern/:internId',
+  InterviewPicker = '/admin/interview-scheduler',
   TestScheduler = '/admin/test-scheduler',
   TestOverview = '/admin/test-overview/:testSlotId',
   Counter = '/admin/counter',
-  AdminInterviewPicker = '/admin/interview-scheduler',
 
   CatchAll = '/:path*',
 }

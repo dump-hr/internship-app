@@ -38,10 +38,7 @@ export const App = () => {
             />
             <Route path={Path.Status} component={StatusPage} />
             <Route path={Path.Interview} component={InterviewPage} />
-            <Route
-              path={Path.AdminInterviewPicker}
-              component={AdminInterviewPage}
-            />
+            <Route path={Path.InterviewPicker} component={AdminInterviewPage} />
             <Route
               path={Path.ScheduleInterview}
               component={ScheduleInterviewPage}
