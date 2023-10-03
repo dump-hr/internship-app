@@ -90,7 +90,7 @@ const DashboardPage = () => {
   ];
 
   return (
-    <AdminPage>
+    <AdminPage headerText="Dashboard">
       <Grid container spacing={2} mt={1}>
         {stats.map((stat) => (
           <Grid item xs={12} md={2} textAlign="center" key={stat.label}>
