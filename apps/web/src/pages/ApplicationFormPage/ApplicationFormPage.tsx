@@ -130,6 +130,9 @@ export const ApplicationFormPage = () => {
               {...register('firstName', {
                 required: 'First name is required',
               })}
+              inputProps={{
+                maxLength: 35,
+              }}
             />
 
             {errors.firstName ? (
@@ -149,6 +152,9 @@ export const ApplicationFormPage = () => {
               {...register('lastName', {
                 required: 'Last name is required',
               })}
+              inputProps={{
+                maxLength: 35,
+              }}
             />
 
             {errors.lastName ? (

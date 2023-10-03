@@ -5,19 +5,21 @@ export enum QuestionType {
   Slider = 'Slider',
   Checkbox = 'Checkbox',
   Date = 'Date',
+  DateTime = 'DateTime',
   Radio = 'Radio',
   Number = 'Number',
 }
 
-export type Question = { id: string; title?: string, required?: boolean, registerValue? : string } & (
+export type Question = { id: string; title?: string, required?: boolean, registerValue? : any } & (
   | { type: QuestionType.Field }
   | { type: QuestionType.TextArea }
   | { type: QuestionType.Checkbox; options?: string[] }
   | { type: QuestionType.Slider; min: number; max: number; step: number }
   | { type: QuestionType.Select; options: string[] }
   | { type: QuestionType.Date }
+  | { type: QuestionType.DateTime}
   | { type: QuestionType.Radio; options: string[] }
-  | { type: QuestionType.Number }
+  | { type: QuestionType.Number, min?: number, max?: number }
 );
 
 export type MultistepQuestion<T> = Question & {
