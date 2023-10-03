@@ -14,7 +14,7 @@
 .filterSection {
     display: flex;
     align-items: center;
-    margin-bottom: 15px;
+    margin-bottom: 100px;
     gap: 10px;
 }
 .filterSection > div {
