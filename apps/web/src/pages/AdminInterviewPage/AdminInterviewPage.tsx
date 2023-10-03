@@ -52,6 +52,7 @@ export const AdminInterviewPage = () => {
 
   function addEvent(event: InterviewEvent) {
     if (!event || !selectedInterviewers || !selectedInterviewers.length) {
+      toast.error('Interviewers must be selected!');
       return;
     }
 
@@ -70,14 +71,8 @@ export const AdminInterviewPage = () => {
   }
 
   useEffect(() => {
-    if (!interviewSlots || !interviewSlots.every((slot) => slot.interviewers)) {
-      toast.error('Interviewers must be selected!');
-      return;
-    }
-
+    if (!interviewSlots) return;
     const convertedEvents = interviewSlots.map((interviewSlot) => {
-      if (!interviewSlot?.interviewers)
-        return undefined as unknown as MappedEvent;
       return calendarHelper.parseInterviewSlotToCalendarEvent(interviewSlot);
     });
 
