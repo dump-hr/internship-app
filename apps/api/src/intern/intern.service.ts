@@ -19,6 +19,7 @@ import {
 import * as postmark from 'postmark';
 import { PrismaService } from 'src/prisma.service';
 
+import * as disposableEmailBlocklist from './disposable-email-blocklist.json';
 import { CreateInternDto } from './dto/createIntern.dto';
 
 @Injectable()
@@ -112,6 +113,29 @@ export class InternService {
       throw new BadRequestException(
         'Intern with the same email already exists',
       );
+    }
+
+    const internDateOfBirth = new Date(
+      internToCreate.data.dateOfBirth as string,
+    );
+
+    const milisecondsInYear = 1000 * 60 * 60 * 24 * 365;
+    const internAgeInMiliseconds =
+      new Date().getTime() - internDateOfBirth.getTime();
+
+    if (
+      internAgeInMiliseconds / milisecondsInYear < 10 ||
+      internAgeInMiliseconds / milisecondsInYear > 35
+    ) {
+      throw new BadRequestException('Birth date out of range');
+    }
+
+    const isDisposableEmail = disposableEmailBlocklist.includes(
+      internToCreate.email.split('@')[1],
+    );
+
+    if (isDisposableEmail) {
+      throw new BadRequestException('Disposable email is not allowed');
     }
 
     const initialInterviewStatus = internToCreate.disciplines.some(
