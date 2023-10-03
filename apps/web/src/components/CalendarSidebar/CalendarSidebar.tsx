@@ -1,6 +1,6 @@
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 
-import { useFetchAllInterviewers } from '../../api/useFetchAllInterviewers';
+import { useFetchInterviewers } from '../../api/useFetchInterviewers';
 import { MultilineInput } from '../common/MultilineInput/MultilineInput';
 import { CustomSelectInput } from '../common/SelectInput/CustomSelectInput';
 import styles from './index.module.css';
@@ -22,14 +22,14 @@ export const CalendarSidebar: React.FC<Props> = ({
   setSelectedInterviewerFilter,
   setAdditionalNotesValue,
 }: Props) => {
-  const { data: interviewers } = useFetchAllInterviewers();
+  const { data: interviewers } = useFetchInterviewers();
 
   return (
     <div className={styles.wrapper}>
       <div className={styles.filterSection}>
         <FilterAltIcon className={styles.filterIcon} />
         <CustomSelectInput
-          label="Filtriraj"
+          label="Intervjueri"
           menuOptions={interviewers?.map((interviewer) => ({
             key: interviewer.id,
             value: interviewer.name,
@@ -41,7 +41,7 @@ export const CalendarSidebar: React.FC<Props> = ({
         />
       </div>
       <CustomSelectInput
-        label="Odaberi intervjuera"
+        label="Intervjueri"
         menuOptions={interviewers?.map((interviewer) => ({
           key: interviewer.id,
           value: interviewer.name,

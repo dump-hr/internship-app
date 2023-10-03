@@ -35,9 +35,6 @@ const AdminPage: React.FC<Props> = ({ children }) => {
           <Button component={Link} to={Path.TestScheduler}>
             Test scheduler
           </Button>
-          <Button component={Link} to={Path.AdminInterviewPicker}>
-            Interview scheduler
-          </Button>
           <Button onClick={handleLogout}>Logout</Button>
         </Box>
       </Box>

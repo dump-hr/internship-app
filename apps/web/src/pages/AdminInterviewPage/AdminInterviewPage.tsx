@@ -9,7 +9,6 @@ import toast from 'react-hot-toast';
 import { useCreateInterviewSlot } from '../../api/useCreateInterviewSlot';
 import { useDeleteInterviewSlot } from '../../api/useDeleteInterviewSlot';
 import { useFetchInterviewSlots } from '../../api/useFetchInterviewSlots';
-import AdminPage from '../../components/AdminPage';
 import { Calendar } from '../../components/Calendar/Calendar';
 import { CalendarSidebar } from '../../components/CalendarSidebar/CalendarSidebar';
 import { calendarHelper } from '../../helpers/calendarHelper';
@@ -102,20 +101,18 @@ export const AdminInterviewPage = () => {
   }, [events, interviewerFilter]);
 
   return (
-    <AdminPage>
-      <div className={styles.wrapper}>
-        <Calendar
-          filteredEvents={filteredEvents}
-          existingEvents={events}
-          deleteEvent={deleteEvent}
-          addEvent={addEvent}
-        />
-        <CalendarSidebar
-          setSelectedInterviewerFilter={setInterviewerFilter}
-          setInterviewers={setSelectedInterviewers}
-          setAdditionalNotesValue={setAdditionalNotesValue}
-        />
-      </div>
-    </AdminPage>
+    <div className={styles.wrapper}>
+      <Calendar
+        filteredEvents={filteredEvents}
+        existingEvents={events}
+        deleteEvent={deleteEvent}
+        addEvent={addEvent}
+      />
+      <CalendarSidebar
+        setSelectedInterviewerFilter={setInterviewerFilter}
+        setInterviewers={setSelectedInterviewers}
+        setAdditionalNotesValue={setAdditionalNotesValue}
+      />
+    </div>
   );
 };

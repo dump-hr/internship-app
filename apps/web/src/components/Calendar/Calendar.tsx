@@ -7,7 +7,7 @@ import {
 import { format, getDay, parse, startOfWeek } from 'date-fns';
 import hrLocale from 'date-fns/locale/hr';
 import moment from 'moment';
-import { ReactNode } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
 import {
   Calendar as BigCalendar,
   dateFnsLocalizer,
@@ -58,13 +58,14 @@ export const Calendar: React.FC<Props> = ({
   deleteEvent,
   addEvent,
 }: Props) => {
+  const [events, setEvents] = useState(existingEvents);
   const DragAndDropCalendar = withDragAndDrop(BigCalendar);
 
   const handleTimeSlotAdd = (slotInfo: SlotInfo) => {
-    if (calendarHelper.checkIfEventExists(existingEvents, slotInfo)) return;
+    if (calendarHelper.checkIfEventExists(events, slotInfo)) return;
 
     const overlappingEvents = calendarHelper.getOverlappingEvents(
-      existingEvents,
+      events,
       slotInfo,
     );
 
@@ -79,6 +80,10 @@ export const Calendar: React.FC<Props> = ({
 
     addEvent(newEvent);
   };
+
+  useEffect(() => {
+    setEvents(existingEvents);
+  }, [existingEvents]);
 
   return (
     <div>
@@ -96,7 +101,7 @@ export const Calendar: React.FC<Props> = ({
         culture="hr"
         className={styles.wrapper}
         onSelectSlot={handleTimeSlotAdd}
-        events={existingEvents}
+        events={events}
         components={{
           eventWrapper: (props: CustomEventWrapperProps) => {
             const isNotFiltered = !filteredEvents.includes(
