@@ -33,6 +33,9 @@ const LogoHeader: React.FC<Props> = ({ text }) => {
           <Button component={Link} to={Path.Interviewers}>
             Intervjueri
           </Button>
+          <Button component={Link} to={Path.TestScheduler}>
+            Test Scheduler
+          </Button>
           <Button onClick={handleLogout} variant="outlined" color="error">
             Logout
           </Button>
