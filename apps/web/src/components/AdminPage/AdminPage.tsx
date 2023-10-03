@@ -32,6 +32,9 @@ const AdminPage: React.FC<Props> = ({ children }) => {
           <Button component={Link} to={Path.Dashboard}>
             Dashboard
           </Button>
+          <Button component={Link} to={Path.TestScheduler}>
+            Test scheduler
+          </Button>
           <Button onClick={handleLogout}>Logout</Button>
         </Box>
       </Box>

@@ -61,6 +61,19 @@ const getInputComponent = (
           onChange={(e) => field.onChange(e.target.checked)}
         />
       );
+    case QuestionType.Date:
+      return <TextField {...field} type="date" />;
+    case QuestionType.DateTime:
+      return <TextField {...field} type="datetime-local" />;
+    case QuestionType.Number:
+      return (
+        <TextField
+          {...field}
+          type="number"
+          InputProps={{ inputProps: { min: question.min, max: question.max } }}
+          onChange={(e) => field.onChange(+e.target.value)}
+        />
+      );
     default:
       return <></>;
   }

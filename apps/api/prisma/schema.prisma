@@ -43,32 +43,61 @@ model Intern {
 }
 
 model InternDiscipline {
-  internId   String
-  intern     Intern           @relation(fields: [internId], references: [id])
-  discipline Discipline
-  priority   Int
-  status     DisciplineStatus
-  testSlot   TestSlot?        @relation(fields: [testSlotId], references: [id])
-  testSlotId String?
-  testStatus TestStatus?
-  testScore  Int?
-  createdAt  DateTime         @default(now())
-  updatedAt  DateTime         @updatedAt
+  internId              String
+  intern                Intern                 @relation(fields: [internId], references: [id])
+  discipline            Discipline
+  priority              Int
+  status                DisciplineStatus
+  testSlot              TestSlot?              @relation(fields: [testSlotId], references: [id])
+  testSlotId            String?
+  testStatus            TestStatus?
+  testScore             Int?
+  createdAt             DateTime               @default(now())
+  updatedAt             DateTime               @updatedAt
+  internQuestionAnswers InternQuestionAnswer[]
 
   @@id([internId, discipline])
 }
 
 model TestSlot {
-  id               String             @id @default(uuid())
-  discipline       Discipline
-  start            DateTime
-  end              DateTime
-  location         String
-  capacity         Int
-  maxPoints        Int
-  InternDiscipline InternDiscipline[]
-  createdAt        DateTime           @default(now())
-  updatedAt        DateTime           @updatedAt
+  id                String             @id @default(uuid())
+  discipline        Discipline
+  start             DateTime
+  end               DateTime
+  location          String
+  capacity          Int
+  maxPoints         Int
+  internDisciplines InternDiscipline[]
+  testQuestions     TestQuestion[]
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @updatedAt
+}
+
+model TestQuestion {
+  id                    String                 @id @default(uuid())
+  title                 String
+  text                  String
+  points                Int
+  order                 Int
+  testSlot              TestSlot               @relation(fields: [testSlotId], references: [id], onDelete: Cascade)
+  testSlotId            String
+  createdAt             DateTime               @default(now())
+  updatedAt             DateTime               @updatedAt
+  internQuestionAnswers InternQuestionAnswer[]
+}
+
+model InternQuestionAnswer {
+  id                         String           @id @default(uuid())
+  language                   CodingLanguage
+  code                       String
+  score                      Int?
+  question                   TestQuestion     @relation(fields: [questionId], references: [id])
+  questionId                 String
+  internDiscipline           InternDiscipline @relation(fields: [internDisciplineInternId, internDisciplineDiscipline], references: [internId, discipline])
+  internDisciplineInternId   String
+  internDisciplineDiscipline Discipline
+  createdAt                  DateTime         @default(now())
+  updatedAt                  DateTime         @updatedAt
 }
 
 model InterviewSlot {
@@ -120,4 +149,12 @@ enum TestStatus {
   Pending
   Done
   Missed
+}
+
+enum CodingLanguage {
+  Python
+  CPP
+  C
+  CS
+  JavaScript
 }
