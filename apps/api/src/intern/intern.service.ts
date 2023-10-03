@@ -16,10 +16,10 @@ import {
   InterviewStatus,
   TestStatus,
 } from '@prisma/client';
-import { readFile } from 'fs/promises';
 import * as postmark from 'postmark';
 import { PrismaService } from 'src/prisma.service';
 
+import * as disposableEmailBlocklist from './../../disposable-email-blocklist.json';
 import { CreateInternDto } from './dto/createIntern.dto';
 
 @Injectable()
@@ -126,28 +126,20 @@ export class InternService {
     const internAgeInMiliseconds =
       todayDate.getTime() - internDateOfBirth.getTime();
 
-    if (internAgeInMiliseconds / milisecondsInYear < 16) {
-      throw new BadRequestException('Intern should be at least 16 years old');
+    if (
+      internAgeInMiliseconds / milisecondsInYear < 10 ||
+      internAgeInMiliseconds / milisecondsInYear > 35
+    ) {
+      throw new BadRequestException('Birth date out of range');
     }
 
-    if (internAgeInMiliseconds / milisecondsInYear > 24) {
-      throw new BadRequestException('Intern should be at most 24 years old');
-    }
+    const isDisposableEmail = disposableEmailBlocklist.includes(
+      internToCreate.email.split('@')[1],
+    );
 
-    let blockList: string[];
+    console.log(typeof disposableEmailBlocklist);
 
-    const isDisposableEmail = async (email) => {
-      const content = await readFile(
-        './disposable-email-blocklist.conf',
-        'utf-8',
-      );
-
-      blockList = content.split('\r\n').slice(0, -1);
-
-      return blockList.includes(email.split('@')[1]);
-    };
-
-    if (await isDisposableEmail(internToCreate.email)) {
+    if (isDisposableEmail) {
       throw new BadRequestException('Disposable email is not allowed');
     }
 
