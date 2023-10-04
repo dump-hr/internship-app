@@ -29,17 +29,18 @@ model Interviewer {
 }
 
 model Intern {
-  id                String             @id @default(uuid())
-  firstName         String
-  lastName          String
-  email             String             @unique
-  image             String?
-  data              Json
-  interviewStatus   InterviewStatus    @default(NoRight)
-  interviewSlot     InterviewSlot?
-  internDisciplines InternDiscipline[]
-  createdAt         DateTime           @default(now())
-  updatedAt         DateTime           @updatedAt
+  id                 String             @id @default(uuid())
+  firstName          String
+  lastName           String
+  email              String             @unique
+  image              String?
+  data               Json
+  interviewStatus    InterviewStatus    @default(NoRight)
+  interviewSlot      InterviewSlot?
+  internDisciplines  InternDiscipline[]
+  createdAt          DateTime           @default(now())
+  updatedAt          DateTime           @updatedAt
+  statusCheckCounter Int                @default(0)
 }
 
 model InternDiscipline {

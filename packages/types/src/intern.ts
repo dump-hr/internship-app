@@ -68,6 +68,7 @@ export type Intern = {
   interviewStatus: InterviewStatus;
   interviewSlot?: InterviewSlot;
   internDisciplines: InternDiscipline[];
+  statusCheckCounter: number;
 };
 
 export type InternCreateRequest = {

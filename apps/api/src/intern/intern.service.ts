@@ -37,13 +37,15 @@ export class InternService {
   private postmark = new postmark.ServerClient(process.env.POSTMARK_API_TOKEN);
 
   async get(id: string) {
-    return await this.prisma.intern.findUnique({
+    const intern = await this.prisma.intern.findUnique({
       where: { id },
       include: {
         internDisciplines: true,
         interviewSlot: true,
       },
     });
+
+    return intern;
   }
 
   async getAll() {
@@ -73,6 +75,7 @@ export class InternService {
         lastName: true,
         email: true,
         interviewStatus: true,
+        statusCheckCounter: true,
         internDisciplines: {
           select: {
             discipline: true,
@@ -94,6 +97,11 @@ export class InternService {
           },
         },
       },
+    });
+
+    await this.prisma.intern.update({
+      where: { id },
+      data: { statusCheckCounter: { increment: 1 } },
     });
 
     return applicationInfo;

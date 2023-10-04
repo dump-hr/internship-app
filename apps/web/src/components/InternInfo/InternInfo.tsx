@@ -17,6 +17,7 @@ const InternInfo = ({ intern }: InternInfoProps) => {
 
       <div className={styles.emailContainer}>
         <div>{intern.email}</div>
+        <div>Checked status {intern.statusCheckCounter} times</div>
 
         {Array.isArray(intern.internDisciplines) &&
           intern.internDisciplines.map(
