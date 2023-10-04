@@ -5,6 +5,7 @@ import {
 } from '@internship-app/types';
 import Tooltip from '@mui/material/Tooltip';
 import clsx from 'clsx';
+import { format } from 'date-fns';
 import { useEffect, useRef } from 'react';
 
 import { calendarHelper } from '../../helpers/calendarHelper';
@@ -45,6 +46,11 @@ export const EventContent = ({ event, eventDeleteHandler }: Props) => {
   return (
     <Tooltip title={event.additionalInfo} arrow placement="top-start">
       <div ref={eventEl}>
+        <div className="rbc-event-info">
+          <div>{format((event as InterviewEvent).start, 'HH:mm')}</div>
+          <div>-</div>
+          <div>{format((event as InterviewEvent).end, 'HH:mm')}</div>
+        </div>
         <div onClick={handleRemoveClick} className={styles.deleteEventButton}>
           &#10005;
         </div>

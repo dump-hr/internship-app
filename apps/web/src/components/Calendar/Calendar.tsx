@@ -115,15 +115,6 @@ export const Calendar: React.FC<Props> = ({
                   event={props.event as InterviewEvent}
                   eventDeleteHandler={deleteEvent}
                 />
-                <div className="rbc-event-info">
-                  <div>
-                    {format((props.event as InterviewEvent).start, 'HH:mm')}
-                  </div>
-                  <div>-</div>
-                  <div>
-                    {format((props.event as InterviewEvent).end, 'HH:mm')}
-                  </div>
-                </div>
               </div>
             );
           },
