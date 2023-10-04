@@ -1,6 +1,7 @@
 import {
   BadRequestException,
   Injectable,
+  InternalServerErrorException,
   NotFoundException,
 } from '@nestjs/common';
 import { InterviewStatus } from '@prisma/client';
@@ -52,35 +53,43 @@ export class InterviewSlotService {
 
     const slotDuration = 20 * 60 * 1000;
 
-    for (
-      let currentTime = new Date(start).getTime();
-      currentTime < new Date(end).getTime();
-      currentTime += slotDuration
-    ) {
-      const slotStart = new Date(currentTime);
-      const slotEnd = new Date(currentTime + slotDuration);
+    try {
+      await this.prisma.$transaction(async (prisma) => {
+        for (
+          let currentTime = new Date(start).getTime();
+          currentTime < new Date(end).getTime();
+          currentTime += slotDuration
+        ) {
+          const slotStart = new Date(currentTime);
+          const slotEnd = new Date(currentTime + slotDuration);
 
-      const interviewSlot = await this.prisma.interviewSlot.create({
-        data: {
-          start: slotStart,
-          end: slotEnd,
-          answers: {},
-          notes: interviewSlotDto.notes,
-        },
+          const interviewSlot = await prisma.interviewSlot.create({
+            data: {
+              start: slotStart,
+              end: slotEnd,
+              answers: {},
+              notes: interviewSlotDto.notes,
+            },
+          });
+
+          interviewSlots.push(interviewSlot);
+
+          for (const interviewerId of interviewSlotDto.interviewers) {
+            await prisma.interviewMemberParticipation.create({
+              data: {
+                interviewSlotId: interviewSlot.id,
+                interviewerId: interviewerId,
+              },
+            });
+          }
+        }
       });
 
-      interviewSlots.push(interviewSlot);
-
-      for (const interviewerId of interviewSlotDto.interviewers) {
-        await this.prisma.interviewMemberParticipation.create({
-          data: {
-            interviewSlotId: interviewSlot.id,
-            interviewerId: interviewerId,
-          },
-        });
-      }
+      return interviewSlots;
+    } catch (err) {
+      console.error(err);
+      throw new InternalServerErrorException(err.message);
     }
-    return interviewSlots;
   }
 
   async getAvailableSlots(internId: string) {
