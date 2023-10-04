@@ -95,6 +95,7 @@ export const Calendar: React.FC<Props> = ({
         longPressThreshold={1}
         culture="hr"
         className={styles.wrapper}
+        scrollToTime={new Date()}
         onSelectSlot={handleTimeSlotAdd}
         events={existingEvents}
         components={{
