@@ -74,6 +74,12 @@ const InternList: React.FC<Props> = ({ data = [], setSelection }) => {
       width: 180,
     },
     {
+      field: 'yearOfBirth',
+      headerName: 'Godište',
+      description: 'Sort - po godištu',
+      width: 100,
+    },
+    {
       field: 'status',
       headerName: 'Status',
       width: 140,
@@ -145,6 +151,10 @@ const InternList: React.FC<Props> = ({ data = [], setSelection }) => {
     return {
       id: intern.id,
       name: `${intern.firstName} ${intern.lastName}`,
+      yearOfBirth:
+        typeof intern.data.dateOfBirth === 'string'
+          ? `${new Date(intern.data.dateOfBirth).getFullYear()}.`
+          : '-',
       status: intern.status,
       disciplines: intern.internDisciplines,
       interviewStatus: intern,
