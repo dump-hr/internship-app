@@ -111,6 +111,12 @@ const InternList: React.FC<Props> = ({ data = [], setSelection }) => {
       ) => <>{internDisciplines.value.map(getTestChip)}</>,
     },
     {
+      field: 'yearOfBirth',
+      headerName: 'Godište',
+      description: 'Sort - po godištu',
+      width: 100,
+    },
+    {
       field: 'buttonPregledaj',
       headerName: '',
       width: 110,
@@ -149,6 +155,10 @@ const InternList: React.FC<Props> = ({ data = [], setSelection }) => {
       disciplines: intern.internDisciplines,
       interviewStatus: intern,
       testStatus: intern.internDisciplines,
+      yearOfBirth:
+        typeof intern.data.dateOfBirth === 'string'
+          ? `${new Date(intern.data.dateOfBirth).getFullYear()}.`
+          : '-',
       buttonIntervju: intern.interviewStatus,
     };
   });
