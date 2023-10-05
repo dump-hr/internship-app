@@ -17,7 +17,9 @@ async function main() {
         firstName: 'Ante',
         lastName: 'Roca',
         interviewStatus: InterviewStatus.Done,
-        data: {},
+        data: {
+          dateOfBirth: new Date('1998-10-01T00:00:00.000Z'),
+        },
         id: 'ante-roca',
       },
       {
