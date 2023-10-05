@@ -157,7 +157,7 @@ const InternList: React.FC<Props> = ({ data = [], setSelection }) => {
       testStatus: intern.internDisciplines,
       yearOfBirth:
         typeof intern.data.dateOfBirth === 'string'
-          ? `${new Date(intern.data.dateOfBirth).getFullYear()}.`
+          ? new Date(intern.data.dateOfBirth).getFullYear()
           : '-',
       buttonIntervju: intern.interviewStatus,
     };

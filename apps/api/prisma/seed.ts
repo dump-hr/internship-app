@@ -27,7 +27,9 @@ async function main() {
         firstName: 'Ana',
         lastName: 'Kovač',
         interviewStatus: InterviewStatus.Pending,
-        data: {},
+        data: {
+          dateOfBirth: new Date('2003-03-01T00:00:00.000Z'),
+        },
         id: 'ana-kovac',
       },
       {
@@ -35,7 +37,9 @@ async function main() {
         firstName: 'Ivan',
         lastName: 'Petrović',
         interviewStatus: InterviewStatus.NoRight,
-        data: {},
+        data: {
+          dateOfBirth: new Date('1999-01-01T00:00:00.000Z'),
+        },
         id: 'ivan-petrovic',
       },
       {
@@ -43,7 +47,9 @@ async function main() {
         firstName: 'Marija',
         lastName: 'Jurić',
         interviewStatus: InterviewStatus.Done,
-        data: {},
+        data: {
+          dateOfBirth: new Date('2001-10-01T00:00:00.000Z'),
+        },
         id: 'marija-juric',
       },
       {
@@ -51,7 +57,9 @@ async function main() {
         firstName: 'Marko',
         lastName: 'Horvat',
         interviewStatus: InterviewStatus.Missed,
-        data: {},
+        data: {
+          dateOfBirth: new Date('2001-10-01T00:00:00.000Z'),
+        },
         id: 'marko-horvat',
       },
       {
@@ -59,7 +67,9 @@ async function main() {
         firstName: 'Petra',
         lastName: 'Milić',
         interviewStatus: InterviewStatus.PickTerm,
-        data: {},
+        data: {
+          dateOfBirth: new Date('2007-10-01T00:00:00.000Z'),
+        },
         id: 'petra-milic',
       },
       {
@@ -67,7 +77,9 @@ async function main() {
         firstName: 'Josip',
         lastName: 'Knez',
         interviewStatus: InterviewStatus.PickTerm,
-        data: {},
+        data: {
+          dateOfBirth: new Date('2002-10-01T00:00:00.000Z'),
+        },
         id: 'josip-knez',
       },
       {
@@ -75,7 +87,9 @@ async function main() {
         firstName: 'Katarina',
         lastName: 'Vidić',
         interviewStatus: InterviewStatus.PickTerm,
-        data: {},
+        data: {
+          dateOfBirth: new Date('2003-10-01T00:00:00.000Z'),
+        },
         id: 'katarina-vidic',
       },
       {
@@ -83,7 +97,9 @@ async function main() {
         firstName: 'Tomislav',
         lastName: 'Koš',
         interviewStatus: InterviewStatus.Done,
-        data: {},
+        data: {
+          dateOfBirth: new Date('1995-10-01T00:00:00.000Z'),
+        },
         id: 'tomislav-kos',
       },
       {
@@ -91,7 +107,9 @@ async function main() {
         firstName: 'Mia',
         lastName: 'Babić',
         interviewStatus: InterviewStatus.Pending,
-        data: {},
+        data: {
+          dateOfBirth: new Date('2000-10-01T00:00:00.000Z'),
+        },
         id: 'mia-babic',
       },
     ],
