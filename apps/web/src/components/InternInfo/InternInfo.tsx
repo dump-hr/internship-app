@@ -1,4 +1,6 @@
 import { Intern, InternDiscipline, Question } from '@internship-app/types';
+import { DataGrid, GridColDef } from '@mui/x-data-grid';
+import moment from 'moment';
 
 import styles from './index.module.css';
 
@@ -9,6 +11,16 @@ interface InternInfoProps {
 type Answer = Question & { tick: boolean; value: string | number | boolean };
 
 const InternInfo = ({ intern }: InternInfoProps) => {
+  const logColumns: GridColDef[] = [
+    { field: 'action', headerName: 'Akcija', width: 150 },
+    { field: 'date', headerName: 'Datum', width: 100 },
+  ];
+  const logRows = intern.logs.map((il) => ({
+    id: il.id,
+    action: il.action,
+    date: moment(il.date).format('DD.MM. HH:mm'),
+  }));
+
   return (
     <div className={styles.page}>
       <h1 className={styles.internFullName}>
@@ -51,6 +63,9 @@ const InternInfo = ({ intern }: InternInfoProps) => {
               </div>
             );
           })}
+        </div>
+        <div className={styles.logGrid}>
+          <DataGrid columns={logColumns} rows={logRows} />
         </div>
       </div>
 

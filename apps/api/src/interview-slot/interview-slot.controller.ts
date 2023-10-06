@@ -10,7 +10,9 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
+import { InternLogAction } from '@prisma/client';
 import { JwtAuthGuard } from 'src/auth/jwt-auth-guard';
+import { LoggerService } from 'src/logger/logger.service';
 
 import { CreateInterviewSlotDto } from './dto/createInterviewSlot.dto';
 import { InterviewSlotService } from './interview-slot.service';
@@ -18,7 +20,10 @@ import { InterviewSlotService } from './interview-slot.service';
 @Controller('interview-slot')
 @ApiTags('interview-slot')
 export class InterviewSlotController {
-  constructor(private readonly interviewSlotService: InterviewSlotService) {}
+  constructor(
+    private readonly interviewSlotService: InterviewSlotService,
+    private readonly loggerService: LoggerService,
+  ) {}
 
   @Get()
   @UseGuards(JwtAuthGuard)
@@ -42,6 +47,11 @@ export class InterviewSlotController {
 
   @Get('available/:internId')
   async getAvailableSlots(@Param('internId') internId: string) {
+    await this.loggerService.CreateInternLog(
+      internId,
+      InternLogAction.OpenInterviewPage,
+    );
+
     return await this.interviewSlotService.getAvailableSlots(internId);
   }
 

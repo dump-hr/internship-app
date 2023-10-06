@@ -21,7 +21,9 @@ import {
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiTags } from '@nestjs/swagger';
+import { InternLogAction } from '@prisma/client';
 import { JwtAuthGuard } from 'src/auth/jwt-auth-guard';
+import { LoggerService } from 'src/logger/logger.service';
 
 import { CreateInternDto } from './dto/createIntern.dto';
 import { InternService } from './intern.service';
@@ -29,7 +31,10 @@ import { InternService } from './intern.service';
 @Controller('intern')
 @ApiTags('intern')
 export class InternController {
-  constructor(private readonly internService: InternService) {}
+  constructor(
+    private readonly internService: InternService,
+    private readonly loggerService: LoggerService,
+  ) {}
 
   @Get()
   @UseGuards(JwtAuthGuard)
@@ -58,8 +63,12 @@ export class InternController {
 
   @Get('status/:id')
   async getApplicationStatus(@Param('id') id: string) {
-    const status = await this.internService.getApplicationStatus(id);
+    await this.loggerService.CreateInternLog(
+      id,
+      InternLogAction.OpenStatusPage,
+    );
 
+    const status = await this.internService.getApplicationStatus(id);
     if (!status) {
       throw new NotFoundException();
     }
