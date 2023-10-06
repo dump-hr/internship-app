@@ -40,7 +40,11 @@ export class InternService {
     return await this.prisma.intern.findUnique({
       where: { id },
       include: {
-        internDisciplines: true,
+        internDisciplines: {
+          orderBy: {
+            priority: 'asc',
+          },
+        },
         interviewSlot: true,
       },
     });
