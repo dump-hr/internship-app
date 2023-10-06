@@ -1,0 +1,71 @@
+:root {
+  --main-calendar-color: #2aa8e0;
+}
+
+.rbc-time-view {
+  border-radius: 5px;
+  border: 1px solid #c4c4c4 !important;
+}
+.rbc-header {
+  padding-top: 51px !important;
+  border-bottom: none !important;
+  position: relative !important;
+}
+.rbc-header > span {
+  cursor: pointer;
+}
+.rbc-header--active > span {
+  position: relative !important;
+  z-index: 1 !important;
+  color: white;
+  font-family: Nunito Sans !important;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  letter-spacing: 0.16px;
+}
+.rbc-header--active::after {
+  content: '';
+  width: 66px;
+  height: 66px;
+  background: var(--main-calendar-color);
+  border-radius: 50%;
+  display: inline-block;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 0;
+}
+.rbc-time-header-content {
+  height: 120px;
+}
+.rbc-allday-cell {
+  height: 0;
+  width: 0;
+  display: none;
+}
+.rbc-time-header-cell {
+  height: 120px;
+}
+.rbc-event-label {
+  display: none;
+  height: 0;
+}
+.rbc-event {
+  width: 100% !important;
+  opacity: 0.54; 
+  border: none !important;
+  border-radius: 0px !important;
+}
+.rbc-day-slot .rbc-events-container {
+  margin-right: 0 !important;
+}
+.rbc-time-view {
+    background-color: white;
+}
+.greyed-out-event > .rbc-event {
+    filter: grayscale(100%);
+}
+

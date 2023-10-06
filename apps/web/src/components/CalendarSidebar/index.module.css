@@ -1,0 +1,22 @@
+.wrapper {
+    width: 25vw;
+    height: 618px;
+    background-color: white;
+    border-radius: 25px;
+    padding: 35px;
+    margin-left: 50px;    
+}
+
+.notesLabel {
+    margin-bottom: 15px;
+}
+
+.filterSection {
+    display: flex;
+    align-items: center;
+    margin-bottom: 100px;
+    gap: 10px;
+}
+.filterSection > div {
+    margin-bottom: 0 !important;
+}

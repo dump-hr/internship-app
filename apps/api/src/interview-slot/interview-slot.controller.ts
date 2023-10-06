@@ -1,8 +1,18 @@
 import { ScheduleInterviewRequest } from '@internship-app/types';
-import { Body, Controller, Get, Param, Patch, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/jwt-auth-guard';
 
+import { CreateInterviewSlotDto } from './dto/createInterviewSlot.dto';
 import { InterviewSlotService } from './interview-slot.service';
 
 @Controller('interview-slot')
@@ -14,6 +24,20 @@ export class InterviewSlotController {
   @UseGuards(JwtAuthGuard)
   async getAll() {
     return await this.interviewSlotService.getAll();
+  }
+
+  @Delete('/:id')
+  @UseGuards(JwtAuthGuard)
+  async deleteInterviewSlot(@Param('id') id: string) {
+    return await this.interviewSlotService.deleteInterviewSlot(id);
+  }
+
+  @Post()
+  @UseGuards(JwtAuthGuard)
+  async createInterviewSlot(@Body() interviewSlotDto: CreateInterviewSlotDto) {
+    return await this.interviewSlotService.createInterviewSlot(
+      interviewSlotDto,
+    );
   }
 
   @Get('available/:internId')

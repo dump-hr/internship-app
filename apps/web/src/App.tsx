@@ -1,3 +1,5 @@
+import './App.css';
+
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { Toaster } from 'react-hot-toast';
@@ -5,6 +7,7 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 import { Route, Switch } from 'wouter';
 
 import { Path } from './constants/paths';
+import { AdminInterviewPage } from './pages/AdminInterviewPage/AdminInterviewPage';
 import { ApplicationFormPage } from './pages/ApplicationFormPage/ApplicationFormPage';
 import CounterPage from './pages/CounterPage';
 import DashboardPage from './pages/DashboardPage';
@@ -35,6 +38,7 @@ export const App = () => {
             />
             <Route path={Path.Status} component={StatusPage} />
             <Route path={Path.Interview} component={InterviewPage} />
+            <Route path={Path.InterviewPicker} component={AdminInterviewPage} />
             <Route
               path={Path.ScheduleInterview}
               component={ScheduleInterviewPage}

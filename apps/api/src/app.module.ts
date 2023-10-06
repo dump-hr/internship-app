@@ -25,6 +25,7 @@ import { TestSlotModule } from './test-slot/test-slot.module';
     InterviewSlotModule,
     InterviewerModule,
     TestSlotModule,
+    InterviewerModule,
   ],
   controllers: [AppController, AuthController],
   providers: [AppService, PrismaService],

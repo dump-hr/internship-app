@@ -1,0 +1,33 @@
+.deleteEventButton {
+  position: absolute;
+  top: 3px;
+  right: 3px;
+}
+
+.disciplineIndicator {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  position: absolute;
+}
+
+.design {
+  background-color: blue;
+  right: 18px;
+  top: 3px;
+}
+.development {
+  background-color: green;
+  right: 18px;
+  bottom: 3px;
+}
+.marketing {
+  background-color: red;
+  right: 28px;
+  top: 3px;
+}
+.multimedia {
+  background-color: purple;
+  right: 28px;
+  bottom: 3px;
+}

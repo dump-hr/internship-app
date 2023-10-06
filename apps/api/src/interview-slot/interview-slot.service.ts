@@ -1,18 +1,95 @@
 import {
   BadRequestException,
   Injectable,
+  InternalServerErrorException,
   NotFoundException,
 } from '@nestjs/common';
 import { InterviewStatus } from '@prisma/client';
 import { PrismaService } from 'src/prisma.service';
+
+import { CreateInterviewSlotDto } from './dto/createInterviewSlot.dto';
 
 @Injectable()
 export class InterviewSlotService {
   constructor(private readonly prisma: PrismaService) {}
 
   async getAll() {
-    const interviewSlots = await this.prisma.interviewSlot.findMany();
+    const interviewSlots = await this.prisma.interviewSlot.findMany({
+      include: {
+        intern: true,
+        interviewers: {
+          include: {
+            interviewer: true,
+            interviewSlot: true,
+          },
+        },
+      },
+    });
     return interviewSlots;
+  }
+
+  async deleteInterviewSlot(id: string) {
+    const interviewToDelete = await this.prisma.interviewSlot.findUnique({
+      where: { id },
+      include: {
+        intern: true,
+      },
+    });
+
+    if (interviewToDelete.intern) {
+      throw new BadRequestException(
+        'Interview is already scheduled! Cancel the interview first!',
+      );
+    }
+
+    return await this.prisma.interviewSlot.delete({
+      where: { id: interviewToDelete.id },
+    });
+  }
+
+  async createInterviewSlot(interviewSlotDto: CreateInterviewSlotDto) {
+    const { start, end } = interviewSlotDto;
+    const interviewSlots = [];
+
+    const slotDuration = 20 * 60 * 1000;
+
+    try {
+      await this.prisma.$transaction(async (prisma) => {
+        for (
+          let currentTime = new Date(start).getTime();
+          currentTime < new Date(end).getTime();
+          currentTime += slotDuration
+        ) {
+          const slotStart = new Date(currentTime);
+          const slotEnd = new Date(currentTime + slotDuration);
+
+          const interviewSlot = await prisma.interviewSlot.create({
+            data: {
+              start: slotStart,
+              end: slotEnd,
+              answers: {},
+              notes: interviewSlotDto.notes,
+            },
+          });
+
+          interviewSlots.push(interviewSlot);
+
+          for (const interviewerId of interviewSlotDto.interviewers) {
+            await prisma.interviewMemberParticipation.create({
+              data: {
+                interviewSlotId: interviewSlot.id,
+                interviewerId: interviewerId,
+              },
+            });
+          }
+        }
+      });
+
+      return interviewSlots;
+    } catch (err) {
+      console.error(err);
+      throw new InternalServerErrorException(err.message);
+    }
   }
 
   async getAvailableSlots(internId: string) {

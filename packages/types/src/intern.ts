@@ -122,9 +122,41 @@ export type InternQuestionAnswer = {
 }
 
 export type InterviewSlot = {
+  id: string;
+  start: Date;
+  end: Date;
   answers: Json;
   score?: number;
-} & Slot;
+  notes?: string;
+  interviewers: InterviewMemberParticipation[];
+  intern: Intern
+};
+
+export type InterviewMemberParticipation = {
+  id: string;
+  interviewerId: string;
+  interviewer: Interviewer;
+  interviewSlotId: string;
+  interviewSlot: InterviewSlot;
+};
+
+export type InterviewEvent = {
+  id: string;
+  start: Date;
+  end: Date;
+  title: string;
+  additionalInfo: string;
+  interviewers: InterviewMemberParticipation[];
+  notes: string;
+  status: InterviewStatus;
+};
+
+export type CreateInterviewSlotDto = {
+  start: string;
+  end: string;
+  interviewers: string[];
+  notes?: string;
+};
 
 export enum InternStatus {
   Approved = 'Approved',
