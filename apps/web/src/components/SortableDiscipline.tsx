@@ -17,6 +17,7 @@ export const SortableDiscipline: React.FC<Props> = ({ discipline, index }) => {
     transform: CSS.Transform.toString(transform),
     transition,
     margin: '12px 0',
+    touchAction: 'none',
   };
   return (
     <div ref={setNodeRef} {...attributes} {...listeners} style={style}>
