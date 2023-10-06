@@ -21,7 +21,19 @@ h1 {
 }
 
 .atribute {
-  padding: 10px 0;
   margin: 10px 0;
   width: 100%;
+}
+
+.emailContainer {
+  padding: 0 0 15px 0;
+  margin: 0;
+  color: gray;
+  font-size: 14px;
+}
+
+.internFullName {
+  padding: 0;
+  margin: 0;
+  font-size: 40px;
 }
