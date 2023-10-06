@@ -65,5 +65,6 @@
 }
 
 .logGrid {
-  flex: 1;
+  height: 365px;
+  width: 220px;
 }

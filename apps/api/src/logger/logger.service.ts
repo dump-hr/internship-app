@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { InternLogAction } from '@prisma/client';
+import { AdminLogAction, InternLogAction } from '@prisma/client';
 import { PrismaService } from 'src/prisma.service';
 
 @Injectable()
@@ -11,6 +11,15 @@ export class LoggerService {
       data: {
         internId,
         action,
+      },
+    });
+  }
+
+  async CreateAdminLog(action: AdminLogAction, description: string) {
+    return await this.prisma.adminLog.create({
+      data: {
+        action,
+        description,
       },
     });
   }

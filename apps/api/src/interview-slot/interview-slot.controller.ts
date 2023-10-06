@@ -10,7 +10,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { InternLogAction } from '@prisma/client';
+import { AdminLogAction, InternLogAction } from '@prisma/client';
 import { JwtAuthGuard } from 'src/auth/jwt-auth-guard';
 import { LoggerService } from 'src/logger/logger.service';
 
@@ -34,12 +34,22 @@ export class InterviewSlotController {
   @Delete('/:id')
   @UseGuards(JwtAuthGuard)
   async deleteInterviewSlot(@Param('id') id: string) {
+    await this.loggerService.CreateAdminLog(
+      AdminLogAction.Delete,
+      `Brisanje interview slota ${id}`,
+    );
+
     return await this.interviewSlotService.deleteInterviewSlot(id);
   }
 
   @Post()
   @UseGuards(JwtAuthGuard)
   async createInterviewSlot(@Body() interviewSlotDto: CreateInterviewSlotDto) {
+    await this.loggerService.CreateAdminLog(
+      AdminLogAction.Create,
+      `Kreiranje interview slota u ${interviewSlotDto.start}`,
+    );
+
     return await this.interviewSlotService.createInterviewSlot(
       interviewSlotDto,
     );

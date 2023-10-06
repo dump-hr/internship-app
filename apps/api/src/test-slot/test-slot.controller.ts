@@ -17,7 +17,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { Discipline, InternLogAction } from '@prisma/client';
+import { AdminLogAction, Discipline, InternLogAction } from '@prisma/client';
 import { JwtAuthGuard } from 'src/auth/jwt-auth-guard';
 import { LoggerService } from 'src/logger/logger.service';
 
@@ -54,6 +54,11 @@ export class TestSlotController {
   @Post()
   @UseGuards(JwtAuthGuard)
   async createTestSlot(@Body() testSlotDto: CreateTestSlotsRequest) {
+    await this.loggerService.CreateAdminLog(
+      AdminLogAction.Create,
+      `Kreiranje ${testSlotDto.length} testova`,
+    );
+
     return await this.testSlotService.create(testSlotDto);
   }
 
@@ -63,12 +68,22 @@ export class TestSlotController {
     @Param('id') testSlotId: string,
     @Body() { data }: UpdateTestSlotRequest,
   ) {
+    await this.loggerService.CreateAdminLog(
+      AdminLogAction.Update,
+      `Updateanje testa ${testSlotId}`,
+    );
+
     return await this.testSlotService.update(testSlotId, data);
   }
 
   @Delete(':id')
   @UseGuards(JwtAuthGuard)
   async delete(@Param('id') id: string) {
+    await this.loggerService.CreateAdminLog(
+      AdminLogAction.Delete,
+      `Brisanje testa ${id}`,
+    );
+
     return await this.testSlotService.delete(id);
   }
 

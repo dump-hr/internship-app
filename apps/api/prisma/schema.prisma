@@ -132,6 +132,13 @@ model InternLog {
   date     DateTime        @default(now())
 }
 
+model AdminLog {
+  id          String         @id @default(uuid())
+  action      AdminLogAction
+  description String
+  date        DateTime       @default(now())
+}
+
 enum Discipline {
   Development
   Design
@@ -172,4 +179,12 @@ enum InternLogAction {
   OpenStatusPage
   OpenInterviewPage
   OpenTestPage
+}
+
+enum AdminLogAction {
+  Create
+  Update
+  Delete
+  Login
+  Email
 }

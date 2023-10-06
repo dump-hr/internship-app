@@ -21,7 +21,7 @@ import {
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiTags } from '@nestjs/swagger';
-import { InternLogAction } from '@prisma/client';
+import { AdminLogAction, InternLogAction } from '@prisma/client';
 import { JwtAuthGuard } from 'src/auth/jwt-auth-guard';
 import { LoggerService } from 'src/logger/logger.service';
 
@@ -89,6 +89,11 @@ export class InternController {
     @Param('internId') internId: string,
     @Body() data: SetInterviewRequest,
   ) {
+    await this.loggerService.CreateAdminLog(
+      AdminLogAction.Update,
+      `Intervjuiranje ${internId}`,
+    );
+
     return await this.internService.setInterview(internId, data);
   }
 
@@ -107,6 +112,11 @@ export class InternController {
     )
     file: Express.Multer.File,
   ) {
+    await this.loggerService.CreateAdminLog(
+      AdminLogAction.Update,
+      `Stavljanje slike ${internId}`,
+    );
+
     return await this.internService.setImage(internId, file.buffer);
   }
 
@@ -116,12 +126,24 @@ export class InternController {
     @Param('internId') internId: string,
     @Body() { action }: InternActionRequest,
   ) {
+    await this.loggerService.CreateAdminLog(
+      AdminLogAction.Update,
+      `Akcija nad pripravnikom ${internId} : ${JSON.stringify(action)}`,
+    );
+
     return await this.internService.applyAction(internId, action);
   }
 
   @Put('boardAction')
   @UseGuards(JwtAuthGuard)
   async applyBoardAction(@Body() { action, internIds }: BoardActionRequest) {
+    await this.loggerService.CreateAdminLog(
+      AdminLogAction.Update,
+      `Bulk update nad ${JSON.stringify(internIds)} : ${JSON.stringify(
+        action,
+      )}`,
+    );
+
     return await this.internService.applyBoardAction(action, internIds);
   }
 
@@ -131,6 +153,11 @@ export class InternController {
     @Param('internId') internId: string,
     @Body() data: InternDecisionRequest,
   ) {
+    await this.loggerService.CreateAdminLog(
+      AdminLogAction.Update,
+      `Odluka o članstvu nad ${internId}`,
+    );
+
     return await this.internService.setDecision(internId, data);
   }
 }
