@@ -17,6 +17,7 @@
     "@fontsource/roboto": "^5.0.8",
     "@hookform/resolvers": "^3.3.0",
     "@internship-app/types": "*",
+    "@monaco-editor/react": "^4.6.0",
     "@mui/icons-material": "^5.14.6",
     "@mui/joy": "^5.0.0-beta.4",
     "@mui/material": "^5.14.6",
@@ -28,7 +29,8 @@
     "clsx": "^2.0.0",
     "date-fns": "^2.30.0",
     "dayjs": "^1.11.9",
-    "moment": "^2.29.4",    
+    "moment": "^2.29.4",
+    "monaco-editor": "^0.44.0",
     "react": "^18.2.0",
     "react-big-calendar": "^1.8.4",
     "react-dom": "^18.2.0",
@@ -37,7 +39,8 @@
     "react-query": "^3.39.3",
     "react-webcam": "^7.1.1",
     "swagger-ui-express": "^5.0.0",
-    "wouter": "^2.11.0"
+    "wouter": "^2.11.0",
+    "xterm": "^5.3.0"
   },
   "devDependencies": {
     "@types/react": "^18.2.15",

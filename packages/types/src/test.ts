@@ -1,14 +1,17 @@
-import { Discipline, TestSlot } from "./intern";
+import { Discipline, TestSlot } from './intern';
 
 export type ScheduleTestRequest = {
-    testSlotId: string;
-    internId: string;
-  };
+  testSlotId: string;
+  internId: string;
+};
 
-export type TestSlotPreviewDto = Omit<TestSlot, 'internDisciplines' | 'testQuestions'> & {
+export type TestSlotPreviewDto = Omit<
+  TestSlot,
+  'internDisciplines' | 'testQuestions'
+> & {
   internCount: number;
   questionCount: number;
-}
+};
 
 export type CreateTestSlotsRequest = {
   discipline: Discipline;
@@ -16,9 +19,9 @@ export type CreateTestSlotsRequest = {
   end: Date;
   capacity: number;
   location: string;
-}[]
+}[];
 
 export type UpdateTestSlotRequest = {
   testSlotId: string;
   data: TestSlot;
-}
+};

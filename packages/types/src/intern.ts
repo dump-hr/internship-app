@@ -44,11 +44,13 @@ export enum TestStatus {
 }
 
 export enum CodingLanguage {
+  JavaScript = 'JavaScript',
   Python = 'Python',
+  CSharp = 'CSharp',
   CPP = 'CPP',
   C = 'C',
-  CS = 'CS',
-  JavaScript = 'JavaScript'
+  Java = 'Java',
+  Go = 'Go',
 }
 
 export type Interviewer = {
@@ -110,7 +112,7 @@ export type TestQuestion = {
   points: number;
   order: number;
   testSlot: TestSlot;
-}
+};
 
 export type InternQuestionAnswer = {
   id: string;
@@ -119,7 +121,7 @@ export type InternQuestionAnswer = {
   score?: number;
   question: TestQuestion;
   internDiscipline: InternDiscipline;
-}
+};
 
 export type InterviewSlot = {
   id: string;
@@ -129,7 +131,7 @@ export type InterviewSlot = {
   score?: number;
   notes?: string;
   interviewers: InterviewMemberParticipation[];
-  intern: Intern
+  intern: Intern;
 };
 
 export type InterviewMemberParticipation = {
