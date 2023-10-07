@@ -63,7 +63,7 @@ export class InternController {
 
   @Get('status/:id')
   async getApplicationStatus(@Param('id') id: string) {
-    await this.loggerService.CreateInternLog(
+    await this.loggerService.createInternLog(
       id,
       InternLogAction.OpenStatusPage,
     );
@@ -89,7 +89,7 @@ export class InternController {
     @Param('internId') internId: string,
     @Body() data: SetInterviewRequest,
   ) {
-    await this.loggerService.CreateAdminLog(
+    await this.loggerService.createAdminLog(
       AdminLogAction.Update,
       `Intervjuiranje ${internId}`,
     );
@@ -112,7 +112,7 @@ export class InternController {
     )
     file: Express.Multer.File,
   ) {
-    await this.loggerService.CreateAdminLog(
+    await this.loggerService.createAdminLog(
       AdminLogAction.Update,
       `Stavljanje slike ${internId}`,
     );
@@ -126,7 +126,7 @@ export class InternController {
     @Param('internId') internId: string,
     @Body() { action }: InternActionRequest,
   ) {
-    await this.loggerService.CreateAdminLog(
+    await this.loggerService.createAdminLog(
       AdminLogAction.Update,
       `Akcija nad pripravnikom ${internId} : ${JSON.stringify(action)}`,
     );
@@ -137,7 +137,7 @@ export class InternController {
   @Put('boardAction')
   @UseGuards(JwtAuthGuard)
   async applyBoardAction(@Body() { action, internIds }: BoardActionRequest) {
-    await this.loggerService.CreateAdminLog(
+    await this.loggerService.createAdminLog(
       AdminLogAction.Update,
       `Bulk update nad ${JSON.stringify(internIds)} : ${JSON.stringify(
         action,
@@ -153,7 +153,7 @@ export class InternController {
     @Param('internId') internId: string,
     @Body() data: InternDecisionRequest,
   ) {
-    await this.loggerService.CreateAdminLog(
+    await this.loggerService.createAdminLog(
       AdminLogAction.Update,
       `Odluka o članstvu nad ${internId}`,
     );

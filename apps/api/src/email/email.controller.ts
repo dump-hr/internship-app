@@ -19,7 +19,7 @@ export class EmailController {
   @UseGuards(JwtAuthGuard)
   @Post('send')
   async sendEmails(@Body() { emails, text, subject }: EmailsSendDto) {
-    await this.loggerService.CreateAdminLog(
+    await this.loggerService.createAdminLog(
       AdminLogAction.Email,
       `Poslan mail ${emails.join(',')} naziva ${subject}`,
     );

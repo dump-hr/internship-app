@@ -54,7 +54,7 @@ export class TestSlotController {
   @Post()
   @UseGuards(JwtAuthGuard)
   async createTestSlot(@Body() testSlotDto: CreateTestSlotsRequest) {
-    await this.loggerService.CreateAdminLog(
+    await this.loggerService.createAdminLog(
       AdminLogAction.Create,
       `Kreiranje ${testSlotDto.length} testova`,
     );
@@ -68,7 +68,7 @@ export class TestSlotController {
     @Param('id') testSlotId: string,
     @Body() { data }: UpdateTestSlotRequest,
   ) {
-    await this.loggerService.CreateAdminLog(
+    await this.loggerService.createAdminLog(
       AdminLogAction.Update,
       `Updateanje testa ${testSlotId}`,
     );
@@ -79,7 +79,7 @@ export class TestSlotController {
   @Delete(':id')
   @UseGuards(JwtAuthGuard)
   async delete(@Param('id') id: string) {
-    await this.loggerService.CreateAdminLog(
+    await this.loggerService.createAdminLog(
       AdminLogAction.Delete,
       `Brisanje testa ${id}`,
     );
@@ -92,7 +92,7 @@ export class TestSlotController {
     @Param('internId') internId: string,
     @Param('discipline') discipline: Discipline,
   ) {
-    await this.loggerService.CreateInternLog(
+    await this.loggerService.createInternLog(
       internId,
       InternLogAction.OpenTestPage,
     );

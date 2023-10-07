@@ -34,7 +34,7 @@ export class InterviewSlotController {
   @Delete('/:id')
   @UseGuards(JwtAuthGuard)
   async deleteInterviewSlot(@Param('id') id: string) {
-    await this.loggerService.CreateAdminLog(
+    await this.loggerService.createAdminLog(
       AdminLogAction.Delete,
       `Brisanje interview slota ${id}`,
     );
@@ -45,7 +45,7 @@ export class InterviewSlotController {
   @Post()
   @UseGuards(JwtAuthGuard)
   async createInterviewSlot(@Body() interviewSlotDto: CreateInterviewSlotDto) {
-    await this.loggerService.CreateAdminLog(
+    await this.loggerService.createAdminLog(
       AdminLogAction.Create,
       `Kreiranje interview slota u ${interviewSlotDto.start}`,
     );
@@ -57,7 +57,7 @@ export class InterviewSlotController {
 
   @Get('available/:internId')
   async getAvailableSlots(@Param('internId') internId: string) {
-    await this.loggerService.CreateInternLog(
+    await this.loggerService.createInternLog(
       internId,
       InternLogAction.OpenInterviewPage,
     );

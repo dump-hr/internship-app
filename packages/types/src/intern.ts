@@ -57,6 +57,13 @@ export enum InternLogAction {
   OpenTestPage = 'OpenTestPage'
 }
 
+export enum AdminLogAction {
+  Create = "Create",
+  Update = "Update",
+  Delete = "Delete",
+  Email = "Email",
+}
+
 export type Interviewer = {
   id: string;
   name: string;
@@ -152,6 +159,13 @@ export type InternLog = {
   intern: Intern;
   internId: string;
   action: InternLogAction;
+  date: Date;
+}
+
+export type AdminLog = {
+  id: string;
+  action: AdminLogAction;
+  description: string;
   date: Date;
 }
 

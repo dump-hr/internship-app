@@ -11,11 +11,12 @@ interface InternInfoProps {
 
 type Answer = Question & { tick: boolean; value: string | number | boolean };
 
+const logColumns: GridColDef[] = [
+  { field: 'action', headerName: 'Akcija', width: 110 },
+  { field: 'date', headerName: 'Datum', width: 100 },
+];
+
 const InternInfo = ({ intern }: InternInfoProps) => {
-  const logColumns: GridColDef[] = [
-    { field: 'action', headerName: 'Akcija', width: 110 },
-    { field: 'date', headerName: 'Datum', width: 100 },
-  ];
   const logRows = intern.logs.map((il) => ({
     id: il.id,
     action: internActionLabel[il.action],

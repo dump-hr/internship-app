@@ -33,7 +33,7 @@ export class InterviewerController {
   @Post()
   @UseGuards(JwtAuthGuard)
   async create(@Body() interviewer: CreateInterviewerDto) {
-    await this.loggerService.CreateAdminLog(
+    await this.loggerService.createAdminLog(
       AdminLogAction.Create,
       `Kreiranje intervjuista ${interviewer.email}`,
     );
@@ -45,7 +45,7 @@ export class InterviewerController {
   @Delete(':id')
   @UseGuards(JwtAuthGuard)
   async delete(@Param('id') id: string) {
-    await this.loggerService.CreateAdminLog(
+    await this.loggerService.createAdminLog(
       AdminLogAction.Delete,
       `Brisanje intervjuista ${id}`,
     );

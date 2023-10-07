@@ -4,3 +4,4 @@ export * from './question';
 export * from './action';
 export * from './auth';
 export * from './test';
+export * from './log'
