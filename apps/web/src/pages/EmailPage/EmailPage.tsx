@@ -41,7 +41,6 @@ export const EmailPage = ({ emails, on, close }: Props) => {
 
   const sendEmails = async () => {
     await sendEmailsMutation({ emails, text, subject });
-    alert('Emails sent!');
   };
 
   return (
