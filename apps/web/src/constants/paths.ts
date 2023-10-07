@@ -13,6 +13,7 @@ export enum Path {
   InterviewPicker = '/admin/interview-scheduler',
   TestScheduler = '/admin/test-scheduler',
   TestOverview = '/admin/test-overview/:testSlotId',
+  AdminLogs = '/admin/admin-logs',
   Counter = '/admin/counter',
 
   CatchAll = '/:path*',

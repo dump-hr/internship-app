@@ -8,7 +8,9 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
+import { AdminLogAction } from '@prisma/client';
 import { JwtAuthGuard } from 'src/auth/jwt-auth-guard';
+import { LoggerService } from 'src/logger/logger.service';
 
 import { CreateInterviewerDto } from './dto/createInterviewer.dto';
 import { InterviewerService } from './interviewer.service';
@@ -16,7 +18,10 @@ import { InterviewerService } from './interviewer.service';
 @Controller('interviewer')
 @ApiTags('interviewer')
 export class InterviewerController {
-  constructor(private readonly interviewerService: InterviewerService) {}
+  constructor(
+    private readonly interviewerService: InterviewerService,
+    private readonly loggerService: LoggerService,
+  ) {}
 
   @Get()
   @UseGuards(JwtAuthGuard)
@@ -28,6 +33,11 @@ export class InterviewerController {
   @Post()
   @UseGuards(JwtAuthGuard)
   async create(@Body() interviewer: CreateInterviewerDto) {
+    await this.loggerService.createAdminLog(
+      AdminLogAction.Create,
+      `Kreiranje intervjuista ${interviewer.email}`,
+    );
+
     const newInterviewer = await this.interviewerService.create(interviewer);
     return newInterviewer;
   }
@@ -35,6 +45,11 @@ export class InterviewerController {
   @Delete(':id')
   @UseGuards(JwtAuthGuard)
   async delete(@Param('id') id: string) {
+    await this.loggerService.createAdminLog(
+      AdminLogAction.Delete,
+      `Brisanje intervjuista ${id}`,
+    );
+
     const deletedInterviewer = await this.interviewerService.delete(id);
     return deletedInterviewer;
   }
