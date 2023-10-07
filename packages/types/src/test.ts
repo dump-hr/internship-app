@@ -1,4 +1,4 @@
-import { Discipline, TestSlot } from './intern';
+import { Discipline, Slot, TestQuestion, TestSlot } from './intern';
 
 export type ScheduleTestRequest = {
   testSlotId: string;
@@ -25,3 +25,16 @@ export type UpdateTestSlotRequest = {
   testSlotId: string;
   data: TestSlot;
 };
+
+export type StartTestRequest = {
+  testSlotId: string;
+  internEmail: string;
+};
+
+export type Test = {
+  discipline: Discipline;
+  location: string;
+  capacity: number;
+  maxPoints: number;
+  testQuestions: TestQuestion[];
+} & Slot;

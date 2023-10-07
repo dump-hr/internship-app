@@ -1,6 +1,7 @@
 import {
   CreateTestSlotsRequest,
   ScheduleTestRequest,
+  StartTestRequest,
   TestSlotPreviewDto,
   UpdateTestSlotRequest,
 } from '@internship-app/types';
@@ -82,5 +83,13 @@ export class TestSlotController {
     @Body() { internId }: ScheduleTestRequest,
   ) {
     return await this.testSlotService.scheduleTest(slotId, internId);
+  }
+
+  @Post('start/:id')
+  async startTest(
+    @Param('id') testSlotId: string,
+    @Body() { internEmail }: StartTestRequest,
+  ) {
+    return await this.testSlotService.startTest(testSlotId, internEmail);
   }
 }

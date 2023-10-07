@@ -192,4 +192,43 @@ export class TestSlotService {
       },
     });
   }
+
+  async startTest(testSlotId: string, email: string) {
+    const permissionToStart = await this.prisma.internDiscipline.findFirst({
+      where: {
+        intern: {
+          email: {
+            equals: email,
+            mode: 'insensitive',
+          },
+        },
+        testSlotId,
+      },
+    });
+
+    if (!permissionToStart) {
+      throw new BadRequestException(
+        'Test does not exist or intern does not have access',
+      );
+    }
+
+    const slot = await this.prisma.testSlot.findUnique({
+      where: {
+        id: testSlotId,
+      },
+      include: {
+        testQuestions: {
+          orderBy: {
+            order: 'asc',
+          },
+        },
+      },
+    });
+
+    if (!slot) {
+      throw new NotFoundException('Slot not found');
+    }
+
+    return slot;
+  }
 }

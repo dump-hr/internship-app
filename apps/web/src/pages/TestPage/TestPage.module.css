@@ -32,3 +32,15 @@
   display: flex;
   gap: 24px;
 }
+
+.task {
+  .taskHeader {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+  }
+
+  .title {
+    margin: 0;
+  }
+}
