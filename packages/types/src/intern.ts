@@ -48,7 +48,7 @@ export enum CodingLanguage {
   CPP = 'CPP',
   C = 'C',
   CS = 'CS',
-  JavaScript = 'JavaScript'
+  JavaScript = 'JavaScript',
 }
 
 export enum InternLogAction {
@@ -108,6 +108,12 @@ export type Slot = {
   end: Date;
 };
 
+export type SlotAvailability = {
+  disciplines: Discipline[];
+  available: number;
+  needed: number;
+};
+
 export type TestSlot = {
   discipline: Discipline;
   location: string;
@@ -124,7 +130,7 @@ export type TestQuestion = {
   points: number;
   order: number;
   testSlot: TestSlot;
-}
+};
 
 export type InternQuestionAnswer = {
   id: string;
@@ -133,7 +139,7 @@ export type InternQuestionAnswer = {
   score?: number;
   question: TestQuestion;
   internDiscipline: InternDiscipline;
-}
+};
 
 export type InterviewSlot = {
   id: string;

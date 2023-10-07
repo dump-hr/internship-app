@@ -1,4 +1,4 @@
-import { Json } from "./json";
+import { Json } from './json';
 
 export type ScheduleInterviewRequest = {
   interviewSlotId: string;
@@ -9,4 +9,4 @@ export type SetInterviewRequest = {
   internId: string;
   answers: Json;
   score: number;
-}
+};
