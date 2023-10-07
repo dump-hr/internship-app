@@ -15,6 +15,7 @@ import { useRoute } from 'wouter';
 
 import { useStartTestSlot } from '../../api/useStartTestSlot';
 import DUMPLogo from '../../assets/dump-logo.png';
+import { CodeRunner } from '../../components/CodeRunner/CodeRunner';
 import { Path } from '../../constants/paths';
 import { startingPrograms } from '../../constants/startingPrograms';
 import { useLocalSave } from '../../hooks/useLocalSave';
@@ -78,12 +79,13 @@ const TestPage = () => {
             id="email"
             label="Email"
             variant="outlined"
+            size="small"
             value={email}
             onChange={handleEmailChange}
             error={!isValidEmail}
             helperText={!isValidEmail ? 'Please enter valid email' : ''}
           />
-          <Button type="submit" variant="contained" color="primary">
+          <Button type="submit" variant="contained" color="secondary">
             Login
           </Button>
         </form>
@@ -100,6 +102,8 @@ const TestPage = () => {
         </div>
 
         <div className={c.actions}>
+          {email}
+
           <FormControl sx={{ m: 1, minWidth: 150 }} size="small">
             <InputLabel id="language-select">Language</InputLabel>
             <Select
@@ -108,12 +112,17 @@ const TestPage = () => {
               label="Language"
               onChange={(e) => {
                 const language = e.target.value as CodingLanguage;
-                setLanguage(language);
-                setCode((prev) =>
-                  prev.map((_, i) =>
-                    i === selectedQuestion ? startingPrograms[language] : _,
-                  ),
-                );
+                setLanguage((prevLanguage) => {
+                  // replace only unmodified programs to prevent data loss
+                  setCode((prev) =>
+                    prev.map((prevCode) =>
+                      prevCode !== startingPrograms[prevLanguage]
+                        ? prevCode
+                        : startingPrograms[language],
+                    ),
+                  );
+                  return language;
+                });
               }}
             >
               {Object.values(CodingLanguage).map((language) => (
@@ -124,13 +133,14 @@ const TestPage = () => {
             </Select>
           </FormControl>
 
-          <Button variant="contained">Predaj ispit</Button>
+          <Button variant="contained" color="secondary">
+            Predaj ispit
+          </Button>
         </div>
       </header>
 
       <main className={c.main}>
         <CodeEditor
-          width="55%"
           height="calc(100vh - 64px)"
           theme="vs-dark"
           language={language.toLowerCase()}
@@ -186,7 +196,7 @@ const TestPage = () => {
             </p>
           </div>
 
-          <div className={c.terminal}>terminal</div>
+          <CodeRunner />
         </div>
       </main>
     </>

@@ -33,7 +33,15 @@
   gap: 24px;
 }
 
+.sidebar {
+  display: flex;
+  flex-direction: column;
+}
+
 .task {
+  flex-grow: 1;
+  margin-right: 24px;
+
   .taskHeader {
     display: flex;
     align-items: center;
@@ -43,4 +51,12 @@
   .title {
     margin: 0;
   }
+}
+
+.startForm {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  margin-top: 64px;
 }
