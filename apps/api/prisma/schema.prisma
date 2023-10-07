@@ -185,6 +185,5 @@ enum AdminLogAction {
   Create
   Update
   Delete
-  Login
   Email
 }
