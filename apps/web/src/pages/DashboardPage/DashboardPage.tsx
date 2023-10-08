@@ -11,6 +11,7 @@ import { FieldValues } from 'react-hook-form';
 import { useFetchAllInterns } from '../../api/useFetchAllInterns';
 import AdminPage from '../../components/AdminPage';
 import BoardActions from '../../components/BoardActions';
+import CsvFile from '../../components/CsvFile';
 import InternFilter from '../../components/InternFilter';
 import {
   FilterCriteria,
@@ -104,6 +105,7 @@ const DashboardPage = () => {
 
       {actionsOpen && <BoardActions internIds={selection} />}
 
+      <CsvFile />
       <InternFilter submitHandler={filterHandler} />
 
       <Grid item xs={12} md={5}>
