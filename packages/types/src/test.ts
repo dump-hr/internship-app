@@ -1,4 +1,11 @@
-import { Discipline, Slot, TestQuestion, TestSlot } from './intern';
+import {
+  CodingLanguage,
+  Discipline,
+  InternDiscipline,
+  Slot,
+  TestQuestion,
+  TestSlot,
+} from './intern';
 
 export type ScheduleTestRequest = {
   testSlotId: string;
@@ -38,3 +45,15 @@ export type Test = {
   maxPoints: number;
   testQuestions: TestQuestion[];
 } & Slot;
+
+export type SubmitTestRequest = {
+  testSlotId: string;
+  internEmail: string;
+  language: CodingLanguage;
+  answers: SubmitTestAnswer[];
+};
+
+export type SubmitTestAnswer = {
+  code: string;
+  questionId: string;
+};

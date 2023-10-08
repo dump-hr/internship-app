@@ -14,8 +14,11 @@ import { toast } from 'react-hot-toast';
 import { useRoute } from 'wouter';
 
 import { useStartTestSlot } from '../../api/useStartTestSlot';
+import { useSubmitTestSlot } from '../../api/useSubmitTestSlot';
 import DUMPLogo from '../../assets/dump-logo.png';
 import { CodeRunner } from '../../components/CodeRunner/CodeRunner';
+import { ConfirmDialog } from '../../components/ConfirmDialog';
+import { Countdown } from '../../components/Countdown/Countdown';
 import { Path } from '../../constants/paths';
 import { startingPrograms } from '../../constants/startingPrograms';
 import { useLocalSave } from '../../hooks/useLocalSave';
@@ -30,7 +33,12 @@ const TestPage = () => {
   const [email, setEmail] = useState('');
   const [isValidEmail, setIsValidEmail] = useState(true);
 
-  const { data, mutateAsync } = useStartTestSlot();
+  const [submitDialogOpen, setSubmitDialogOpen] = useState(false);
+
+  const { data, ...startTest } = useStartTestSlot();
+  const submitTest = useSubmitTestSlot(() =>
+    localStorage.removeItem(`code:${data?.id}:${email.toLowerCase()}`),
+  );
 
   useLocalSave(
     !!data,
@@ -57,12 +65,25 @@ const TestPage = () => {
       return;
     }
 
-    const { testQuestions } = await mutateAsync({
+    const { testQuestions } = await startTest.mutateAsync({
       testSlotId: params?.testSlotId ?? '',
       internEmail: email,
     });
 
     setCode(testQuestions.map(() => startingPrograms[language]));
+  };
+
+  const handleSubmit = async () => {
+    if (!data) return;
+    await submitTest.mutateAsync({
+      testSlotId: data.id,
+      internEmail: email,
+      language,
+      answers: data.testQuestions.map((q, i) => ({
+        questionId: q.id,
+        code: code[i],
+      })),
+    });
   };
 
   if (!data) {
@@ -102,8 +123,8 @@ const TestPage = () => {
         </div>
 
         <div className={c.actions}>
+          <Countdown toDate={new Date(data.end)} />
           {email}
-
           <FormControl sx={{ m: 1, minWidth: 150 }} size="small">
             <InputLabel id="language-select">Language</InputLabel>
             <Select
@@ -132,8 +153,11 @@ const TestPage = () => {
               ))}
             </Select>
           </FormControl>
-
-          <Button variant="contained" color="secondary">
+          <Button
+            variant="contained"
+            color="secondary"
+            onClick={() => setSubmitDialogOpen(true)}
+          >
             Predaj ispit
           </Button>
         </div>
@@ -199,6 +223,16 @@ const TestPage = () => {
           <CodeRunner />
         </div>
       </main>
+
+      <ConfirmDialog
+        open={!!submitDialogOpen}
+        handleClose={(confirmed) => {
+          if (confirmed) handleSubmit();
+          setSubmitDialogOpen(false);
+        }}
+        title="Potvrdi predaju ispita"
+        description="Oprezno - nije moguće ponovo otvoriti ispit nakon predaje."
+      />
     </>
   );
 };

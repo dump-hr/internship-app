@@ -1,11 +1,12 @@
 import { TestSlot, TestStatus } from '@internship-app/types';
-import { Box, Typography } from '@mui/material';
-import { navigate } from 'wouter/use-location';
+import { Box, Button, Typography } from '@mui/material';
+import { Link } from 'wouter';
 
 import { Path } from '../../constants/paths';
 
 type SlotInternListProps = {
   slot: TestSlot;
+  simple?: boolean;
 };
 
 const borderStylePerStatus = {
@@ -15,26 +16,51 @@ const borderStylePerStatus = {
   [TestStatus.PickTerm]: '3px dashed red',
 };
 
-export const SlotInternList: React.FC<SlotInternListProps> = ({ slot }) => {
+export const SlotInternList: React.FC<SlotInternListProps> = ({
+  slot,
+  simple,
+}) => {
   return (
     <Box>
       <Typography variant="h4">Interni</Typography>
       <Box gap="6px" display="flex" flexDirection="column">
         {slot.internDisciplines.map((ind) => (
           <Box
-            onClick={() =>
-              navigate(Path.Intern.replace(':internId', ind.internId))
-            }
             style={{
               border: borderStylePerStatus[ind.testStatus!],
               background: '#ccc',
+              display: 'flex',
+              justifyContent: 'space-between',
             }}
             key={ind.internId}
           >
-            <Typography>
+            <Link
+              to={Path.Intern.replace(':internId', ind.internId)}
+              style={{
+                color: '#000',
+                textDecoration: 'none',
+              }}
+            >
               {ind.intern.firstName} {ind.intern.lastName}
-            </Typography>
-            {ind.testScore && <Typography>Score: {ind.testScore}</Typography>}
+              {!simple && ` - ${ind.intern.email}`}
+            </Link>
+
+            {!simple && (
+              <Box>
+                {ind.testScore !== null ? (
+                  <Typography>Score: {ind.testScore}</Typography>
+                ) : (
+                  <Box>
+                    <Button component={Link} to={'/'}>
+                      Ispravi
+                    </Button>
+                    <Button component={Link} to={'/'}>
+                      Nije došao/la
+                    </Button>
+                  </Box>
+                )}
+              </Box>
+            )}
           </Box>
         ))}
       </Box>

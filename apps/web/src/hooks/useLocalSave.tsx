@@ -20,7 +20,6 @@ export const useLocalSave = (
   }, [enabled, key]);
 
   const save = useDebounce(() => {
-    console.log('saving');
     localStorage.setItem(key, JSON.stringify(value));
   });
 

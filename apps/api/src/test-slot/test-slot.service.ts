@@ -1,4 +1,8 @@
-import { CreateTestSlotsRequest, TestSlot } from '@internship-app/types';
+import {
+  CreateTestSlotsRequest,
+  SubmitTestRequest,
+  TestSlot,
+} from '@internship-app/types';
 import {
   BadRequestException,
   Injectable,
@@ -194,7 +198,7 @@ export class TestSlotService {
   }
 
   async startTest(testSlotId: string, email: string) {
-    const permissionToStart = await this.prisma.internDiscipline.findFirst({
+    const internDiscipline = await this.prisma.internDiscipline.findFirst({
       where: {
         intern: {
           email: {
@@ -203,12 +207,13 @@ export class TestSlotService {
           },
         },
         testSlotId,
+        testStatus: TestStatus.Pending,
       },
     });
 
-    if (!permissionToStart) {
+    if (!internDiscipline) {
       throw new BadRequestException(
-        'Test does not exist or intern does not have access',
+        'Test does not exist or intern does not have permission to access',
       );
     }
 
@@ -229,6 +234,55 @@ export class TestSlotService {
       throw new NotFoundException('Slot not found');
     }
 
+    // if (new Date() < slot.start) {
+    //   throw new BadRequestException('Test not started yet');
+    // }
+
     return slot;
+  }
+
+  async submitTest(testSlotId: string, test: SubmitTestRequest) {
+    const internDiscipline = await this.prisma.internDiscipline.findFirst({
+      where: {
+        intern: {
+          email: {
+            equals: test.internEmail,
+            mode: 'insensitive',
+          },
+        },
+        testSlotId,
+        testStatus: TestStatus.Pending,
+      },
+    });
+
+    if (!internDiscipline) {
+      throw new BadRequestException(
+        'Test does not exist or intern does not have permission to submit',
+      );
+    }
+
+    await this.prisma.internQuestionAnswer.createMany({
+      data: test.answers.map((a) => ({
+        code: a.code,
+        questionId: a.questionId,
+        language: test.language,
+        internDisciplineInternId: internDiscipline.internId,
+        internDisciplineDiscipline: internDiscipline.discipline,
+      })),
+    });
+
+    await this.prisma.internDiscipline.update({
+      where: {
+        internId_discipline: {
+          internId: internDiscipline.internId,
+          discipline: internDiscipline.discipline,
+        },
+      },
+      data: {
+        testStatus: TestStatus.Done,
+      },
+    });
+
+    return internDiscipline.internId;
   }
 }

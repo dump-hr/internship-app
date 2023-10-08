@@ -7,9 +7,10 @@ import { SlotQuestionList } from './SlotQuestionList';
 
 type TestSlotInfoProps = {
   slot: TestSlot;
+  simple?: boolean;
 };
 
-const TestSlotInfo: React.FC<TestSlotInfoProps> = ({ slot }) => {
+const TestSlotInfo: React.FC<TestSlotInfoProps> = ({ slot, simple }) => {
   return (
     <Box display="flex" flexDirection="column">
       <Box>
@@ -24,7 +25,7 @@ const TestSlotInfo: React.FC<TestSlotInfoProps> = ({ slot }) => {
         <Typography>Max bodova: {slot.maxPoints}</Typography>
       </Box>
       <SlotQuestionList slot={slot} />
-      <SlotInternList slot={slot} />
+      <SlotInternList slot={slot} simple={simple} />
     </Box>
   );
 };
