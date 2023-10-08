@@ -1,7 +1,9 @@
 import {
   CodingLanguage,
   Discipline,
+  Intern,
   InternDiscipline,
+  InternQuestionAnswer,
   Slot,
   TestQuestion,
   TestSlot,

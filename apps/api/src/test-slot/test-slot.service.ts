@@ -285,4 +285,42 @@ export class TestSlotService {
 
     return internDiscipline.internId;
   }
+
+  async getTestAnswersByIntern(testSlotId: string, internId: string) {
+    const internDiscipline = await this.prisma.internDiscipline.findFirst({
+      where: {
+        internId,
+        testSlotId,
+        testStatus: TestStatus.Done,
+      },
+    });
+
+    if (!internDiscipline) {
+      throw new BadRequestException('Test does not exist or is not done');
+    }
+
+    return await this.prisma.internQuestionAnswer.findMany({
+      where: {
+        internDisciplineInternId: internId,
+        internDisciplineDiscipline: internDiscipline.discipline,
+      },
+      include: {
+        question: true,
+      },
+    });
+  }
+
+  async getTestAnswersByQuestion(testSlotId: string, questionId: string) {
+    return await this.prisma.internQuestionAnswer.findMany({
+      where: {
+        questionId,
+        internDiscipline: {
+          testSlotId,
+        },
+      },
+      include: {
+        question: true,
+      },
+    });
+  }
 }

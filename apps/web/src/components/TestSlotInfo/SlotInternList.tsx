@@ -29,9 +29,9 @@ export const SlotInternList: React.FC<SlotInternListProps> = ({
             style={{
               border: borderStylePerStatus[ind.testStatus!],
               background: '#ccc',
-              display: 'flex',
-              justifyContent: 'space-between',
             }}
+            display="flex"
+            justifyContent="space-between"
             key={ind.internId}
           >
             <Link
@@ -51,7 +51,12 @@ export const SlotInternList: React.FC<SlotInternListProps> = ({
                   <Typography>Score: {ind.testScore}</Typography>
                 ) : (
                   <Box>
-                    <Button component={Link} to={'/'}>
+                    <Button
+                      component={Link}
+                      to={Path.TestReview.replace(':testSlotId', slot.id)
+                        .replace(':group', 'intern')
+                        .replace(':groupId', ind.internId)}
+                    >
                       Ispravi
                     </Button>
                     <Button component={Link} to={'/'}>

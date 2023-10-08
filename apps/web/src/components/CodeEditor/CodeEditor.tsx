@@ -15,6 +15,7 @@ type Props = {
   prevQuestion: () => void;
   isFirstQuestion: boolean;
   isLastQuestion: boolean;
+  headerHeight?: number;
 };
 
 export const CodeEditor: React.FC<Props> = ({
@@ -27,11 +28,12 @@ export const CodeEditor: React.FC<Props> = ({
   prevQuestion,
   isFirstQuestion,
   isLastQuestion,
+  headerHeight = 64,
 }) => {
   return (
     <main className={c.main}>
       <Editor
-        height="calc(100vh - 64px)"
+        height={`calc(100vh - ${headerHeight}px)`}
         theme="vs-dark"
         language={language}
         options={{

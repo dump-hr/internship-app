@@ -24,7 +24,7 @@ const TestSlotInfo: React.FC<TestSlotInfoProps> = ({ slot, simple }) => {
         </Typography>
         <Typography>Max bodova: {slot.maxPoints}</Typography>
       </Box>
-      <SlotQuestionList slot={slot} />
+      <SlotQuestionList slot={slot} simple={simple} />
       <SlotInternList slot={slot} simple={simple} />
     </Box>
   );

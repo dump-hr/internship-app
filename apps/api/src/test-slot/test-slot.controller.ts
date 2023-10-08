@@ -101,4 +101,28 @@ export class TestSlotController {
   ) {
     return await this.testSlotService.submitTest(testSlotId, req);
   }
+
+  @Get('answers/:testSlotId/intern/:internId')
+  @UseGuards(JwtAuthGuard)
+  async getTestAnswersByIntern(
+    @Param('testSlotId') testSlotId: string,
+    @Param('internId') internId: string,
+  ) {
+    return await this.testSlotService.getTestAnswersByIntern(
+      testSlotId,
+      internId,
+    );
+  }
+
+  @Get('answers/:testSlotId/question/:questionId')
+  @UseGuards(JwtAuthGuard)
+  async getTestAnswersByQuestion(
+    @Param('testSlotId') testSlotId: string,
+    @Param('questionId') questionId: string,
+  ) {
+    return await this.testSlotService.getTestAnswersByQuestion(
+      testSlotId,
+      questionId,
+    );
+  }
 }
