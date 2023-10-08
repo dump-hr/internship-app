@@ -1,8 +1,6 @@
 import { CodingLanguage } from '@internship-app/types';
-import CodeEditor from '@monaco-editor/react';
 import {
   Button,
-  ButtonGroup,
   FormControl,
   InputLabel,
   MenuItem,
@@ -16,7 +14,7 @@ import { useRoute } from 'wouter';
 import { useStartTestSlot } from '../../api/useStartTestSlot';
 import { useSubmitTestSlot } from '../../api/useSubmitTestSlot';
 import DUMPLogo from '../../assets/dump-logo.png';
-import { CodeRunner } from '../../components/CodeRunner/CodeRunner';
+import { CodeEditor } from '../../components/CodeEditor/CodeEditor';
 import { ConfirmDialog } from '../../components/ConfirmDialog';
 import { Countdown } from '../../components/Countdown/Countdown';
 import { Path } from '../../constants/paths';
@@ -163,66 +161,21 @@ const TestPage = () => {
         </div>
       </header>
 
-      <main className={c.main}>
-        <CodeEditor
-          height="calc(100vh - 64px)"
-          theme="vs-dark"
-          language={language.toLowerCase()}
-          options={{
-            quickSuggestions: {
-              other: false,
-              comments: false,
-              strings: false,
-            },
-            parameterHints: {
-              enabled: false,
-            },
-            suggestOnTriggerCharacters: false,
-            acceptSuggestionOnEnter: 'off',
-            tabCompletion: 'off',
-            wordBasedSuggestions: false,
-          }}
-          value={code[selectedQuestion]}
-          onChange={(code) =>
-            setCode((prev) =>
-              prev.map((_, i) => (i === selectedQuestion ? code ?? '' : _)),
-            )
-          }
-        />
-
-        <div className={c.sidebar}>
-          <div className={c.task}>
-            <div className={c.taskHeader}>
-              <ButtonGroup
-                variant="outlined"
-                aria-label="outlined button group"
-              >
-                <Button
-                  disabled={selectedQuestion === 0}
-                  onClick={() => setSelectedQuestion((prev) => prev - 1)}
-                >
-                  Prethodni
-                </Button>
-                <Button
-                  disabled={selectedQuestion === data.testQuestions.length - 1}
-                  onClick={() => setSelectedQuestion((prev) => prev + 1)}
-                >
-                  Sljedeći
-                </Button>
-              </ButtonGroup>
-
-              <h2 className={c.title}>
-                {data.testQuestions[selectedQuestion].title}
-              </h2>
-            </div>
-            <p className={c.text}>
-              {data.testQuestions[selectedQuestion].text}
-            </p>
-          </div>
-
-          <CodeRunner />
-        </div>
-      </main>
+      <CodeEditor
+        language={language.toLowerCase()}
+        code={code[selectedQuestion]}
+        setCode={(code) =>
+          setCode((prev) =>
+            prev.map((_, i) => (i === selectedQuestion ? code ?? '' : _)),
+          )
+        }
+        questionTitle={data.testQuestions[selectedQuestion].title}
+        questionText={data.testQuestions[selectedQuestion].text}
+        nextQuestion={() => setSelectedQuestion((prev) => prev + 1)}
+        prevQuestion={() => setSelectedQuestion((prev) => prev - 1)}
+        isFirstQuestion={selectedQuestion === 0}
+        isLastQuestion={selectedQuestion === data.testQuestions.length - 1}
+      />
 
       <ConfirmDialog
         open={!!submitDialogOpen}
