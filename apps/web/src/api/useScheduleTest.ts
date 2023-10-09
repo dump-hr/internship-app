@@ -23,12 +23,12 @@ export const useScheduleTest = () => {
       toast.success('Test uspješno zakazan!', { id: context?.toastId });
       navigate(Path.Status.replace(':internId', variables.internId));
     },
-    onError: (error: string, _variables, context) => {
+    onError: (error: string, variables, context) => {
       toast.error(error, { id: context?.toastId });
       queryClient.invalidateQueries([
         'test-slot',
-        _variables.discipline,
-        _variables.internId,
+        variables.discipline,
+        variables.internId,
       ]);
     },
   });

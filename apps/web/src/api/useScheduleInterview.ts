@@ -27,9 +27,9 @@ export const useScheduleInterview = () => {
       toast.success('Intervju uspješno zakazan!', { id: context?.toastId });
       navigate(Path.Status.replace(':internId', data.id));
     },
-    onError: (error: string, _variables, context) => {
+    onError: (error: string, variables, context) => {
       toast.error(error, { id: context?.toastId });
-      queryClient.invalidateQueries(['interview-slot', _variables.internId]);
+      queryClient.invalidateQueries(['interview-slot', variables.internId]);
     },
   });
 };
