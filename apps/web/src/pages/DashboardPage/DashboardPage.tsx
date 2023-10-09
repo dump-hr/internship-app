@@ -9,7 +9,6 @@ import { useState } from 'react';
 import { FieldValues } from 'react-hook-form';
 
 import { useFetchAllInterns } from '../../api/useFetchAllInterns';
-import { useFetchSlotsAvailability } from '../../api/useFetchSlotsAvailability';
 import AdminPage from '../../components/AdminPage';
 import BoardActions from '../../components/BoardActions';
 import InternFilter from '../../components/InternFilter';
@@ -49,7 +48,6 @@ const initialState: { filterCriteria: FilterCriteria } = {
 
 const DashboardPage = () => {
   const { data: interns } = useFetchAllInterns();
-  const { data: slotsAvailability } = useFetchSlotsAvailability();
 
   const [selection, setSelection] = useState<string[]>([]);
   const [emailDialogOpen, setEmailDialogOpen] = useState(false);
@@ -137,8 +135,6 @@ const DashboardPage = () => {
             .map((i) => i.email) || []
         }
       />
-
-      <SlotsList data={slotsAvailability} />
     </AdminPage>
   );
 };

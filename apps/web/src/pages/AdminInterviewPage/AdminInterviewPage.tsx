@@ -9,9 +9,11 @@ import toast from 'react-hot-toast';
 import { useCreateInterviewSlot } from '../../api/useCreateInterviewSlot';
 import { useDeleteInterviewSlot } from '../../api/useDeleteInterviewSlot';
 import { useFetchInterviewSlots } from '../../api/useFetchInterviewSlots';
+import { useFetchSlotsAvailability } from '../../api/useFetchSlotsAvailability';
 import AdminPage from '../../components/AdminPage';
 import { Calendar } from '../../components/Calendar/Calendar';
 import { CalendarSidebar } from '../../components/CalendarSidebar/CalendarSidebar';
+import SlotsList from '../../components/SlotsList/SlotsList';
 import { calendarHelper } from '../../helpers/calendarHelper';
 import styles from './index.module.css';
 
@@ -37,6 +39,7 @@ export const AdminInterviewPage = () => {
   const [events, setEvents] = useState<MappedEvent[]>([]);
   const { data: interviewSlots, refetchInterviewSlots } =
     useFetchInterviewSlots();
+  const { data: slotsAvailability } = useFetchSlotsAvailability();
 
   const deleteInterviewSlotMutation = useDeleteInterviewSlot();
   const createInterviewSlotMutation = useCreateInterviewSlot();
@@ -111,6 +114,7 @@ export const AdminInterviewPage = () => {
           setAdditionalNotesValue={setAdditionalNotesValue}
         />
       </div>
+      <SlotsList data={slotsAvailability} />
     </AdminPage>
   );
 };
