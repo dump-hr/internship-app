@@ -125,7 +125,7 @@ export class TestSlotService {
       where: {
         discipline,
         start: {
-          gt: new Date(),
+          gte: new Date(new Date().getTime() + 10 * 60 * 1000),
         },
       },
       include: {
@@ -134,6 +134,9 @@ export class TestSlotService {
             internDisciplines: true,
           },
         },
+      },
+      orderBy: {
+        start: 'asc',
       },
     });
 
@@ -160,7 +163,8 @@ export class TestSlotService {
       throw new NotFoundException('Slot is already taken');
     }
 
-    if (new Date() > slot.start) throw new NotFoundException('Slot is over');
+    if (new Date(new Date().getTime() + 9 * 60 * 1000) > slot.start)
+      throw new NotFoundException('Too late to schedule slot');
 
     const internDiscipline = await this.prisma.internDiscipline.findUnique({
       where: {

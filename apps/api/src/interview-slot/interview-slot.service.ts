@@ -125,6 +125,9 @@ export class InterviewSlotService {
     const availableSlots = await this.prisma.interviewSlot.findMany({
       where: {
         internId: null,
+        start: {
+          gte: new Date(new Date().getTime() + 24 * 60 * 60 * 1000),
+        },
         AND: [
           {
             interviewers: {
@@ -152,6 +155,9 @@ export class InterviewSlotService {
             : {},
         ],
       },
+      orderBy: {
+        start: 'asc',
+      },
     });
 
     return availableSlots;
@@ -165,6 +171,9 @@ export class InterviewSlotService {
     if (slot.internId) {
       throw new NotFoundException('Slot is already taken');
     }
+
+    if (new Date(new Date().getTime() + 23 * 60 * 60 * 1000) > slot.start)
+      throw new NotFoundException('Too late to schedule slot');
 
     const internSlot = await this.prisma.interviewSlot.findFirst({
       where: { internId },
