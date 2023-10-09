@@ -17,7 +17,6 @@ import {
   getInternFilter,
 } from '../../components/InternFilter/filter';
 import InternList from '../../components/InternList/InternList';
-import SlotsList from '../../components/SlotsList/SlotsList';
 import EmailPage from '../EmailPage';
 import c from './DashboardPage.module.css';
 

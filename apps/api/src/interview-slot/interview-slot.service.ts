@@ -175,11 +175,6 @@ export class InterviewSlotService {
       `,
     );
 
-    const earliestAvailableStartTime = new Date();
-    earliestAvailableStartTime.setHours(
-      earliestAvailableStartTime.getHours() + 12,
-    );
-
     const interviewSlots = await Promise.all(
       disciplineCombinations.map(async (dc) => {
         const [primary, ...other] = dc.disciplines;
@@ -187,12 +182,10 @@ export class InterviewSlotService {
         const available = await this.prisma.interviewSlot.count({
           where: {
             internId: null,
+            start: {
+              gte: new Date(new Date().getTime() + 24 * 60 * 60 * 1000),
+            },
             AND: [
-              {
-                start: {
-                  gte: earliestAvailableStartTime,
-                },
-              },
               {
                 interviewers: {
                   some: {
