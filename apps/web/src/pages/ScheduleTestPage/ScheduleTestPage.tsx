@@ -27,7 +27,6 @@ const ScheduleTestPage = () => {
     scheduleTest.mutate({
       internId: params.internId,
       testSlotId: selectedSlot.id,
-      discipline: params.discipline,
     });
   };
 
