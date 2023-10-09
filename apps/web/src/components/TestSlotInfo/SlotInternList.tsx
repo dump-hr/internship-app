@@ -1,7 +1,8 @@
-import { TestSlot, TestStatus } from '@internship-app/types';
+import { BoardActionType, TestSlot, TestStatus } from '@internship-app/types';
 import { Box, Button, Typography } from '@mui/material';
 import { Link } from 'wouter';
 
+import { useApplyBoardAction } from '../../api/useApplyBoardAction';
 import { Path } from '../../constants/paths';
 
 type SlotInternListProps = {
@@ -20,6 +21,8 @@ export const SlotInternList: React.FC<SlotInternListProps> = ({
   slot,
   simple,
 }) => {
+  const applyBoardAction = useApplyBoardAction();
+
   return (
     <Box>
       <Typography variant="h4">Interni</Typography>
@@ -45,7 +48,7 @@ export const SlotInternList: React.FC<SlotInternListProps> = ({
               {!simple && ` - ${ind.intern.email}`}
             </Link>
 
-            {!simple && (
+            {!simple && ind.testStatus !== TestStatus.Missed && (
               <Box>
                 {ind.testScore !== null ? (
                   <Typography>Score: {ind.testScore}</Typography>
@@ -59,7 +62,18 @@ export const SlotInternList: React.FC<SlotInternListProps> = ({
                     >
                       Ispravi
                     </Button>
-                    <Button component={Link} to={'/'}>
+                    <Button
+                      onClick={() => {
+                        applyBoardAction.mutateAsync({
+                          action: {
+                            actionType: BoardActionType.SetTestStatus,
+                            testStatus: TestStatus.Missed,
+                            discipline: ind.discipline,
+                          },
+                          internIds: [ind.internId],
+                        });
+                      }}
+                    >
                       Nije došao/la
                     </Button>
                   </Box>
