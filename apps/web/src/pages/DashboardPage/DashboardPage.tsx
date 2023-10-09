@@ -16,7 +16,7 @@ import {
   FilterCriteria,
   getInternFilter,
 } from '../../components/InternFilter/filter';
-import InternList from '../../components/InternList';
+import InternList from '../../components/InternList/InternList';
 import EmailPage from '../EmailPage';
 import c from './DashboardPage.module.css';
 
