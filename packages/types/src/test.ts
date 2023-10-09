@@ -1,8 +1,9 @@
 import { Discipline, TestSlot } from "./intern";
 
-export type ScheduleTestRequest = {
+export type ScheduleTestRequest = { 
     testSlotId: string;
     internId: string;
+    discipline: Discipline;
   };
 
 export type TestSlotPreviewDto = Omit<TestSlot, 'internDisciplines' | 'testQuestions'> & {

@@ -1,6 +1,6 @@
 import { Intern, ScheduleTestRequest } from '@internship-app/types';
 import { toast } from 'react-hot-toast';
-import { useMutation } from 'react-query';
+import { useMutation, useQueryClient } from 'react-query';
 import { navigate } from 'wouter/use-location';
 
 import { Path } from '../constants/paths';
@@ -13,6 +13,8 @@ const scheduleTest = async ({ testSlotId, internId }: ScheduleTestRequest) => {
 };
 
 export const useScheduleTest = () => {
+  const queryClient = useQueryClient();
+
   return useMutation(scheduleTest, {
     onMutate: () => {
       return { toastId: toast.loading('Zakazivanje testa...') };
@@ -21,8 +23,13 @@ export const useScheduleTest = () => {
       toast.success('Test uspješno zakazan!', { id: context?.toastId });
       navigate(Path.Status.replace(':internId', variables.internId));
     },
-    onError: (error: string, _variables, context) => {
+    onError: (error: string, variables, context) => {
       toast.error(error, { id: context?.toastId });
+      queryClient.invalidateQueries([
+        'test-slot',
+        variables.discipline,
+        variables.internId,
+      ]);
     },
   });
 };
