@@ -20,15 +20,19 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { Discipline } from '@prisma/client';
+import { AdminLogAction, Discipline, InternLogAction } from '@prisma/client';
 import { JwtAuthGuard } from 'src/auth/jwt-auth-guard';
+import { LoggerService } from 'src/logger/logger.service';
 
 import { TestSlotService } from './test-slot.service';
 
 @Controller('test-slot')
 @ApiTags('test-slot')
 export class TestSlotController {
-  constructor(private readonly testSlotService: TestSlotService) {}
+  constructor(
+    private readonly testSlotService: TestSlotService,
+    private readonly loggerService: LoggerService,
+  ) {}
 
   @Get()
   @UseGuards(JwtAuthGuard)
@@ -53,6 +57,11 @@ export class TestSlotController {
   @Post()
   @UseGuards(JwtAuthGuard)
   async createTestSlot(@Body() testSlotDto: CreateTestSlotsRequest) {
+    await this.loggerService.createAdminLog(
+      AdminLogAction.Create,
+      `Kreiranje ${testSlotDto.length} testova`,
+    );
+
     return await this.testSlotService.create(testSlotDto);
   }
 
@@ -62,12 +71,22 @@ export class TestSlotController {
     @Param('id') testSlotId: string,
     @Body() { data }: UpdateTestSlotRequest,
   ) {
+    await this.loggerService.createAdminLog(
+      AdminLogAction.Update,
+      `Updateanje testa ${testSlotId}`,
+    );
+
     return await this.testSlotService.update(testSlotId, data);
   }
 
   @Delete(':id')
   @UseGuards(JwtAuthGuard)
   async delete(@Param('id') id: string) {
+    await this.loggerService.createAdminLog(
+      AdminLogAction.Delete,
+      `Brisanje testa ${id}`,
+    );
+
     return await this.testSlotService.delete(id);
   }
 
@@ -76,6 +95,11 @@ export class TestSlotController {
     @Param('internId') internId: string,
     @Param('discipline') discipline: Discipline,
   ) {
+    await this.loggerService.createInternLog(
+      internId,
+      InternLogAction.OpenTestPage,
+    );
+
     return await this.testSlotService.getAvailableSlots(internId, discipline);
   }
 

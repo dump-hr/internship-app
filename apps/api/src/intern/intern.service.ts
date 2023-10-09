@@ -46,6 +46,11 @@ export class InternService {
           },
         },
         interviewSlot: true,
+        logs: {
+          orderBy: {
+            date: 'desc',
+          },
+        },
       },
     });
   }

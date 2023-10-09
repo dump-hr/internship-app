@@ -63,3 +63,8 @@
   margin-top: 0;
   padding-top: 0;
 }
+
+.logGrid {
+  height: 365px;
+  width: 220px;
+}

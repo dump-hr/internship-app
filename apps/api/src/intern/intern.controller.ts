@@ -21,7 +21,9 @@ import {
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiTags } from '@nestjs/swagger';
+import { AdminLogAction, InternLogAction } from '@prisma/client';
 import { JwtAuthGuard } from 'src/auth/jwt-auth-guard';
+import { LoggerService } from 'src/logger/logger.service';
 
 import { CreateInternDto } from './dto/createIntern.dto';
 import { InternService } from './intern.service';
@@ -29,7 +31,10 @@ import { InternService } from './intern.service';
 @Controller('intern')
 @ApiTags('intern')
 export class InternController {
-  constructor(private readonly internService: InternService) {}
+  constructor(
+    private readonly internService: InternService,
+    private readonly loggerService: LoggerService,
+  ) {}
 
   @Get()
   @UseGuards(JwtAuthGuard)
@@ -58,8 +63,12 @@ export class InternController {
 
   @Get('status/:id')
   async getApplicationStatus(@Param('id') id: string) {
-    const status = await this.internService.getApplicationStatus(id);
+    await this.loggerService.createInternLog(
+      id,
+      InternLogAction.OpenStatusPage,
+    );
 
+    const status = await this.internService.getApplicationStatus(id);
     if (!status) {
       throw new NotFoundException();
     }
@@ -80,6 +89,11 @@ export class InternController {
     @Param('internId') internId: string,
     @Body() data: SetInterviewRequest,
   ) {
+    await this.loggerService.createAdminLog(
+      AdminLogAction.Update,
+      `Intervjuiranje ${internId}`,
+    );
+
     return await this.internService.setInterview(internId, data);
   }
 
@@ -98,6 +112,11 @@ export class InternController {
     )
     file: Express.Multer.File,
   ) {
+    await this.loggerService.createAdminLog(
+      AdminLogAction.Update,
+      `Stavljanje slike ${internId}`,
+    );
+
     return await this.internService.setImage(internId, file.buffer);
   }
 
@@ -107,12 +126,24 @@ export class InternController {
     @Param('internId') internId: string,
     @Body() { action }: InternActionRequest,
   ) {
+    await this.loggerService.createAdminLog(
+      AdminLogAction.Update,
+      `Akcija nad pripravnikom ${internId} : ${JSON.stringify(action)}`,
+    );
+
     return await this.internService.applyAction(internId, action);
   }
 
   @Put('boardAction')
   @UseGuards(JwtAuthGuard)
   async applyBoardAction(@Body() { action, internIds }: BoardActionRequest) {
+    await this.loggerService.createAdminLog(
+      AdminLogAction.Update,
+      `Bulk update nad ${JSON.stringify(internIds)} : ${JSON.stringify(
+        action,
+      )}`,
+    );
+
     return await this.internService.applyBoardAction(action, internIds);
   }
 
@@ -122,6 +153,11 @@ export class InternController {
     @Param('internId') internId: string,
     @Body() data: InternDecisionRequest,
   ) {
+    await this.loggerService.createAdminLog(
+      AdminLogAction.Update,
+      `Odluka o članstvu nad ${internId}`,
+    );
+
     return await this.internService.setDecision(internId, data);
   }
 }

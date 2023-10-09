@@ -1,6 +1,7 @@
 import {
   Discipline,
   DisciplineStatus,
+  InternLogAction,
   InterviewStatus,
   TestStatus,
 } from '@internship-app/types';
@@ -31,4 +32,10 @@ export const interviewStatusLabel = {
   [InterviewStatus.Pending]: 'Na čekanju',
   [InterviewStatus.Missed]: 'Propušteno',
   [InterviewStatus.Done]: 'Obavljeno',
+};
+
+export const internActionLabel = {
+  [InternLogAction.OpenStatusPage]: 'StatusP',
+  [InternLogAction.OpenInterviewPage]: 'IntervjuP',
+  [InternLogAction.OpenTestPage]: 'TestP',
 };

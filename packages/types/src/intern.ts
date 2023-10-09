@@ -53,6 +53,19 @@ export enum CodingLanguage {
   Go = 'Go',
 }
 
+export enum InternLogAction {
+  OpenStatusPage = 'OpenStatusPage',
+  OpenInterviewPage = 'OpenInterviewPage',
+  OpenTestPage = 'OpenTestPage'
+}
+
+export enum AdminLogAction {
+  Create = "Create",
+  Update = "Update",
+  Delete = "Delete",
+  Email = "Email",
+}
+
 export type Interviewer = {
   id: string;
   name: string;
@@ -70,6 +83,7 @@ export type Intern = {
   interviewStatus: InterviewStatus;
   interviewSlot?: InterviewSlot;
   internDisciplines: InternDiscipline[];
+  logs: InternLog[];
 };
 
 export type InternCreateRequest = {
@@ -141,6 +155,21 @@ export type InterviewMemberParticipation = {
   interviewSlotId: string;
   interviewSlot: InterviewSlot;
 };
+
+export type InternLog = {
+  id: string;
+  intern: Intern;
+  internId: string;
+  action: InternLogAction;
+  date: Date;
+}
+
+export type AdminLog = {
+  id: string;
+  action: AdminLogAction;
+  description: string;
+  date: Date;
+}
 
 export type InterviewEvent = {
   id: string;
