@@ -8,7 +8,7 @@ type Props = {
 
 const getDisciplinesChips = (disciplines: Discipline[]) => {
   return disciplines.map((discipline) => (
-    <Chip key={discipline} label={discipline.key} {...discipline} />
+    <Chip key={discipline} label={discipline} />
   ));
 };
 
@@ -19,7 +19,7 @@ const SlotsList: React.FC<Props> = ({ data = [] }) => {
       headerName: 'Disciplines',
       width: 800,
       renderCell: (params: GridRenderCellParams) =>
-        getDisciplinesChips(params.value as Discipline[]),
+        getDisciplinesChips(params.value),
     },
     { field: 'available', headerName: 'Available', width: 100 },
     { field: 'needed', headerName: 'Needed', width: 100 },
@@ -27,21 +27,12 @@ const SlotsList: React.FC<Props> = ({ data = [] }) => {
 
   const rows = data.map((slot, i) => ({
     id: i,
-    disciplines: getDisciplinesChips(slot.disciplines),
+    disciplines: slot.disciplines,
     available: slot.available,
     needed: slot.needed,
   }));
 
-  return (
-    <div style={{ height: '400', width: '100%' }}>
-      <DataGrid
-        rows={rows}
-        columns={columns}
-        pageSize={5}
-        rowsPerPageOptions={[5]}
-      />
-    </div>
-  );
+  return <DataGrid rows={rows} columns={columns} />;
 };
 
 export default SlotsList;
