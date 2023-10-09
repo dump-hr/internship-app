@@ -32,13 +32,13 @@ const ScheduleInterviewPage = () => {
   if (isError || !slots)
     return (
       <SlotPickerLayout
-        title={`Dogodila se greška (${error}). Molimo kontaktirajte nas na info@dump.hr`}
+        title={`Dogodila se greška (${error}). Molimo kontaktirajte nas po potrebi na info@dump.hr`}
       />
     );
 
   if (slots?.length === 0) {
     return (
-      <SlotPickerLayout title="Nema dostupnih termina. Molimo kontaktirajte nas na info@dump.hr" />
+      <SlotPickerLayout title="Zasad nema dostupnih termina, ali obavijestit ćemo te mailom kad ih bude." />
     );
   }
 

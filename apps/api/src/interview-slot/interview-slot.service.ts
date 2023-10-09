@@ -4,7 +4,7 @@ import {
   InternalServerErrorException,
   NotFoundException,
 } from '@nestjs/common';
-import { InterviewStatus } from '@prisma/client';
+import { Discipline, InterviewStatus, Prisma } from '@prisma/client';
 import { PrismaService } from 'src/prisma.service';
 
 import { CreateInterviewSlotDto } from './dto/createInterviewSlot.dto';
@@ -125,6 +125,9 @@ export class InterviewSlotService {
     const availableSlots = await this.prisma.interviewSlot.findMany({
       where: {
         internId: null,
+        start: {
+          gte: new Date(new Date().getTime() + 24 * 60 * 60 * 1000),
+        },
         AND: [
           {
             interviewers: {
@@ -152,9 +155,79 @@ export class InterviewSlotService {
             : {},
         ],
       },
+      orderBy: {
+        start: 'asc',
+      },
     });
 
     return availableSlots;
+  }
+
+  async getAvailableSlotsByDisciplines() {
+    const disciplineCombinations = await this.prisma.$queryRaw<
+      { disciplines: Discipline[]; needed: number }[]
+    >(
+      Prisma.sql`
+        select disciplines, count(*)::integer as needed from 
+        (
+          select DISTINCT array_agg("InternDiscipline".discipline ORDER BY "priority" ASC) as "disciplines", "Intern".id 
+          from "Intern" 
+		      left join "InternDiscipline" on "InternDiscipline"."internId" = "Intern".id 
+          where "Intern"."interviewStatus" = 'PickTerm'
+		      group by "Intern".id
+        ) as disciplineCombinations
+        group by disciplines
+        order by needed desc
+      `,
+    );
+
+    const interviewSlots = await Promise.all(
+      disciplineCombinations.map(async (dc) => {
+        const [primary, ...other] = dc.disciplines;
+
+        const available = await this.prisma.interviewSlot.count({
+          where: {
+            internId: null,
+            start: {
+              gte: new Date(new Date().getTime() + 24 * 60 * 60 * 1000),
+            },
+            AND: [
+              {
+                interviewers: {
+                  some: {
+                    interviewer: {
+                      disciplines: {
+                        has: primary,
+                      },
+                    },
+                  },
+                },
+              },
+              other.length > 0
+                ? {
+                    interviewers: {
+                      some: {
+                        interviewer: {
+                          disciplines: {
+                            hasSome: other,
+                          },
+                        },
+                      },
+                    },
+                  }
+                : {},
+            ],
+          },
+        });
+
+        return {
+          ...dc,
+          available,
+        };
+      }),
+    );
+
+    return interviewSlots;
   }
 
   async scheduleInterview(slotId: string, internId: string) {
@@ -165,6 +238,9 @@ export class InterviewSlotService {
     if (slot.internId) {
       throw new NotFoundException('Slot is already taken');
     }
+
+    if (new Date(new Date().getTime() + 23 * 60 * 60 * 1000) > slot.start)
+      throw new NotFoundException('Too late to schedule slot');
 
     const internSlot = await this.prisma.interviewSlot.findFirst({
       where: { internId },

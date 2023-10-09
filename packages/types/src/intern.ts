@@ -110,6 +110,12 @@ export type Slot = {
   end: Date;
 };
 
+export type SlotAvailability = {
+  disciplines: Discipline[];
+  available: number;
+  needed: number;
+};
+
 export type TestSlot = {
   discipline: Discipline;
   location: string;

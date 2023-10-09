@@ -172,6 +172,7 @@ const InternList: React.FC<Props> = ({ data = [], setSelection }) => {
       }}
     >
       <DataGrid
+        style={{ display: 'flex', flexDirection: 'column-reverse' }}
         rows={rows}
         columns={columns}
         disableColumnFilter

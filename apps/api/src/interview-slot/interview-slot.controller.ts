@@ -65,6 +65,11 @@ export class InterviewSlotController {
     return await this.interviewSlotService.getAvailableSlots(internId);
   }
 
+  @Get('availability')
+  async getAvailableSlotsByDisciplines() {
+    return await this.interviewSlotService.getAvailableSlotsByDisciplines();
+  }
+
   @Patch('schedule/:slotId')
   async scheduleInterview(
     @Param('slotId') slotId: string,
