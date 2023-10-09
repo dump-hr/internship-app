@@ -307,6 +307,9 @@ export class TestSlotService {
       include: {
         question: true,
       },
+      orderBy: {
+        createdAt: 'asc',
+      },
     });
   }
 
@@ -320,6 +323,20 @@ export class TestSlotService {
       },
       include: {
         question: true,
+      },
+      orderBy: {
+        createdAt: 'asc',
+      },
+    });
+  }
+
+  async setScore(answerId: string, score: number) {
+    return await this.prisma.internQuestionAnswer.update({
+      where: {
+        id: answerId,
+      },
+      data: {
+        score,
       },
     });
   }

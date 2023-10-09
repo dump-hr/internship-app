@@ -64,6 +64,9 @@ export class InternService {
           },
         },
       },
+      orderBy: {
+        createdAt: 'asc',
+      },
     });
 
     return interns;

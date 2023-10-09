@@ -1,8 +1,9 @@
 import { Box, Button, TextField } from '@mui/material';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRoute } from 'wouter';
 
 import { useFetchTestAnswers } from '../../api/useFetchTestAnswers';
+import { useSetTestScore } from '../../api/useSetTestScore';
 import AdminPage from '../../components/AdminPage';
 import { CodeEditor } from '../../components/CodeEditor/CodeEditor';
 import { Path } from '../../constants/paths';
@@ -15,8 +16,15 @@ const TestReviewPage = () => {
     error,
     isLoading,
   } = useFetchTestAnswers(params?.group, params?.groupId, params?.testSlotId);
+  const { mutateAsync } = useSetTestScore();
 
   const [selectedAnswer, setSelectedAnswer] = useState(0);
+  const [score, setScore] = useState(0);
+
+  useEffect(() => {
+    if (!answers) return;
+    setScore(answers[selectedAnswer].score || 0);
+  }, [selectedAnswer, answers]);
 
   if (isLoading) {
     return <AdminPage>Loading...</AdminPage>;
@@ -34,10 +42,21 @@ const TestReviewPage = () => {
           variant="outlined"
           size="small"
           label="Ocjena zadatka"
-          inputProps={{ min: 0, max: answers[selectedAnswer].question.points }}
+          inputProps={{
+            min: 0,
+            max: answers[selectedAnswer].question.points,
+          }}
           style={{ width: '200px' }}
+          value={score}
+          onChange={(e) => setScore(+e.target.value || 0)}
         />
-        <Button variant="contained" color="secondary">
+        <Button
+          variant="contained"
+          color="secondary"
+          onClick={async () => {
+            await mutateAsync({ answerId: answers[selectedAnswer].id, score });
+          }}
+        >
           Ocjeni
         </Button>
       </Box>

@@ -1,6 +1,7 @@
 import {
   CreateTestSlotsRequest,
   ScheduleTestRequest,
+  SetScoreRequest,
   StartTestRequest,
   SubmitTestRequest,
   TestSlotPreviewDto,
@@ -124,5 +125,14 @@ export class TestSlotController {
       testSlotId,
       questionId,
     );
+  }
+
+  @Put('score/:answerId')
+  @UseGuards(JwtAuthGuard)
+  async setScore(
+    @Param('answerId') answerId: string,
+    @Body() { score }: SetScoreRequest,
+  ) {
+    return await this.testSlotService.setScore(answerId, +score);
   }
 }

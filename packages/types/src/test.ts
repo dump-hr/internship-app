@@ -59,3 +59,8 @@ export type SubmitTestAnswer = {
   code: string;
   questionId: string;
 };
+
+export type SetScoreRequest = {
+  answerId: string;
+  score: number;
+};
