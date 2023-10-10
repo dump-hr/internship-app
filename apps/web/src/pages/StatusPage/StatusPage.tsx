@@ -59,7 +59,7 @@ const StatusPage = () => {
                 {intern.interviewSlot?.start && (
                   <styled.infoText>
                     {moment(intern.interviewSlot.start).format(
-                      'DD/MM/YYYY | HH-mm',
+                      'DD/MM/YYYY | HH:mm',
                     )}
                   </styled.infoText>
                 )}
@@ -97,7 +97,7 @@ const StatusPage = () => {
                       {ind.testSlot && (
                         <styled.infoText>
                           {moment(ind.testSlot.start).format(
-                            'DD/MM/YYYY | HH-mm',
+                            'DD/MM/YYYY | HH:mm',
                           )}
                         </styled.infoText>
                       )}
