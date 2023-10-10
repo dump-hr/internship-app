@@ -16,6 +16,7 @@ import {
 } from 'react-big-calendar';
 import toast from 'react-hot-toast';
 
+import { Path } from '../../constants/paths';
 import { calendarHelper } from '../../helpers/calendarHelper';
 import { EventContent } from './EventContent';
 import styles from './index.module.css';
@@ -37,6 +38,7 @@ type MappedEvent = {
   start: Date;
   end: Date;
   additionalInfo: string;
+  internId?: string;
   interviewers: InterviewMemberParticipation[];
 };
 
@@ -95,11 +97,19 @@ export const Calendar: React.FC<Props> = ({
         events={existingEvents}
         components={{
           eventWrapper: (props: CustomEventWrapperProps) => {
-            const isNotFiltered = !filteredEvents.includes(
-              props.event as MappedEvent,
-            );
+            const event = props.event as MappedEvent;
+            const isNotFiltered = !filteredEvents.includes(event);
             return (
-              <div className={isNotFiltered ? 'greyed-out-event' : ''}>
+              <div
+                className={isNotFiltered ? 'greyed-out-event' : ''}
+                onClick={() =>
+                  event.internId
+                    ? window.open(
+                        Path.Interview.replace(':internId', event.internId!),
+                      )
+                    : {}
+                }
+              >
                 {props.children}
               </div>
             );
