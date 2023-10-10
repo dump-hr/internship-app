@@ -60,8 +60,8 @@ export const AdminInterviewPage = () => {
     }
 
     const interviewSlotDto = {
-      start: moment(event.start).format('YYYY-MM-DD HH:mm:ss'),
-      end: moment(event.end).format('YYYY-MM-DD HH:mm:ss'),
+      start: event.start,
+      end: event.end,
       interviewers: selectedInterviewers,
       notes: additionalNotesValue || '',
     };
