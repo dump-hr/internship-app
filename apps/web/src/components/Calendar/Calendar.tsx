@@ -14,7 +14,6 @@ import {
   EventWrapperProps,
   SlotInfo,
 } from 'react-big-calendar';
-import withDragAndDrop from 'react-big-calendar/lib/addons/dragAndDrop';
 import toast from 'react-hot-toast';
 
 import { calendarHelper } from '../../helpers/calendarHelper';
@@ -58,8 +57,6 @@ export const Calendar: React.FC<Props> = ({
   deleteEvent,
   addEvent,
 }: Props) => {
-  const DragAndDropCalendar = withDragAndDrop(BigCalendar);
-
   const handleTimeSlotAdd = (slotInfo: SlotInfo) => {
     if (calendarHelper.checkIfEventExists(existingEvents, slotInfo)) return;
 
@@ -82,7 +79,7 @@ export const Calendar: React.FC<Props> = ({
 
   return (
     <div>
-      <DragAndDropCalendar
+      <BigCalendar
         step={20}
         localizer={localizer}
         style={{ height: 618, width: 685 }}
@@ -90,9 +87,8 @@ export const Calendar: React.FC<Props> = ({
         drilldownView={null}
         views={['week']}
         selectable={true}
-        resizable={true}
-        draggableAccessor={() => true}
         longPressThreshold={1}
+        scrollToTime={new Date()}
         culture="hr"
         className={styles.wrapper}
         onSelectSlot={handleTimeSlotAdd}
