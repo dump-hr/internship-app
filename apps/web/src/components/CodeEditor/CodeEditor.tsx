@@ -68,7 +68,10 @@ export const CodeEditor: React.FC<Props> = ({
 
             <h2 className={c.title}>{questionTitle}</h2>
           </div>
-          <p className={c.text}>{questionText}</p>
+          <div
+            className={c.text}
+            dangerouslySetInnerHTML={{ __html: questionText }}
+          ></div>
         </div>
 
         <CodeRunner />

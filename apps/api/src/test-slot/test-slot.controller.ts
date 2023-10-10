@@ -141,14 +141,8 @@ export class TestSlotController {
 
   @Get('answers/:testSlotId/question/:questionId')
   @UseGuards(JwtAuthGuard)
-  async getTestAnswersByQuestion(
-    @Param('testSlotId') testSlotId: string,
-    @Param('questionId') questionId: string,
-  ) {
-    return await this.testSlotService.getTestAnswersByQuestion(
-      testSlotId,
-      questionId,
-    );
+  async getTestAnswersByQuestion(@Param('questionId') questionId: string) {
+    return await this.testSlotService.getTestAnswersByQuestion(questionId);
   }
 
   @Put('score/:answerId')

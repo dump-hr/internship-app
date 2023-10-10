@@ -238,9 +238,9 @@ export class TestSlotService {
       throw new NotFoundException('Slot not found');
     }
 
-    // if (new Date() < slot.start) {
-    //   throw new BadRequestException('Test not started yet');
-    // }
+    if (new Date() < slot.start) {
+      throw new BadRequestException('Test not started yet');
+    }
 
     return slot;
   }
@@ -265,16 +265,6 @@ export class TestSlotService {
       );
     }
 
-    await this.prisma.internQuestionAnswer.createMany({
-      data: test.answers.map((a) => ({
-        code: a.code,
-        questionId: a.questionId,
-        language: test.language,
-        internDisciplineInternId: internDiscipline.internId,
-        internDisciplineDiscipline: internDiscipline.discipline,
-      })),
-    });
-
     await this.prisma.internDiscipline.update({
       where: {
         internId_discipline: {
@@ -284,6 +274,17 @@ export class TestSlotService {
       },
       data: {
         testStatus: TestStatus.Done,
+        internQuestionAnswers: {
+          createMany: {
+            data: test.answers.map((a) => ({
+              code: a.code,
+              questionId: a.questionId,
+              language: a.language,
+              internDisciplineInternId: internDiscipline.internId,
+              internDisciplineDiscipline: internDiscipline.discipline,
+            })),
+          },
+        },
       },
     });
 
@@ -317,13 +318,10 @@ export class TestSlotService {
     });
   }
 
-  async getTestAnswersByQuestion(testSlotId: string, questionId: string) {
+  async getTestAnswersByQuestion(questionId: string) {
     return await this.prisma.internQuestionAnswer.findMany({
       where: {
         questionId,
-        internDiscipline: {
-          testSlotId,
-        },
       },
       include: {
         question: true,

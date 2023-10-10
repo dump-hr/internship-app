@@ -49,12 +49,12 @@ export type Test = {
 export type SubmitTestRequest = {
   testSlotId: string;
   internEmail: string;
-  language: CodingLanguage;
   answers: SubmitTestAnswer[];
 };
 
 export type SubmitTestAnswer = {
   code: string;
+  language: CodingLanguage;
   questionId: string;
 };
 

@@ -25,7 +25,7 @@ import c from './TestPage.module.css';
 const TestPage = () => {
   const [, params] = useRoute(Path.Test);
   const [code, setCode] = useState<string[]>([]);
-  const [language, setLanguage] = useState(CodingLanguage.JavaScript);
+  const [language, setLanguage] = useState<CodingLanguage[]>([]);
   const [selectedQuestion, setSelectedQuestion] = useState(0);
 
   const [email, setEmail] = useState('');
@@ -34,9 +34,7 @@ const TestPage = () => {
   const [submitDialogOpen, setSubmitDialogOpen] = useState(false);
 
   const { data, ...startTest } = useStartTestSlot();
-  const submitTest = useSubmitTestSlot(() =>
-    localStorage.removeItem(`code:${data?.id}:${email.toLowerCase()}`),
-  );
+  const submitTest = useSubmitTestSlot();
 
   useLocalSave(
     !!data,
@@ -68,7 +66,10 @@ const TestPage = () => {
       internEmail: email,
     });
 
-    setCode(testQuestions.map(() => startingPrograms[language]));
+    setLanguage(testQuestions.map(() => CodingLanguage.JavaScript));
+    setCode(
+      testQuestions.map(() => startingPrograms[CodingLanguage.JavaScript]),
+    );
   };
 
   const handleSubmit = async () => {
@@ -76,10 +77,10 @@ const TestPage = () => {
     await submitTest.mutateAsync({
       testSlotId: data.id,
       internEmail: email,
-      language,
       answers: data.testQuestions.map((q, i) => ({
         questionId: q.id,
         code: code[i],
+        language: language[i],
       })),
     });
   };
@@ -127,21 +128,18 @@ const TestPage = () => {
             <InputLabel id="language-select">Language</InputLabel>
             <Select
               labelId="language-select"
-              value={language}
+              value={language[selectedQuestion]}
               label="Language"
               onChange={(e) => {
                 const language = e.target.value as CodingLanguage;
-                setLanguage((prevLanguage) => {
-                  // replace only unmodified programs to prevent data loss
-                  setCode((prev) =>
-                    prev.map((prevCode) =>
-                      prevCode !== startingPrograms[prevLanguage]
-                        ? prevCode
-                        : startingPrograms[language],
-                    ),
-                  );
-                  return language;
-                });
+                setLanguage((prev) =>
+                  prev.map((_, i) => (i === selectedQuestion ? language : _)),
+                );
+                setCode((prev) =>
+                  prev.map((_, i) =>
+                    i === selectedQuestion ? startingPrograms[language] : _,
+                  ),
+                );
               }}
             >
               {Object.values(CodingLanguage).map((language) => (
@@ -162,7 +160,7 @@ const TestPage = () => {
       </header>
 
       <CodeEditor
-        language={language.toLowerCase()}
+        language={language[selectedQuestion].toLowerCase()}
         code={code[selectedQuestion]}
         setCode={(code) =>
           setCode((prev) =>

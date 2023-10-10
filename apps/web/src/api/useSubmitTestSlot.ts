@@ -13,7 +13,7 @@ const submitTestSlot = async (req: SubmitTestRequest) => {
   );
 };
 
-export const useSubmitTestSlot = (cleanup: () => void) => {
+export const useSubmitTestSlot = () => {
   return useMutation(submitTestSlot, {
     onMutate: () => {
       return { toastId: toast.loading('Submitting test...') };
@@ -24,7 +24,6 @@ export const useSubmitTestSlot = (cleanup: () => void) => {
         duration: 5000,
       });
       navigate(Path.Status.replace(':internId', data));
-      cleanup();
     },
     onError: (error: string, _variables, context) => {
       toast.error(error, { id: context?.toastId });
