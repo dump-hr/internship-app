@@ -25,7 +25,7 @@ const InterviewQuestionHandler = ({
 
   return (
     <Box display="flex" flexDirection="column">
-      <Typography>{question.title}</Typography>
+      <Typography whiteSpace="pre-line">{question.title}</Typography>
       <Box display="flex">
         <InputHandler question={questionForValue} form={form} />
         <InputHandler question={questionForTick} form={form} />
