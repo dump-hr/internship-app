@@ -24,9 +24,7 @@ export class EmailController {
       `Poslan mail ${emails.join(',')} naziva ${subject}`,
     );
 
-    const templates = await this.emailService.makeEmail(emails, text);
-    console.log(templates, subject);
-    return 'TODO';
+    return await this.emailService.sendEmail(emails, text, subject);
   }
 
   @UseGuards(JwtAuthGuard)
