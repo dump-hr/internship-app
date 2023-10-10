@@ -1,3 +1,4 @@
+import { InterviewStatus, TestStatus } from '@internship-app/types';
 import { Typography } from '@mui/material';
 import moment from 'moment';
 import { useRoute } from 'wouter';
@@ -43,9 +44,17 @@ const StatusPage = () => {
             <styled.interviewSection>
               <styled.infoTitle>Intervju</styled.infoTitle>
               <styled.spacedBetween>
-                <styled.infoText>
-                  {interviewStatusLabel[intern.interviewStatus]}
-                </styled.infoText>
+                {intern.interviewStatus === InterviewStatus.PickTerm ? (
+                  <styled.link
+                    href={Path.ScheduleInterview.replace(':internId', internId)}
+                  >
+                    Biraj termin intervjua
+                  </styled.link>
+                ) : (
+                  <styled.infoText>
+                    {interviewStatusLabel[intern.interviewStatus]}
+                  </styled.infoText>
+                )}
                 {intern.interviewSlot?.start && (
                   <styled.infoText>
                     {moment(intern.interviewSlot.start).format(
@@ -70,9 +79,20 @@ const StatusPage = () => {
                   </styled.spacedBetween>
                   {ind.testStatus && (
                     <styled.spacedBetween>
-                      <styled.infoText>
-                        Test: {testStatusLabel[ind.testStatus].toLowerCase()}
-                      </styled.infoText>
+                      {ind.testStatus === TestStatus.PickTerm ? (
+                        <styled.link
+                          href={Path.ScheduleTest.replace(
+                            ':discipline',
+                            ind.discipline,
+                          ).replace(':internId', internId)}
+                        >
+                          Biraj termin testa
+                        </styled.link>
+                      ) : (
+                        <styled.infoText>
+                          Test: {testStatusLabel[ind.testStatus].toLowerCase()}
+                        </styled.infoText>
+                      )}
                       {ind.testSlot && (
                         <styled.infoText>
                           {moment(ind.testSlot.start).format(

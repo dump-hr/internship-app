@@ -23,8 +23,9 @@ export const useScheduleInterview = () => {
     onMutate: () => {
       return { toastId: toast.loading('Zakazivanje intervjua...') };
     },
-    onSuccess: (data, _variables, context) => {
+    onSuccess: (data, variables, context) => {
       toast.success('Intervju uspješno zakazan!', { id: context?.toastId });
+      queryClient.invalidateQueries(['status', variables.internId]);
       navigate(Path.Status.replace(':internId', data.id));
     },
     onError: (error: string, variables, context) => {
