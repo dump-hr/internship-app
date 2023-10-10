@@ -105,7 +105,9 @@ const DashboardPage = () => {
 
       {actionsOpen && <BoardActions internIds={selection} />}
 
-      <CsvFile />
+      <CsvFile
+        data={internsWithStatus?.filter(getInternFilter(filterCriteria))}
+      />
       <InternFilter submitHandler={filterHandler} />
 
       <Grid item xs={12} md={5}>

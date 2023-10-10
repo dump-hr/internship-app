@@ -1,11 +1,13 @@
+import { Intern, InternWithStatus } from '@internship-app/types';
 import { Button } from '@mui/material';
 import { CSVLink } from 'react-csv';
 
-import { useFetchAllInterns } from '../../api/useFetchAllInterns';
+type Props = {
+  data: InternWithStatus[] | undefined;
+};
 
-const CsvFile = () => {
-  const { data: interns } = useFetchAllInterns();
-
+const CsvFile = ({ data }: Props) => {
+  console.log(data);
   const headers = [
     { label: 'Id', key: 'id' }, //do we need this?
     { label: 'Ime', key: 'firstName' },
@@ -27,7 +29,7 @@ const CsvFile = () => {
     { label: 'Score', key: 'interviewSlot.score' }, //do we need answers (or even this)?
   ];
 
-  const formattedData = interns?.map((item) => ({
+  const formattedData = data?.map((item: Intern) => ({
     ...item,
     internDisciplines: item.internDisciplines
       .map((el) => el.discipline)
