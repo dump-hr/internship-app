@@ -2,7 +2,6 @@ import {
   InterviewEvent,
   InterviewMemberParticipation,
 } from '@internship-app/types';
-import moment from 'moment';
 import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 
@@ -60,8 +59,8 @@ export const AdminInterviewPage = () => {
     }
 
     const interviewSlotDto = {
-      start: moment(event.start).format('YYYY-MM-DD HH:mm:ss'),
-      end: moment(event.end).format('YYYY-MM-DD HH:mm:ss'),
+      start: event.start,
+      end: event.end,
       interviewers: selectedInterviewers,
       notes: additionalNotesValue || '',
     };

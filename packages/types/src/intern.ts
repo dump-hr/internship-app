@@ -187,8 +187,8 @@ export type InterviewEvent = {
 };
 
 export type CreateInterviewSlotDto = {
-  start: string;
-  end: string;
+  start: Date;
+  end: Date;
   interviewers: string[];
   notes?: string;
 };

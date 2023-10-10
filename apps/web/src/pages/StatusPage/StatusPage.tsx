@@ -1,7 +1,7 @@
 import { InterviewStatus, TestStatus } from '@internship-app/types';
 import { Typography } from '@mui/material';
 import moment from 'moment';
-import { useRoute } from 'wouter';
+import { Link, useRoute } from 'wouter';
 
 import { useFetchStatus } from '../../api/useFetchStatus';
 import PublicLayout from '../../components/PublicLayout';
@@ -37,7 +37,8 @@ const StatusPage = () => {
             <styled.description>
               Ovdje možeš pratiti svoj trenutni status i rezultate ispita. O
               upadu na DUMP Internship i terminu intervjua obavijestit ćemo te
-              mailom.
+              mailom. Ako želiš izmijeniti prijavljena područja, javi nam se na{' '}
+              <Link to="mailto:info@dump.hr">info@dump.hr</Link>.
             </styled.description>
           </styled.header>
           <styled.infoSection>
