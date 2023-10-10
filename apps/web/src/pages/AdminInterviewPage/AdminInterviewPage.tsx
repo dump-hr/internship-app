@@ -2,7 +2,6 @@ import {
   InterviewEvent,
   InterviewMemberParticipation,
 } from '@internship-app/types';
-import moment from 'moment';
 import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 
