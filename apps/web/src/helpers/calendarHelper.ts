@@ -12,6 +12,7 @@ type MappedEvent = {
   start: Date;
   end: Date;
   additionalInfo: string;
+  internId?: string;
   interviewers: InterviewMemberParticipation[];
 };
 
@@ -21,6 +22,7 @@ const parseInterviewSlotToCalendarEvent = (interviewSlot: InterviewSlot) => {
     start: moment(interviewSlot.start).toDate(),
     end: moment(interviewSlot.end).toDate(),
     interviewers: interviewSlot.interviewers,
+    internId: interviewSlot.internId,
     additionalInfo: `Interviewers: ${interviewSlot.interviewers
       .map((interviewer) => interviewer.interviewer.name)
       .join(', ')}\nIntern: ${interviewSlot?.intern?.firstName ?? 'None'} ${

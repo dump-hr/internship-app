@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { FieldValues, useForm } from 'react-hook-form';
 import { LoaderIcon } from 'react-hot-toast';
 import { useQueryClient } from 'react-query';
-import { useRoute } from 'wouter';
+import { Link, useRoute } from 'wouter';
 import { navigate } from 'wouter/use-location';
 
 import { useGetIntern } from '../../api/useGetIntern';
@@ -87,7 +87,16 @@ const InterviewPage = () => {
   }
 
   if (intern.interviewStatus !== InterviewStatus.Pending) {
-    return <div>Intervju status interna nije pending!</div>;
+    return (
+      <div>
+        <p>
+          Intervju status interna nije pending nego {intern.interviewStatus}!
+        </p>
+        <Link to={Path.Intern.replace(':internId', intern.id)}>
+          Otvori profil
+        </Link>
+      </div>
+    );
   }
 
   return (

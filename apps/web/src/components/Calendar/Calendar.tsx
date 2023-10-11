@@ -14,9 +14,9 @@ import {
   EventWrapperProps,
   SlotInfo,
 } from 'react-big-calendar';
-import withDragAndDrop from 'react-big-calendar/lib/addons/dragAndDrop';
 import toast from 'react-hot-toast';
 
+import { Path } from '../../constants/paths';
 import { calendarHelper } from '../../helpers/calendarHelper';
 import { EventContent } from './EventContent';
 import styles from './index.module.css';
@@ -38,6 +38,7 @@ type MappedEvent = {
   start: Date;
   end: Date;
   additionalInfo: string;
+  internId?: string;
   interviewers: InterviewMemberParticipation[];
 };
 
@@ -58,8 +59,6 @@ export const Calendar: React.FC<Props> = ({
   deleteEvent,
   addEvent,
 }: Props) => {
-  const DragAndDropCalendar = withDragAndDrop(BigCalendar);
-
   const handleTimeSlotAdd = (slotInfo: SlotInfo) => {
     if (calendarHelper.checkIfEventExists(existingEvents, slotInfo)) return;
 
@@ -82,7 +81,7 @@ export const Calendar: React.FC<Props> = ({
 
   return (
     <div>
-      <DragAndDropCalendar
+      <BigCalendar
         step={20}
         localizer={localizer}
         style={{ height: 618, width: 685 }}
@@ -90,20 +89,27 @@ export const Calendar: React.FC<Props> = ({
         drilldownView={null}
         views={['week']}
         selectable={true}
-        resizable={true}
-        draggableAccessor={() => true}
         longPressThreshold={1}
+        scrollToTime={new Date()}
         culture="hr"
         className={styles.wrapper}
         onSelectSlot={handleTimeSlotAdd}
         events={existingEvents}
         components={{
           eventWrapper: (props: CustomEventWrapperProps) => {
-            const isNotFiltered = !filteredEvents.includes(
-              props.event as MappedEvent,
-            );
+            const event = props.event as MappedEvent;
+            const isNotFiltered = !filteredEvents.includes(event);
             return (
-              <div className={isNotFiltered ? 'greyed-out-event' : ''}>
+              <div
+                className={isNotFiltered ? 'greyed-out-event' : ''}
+                onClick={() =>
+                  event.internId
+                    ? window.open(
+                        Path.Interview.replace(':internId', event.internId!),
+                      )
+                    : {}
+                }
+              >
                 {props.children}
               </div>
             );

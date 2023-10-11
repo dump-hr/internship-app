@@ -149,6 +149,7 @@ export type InterviewSlot = {
   score?: number;
   notes?: string;
   interviewers: InterviewMemberParticipation[];
+  internId?: string;
   intern: Intern
 };
 
