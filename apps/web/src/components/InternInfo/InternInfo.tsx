@@ -83,6 +83,8 @@ const InternInfo = ({ intern }: InternInfoProps) => {
 
           {Array.isArray(intern.interviewSlot?.answers) &&
             intern.interviewSlot?.answers.map((item: Answer) => {
+              if (!item.value) return null;
+
               return (
                 <div
                   className={item.tick ? styles.tick : styles.atribute}

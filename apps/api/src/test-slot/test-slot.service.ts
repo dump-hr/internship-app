@@ -200,7 +200,7 @@ Tvoj rezultat testa poslat ćemo ti najkasnije tri dana nakon odabranog termina.
 
 Sretno i vidimo se!
 
-DUMP Udruga mladih programera (edited) `,
+DUMP Udruga mladih programera`,
       MessageStream: 'outbound',
     });
 
