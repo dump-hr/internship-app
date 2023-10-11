@@ -134,7 +134,7 @@ const DashboardPage = () => {
 
       {actionsOpen && <BoardActions internIds={selection} />}
 
-      <InternFilter submitHandler={filterHandler} />
+      <InternFilter submitHandler={filterHandler} disabled={showDuplicates} />
 
       <Grid item xs={12} md={5}>
         <div className={c.buttonsWrapper}>
