@@ -140,8 +140,15 @@ const DashboardPage = () => {
         <div className={c.buttonsWrapper}>
           <div className={c.switchWrapper}>
             Prikaži sve
-            <Switch onChange={() => setShowDuplicates(!showDuplicates)} />
-            Prikaži duplikate
+            <Switch
+              onChange={() => setShowDuplicates(!showDuplicates)}
+              disabled={duplicateInterns.length === 0}
+            />
+            {duplicateInterns.length === 0 ? (
+              <i style={{ color: '#ababab' }}>Nema duplikata</i>
+            ) : (
+              'Prikaži duplikate'
+            )}
           </div>
 
           <Button disabled>Pregledaj dev ispit</Button>
