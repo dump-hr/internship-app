@@ -264,7 +264,7 @@ export class InterviewSlotService {
       TextBody: `Pozdrav ${intern.firstName},
 
 biranje termina intervjua je uspješno provedeno! Termin svog intervjua možeš vidjeti na status stranici: https://internship.dump.hr/status/${intern.id}
-U slučaju da nikako ne možeš doći na odabrani termin, molimo te da nam se na vrijeme javiš na info@dump.hr
+U slučaju da ipak ne možeš doći na odabrani termin, javi nam se na vrijeme na info@dump.hr
 
 Podsjećamo, tvoj intervju će se održati u odabranom terminu u našem uredu (prostorija A223) na FESB-u (Ruđera Boškovića 32).
 
