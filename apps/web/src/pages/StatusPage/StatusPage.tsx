@@ -49,7 +49,7 @@ const StatusPage = () => {
                   <styled.link
                     href={Path.ScheduleInterview.replace(':internId', internId)}
                   >
-                    Biraj termin intervjua
+                    Klikni za biranje termina intervjua
                   </styled.link>
                 ) : (
                   <styled.infoText>
@@ -87,7 +87,7 @@ const StatusPage = () => {
                             ind.discipline,
                           ).replace(':internId', internId)}
                         >
-                          Biraj termin testa
+                          Klikni za biranje termina testa
                         </styled.link>
                       ) : (
                         <styled.infoText>

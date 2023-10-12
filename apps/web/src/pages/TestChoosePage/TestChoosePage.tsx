@@ -31,7 +31,6 @@ const TestChoosePage = () => {
           size="small"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          error={!'a'}
         />
         <Button type="submit" variant="contained" color="secondary">
           Otvori

@@ -18,7 +18,7 @@ export const useChooseTest = () => {
       return { toastId: toast.loading('Učitavanje...') };
     },
     onSuccess: (data, _variables, context) => {
-      toast.success(`Povezano! ${moment(data.start).format('DD.MM. HH:mm')}`, {
+      toast.success(`Incoming: ${moment(data.start).format('DD.MM. HH:mm')}`, {
         id: context?.toastId,
       });
 
