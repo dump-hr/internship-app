@@ -91,4 +91,16 @@ export const options: ActionOptions<BoardActionType> = {
       },
     ],
   },
+  [BoardActionType.SumTestPoints]: {
+    description: 'Zbraja bodove na testu pripravnika.',
+    questions: [
+      {
+        id: 'discipline',
+        title: 'Područje',
+        type: QuestionType.Select,
+        options: [Discipline.Development],
+        registerValue: Discipline.Development,
+      },
+    ],
+  },
 };
