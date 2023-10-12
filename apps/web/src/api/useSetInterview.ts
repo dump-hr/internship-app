@@ -1,6 +1,6 @@
 import { SetInterviewRequest } from '@internship-app/types';
 import toast from 'react-hot-toast';
-import { useMutation } from 'react-query';
+import { useMutation, useQueryClient } from 'react-query';
 
 import { api } from '.';
 
@@ -12,9 +12,12 @@ const setInterview = async (req: SetInterviewRequest) => {
 };
 
 export const useSetInterview = (navigate: () => void) => {
+  const queryClient = useQueryClient();
+
   return useMutation(setInterview, {
-    onSuccess: () => {
+    onSuccess: (_data, variables) => {
       toast.success('Intervju uspješno pohranjen!');
+      queryClient.invalidateQueries(['intern', variables.internId]);
       navigate();
     },
     onError: (error: string) => {

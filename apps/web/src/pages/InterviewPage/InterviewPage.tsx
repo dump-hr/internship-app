@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { FieldValues, useForm } from 'react-hook-form';
 import { LoaderIcon } from 'react-hot-toast';
 import { useQueryClient } from 'react-query';
-import { useRoute } from 'wouter';
+import { Link, useRoute } from 'wouter';
 import { navigate } from 'wouter/use-location';
 
 import { useFetchIntern } from '../../api/useFetchIntern';
@@ -41,12 +41,11 @@ const InterviewPage = () => {
 
   const [dialogOpen, setDialogOpen] = useState(false);
 
-  const initialFormValue = JSON.parse(
+  const localFormValue = JSON.parse(
     localStorage.getItem(`interview ${internId}`)!,
   );
   const form = useForm<FieldValues>({
-    defaultValues: { ...defaultInterviewValues, ...initialFormValue },
-    shouldUnregister: false,
+    defaultValues: { ...defaultInterviewValues, ...localFormValue },
   });
 
   useEffect(() => {
@@ -119,7 +118,17 @@ const InterviewPage = () => {
   }
 
   if (intern.interviewStatus !== InterviewStatus.Pending) {
-    return <div>Intervju status interna nije pending!</div>;
+    return (
+      <div>
+        <p>
+          Intervju status interna {intern.firstName} {intern.lastName} nije
+          pending nego {intern.interviewStatus}!
+        </p>
+        <Link to={Path.Intern.replace(':internId', intern.id)}>
+          Otvori profil
+        </Link>
+      </div>
+    );
   }
 
   return (
