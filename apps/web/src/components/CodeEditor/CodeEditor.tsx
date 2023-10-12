@@ -1,3 +1,4 @@
+import { CodingLanguage } from '@internship-app/types';
 import Editor from '@monaco-editor/react';
 import { Button, ButtonGroup } from '@mui/material';
 import React from 'react';
@@ -6,7 +7,7 @@ import { CodeRunner } from '../CodeRunner/CodeRunner';
 import c from './CodeEditor.module.css';
 
 type Props = {
-  language: string;
+  language: CodingLanguage;
   code: string;
   setCode: (code: string) => void;
   questionTitle: string;
@@ -35,7 +36,7 @@ export const CodeEditor: React.FC<Props> = ({
       <Editor
         height={`calc(100vh - ${headerHeight}px)`}
         theme="vs-dark"
-        language={language}
+        language={language.toLowerCase()}
         options={{
           quickSuggestions: {
             other: false,
@@ -74,7 +75,7 @@ export const CodeEditor: React.FC<Props> = ({
           ></div>
         </div>
 
-        <CodeRunner />
+        <CodeRunner code={code} language={language} />
       </div>
     </main>
   );

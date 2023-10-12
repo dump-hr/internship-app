@@ -42,3 +42,11 @@ api.interceptors.response.use(
     return Promise.reject(error.response.data.message || error.message);
   },
 );
+
+export const runApi = axios.create({
+  baseURL: '/run',
+  timeout: 5000,
+  headers: {
+    'Content-Type': 'application/json',
+  },
+});

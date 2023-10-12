@@ -62,3 +62,14 @@ export type SetScoreRequest = {
   answerId: string;
   score: number;
 };
+
+export type SpawnProgramRequest = {
+  pid: string;
+  language: CodingLanguage;
+  code: string;
+};
+
+export type SendStdinRequest = {
+  pid: string;
+  text: string;
+};
