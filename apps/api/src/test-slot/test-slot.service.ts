@@ -59,6 +59,7 @@ export class TestSlotService {
             start: slot.start,
             end: slot.end,
             location: slot.location,
+            password: slot.password,
             maxPoints: 0,
           },
         }),
@@ -75,6 +76,7 @@ export class TestSlotService {
         capacity: testSlot.capacity,
         location: testSlot.location,
         maxPoints: testSlot.maxPoints,
+        password: testSlot.password,
         testQuestions: {
           deleteMany: {
             testSlotId: id,
@@ -147,9 +149,9 @@ export class TestSlotService {
       },
     });
 
-    const availableSlots = slots.filter(
-      (s) => s._count.internDisciplines < s.capacity,
-    );
+    const availableSlots = slots
+      .filter((s) => s._count.internDisciplines < s.capacity)
+      .map((s) => ({ ...s, password: undefined }));
 
     return availableSlots;
   }
@@ -226,6 +228,16 @@ DUMP Udruga mladih programera`,
         },
       },
     });
+  }
+
+  async choseTest(password: string) {
+    const testSlot = await this.prisma.testSlot.findUnique({
+      where: { password },
+    });
+
+    if (!password) throw new BadRequestException('Such test does not exist!');
+
+    return testSlot;
   }
 
   async startTest(testSlotId: string, email: string) {

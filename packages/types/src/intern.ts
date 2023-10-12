@@ -121,6 +121,7 @@ export type TestSlot = {
   location: string;
   capacity: number;
   maxPoints: number;
+  password: string;
   internDisciplines: InternDiscipline[];
   testQuestions: TestQuestion[];
 } & Slot;

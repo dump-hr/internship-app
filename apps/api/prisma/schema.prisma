@@ -68,6 +68,7 @@ model TestSlot {
   location          String
   capacity          Int
   maxPoints         Int
+  password          String             @unique @default(uuid())
   internDisciplines InternDiscipline[]
   testQuestions     TestQuestion[]
   createdAt         DateTime           @default(now())
