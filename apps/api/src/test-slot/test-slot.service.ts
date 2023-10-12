@@ -1,4 +1,8 @@
-import { CreateTestSlotsRequest, TestSlot } from '@internship-app/types';
+import {
+  CreateTestSlotsRequest,
+  SubmitTestRequest,
+  TestSlot,
+} from '@internship-app/types';
 import {
   BadRequestException,
   Injectable,
@@ -220,6 +224,148 @@ DUMP Udruga mladih programera`,
             id: slotId,
           },
         },
+      },
+    });
+  }
+
+  async startTest(testSlotId: string, email: string) {
+    const internDiscipline = await this.prisma.internDiscipline.findFirst({
+      where: {
+        intern: {
+          email: {
+            equals: email,
+            mode: 'insensitive',
+          },
+        },
+        testSlotId,
+        testStatus: TestStatus.Pending,
+      },
+    });
+
+    if (!internDiscipline) {
+      throw new BadRequestException(
+        'Test does not exist or intern does not have permission to access',
+      );
+    }
+
+    const slot = await this.prisma.testSlot.findUnique({
+      where: {
+        id: testSlotId,
+      },
+      include: {
+        testQuestions: {
+          orderBy: {
+            order: 'asc',
+          },
+        },
+      },
+    });
+
+    if (!slot) {
+      throw new NotFoundException('Slot not found');
+    }
+
+    if (new Date() < slot.start) {
+      throw new BadRequestException('Test not started yet');
+    }
+
+    return slot;
+  }
+
+  async submitTest(testSlotId: string, test: SubmitTestRequest) {
+    const internDiscipline = await this.prisma.internDiscipline.findFirst({
+      where: {
+        intern: {
+          email: {
+            equals: test.internEmail,
+            mode: 'insensitive',
+          },
+        },
+        testSlotId,
+        testStatus: TestStatus.Pending,
+      },
+    });
+
+    if (!internDiscipline) {
+      throw new BadRequestException(
+        'Test does not exist or intern does not have permission to submit',
+      );
+    }
+
+    await this.prisma.internDiscipline.update({
+      where: {
+        internId_discipline: {
+          internId: internDiscipline.internId,
+          discipline: internDiscipline.discipline,
+        },
+      },
+      data: {
+        testStatus: TestStatus.Done,
+        internQuestionAnswers: {
+          createMany: {
+            data: test.answers.map((a) => ({
+              code: a.code,
+              questionId: a.questionId,
+              language: a.language,
+              internDisciplineInternId: internDiscipline.internId,
+              internDisciplineDiscipline: internDiscipline.discipline,
+            })),
+          },
+        },
+      },
+    });
+
+    return internDiscipline.internId;
+  }
+
+  async getTestAnswersByIntern(testSlotId: string, internId: string) {
+    const internDiscipline = await this.prisma.internDiscipline.findFirst({
+      where: {
+        internId,
+        testSlotId,
+        testStatus: TestStatus.Done,
+      },
+    });
+
+    if (!internDiscipline) {
+      throw new BadRequestException('Test does not exist or is not done');
+    }
+
+    return await this.prisma.internQuestionAnswer.findMany({
+      where: {
+        internDisciplineInternId: internId,
+        internDisciplineDiscipline: internDiscipline.discipline,
+      },
+      include: {
+        question: true,
+      },
+      orderBy: {
+        createdAt: 'asc',
+      },
+    });
+  }
+
+  async getTestAnswersByQuestion(questionId: string) {
+    return await this.prisma.internQuestionAnswer.findMany({
+      where: {
+        questionId,
+      },
+      include: {
+        question: true,
+      },
+      orderBy: {
+        createdAt: 'asc',
+      },
+    });
+  }
+
+  async setScore(answerId: string, score: number) {
+    return await this.prisma.internQuestionAnswer.update({
+      where: {
+        id: answerId,
+      },
+      data: {
+        score,
       },
     });
   }

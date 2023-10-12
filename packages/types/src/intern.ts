@@ -44,11 +44,13 @@ export enum TestStatus {
 }
 
 export enum CodingLanguage {
+  JavaScript = 'JavaScript',
   Python = 'Python',
+  CSharp = 'CSharp',
   CPP = 'CPP',
   C = 'C',
-  CS = 'CS',
-  JavaScript = 'JavaScript',
+  Java = 'Java',
+  Go = 'Go',
 }
 
 export enum InternLogAction {
@@ -150,7 +152,7 @@ export type InterviewSlot = {
   notes?: string;
   interviewers: InterviewMemberParticipation[];
   internId?: string;
-  intern: Intern
+  intern: Intern;
 };
 
 export type InterviewMemberParticipation = {

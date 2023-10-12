@@ -1,11 +1,11 @@
 * {
-  font-family: 'FuseV2Display-Regular', sans-serif;
   box-sizing: border-box;
 }
 
 body {
   margin: 0;
   background-color: white;
+  font-family: 'FuseV2Display-Regular', sans-serif;
 }
 
 .applicationFormPageWrapper {

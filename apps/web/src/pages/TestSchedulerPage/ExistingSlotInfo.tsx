@@ -28,7 +28,7 @@ export const ExistingSlotInfo: React.FC<ExistingSlotInfoProps> = ({
       >
         Otvori
       </Button>
-      <TestSlotInfo slot={slot} />
+      <TestSlotInfo slot={slot} simple />
     </Box>
   );
 };

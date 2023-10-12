@@ -1,5 +1,6 @@
 import { Box, Button, TextField } from '@mui/material';
 import { useState } from 'react';
+import { toast } from 'react-hot-toast';
 import { useLocation } from 'wouter';
 
 import { useLogin } from '../../api/useLogin';
@@ -27,8 +28,7 @@ const LoginForm = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!isValid) {
-      console.log('Invalid email: ', email);
-
+      toast.error('Invalid email');
       return;
     }
 

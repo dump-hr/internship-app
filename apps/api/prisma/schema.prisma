@@ -168,11 +168,13 @@ enum TestStatus {
 }
 
 enum CodingLanguage {
+  JavaScript
   Python
+  CSharp
   CPP
   C
-  CS
-  JavaScript
+  Java
+  Go
 }
 
 enum InternLogAction {

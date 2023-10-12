@@ -69,6 +69,9 @@ export class InternService {
           },
         },
       },
+      orderBy: {
+        createdAt: 'asc',
+      },
     });
 
     return interns;
@@ -292,6 +295,12 @@ dump.hr`,
         return await this.prisma.intern.updateMany({
           where: { id: { in: internIds } },
           data: { interviewStatus: action.interviewStatus },
+        });
+
+      case 'SetTestStatus':
+        return await this.prisma.internDiscipline.updateMany({
+          where: { internId: { in: internIds }, discipline: action.discipline },
+          data: { testStatus: action.testStatus },
         });
 
       case 'SetDiscipline':
