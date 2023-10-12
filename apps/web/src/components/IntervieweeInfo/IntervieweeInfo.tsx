@@ -1,5 +1,6 @@
 import { Intern, InternDiscipline } from '@internship-app/types';
 
+import { Path } from '../../constants/paths';
 import Webcamera from '../Webcamera';
 import styles from './index.module.css';
 
@@ -13,9 +14,13 @@ const IntervieweeInfo = ({ image, setImage, intern }: IntervieweeInfoProps) => {
   return (
     <div className={styles.container}>
       <div className={styles.interviewInfo}>
-        <h1 className={styles.internFullName}>
+        <a
+          className={styles.internFullName}
+          href={Path.Intern.replace(':internId', intern.id)}
+          target="_blank"
+        >
           {intern.firstName} {intern.lastName}
-        </h1>
+        </a>
 
         <div className={styles.emailContainer}>
           <div>{intern.email}</div>

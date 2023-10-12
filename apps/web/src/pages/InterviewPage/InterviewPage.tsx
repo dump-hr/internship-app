@@ -1,13 +1,13 @@
 import { Intern, InterviewStatus, QuestionType } from '@internship-app/types';
 import { Json } from '@internship-app/types/src/json';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FieldValues, useForm } from 'react-hook-form';
 import { LoaderIcon } from 'react-hot-toast';
 import { useQueryClient } from 'react-query';
-import { useRoute } from 'wouter';
+import { Link, useRoute } from 'wouter';
 import { navigate } from 'wouter/use-location';
 
-import { useGetIntern } from '../../api/useGetIntern';
+import { useFetchIntern } from '../../api/useFetchIntern';
 import { useSetImage } from '../../api/useSetImage';
 import { useSetInterview } from '../../api/useSetInterview';
 import AdminPage from '../../components/AdminPage';
@@ -32,7 +32,7 @@ const InterviewPage = () => {
   const [, params] = useRoute(Path.Interview);
   const internId = params?.internId;
 
-  const { data: intern, isFetching } = useGetIntern(internId);
+  const { data: intern, isFetching } = useFetchIntern(internId);
   const setInterview = useSetInterview(() => {
     navigate(Path.Intern.replace(':internId', params?.internId || ''));
   });
@@ -40,9 +40,40 @@ const InterviewPage = () => {
   const queryClient = useQueryClient();
 
   const [dialogOpen, setDialogOpen] = useState(false);
+
+  const localFormValue = JSON.parse(
+    localStorage.getItem(`interview ${internId}`)!,
+  );
   const form = useForm<FieldValues>({
-    defaultValues: defaultInterviewValues,
+    defaultValues: { ...defaultInterviewValues, ...localFormValue },
   });
+
+  useEffect(() => {
+    const formSaver = setInterval(() => {
+      localStorage.setItem(
+        `interview ${internId}`,
+        JSON.stringify(form.getValues()),
+      );
+    }, 5000);
+
+    return () => clearInterval(formSaver);
+  });
+
+  useEffect(() => {
+    const internAnswers = Object.values(
+      intern?.interviewSlot?.answers || {},
+    ) as unknown as Json[];
+    if (!internAnswers.length) return;
+
+    const answersValues = Object.values(internAnswers).reduce(
+      (acc, curr) => ({
+        ...acc,
+        [curr.id as string]: { value: curr.value, tick: curr.tick },
+      }),
+      {},
+    );
+    form.reset({ ...defaultInterviewValues, ...answersValues });
+  }, [form, intern]);
 
   const handleFormSubmit = (internId: string) =>
     form.handleSubmit((data) => {
@@ -87,7 +118,17 @@ const InterviewPage = () => {
   }
 
   if (intern.interviewStatus !== InterviewStatus.Pending) {
-    return <div>Intervju status interna nije pending!</div>;
+    return (
+      <div>
+        <p>
+          Intervju status interna {intern.firstName} {intern.lastName} nije
+          pending nego {intern.interviewStatus}!
+        </p>
+        <Link to={Path.Intern.replace(':internId', intern.id)}>
+          Otvori profil
+        </Link>
+      </div>
+    );
   }
 
   return (

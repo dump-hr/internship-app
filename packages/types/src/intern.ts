@@ -151,6 +151,7 @@ export type InterviewSlot = {
   score?: number;
   notes?: string;
   interviewers: InterviewMemberParticipation[];
+  internId?: string;
   intern: Intern;
 };
 
@@ -189,8 +190,8 @@ export type InterviewEvent = {
 };
 
 export type CreateInterviewSlotDto = {
-  start: string;
-  end: string;
+  start: Date;
+  end: Date;
   interviewers: string[];
   notes?: string;
 };

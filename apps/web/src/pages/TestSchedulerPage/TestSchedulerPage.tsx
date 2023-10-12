@@ -99,6 +99,7 @@ const TestSchedulerPage = () => {
             defaultView="week"
             views={['week']}
             selectable={true}
+            scrollToTime={new Date()}
             culture="hr"
             events={slotsToShow}
             onSelectSlot={handleSelectSlot}
