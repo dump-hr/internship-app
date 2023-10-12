@@ -17,6 +17,11 @@ api.interceptors.request.use((config) => {
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
+
+  if (window.location.pathname.startsWith('/internship-app')) {
+    config.baseURL = '/internship-app/api';
+  }
+
   return config;
 });
 
