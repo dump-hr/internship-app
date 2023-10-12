@@ -196,6 +196,8 @@ U slučaju da ne možeš doći na odabrani termin, javi nam se na vrijeme na inf
 
 Također, podsjećamo da će se ispit održati u jednom od računalnih laboratorija FESB-a. Potrebno je doći 10 minuta prije odabranog termina u atrij fakulteta, nakon čega ćemo te uputiti u učionicu u kojoj tipkaš ispit. Ispit rješavaš na našem računalu u jednom od ponuđenih jezika (JavaScript, Python, C#, C++, C, Java, Go). Sastoji se od četiri zadatka za koje imaš 100 minuta.
 
+Primjer ispita možeš vidjeti na sljedećem linku: https://bit.ly/inicijalni-primjer
+
 Tvoj rezultat testa poslat ćemo ti najkasnije tri dana nakon odabranog termina. U slučaju položenog ispita, dobit ćeš link za biranje termina intervjua.
 
 Sretno i vidimo se!
