@@ -17,12 +17,12 @@ export const useChooseTest = () => {
     onMutate: () => {
       return { toastId: toast.loading('Učitavanje...') };
     },
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, _variables, context) => {
       toast.success(`Povezano! ${moment(data.start).format('DD.MM. HH:mm')}`, {
         id: context?.toastId,
       });
 
-      localStorage.setItem('test_password', variables.password);
+      localStorage.setItem('test_password', data.password);
     },
     onError: (error: string, _variables, context) => {
       toast.error(error, { id: context?.toastId });

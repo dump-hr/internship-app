@@ -5,6 +5,7 @@ export enum Path {
   ScheduleTest = '/schedule-test/:discipline/:internId',
   Status = '/status/:internId',
   Test = '/test/:testSlotId',
+  TestChoose = '/test',
 
   Dashboard = '/admin',
   Login = '/admin/login',

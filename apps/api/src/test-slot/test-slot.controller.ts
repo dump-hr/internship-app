@@ -120,9 +120,13 @@ export class TestSlotController {
   @Post('start/:id')
   async startTest(
     @Param('id') testSlotId: string,
-    @Body() { internEmail }: StartTestRequest,
+    @Body() { internEmail, password }: StartTestRequest,
   ) {
-    return await this.testSlotService.startTest(testSlotId, internEmail);
+    return await this.testSlotService.startTest(
+      testSlotId,
+      internEmail,
+      password,
+    );
   }
 
   @Post('submit/:id')

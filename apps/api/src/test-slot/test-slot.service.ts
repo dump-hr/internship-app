@@ -230,17 +230,17 @@ DUMP Udruga mladih programera`,
     });
   }
 
-  async choseTest(password: string) {
+  async chooseTest(password: string) {
     const testSlot = await this.prisma.testSlot.findUnique({
       where: { password },
     });
 
-    if (!password) throw new BadRequestException('Such test does not exist!');
+    if (!testSlot) throw new BadRequestException('Such test does not exist!');
 
     return testSlot;
   }
 
-  async startTest(testSlotId: string, email: string) {
+  async startTest(testSlotId: string, email: string, password: string) {
     const internDiscipline = await this.prisma.internDiscipline.findFirst({
       where: {
         intern: {
@@ -252,6 +252,17 @@ DUMP Udruga mladih programera`,
         testSlotId,
         testStatus: TestStatus.Pending,
       },
+      include: {
+        testSlot: {
+          include: {
+            testQuestions: {
+              orderBy: {
+                order: 'asc',
+              },
+            },
+          },
+        },
+      },
     });
 
     if (!internDiscipline) {
@@ -260,21 +271,14 @@ DUMP Udruga mladih programera`,
       );
     }
 
-    const slot = await this.prisma.testSlot.findUnique({
-      where: {
-        id: testSlotId,
-      },
-      include: {
-        testQuestions: {
-          orderBy: {
-            order: 'asc',
-          },
-        },
-      },
-    });
+    const slot = internDiscipline.testSlot;
 
     if (!slot) {
       throw new NotFoundException('Slot not found');
+    }
+
+    if (password !== slot.password) {
+      throw new BadRequestException('Wrong password');
     }
 
     if (new Date() < slot.start) {
@@ -296,12 +300,21 @@ DUMP Udruga mladih programera`,
         testSlotId,
         testStatus: TestStatus.Pending,
       },
+      include: {
+        testSlot: {
+          select: { password: true },
+        },
+      },
     });
 
     if (!internDiscipline) {
       throw new BadRequestException(
         'Test does not exist or intern does not have permission to submit',
       );
+    }
+
+    if (internDiscipline.testSlot.password !== test.password) {
+      throw new BadRequestException('Wrong password!');
     }
 
     await this.prisma.internDiscipline.update({

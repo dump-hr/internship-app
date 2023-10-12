@@ -26,7 +26,7 @@ const TestChoosePage = () => {
       <form onSubmit={handleSubmit}>
         <TextField
           id="password"
-          label="Email"
+          label="Zaporka"
           variant="outlined"
           size="small"
           value={password}
