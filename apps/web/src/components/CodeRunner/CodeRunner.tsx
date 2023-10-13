@@ -72,7 +72,7 @@ export const CodeRunner: React.FC<Props> = ({ code, language }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [process]);
 
-  const serverRun = async () => {
+  const remoteRun = async () => {
     terminal.current?.reset();
 
     const pid = nanoid();
@@ -106,7 +106,7 @@ export const CodeRunner: React.FC<Props> = ({ code, language }) => {
     terminal.current?.focus();
   };
 
-  const clientRun = () => {
+  const localRun = () => {
     terminal.current?.reset();
 
     const log = console.log;
@@ -128,7 +128,7 @@ export const CodeRunner: React.FC<Props> = ({ code, language }) => {
     setProcess(ProcessState.Exited);
   };
 
-  const run = language === CodingLanguage.JavaScript ? clientRun : serverRun;
+  const run = language === CodingLanguage.JavaScript ? localRun : remoteRun;
 
   return (
     <div className={c.wrapper}>

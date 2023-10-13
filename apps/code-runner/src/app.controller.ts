@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Delete,
+  Get,
   Param,
   Post,
   Put,
@@ -14,6 +15,11 @@ import { SendStdinRequest, SpawnProgramRequest } from './types';
 @Controller('run')
 export class AppController {
   constructor(private readonly appService: AppService) {}
+
+  @Get('healthz')
+  healthCheck(): string {
+    return 'ok';
+  }
 
   @Post(':pid')
   async spawnProgram(

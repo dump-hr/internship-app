@@ -41,7 +41,7 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Build and push docker image
+      - name: Build and push api docker image
         uses: docker/build-push-action@v4
         with:
           context: .
@@ -49,6 +49,17 @@ jobs:
           push: true
           tags: ghcr.io/${{ github.repository }}:${{ github.sha }},
             ghcr.io/${{ github.repository }}:${{ github.ref_name == 'main' && 'latest' || 'unstable' }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Build and push code-runner docker image
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          file: ./apps/code-runner/Dockerfile
+          push: true
+          tags: ghcr.io/dump-hr/code-runner:${{ github.sha }},
+            ghcr.io/dump-hr/code-runner:${{ github.ref_name == 'main' && 'latest' || 'unstable' }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
