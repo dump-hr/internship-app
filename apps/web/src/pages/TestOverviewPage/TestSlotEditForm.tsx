@@ -51,6 +51,12 @@ const getMainQuestions = (slot: TestSlot): Question[] => [
     min: 0,
     registerValue: slot.maxPoints,
   },
+  {
+    id: 'password',
+    title: 'Zaporka',
+    type: QuestionType.Field,
+    registerValue: slot.password,
+  },
 ];
 
 const getInitialTestQuestions = (slot: TestSlot) =>

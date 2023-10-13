@@ -20,6 +20,7 @@ export enum BoardActionType {
   Kick = 'Kick',
   CancelInterviewSlot = 'CancelInterviewSlot',
   CancelTestSlot = 'CancelTestSlot',
+  SumTestPoints = 'SumTestPoints',
 }
 
 export type BoardAction =
@@ -46,6 +47,10 @@ export type BoardAction =
     }
   | {
       actionType: BoardActionType.CancelTestSlot;
+      discipline: Discipline;
+    }
+  | {
+      actionType: BoardActionType.SumTestPoints;
       discipline: Discipline;
     };
 

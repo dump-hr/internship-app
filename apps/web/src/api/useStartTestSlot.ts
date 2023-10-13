@@ -5,6 +5,8 @@ import { useMutation } from 'react-query';
 import { api } from '.';
 
 const startTestSlot = async (req: StartTestRequest) => {
+  req = { ...req, password: localStorage.getItem('test_password') as string };
+
   return await api.post<never, Test>(`/test-slot/start/${req.testSlotId}`, req);
 };
 
