@@ -40,7 +40,7 @@ api.interceptors.response.use(
 );
 
 export const runApi = axios.create({
-  baseURL: '/run',
+  baseURL: 'http://142.132.225.217/run',
   timeout: 5000,
   headers: {
     'Content-Type': 'application/json',
