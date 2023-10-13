@@ -231,7 +231,7 @@ DUMP Udruga mladih programera`,
   }
 
   async chooseTest(password: string) {
-    const testSlot = await this.prisma.testSlot.findUnique({
+    const testSlot = await this.prisma.testSlot.findFirst({
       where: { password },
     });
 
