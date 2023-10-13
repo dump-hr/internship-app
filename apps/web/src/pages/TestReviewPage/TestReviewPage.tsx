@@ -62,7 +62,7 @@ const TestReviewPage = () => {
       </Box>
 
       <CodeEditor
-        language={answers[selectedAnswer].language.toLowerCase()}
+        language={answers[selectedAnswer].language}
         code={answers[selectedAnswer].code}
         setCode={(code) => console.log(code)}
         questionTitle={answers[selectedAnswer].question.title}

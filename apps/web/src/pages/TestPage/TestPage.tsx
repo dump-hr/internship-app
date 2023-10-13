@@ -43,6 +43,13 @@ const TestPage = () => {
     (code) => setCode(code as string[]),
   );
 
+  useLocalSave(
+    !!data,
+    `language:${data?.id}:${email.toLowerCase()}`,
+    language,
+    (language) => setLanguage(language as CodingLanguage[]),
+  );
+
   const validateEmail = (email: string) => {
     const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
     return emailRegex.test(email);
@@ -160,7 +167,7 @@ const TestPage = () => {
       </header>
 
       <CodeEditor
-        language={language[selectedQuestion].toLowerCase()}
+        language={language[selectedQuestion]}
         code={code[selectedQuestion]}
         setCode={(code) =>
           setCode((prev) =>
