@@ -77,7 +77,7 @@ export const CodeRunner: React.FC<Props> = ({ code, language }) => {
 
     const pid = nanoid();
 
-    const stdout = new EventSource(`http://142.132.225.217/run/${pid}`);
+    const stdout = new EventSource(`https://code-runner.bdeak.net/run/${pid}`);
 
     stdout.onmessage = ({ data }) => {
       const { event, text } = JSON.parse(data);
