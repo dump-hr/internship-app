@@ -4,7 +4,7 @@ import {
   InternStatus,
   InterviewStatus,
 } from '@internship-app/types';
-import { Button, Grid } from '@mui/material';
+import { Button, Grid, Switch } from '@mui/material';
 import { useState } from 'react';
 import { FieldValues } from 'react-hook-form';
 
@@ -52,6 +52,7 @@ const DashboardPage = () => {
   const [emailDialogOpen, setEmailDialogOpen] = useState(false);
   const [actionsOpen, setActionsOpen] = useState(false);
   const toggleActions = () => setActionsOpen((prev) => !prev);
+  const [showDuplicates, setShowDuplicates] = useState(false);
 
   const [filterCriteria, setFilterCriteria] = useState<FilterCriteria>(
     initialState.filterCriteria,
@@ -89,6 +90,18 @@ const DashboardPage = () => {
     },
   ];
 
+  const duplicateInterns =
+    internsWithStatus?.filter(
+      (i1) =>
+        internsWithStatus?.filter(
+          (i2) =>
+            i1.firstName === i2.firstName &&
+            i1.lastName === i2.lastName &&
+            i1.status !== InternStatus.Rejected &&
+            i2.status !== InternStatus.Rejected,
+        ).length > 1,
+    ) || [];
+
   return (
     <AdminPage headerText="Dashboard">
       <Grid container spacing={2} mt={1}>
@@ -104,10 +117,23 @@ const DashboardPage = () => {
 
       {actionsOpen && <BoardActions internIds={selection} />}
 
-      <InternFilter submitHandler={filterHandler} />
+      <InternFilter submitHandler={filterHandler} disabled={showDuplicates} />
 
       <Grid item xs={12} md={5}>
         <div className={c.buttonsWrapper}>
+          <div className={c.switchWrapper}>
+            Prikaži sve
+            <Switch
+              onChange={() => setShowDuplicates(!showDuplicates)}
+              disabled={duplicateInterns.length === 0}
+            />
+            {duplicateInterns.length === 0 ? (
+              <i style={{ color: '#ababab' }}>Nema duplikata</i>
+            ) : (
+              'Prikaži duplikate'
+            )}
+          </div>
+
           <Button disabled>Pregledaj dev ispit</Button>
           <Button onClick={() => setEmailDialogOpen(true)}>Pošalji mail</Button>
           <Button
@@ -121,7 +147,11 @@ const DashboardPage = () => {
 
       {actionsOpen && <>{selection.length} interna selektirano.</>}
       <InternList
-        data={internsWithStatus?.filter(getInternFilter(filterCriteria))}
+        data={
+          showDuplicates
+            ? duplicateInterns
+            : internsWithStatus?.filter(getInternFilter(filterCriteria))
+        }
         setSelection={setSelection}
       />
 
