@@ -23,6 +23,7 @@ const TestSlotInfo: React.FC<TestSlotInfoProps> = ({ slot, simple }) => {
           Kapacitet: {slot.internDisciplines.length}/{slot.capacity}
         </Typography>
         <Typography>Max bodova: {slot.maxPoints}</Typography>
+        <Typography>Zaporka: {slot.password}</Typography>
       </Box>
       <SlotQuestionList slot={slot} simple={simple} />
       <SlotInternList slot={slot} simple={simple} />

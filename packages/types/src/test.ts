@@ -26,6 +26,7 @@ export type CreateTestSlotsRequest = {
   end: Date;
   capacity: number;
   location: string;
+  password: string;
 }[];
 
 export type UpdateTestSlotRequest = {
@@ -36,6 +37,7 @@ export type UpdateTestSlotRequest = {
 export type StartTestRequest = {
   testSlotId: string;
   internEmail: string;
+  password?: string;
 };
 
 export type Test = {
@@ -49,6 +51,7 @@ export type Test = {
 export type SubmitTestRequest = {
   testSlotId: string;
   internEmail: string;
+  password?: string;
   answers: SubmitTestAnswer[];
 };
 
@@ -62,3 +65,7 @@ export type SetScoreRequest = {
   answerId: string;
   score: number;
 };
+
+export type ChooseTestRequest = {
+  password: string;
+}

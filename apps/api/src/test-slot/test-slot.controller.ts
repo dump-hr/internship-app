@@ -1,4 +1,5 @@
 import {
+  ChooseTestRequest,
   CreateTestSlotsRequest,
   ScheduleTestRequest,
   SetScoreRequest,
@@ -111,12 +112,21 @@ export class TestSlotController {
     return await this.testSlotService.scheduleTest(slotId, internId);
   }
 
+  @Post('choose')
+  async chooseTest(@Body() { password }: ChooseTestRequest) {
+    return await this.testSlotService.chooseTest(password);
+  }
+
   @Post('start/:id')
   async startTest(
     @Param('id') testSlotId: string,
-    @Body() { internEmail }: StartTestRequest,
+    @Body() { internEmail, password }: StartTestRequest,
   ) {
-    return await this.testSlotService.startTest(testSlotId, internEmail);
+    return await this.testSlotService.startTest(
+      testSlotId,
+      internEmail,
+      password,
+    );
   }
 
   @Post('submit/:id')

@@ -59,6 +59,7 @@ export class TestSlotService {
             start: slot.start,
             end: slot.end,
             location: slot.location,
+            password: slot.password,
             maxPoints: 0,
           },
         }),
@@ -75,6 +76,7 @@ export class TestSlotService {
         capacity: testSlot.capacity,
         location: testSlot.location,
         maxPoints: testSlot.maxPoints,
+        password: testSlot.password,
         testQuestions: {
           deleteMany: {
             testSlotId: id,
@@ -147,9 +149,9 @@ export class TestSlotService {
       },
     });
 
-    const availableSlots = slots.filter(
-      (s) => s._count.internDisciplines < s.capacity,
-    );
+    const availableSlots = slots
+      .filter((s) => s._count.internDisciplines < s.capacity)
+      .map((s) => ({ ...s, password: undefined }));
 
     return availableSlots;
   }
@@ -228,7 +230,17 @@ DUMP Udruga mladih programera`,
     });
   }
 
-  async startTest(testSlotId: string, email: string) {
+  async chooseTest(password: string) {
+    const testSlot = await this.prisma.testSlot.findFirst({
+      where: { password },
+    });
+
+    if (!testSlot) throw new BadRequestException('Such test does not exist!');
+
+    return testSlot;
+  }
+
+  async startTest(testSlotId: string, email: string, password: string) {
     const internDiscipline = await this.prisma.internDiscipline.findFirst({
       where: {
         intern: {
@@ -240,6 +252,17 @@ DUMP Udruga mladih programera`,
         testSlotId,
         testStatus: TestStatus.Pending,
       },
+      include: {
+        testSlot: {
+          include: {
+            testQuestions: {
+              orderBy: {
+                order: 'asc',
+              },
+            },
+          },
+        },
+      },
     });
 
     if (!internDiscipline) {
@@ -248,21 +271,14 @@ DUMP Udruga mladih programera`,
       );
     }
 
-    const slot = await this.prisma.testSlot.findUnique({
-      where: {
-        id: testSlotId,
-      },
-      include: {
-        testQuestions: {
-          orderBy: {
-            order: 'asc',
-          },
-        },
-      },
-    });
+    const slot = internDiscipline.testSlot;
 
     if (!slot) {
       throw new NotFoundException('Slot not found');
+    }
+
+    if (password !== slot.password) {
+      throw new BadRequestException('Wrong password');
     }
 
     if (new Date() < slot.start) {
@@ -284,12 +300,21 @@ DUMP Udruga mladih programera`,
         testSlotId,
         testStatus: TestStatus.Pending,
       },
+      include: {
+        testSlot: {
+          select: { password: true },
+        },
+      },
     });
 
     if (!internDiscipline) {
       throw new BadRequestException(
         'Test does not exist or intern does not have permission to submit',
       );
+    }
+
+    if (internDiscipline.testSlot.password !== test.password) {
+      throw new BadRequestException('Wrong password!');
     }
 
     await this.prisma.internDiscipline.update({

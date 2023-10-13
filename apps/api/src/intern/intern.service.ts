@@ -389,6 +389,47 @@ dump.hr`,
           },
         });
 
+      case 'SumTestPoints':
+        const disciplinesWithResults =
+          await this.prisma.internDiscipline.findMany({
+            where: {
+              internId: { in: internIds },
+              discipline: action.discipline,
+            },
+            include: {
+              internQuestionAnswers: {
+                select: {
+                  score: true,
+                },
+              },
+            },
+          });
+
+        const updatedDisciplines = disciplinesWithResults.map((d) => ({
+          internId: d.internId,
+          discipline: d.discipline,
+          score: d.internQuestionAnswers.reduce(
+            (acc, curr) => acc + curr.score,
+            0,
+          ),
+        }));
+
+        return await this.prisma.$transaction(
+          updatedDisciplines.map((d) =>
+            this.prisma.internDiscipline.update({
+              where: {
+                internId_discipline: {
+                  discipline: d.discipline,
+                  internId: d.internId,
+                },
+              },
+              data: {
+                testScore: d.score,
+              },
+            }),
+          ),
+        );
+
       default:
         throw new BadRequestException();
     }

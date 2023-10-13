@@ -38,7 +38,7 @@ const getTestChip = (internDiscipline: InternDiscipline) => {
   const { discipline, testStatus, testScore } = internDiscipline;
   if (!testStatus) return null;
 
-  const scoreText = testScore ? `(${testScore}b)` : '';
+  const scoreText = testScore !== null ? `(${testScore}b)` : '';
   const label = shortDisciplineLabels[discipline];
 
   return (
