@@ -2,7 +2,6 @@ import {
   DisciplineStatus,
   Intern,
   InternStatus,
-  InternWithStatus,
   InterviewStatus,
 } from '@internship-app/types';
 import { Button, Grid, Switch } from '@mui/material';
@@ -91,33 +90,17 @@ const DashboardPage = () => {
     },
   ];
 
-  function getDuplicateInterns() {
-    const fullNames =
-      internsWithStatus?.map(
-        (i) =>
-          `${i.firstName.toLocaleLowerCase()} ${i.lastName.toLocaleLowerCase()}`,
-      ) || [];
-
-    const duplicateNames = fullNames.filter(
-      (name, index) => fullNames.indexOf(name) !== index,
-    );
-
-    const duplicateInterns: InternWithStatus[] = [];
-    internsWithStatus?.forEach((intern) => {
-      if (
-        duplicateNames.includes(
-          `${intern.firstName.toLocaleLowerCase()} ${intern.lastName.toLocaleLowerCase()}`,
-        )
-      ) {
-        duplicateInterns.push(intern);
-      }
-    });
-
-    return duplicateInterns;
-  }
-
-  const duplicateInterns = getDuplicateInterns();
-  console.log(duplicateInterns);
+  const duplicateInterns =
+    internsWithStatus?.filter(
+      (i1) =>
+        internsWithStatus?.filter(
+          (i2) =>
+            i1.firstName === i2.firstName &&
+            i1.lastName === i2.lastName &&
+            i1.status !== InternStatus.Rejected &&
+            i2.status !== InternStatus.Rejected,
+        ).length > 1,
+    ) || [];
 
   return (
     <AdminPage headerText="Dashboard">
