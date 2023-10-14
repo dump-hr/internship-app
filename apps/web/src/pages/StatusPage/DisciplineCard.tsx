@@ -32,7 +32,22 @@ export const DisciplineCard: React.FC<DisciplineCardProps> = ({
           <styled.statusLabel>Status ispita</styled.statusLabel>
           <styled.statusBox>
             <styled.statusValue>
-              {testStatusLabel[ind.testStatus]}
+              {typeof ind.testScore === 'number' ? (
+                <>
+                  {ind.internQuestionAnswers.map((answer, index) => {
+                    return (
+                      <div key={index}>
+                        {index + 1}. zadatak: {answer.score} /{' '}
+                        {answer.question.points}
+                      </div>
+                    );
+                  })}
+
+                  <div>Ukupno: {ind.testScore}</div>
+                </>
+              ) : (
+                testStatusLabel[ind.testStatus]
+              )}
             </styled.statusValue>
           </styled.statusBox>
         </styled.statusSection>

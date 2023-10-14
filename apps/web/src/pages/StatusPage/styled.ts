@@ -165,7 +165,7 @@ export const statusLabel = styled.p`
   text-transform: uppercase;
 `;
 
-export const statusValue = styled.p`
+export const statusValue = styled.div`
   ${fuseDisplay}
   font-size: 22px;
   font-weight: 700;
