@@ -97,6 +97,21 @@ export class InternService {
                 end: true,
               },
             },
+            internQuestionAnswers: {
+              select: {
+                score: true,
+                question: {
+                  select: {
+                    points: true,
+                  },
+                },
+              },
+              orderBy: {
+                question: {
+                  order: 'asc',
+                },
+              },
+            },
           },
         },
         interviewSlot: {

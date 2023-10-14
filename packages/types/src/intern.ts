@@ -103,6 +103,7 @@ export type InternDiscipline = {
   testSlotId?: string;
   internId: string;
   intern: Intern;
+  internQuestionAnswers: InternQuestionAnswer[];
 };
 
 export type Slot = {
