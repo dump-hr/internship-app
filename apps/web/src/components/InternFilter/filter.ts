@@ -30,7 +30,9 @@ export const getInternFilter =
 
     if (
       main.name &&
-      !`${intern.firstName} ${intern.lastName}`
+      !`${intern.firstName} ${intern.lastName} ${
+        intern.email
+      } ${intern.internDisciplines.map((ind) => ind.testSlotId ?? '')}`
         .toLocaleLowerCase()
         .includes(main.name.toLocaleLowerCase())
     )

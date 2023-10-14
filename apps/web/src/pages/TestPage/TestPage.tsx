@@ -7,7 +7,7 @@ import {
   Select,
   TextField,
 } from '@mui/material';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { toast } from 'react-hot-toast';
 import { useRoute } from 'wouter';
 
@@ -22,10 +22,17 @@ import { startingPrograms } from '../../constants/startingPrograms';
 import { useLocalSave } from '../../hooks/useLocalSave';
 import c from './TestPage.module.css';
 
+type Answer = {
+  isDirty: boolean;
+  currentLanguage: CodingLanguage;
+  codes: {
+    [key in CodingLanguage]?: string;
+  };
+};
+
 const TestPage = () => {
   const [, params] = useRoute(Path.Test);
-  const [code, setCode] = useState<string[]>([]);
-  const [language, setLanguage] = useState<CodingLanguage[]>([]);
+  const [answers, setAnswers] = useState<Answer[]>([]);
   const [selectedQuestion, setSelectedQuestion] = useState(0);
 
   const [email, setEmail] = useState('');
@@ -38,16 +45,9 @@ const TestPage = () => {
 
   useLocalSave(
     !!data,
-    `code:${data?.id}:${email.toLowerCase()}`,
-    code,
-    (code) => setCode(code as string[]),
-  );
-
-  useLocalSave(
-    !!data,
-    `language:${data?.id}:${email.toLowerCase()}`,
-    language,
-    (language) => setLanguage(language as CodingLanguage[]),
+    `answers:${data?.id}:${email.toLowerCase()}`,
+    answers,
+    (answers) => setAnswers(answers as Answer[]),
   );
 
   const validateEmail = (email: string) => {
@@ -73,9 +73,18 @@ const TestPage = () => {
       internEmail: email,
     });
 
-    setLanguage(testQuestions.map(() => CodingLanguage.JavaScript));
-    setCode(
-      testQuestions.map(() => startingPrograms[CodingLanguage.JavaScript]),
+    setAnswers(
+      testQuestions.map(
+        () =>
+          ({
+            isDirty: false,
+            currentLanguage: CodingLanguage.JavaScript,
+            codes: {
+              [CodingLanguage.JavaScript]:
+                startingPrograms[CodingLanguage.JavaScript],
+            },
+          }) as Answer,
+      ),
     );
   };
 
@@ -86,11 +95,48 @@ const TestPage = () => {
       internEmail: email,
       answers: data.testQuestions.map((q, i) => ({
         questionId: q.id,
-        code: code[i],
-        language: language[i],
+        code: answers[i].codes[answers[i].currentLanguage] ?? '',
+        language: answers[i].currentLanguage,
       })),
     });
   };
+
+  const handleChangeLanguage = (language: CodingLanguage, index: number) => {
+    setAnswers((prev) =>
+      prev.map((ans, i) =>
+        i === index
+          ? {
+              ...ans,
+              isDirty: true,
+              currentLanguage: language,
+              codes: {
+                ...ans.codes,
+                [language]: ans.codes[language]
+                  ? ans.codes[language]
+                  : startingPrograms[language],
+              },
+            }
+          : ans,
+      ),
+    );
+  };
+
+  useEffect(() => {
+    setAnswers((prev) => {
+      if (!selectedQuestion || prev[selectedQuestion].isDirty) return prev;
+
+      const prevLang = prev[selectedQuestion - 1].currentLanguage;
+      return prev.map((ans, i) =>
+        i === selectedQuestion
+          ? {
+              ...ans,
+              currentLanguage: prevLang,
+              codes: { ...ans.codes, [prevLang]: startingPrograms[prevLang] },
+            }
+          : ans,
+      );
+    });
+  }, [selectedQuestion]);
 
   if (!data) {
     return (
@@ -135,18 +181,11 @@ const TestPage = () => {
             <InputLabel id="language-select">Language</InputLabel>
             <Select
               labelId="language-select"
-              value={language[selectedQuestion]}
+              value={answers[selectedQuestion].currentLanguage}
               label="Language"
               onChange={(e) => {
                 const language = e.target.value as CodingLanguage;
-                setLanguage((prev) =>
-                  prev.map((_, i) => (i === selectedQuestion ? language : _)),
-                );
-                setCode((prev) =>
-                  prev.map((_, i) =>
-                    i === selectedQuestion ? startingPrograms[language] : _,
-                  ),
-                );
+                handleChangeLanguage(language, selectedQuestion);
               }}
             >
               {Object.values(CodingLanguage).map((language) => (
@@ -167,13 +206,25 @@ const TestPage = () => {
       </header>
 
       <CodeEditor
-        language={language[selectedQuestion]}
-        code={code[selectedQuestion]}
-        setCode={(code) =>
-          setCode((prev) =>
-            prev.map((_, i) => (i === selectedQuestion ? code ?? '' : _)),
-          )
+        language={answers[selectedQuestion].currentLanguage}
+        code={
+          answers[selectedQuestion].codes[
+            answers[selectedQuestion].currentLanguage
+          ] ?? ''
         }
+        setCode={(code) => {
+          setAnswers((prev) =>
+            prev.map((ans, i) =>
+              i === selectedQuestion
+                ? {
+                    ...ans,
+                    isDirty: true,
+                    codes: { ...ans.codes, [ans.currentLanguage]: code ?? '' },
+                  }
+                : ans,
+            ),
+          );
+        }}
         questionTitle={data.testQuestions[selectedQuestion].title}
         questionText={data.testQuestions[selectedQuestion].text}
         nextQuestion={() => setSelectedQuestion((prev) => prev + 1)}

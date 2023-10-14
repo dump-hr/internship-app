@@ -100,6 +100,7 @@ export type InternDiscipline = {
   testStatus?: TestStatus;
   testScore?: number;
   testSlot?: TestSlot;
+  testSlotId?: string;
   internId: string;
   intern: Intern;
 };
