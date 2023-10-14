@@ -27,6 +27,7 @@ const TestChoosePage = () => {
         <TextField
           id="password"
           label="Zaporka"
+          type="password"
           variant="outlined"
           size="small"
           value={password}

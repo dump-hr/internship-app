@@ -28,7 +28,7 @@ const initialCriteria: CriteriaSection[] = [
         id: 'main.name',
         type: QuestionType.Field,
         registerValue: '',
-        title: 'Ime',
+        title: 'Ime/mail/testid',
       },
       {
         id: 'main.status',
