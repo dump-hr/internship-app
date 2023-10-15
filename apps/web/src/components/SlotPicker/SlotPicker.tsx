@@ -74,7 +74,7 @@ const SlotPicker: React.FC<SlotPickerProps> = ({
           setDialogOpen(false);
         }}
         title="Potvrdi odabir termina"
-        description={`Tvoj termin bit će rezerviran za ${testSlotDateFormat}.`}
+        description={`Tvoj termin bit će rezerviran za ${testSlotDateFormat}. Odabrani termin se ne može promijeniti!`}
       />
     </Layout>
   );

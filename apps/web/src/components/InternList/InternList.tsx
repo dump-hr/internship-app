@@ -103,7 +103,7 @@ const InternList: React.FC<Props> = ({ data = [], setSelection }) => {
       description: 'Sort - po broju bodova',
       width: 150,
       sortComparator: (a, b) =>
-        a.interviewSlot?.score ?? 0 - b.interviewSlot?.score ?? 0,
+        (a.interviewSlot?.score ?? 0) - (b.interviewSlot?.score ?? 0),
       renderCell: (props: GridRenderCellParams<InternWithStatus>) =>
         getInterviewChip(props.value),
     },
