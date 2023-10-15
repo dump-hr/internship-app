@@ -73,12 +73,13 @@ const DashboardPage = () => {
       value: interns?.length,
     },
     {
-      label: 'Obav. intervjui',
-      value: interns?.filter((i) => i.interviewStatus === InterviewStatus.Done)
-        .length,
+      label: 'Nadol. intervjui',
+      value: interns?.filter(
+        (i) => i.interviewStatus === InterviewStatus.Pending,
+      ).length,
     },
     {
-      label: 'Nadol. intervjui',
+      label: 'Obav. intervjui',
       value: interns?.filter((i) => i.interviewStatus === InterviewStatus.Done)
         .length,
     },
