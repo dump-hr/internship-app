@@ -97,31 +97,39 @@ const DashboardPage = () => {
     },
     {
       label: 'Dev/Diz/Mark/Mult',
-      value: `${internsWithStatus?.filter(
-        (i) =>
-          i.status === InternStatus.Approved &&
-          i.internDisciplines.some(
-            (ind) => ind.discipline === Discipline.Development,
-          ),
-      ).length}/${internsWithStatus?.filter(
-        (i) =>
-          i.status === InternStatus.Approved &&
-          i.internDisciplines.some(
-            (ind) => ind.discipline === Discipline.Design,
-          ),
-      ).length}/${internsWithStatus?.filter(
-        (i) =>
-          i.status === InternStatus.Approved &&
-          i.internDisciplines.some(
-            (ind) => ind.discipline === Discipline.Marketing,
-          ),
-      ).length}/${internsWithStatus?.filter(
-        (i) =>
-          i.status === InternStatus.Approved &&
-          i.internDisciplines.some(
-            (ind) => ind.discipline === Discipline.Multimedia,
-          ),
-      ).length}`,
+      value: `${
+        internsWithStatus?.filter(
+          (i) =>
+            i.status === InternStatus.Approved &&
+            i.internDisciplines.some(
+              (ind) => ind.discipline === Discipline.Development,
+            ),
+        ).length ?? ''
+      }/${
+        internsWithStatus?.filter(
+          (i) =>
+            i.status === InternStatus.Approved &&
+            i.internDisciplines.some(
+              (ind) => ind.discipline === Discipline.Design,
+            ),
+        ).length ?? ''
+      }/${
+        internsWithStatus?.filter(
+          (i) =>
+            i.status === InternStatus.Approved &&
+            i.internDisciplines.some(
+              (ind) => ind.discipline === Discipline.Marketing,
+            ),
+        ).length ?? ''
+      }/${
+        internsWithStatus?.filter(
+          (i) =>
+            i.status === InternStatus.Approved &&
+            i.internDisciplines.some(
+              (ind) => ind.discipline === Discipline.Multimedia,
+            ),
+        ).length ?? ''
+      }`,
     },
   ];
 
