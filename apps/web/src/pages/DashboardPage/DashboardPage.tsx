@@ -84,6 +84,11 @@ const DashboardPage = () => {
         .length,
     },
     {
+      label: 'Čeka odluku',
+      value: internsWithStatus?.filter((i) => i.status === InternStatus.Pending)
+        .length,
+    },
+    {
       label: 'Primljeno',
       value: internsWithStatus?.filter(
         (i) => i.status === InternStatus.Approved,
