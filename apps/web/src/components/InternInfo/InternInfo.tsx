@@ -6,6 +6,7 @@ import {
   disciplineLabel,
   internActionLabel,
 } from '../../constants/internConstants';
+import { Path } from '../../constants/paths';
 import styles from './index.module.css';
 
 interface InternInfoProps {
@@ -42,15 +43,25 @@ const InternInfo = ({ intern }: InternInfoProps) => {
         </div>
 
         <div>
-          Intervju: {moment(intern.interviewSlot?.start).format('DD.MM. HH:mm')}
+          Intervju: {moment(intern.interviewSlot?.start).format('DD.MM. HH:mm')}{' '}
+          {intern.interviewStatus}
         </div>
         {intern.internDisciplines
           .filter((ind) => ind.testStatus)
           .map((ind) => (
             <div>
-              {disciplineLabel[ind.discipline]} test:{' '}
-              {moment(ind.testSlot?.start).format('DD.MM. HH:mm')},{' '}
-              {ind.testScore}/{ind.testSlot?.maxPoints} {ind.testStatus}
+              <a
+                href={Path.TestReview.replace(
+                  ':testSlotId',
+                  ind.testSlotId ?? '',
+                )
+                  .replace(':group', 'intern')
+                  .replace(':groupId', intern.id)}
+              >
+                {disciplineLabel[ind.discipline]} test:{' '}
+                {moment(ind.testSlot?.start).format('DD.MM. HH:mm')},{' '}
+                {ind.testScore}/{ind.testSlot?.maxPoints} {ind.testStatus}
+              </a>
             </div>
           ))}
       </div>
