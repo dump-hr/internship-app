@@ -41,6 +41,9 @@ export class InternService {
       where: { id },
       include: {
         internDisciplines: {
+          include: {
+            testSlot: true,
+          },
           orderBy: {
             priority: 'asc',
           },

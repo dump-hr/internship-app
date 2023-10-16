@@ -1,8 +1,11 @@
-import { Intern, InternDiscipline, Question } from '@internship-app/types';
+import { Intern, Question } from '@internship-app/types';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import moment from 'moment';
 
-import { internActionLabel } from '../../constants/internConstants';
+import {
+  disciplineLabel,
+  internActionLabel,
+} from '../../constants/internConstants';
 import styles from './index.module.css';
 
 interface InternInfoProps {
@@ -32,17 +35,24 @@ const InternInfo = ({ intern }: InternInfoProps) => {
       <div className={styles.emailContainer}>
         <div>{intern.email}</div>
 
-        {Array.isArray(intern.internDisciplines) &&
-          intern.internDisciplines.map(
-            (discipline: InternDiscipline, index: number) => {
-              return (
-                <span key={discipline.discipline}>
-                  {discipline.discipline}
-                  {index !== intern.internDisciplines.length - 1 && ', '}
-                </span>
-              );
-            },
-          )}
+        <div>
+          {intern.internDisciplines
+            .map((ind) => disciplineLabel[ind.discipline])
+            .join(', ')}
+        </div>
+
+        <div>
+          Intervju: {moment(intern.interviewSlot?.start).format('DD.MM. HH:mm')}
+        </div>
+        {intern.internDisciplines
+          .filter((ind) => ind.testStatus)
+          .map((ind) => (
+            <div>
+              {disciplineLabel[ind.discipline]} test:{' '}
+              {moment(ind.testSlot?.start).format('DD.MM. HH:mm')},{' '}
+              {ind.testScore}/{ind.testSlot?.maxPoints} {ind.testStatus}
+            </div>
+          ))}
       </div>
 
       <div className={styles.container}>
