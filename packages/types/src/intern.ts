@@ -56,14 +56,14 @@ export enum CodingLanguage {
 export enum InternLogAction {
   OpenStatusPage = 'OpenStatusPage',
   OpenInterviewPage = 'OpenInterviewPage',
-  OpenTestPage = 'OpenTestPage'
+  OpenTestPage = 'OpenTestPage',
 }
 
 export enum AdminLogAction {
-  Create = "Create",
-  Update = "Update",
-  Delete = "Delete",
-  Email = "Email",
+  Create = 'Create',
+  Update = 'Update',
+  Delete = 'Delete',
+  Email = 'Email',
 }
 
 export type Interviewer = {
@@ -71,6 +71,12 @@ export type Interviewer = {
   name: string;
   disciplines: Discipline[];
   email?: string;
+};
+
+export type InterviewerWithInterviewCount = Interviewer & {
+  _count: {
+    interviews: number;
+  };
 };
 
 export type Intern = {
@@ -172,14 +178,14 @@ export type InternLog = {
   internId: string;
   action: InternLogAction;
   date: Date;
-}
+};
 
 export type AdminLog = {
   id: string;
   action: AdminLogAction;
   description: string;
   date: Date;
-}
+};
 
 export type InterviewEvent = {
   id: string;

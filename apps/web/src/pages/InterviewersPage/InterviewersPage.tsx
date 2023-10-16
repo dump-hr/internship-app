@@ -102,6 +102,11 @@ const InterviewersPage = () => {
       type: 'boolean',
     },
     {
+      field: 'interviewCount',
+      headerName: 'Count',
+      width: 150,
+    },
+    {
       field: 'deleteButton',
       headerName: '',
       width: 100,
@@ -174,6 +179,7 @@ const InterviewersPage = () => {
       marketingDiscipline: interviewer.disciplines.includes(
         Discipline.Marketing,
       ),
+      interviewCount: interviewer._count.interviews,
     };
   });
 

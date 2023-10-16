@@ -9,8 +9,18 @@ export class InterviewerService {
   constructor(private readonly prisma: PrismaService) {}
 
   async getAll() {
-    const interviewers = await this.prisma.interviewer.findMany();
-    return interviewers;
+    const interviewers = await this.prisma.interviewer.findMany({
+      include: {
+        _count: {
+          select: {
+            interviews: true,
+          },
+        },
+      },
+    });
+    return interviewers.sort(
+      (a, b) => b._count.interviews - a._count.interviews,
+    );
   }
 
   async create(interviewerToCreate: CreateInterviewerDto) {
