@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { BadRequestException } from '@nestjs/common/exceptions';
+import { InterviewStatus } from '@prisma/client';
 import { PrismaService } from 'src/prisma.service';
 
 import { CreateInterviewerDto } from './dto/createInterviewer.dto';
@@ -9,8 +10,26 @@ export class InterviewerService {
   constructor(private readonly prisma: PrismaService) {}
 
   async getAll() {
-    const interviewers = await this.prisma.interviewer.findMany();
-    return interviewers;
+    const interviewers = await this.prisma.interviewer.findMany({
+      include: {
+        _count: {
+          select: {
+            interviews: {
+              where: {
+                interviewSlot: {
+                  intern: {
+                    interviewStatus: InterviewStatus.Done,
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    });
+    return interviewers.sort(
+      (a, b) => b._count.interviews - a._count.interviews,
+    );
   }
 
   async create(interviewerToCreate: CreateInterviewerDto) {
