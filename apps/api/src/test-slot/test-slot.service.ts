@@ -363,7 +363,9 @@ DUMP Udruga mladih programera`,
         question: true,
       },
       orderBy: {
-        createdAt: 'asc',
+        question: {
+          order: 'asc',
+        },
       },
     });
   }
