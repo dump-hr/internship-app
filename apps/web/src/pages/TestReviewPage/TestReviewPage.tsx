@@ -21,6 +21,8 @@ const TestReviewPage = () => {
   const [selectedAnswer, setSelectedAnswer] = useState(0);
   const [score, setScore] = useState(0);
 
+  const maxPoints = answers?.[selectedAnswer].question.points ?? 0;
+
   useEffect(() => {
     if (!answers) return;
     setScore(answers[selectedAnswer].score || 0);
@@ -42,10 +44,6 @@ const TestReviewPage = () => {
           variant="outlined"
           size="small"
           label="Ocjena zadatka"
-          inputProps={{
-            min: 0,
-            max: answers[selectedAnswer].question.points,
-          }}
           style={{ width: '200px' }}
           value={score}
           onChange={(e) => setScore(+e.target.value || 0)}
@@ -53,11 +51,12 @@ const TestReviewPage = () => {
         <Button
           variant="contained"
           color="secondary"
+          disabled={score > maxPoints || score < 0}
           onClick={async () => {
             await mutateAsync({ answerId: answers[selectedAnswer].id, score });
           }}
         >
-          Ocjeni
+          Ocijeni
         </Button>
       </Box>
 
@@ -65,7 +64,7 @@ const TestReviewPage = () => {
         language={answers[selectedAnswer].language}
         code={answers[selectedAnswer].code}
         setCode={(code) => console.log(code)}
-        questionTitle={answers[selectedAnswer].question.title}
+        questionTitle={`${answers[selectedAnswer].question.title} [${maxPoints}b]`}
         questionText={answers[selectedAnswer].question.text}
         nextQuestion={() => setSelectedAnswer((prev) => prev + 1)}
         prevQuestion={() => setSelectedAnswer((prev) => prev - 1)}
