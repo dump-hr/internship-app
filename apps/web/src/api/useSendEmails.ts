@@ -13,13 +13,14 @@ const sendEmails = async (request: EmailToSend) => {
   return await api.post<never, string>('/email/send', request);
 };
 
-export const useSendEmails = () => {
+export const useSendEmails = (cleanup: () => void) => {
   return useMutation(sendEmails, {
     onMutate: () => {
       return { toastId: toast.loading('Sending email...') };
     },
     onSuccess: (_data, _variables, context) => {
-      toast.success('Email sent', { id: context?.toastId });
+      toast.success('Emails sent', { id: context?.toastId });
+      cleanup();
     },
     onError: (error: string, _variables, context) => {
       toast.error(error, { id: context?.toastId });
