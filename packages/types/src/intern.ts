@@ -91,6 +91,7 @@ export type Intern = {
   interviewSlot?: InterviewSlot;
   internDisciplines: InternDiscipline[];
   logs: InternLog[];
+  createdAt: Date;
 };
 
 export type InternCreateRequest = {

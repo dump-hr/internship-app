@@ -24,7 +24,6 @@ const IntervieweeInfo = ({ image, setImage, intern }: IntervieweeInfoProps) => {
 
         <div className={styles.emailContainer}>
           <div>{intern.email}</div>
-          <div>Notes: {intern.notes.split('\n').join('; ')}</div>
 
           {Array.isArray(intern.internDisciplines) &&
             intern.internDisciplines.map(
@@ -37,6 +36,13 @@ const IntervieweeInfo = ({ image, setImage, intern }: IntervieweeInfoProps) => {
                 );
               },
             )}
+        </div>
+
+        <div className={styles.notesContainer}>
+          <b>Notes</b>
+          {intern.notes.split('\n').map((note) => (
+            <p>{note}</p>
+          ))}
         </div>
 
         {Object.keys(intern.data).map((key: string) => {

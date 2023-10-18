@@ -63,6 +63,9 @@ const InternInfo = ({ intern }: InternInfoProps) => {
       <div className={styles.header}>
         <div className={styles.mainInfoContainer}>
           <div>{intern.email}</div>
+          <div>
+            Registracija: {moment(intern.createdAt).format('DD.MM. HH:mm')}
+          </div>
 
           <div>
             {intern.internDisciplines
