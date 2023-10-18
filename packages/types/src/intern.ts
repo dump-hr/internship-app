@@ -86,10 +86,12 @@ export type Intern = {
   email: string;
   image?: string;
   data: Json;
+  notes: string;
   interviewStatus: InterviewStatus;
   interviewSlot?: InterviewSlot;
   internDisciplines: InternDiscipline[];
   logs: InternLog[];
+  createdAt: Date;
 };
 
 export type InternCreateRequest = {
@@ -158,7 +160,6 @@ export type InterviewSlot = {
   end: Date;
   answers: Json;
   score?: number;
-  notes?: string;
   interviewers: InterviewMemberParticipation[];
   internId?: string;
   intern: Intern;
@@ -194,7 +195,6 @@ export type InterviewEvent = {
   title: string;
   additionalInfo: string;
   interviewers: InterviewMemberParticipation[];
-  notes: string;
   status: InterviewStatus;
 };
 
@@ -202,7 +202,6 @@ export type CreateInterviewSlotDto = {
   start: Date;
   end: Date;
   interviewers: string[];
-  notes?: string;
 };
 
 export enum InternStatus {
@@ -219,4 +218,9 @@ export type InternDecisionRequest = {
     discipline: Discipline;
     status: DisciplineStatus;
   }[];
+};
+
+export type CreateNoteRequest = {
+  internId: string;
+  note: string;
 };

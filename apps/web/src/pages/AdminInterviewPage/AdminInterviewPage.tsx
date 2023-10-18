@@ -32,9 +32,7 @@ export const AdminInterviewPage = () => {
   const [selectedInterviewers, setSelectedInterviewers] = useState<
     string[] | null
   >();
-  const [additionalNotesValue, setAdditionalNotesValue] = useState<
-    string | undefined
-  >();
+
   const [events, setEvents] = useState<MappedEvent[]>([]);
   const { data: interviewSlots, refetchInterviewSlots } =
     useFetchInterviewSlots();
@@ -62,7 +60,6 @@ export const AdminInterviewPage = () => {
       start: event.start,
       end: event.end,
       interviewers: selectedInterviewers,
-      notes: additionalNotesValue || '',
     };
 
     createInterviewSlotMutation.mutate(interviewSlotDto, {
@@ -110,7 +107,6 @@ export const AdminInterviewPage = () => {
         <CalendarSidebar
           setSelectedInterviewerFilter={setInterviewerFilter}
           setInterviewers={setSelectedInterviewers}
-          setAdditionalNotesValue={setAdditionalNotesValue}
         />
       </div>
       <SlotsList data={slotsAvailability} />

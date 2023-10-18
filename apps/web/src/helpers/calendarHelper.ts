@@ -27,7 +27,7 @@ const parseInterviewSlotToCalendarEvent = (interviewSlot: InterviewSlot) => {
       .map((interviewer) => interviewer.interviewer.name)
       .join(', ')}\nIntern: ${interviewSlot?.intern?.firstName ?? 'None'} ${
       interviewSlot?.intern?.lastName ?? ''
-    }\nNotes: ${interviewSlot?.notes ?? 'None'}`,
+    }`,
     status: interviewSlot.intern?.interviewStatus ?? InterviewStatus.PickTerm,
   };
 };

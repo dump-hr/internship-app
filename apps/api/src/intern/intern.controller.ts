@@ -1,5 +1,6 @@
 import {
   BoardActionRequest,
+  CreateNoteRequest,
   InternActionRequest,
   InternDecisionRequest,
   SetInterviewRequest,
@@ -159,5 +160,19 @@ export class InternController {
     );
 
     return await this.internService.setDecision(internId, data);
+  }
+
+  @Post('note/:internId')
+  @UseGuards(JwtAuthGuard)
+  async setNote(
+    @Param('internId') internId: string,
+    @Body() data: CreateNoteRequest,
+  ) {
+    await this.loggerService.createAdminLog(
+      AdminLogAction.Create,
+      `Dodana nota nad ${internId}`,
+    );
+
+    return await this.internService.createNote(internId, data);
   }
 }

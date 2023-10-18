@@ -38,6 +38,13 @@ const IntervieweeInfo = ({ image, setImage, intern }: IntervieweeInfoProps) => {
             )}
         </div>
 
+        <div className={styles.notesContainer}>
+          <b>Notes</b>
+          {intern.notes.split('\n').map((note) => (
+            <p>{note}</p>
+          ))}
+        </div>
+
         {Object.keys(intern.data).map((key: string) => {
           return (
             <div className={styles.atribute} key={key}>

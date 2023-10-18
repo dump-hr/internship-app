@@ -1,4 +1,9 @@
-import { Intern, Question } from '@internship-app/types';
+import {
+  Intern,
+  InternDiscipline,
+  Question,
+  TestStatus,
+} from '@internship-app/types';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import moment from 'moment';
 
@@ -8,6 +13,7 @@ import {
 } from '../../constants/internConstants';
 import { Path } from '../../constants/paths';
 import styles from './index.module.css';
+import InternNotes from './InternNotes';
 
 interface InternInfoProps {
   intern: Intern;
@@ -27,43 +33,70 @@ const InternInfo = ({ intern }: InternInfoProps) => {
     date: moment(il.date).format('DD.MM. HH:mm'),
   }));
 
+  const interview = intern.interviewSlot;
+  const interviewInfo =
+    'Intervju: ' +
+    [
+      interview && moment(interview.start).format('DD.MM. HH:mm'),
+      intern.interviewStatus,
+      interview?.interviewers.map((int) => int.interviewer.name).join(', '),
+    ]
+      .filter((a) => a)
+      .join(' | ');
+
+  const testInfo = (ind: InternDiscipline) =>
+    `${disciplineLabel[ind.discipline]} test: ` +
+    [
+      ind.testSlot && moment(ind.testSlot?.start).format('DD.MM. HH:mm'),
+      ind.testSlot && `${ind.testScore}/${ind.testSlot?.maxPoints}`,
+      ind.testStatus,
+    ]
+      .filter((a) => a)
+      .join(' | ');
+
   return (
     <div className={styles.page}>
       <h1 className={styles.internFullName}>
         {intern.firstName} {intern.lastName}
       </h1>
 
-      <div className={styles.emailContainer}>
-        <div>{intern.email}</div>
+      <div className={styles.header}>
+        <div className={styles.mainInfoContainer}>
+          <div>{intern.email}</div>
+          <div>
+            Registracija: {moment(intern.createdAt).format('DD.MM. HH:mm')}
+          </div>
 
-        <div>
+          <div>
+            {intern.internDisciplines
+              .map((ind) => disciplineLabel[ind.discipline])
+              .join(', ')}
+          </div>
+
+          <div>{interviewInfo}</div>
           {intern.internDisciplines
-            .map((ind) => disciplineLabel[ind.discipline])
-            .join(', ')}
+            .filter((ind) => ind.testStatus)
+            .map((ind) => (
+              <div key={ind.discipline}>
+                <a
+                  href={
+                    ind.testStatus == TestStatus.Done
+                      ? Path.TestReview.replace(
+                          ':testSlotId',
+                          ind.testSlotId ?? '',
+                        )
+                          .replace(':group', 'intern')
+                          .replace(':groupId', intern.id)
+                      : undefined
+                  }
+                >
+                  {testInfo(ind)}
+                </a>
+              </div>
+            ))}
         </div>
 
-        <div>
-          Intervju: {moment(intern.interviewSlot?.start).format('DD.MM. HH:mm')}{' '}
-          {intern.interviewStatus}
-        </div>
-        {intern.internDisciplines
-          .filter((ind) => ind.testStatus)
-          .map((ind) => (
-            <div>
-              <a
-                href={Path.TestReview.replace(
-                  ':testSlotId',
-                  ind.testSlotId ?? '',
-                )
-                  .replace(':group', 'intern')
-                  .replace(':groupId', intern.id)}
-              >
-                {disciplineLabel[ind.discipline]} test:{' '}
-                {moment(ind.testSlot?.start).format('DD.MM. HH:mm')},{' '}
-                {ind.testScore}/{ind.testSlot?.maxPoints} {ind.testStatus}
-              </a>
-            </div>
-          ))}
+        <InternNotes intern={intern} />
       </div>
 
       <div className={styles.container}>
