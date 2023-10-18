@@ -148,6 +148,13 @@ const DashboardPage = () => {
         }).length > 1,
     ) || [];
 
+  duplicateInterns.sort((i1, i2) => {
+    const intern1Name = getFullName(i1);
+    const intern2Name = getFullName(i2);
+
+    return intern1Name.localeCompare(intern2Name);
+  });
+
   return (
     <AdminPage headerText="Dashboard">
       <Grid container spacing={2} mt={1}>
