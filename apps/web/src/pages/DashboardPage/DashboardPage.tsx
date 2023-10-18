@@ -105,14 +105,13 @@ const DashboardPage = () => {
 
       {actionsOpen && <BoardActions internIds={selection} />}
 
-      <CsvFile
-        data={internsWithStatus?.filter(getInternFilter(filterCriteria))}
-      />
       <InternFilter submitHandler={filterHandler} />
 
       <Grid item xs={12} md={5}>
         <div className={c.buttonsWrapper}>
-          <Button disabled>Pregledaj dev ispit</Button>
+          <CsvFile
+            data={internsWithStatus?.filter(getInternFilter(filterCriteria))}
+          />
           <Button onClick={() => setEmailDialogOpen(true)}>Pošalji mail</Button>
           <Button
             onClick={toggleActions}

@@ -7,9 +7,8 @@ type Props = {
 };
 
 const CsvFile = ({ data }: Props) => {
-  console.log(data);
   const headers = [
-    { label: 'Id', key: 'id' }, //do we need this?
+    { label: 'Id', key: 'id' },
     { label: 'Ime', key: 'firstName' },
     { label: 'Prezime', key: 'lastName' },
     { label: 'Email', key: 'email' },
@@ -24,9 +23,9 @@ const CsvFile = ({ data }: Props) => {
 
     { label: 'Područja', key: 'internDisciplines' },
 
-    { label: 'Staus interviewa', key: 'interviewStatus' }, //do we need this?
+    { label: 'Staus interviewa', key: 'interviewStatus' },
 
-    { label: 'Score', key: 'interviewSlot.score' }, //do we need answers (or even this)?
+    { label: 'Score', key: 'interviewSlot.score' },
   ];
 
   const formattedData = data?.map((item: Intern) => ({
@@ -34,16 +33,23 @@ const CsvFile = ({ data }: Props) => {
     internDisciplines: item.internDisciplines
       .map((el) => el.discipline)
       .join(', '),
+    data: {
+      ...item.data,
+      dateOfBirth:
+        typeof item.data.dateOfBirth === 'string'
+          ? new Date(item.data.dateOfBirth).getUTCFullYear()
+          : item.data.dateOfBirth,
+    },
   }));
 
   return (
-    <Button
-      style={{ marginBottom: '10px' }}
-      variant="contained"
-      color="secondary"
-    >
+    <Button>
       <CSVLink
-        style={{ textDecoration: 'none', color: 'white' }}
+        style={{
+          font: 'inherit',
+          textDecoration: 'inherit',
+          color: 'inherit',
+        }}
         data={formattedData ? formattedData : []}
         headers={headers}
         filename={'interns.csv'}
