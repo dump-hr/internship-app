@@ -1,7 +1,6 @@
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 
 import { useFetchAllInterviewers } from '../../api/useFetchAllInterviewers';
-import { MultilineInput } from '../common/MultilineInput/MultilineInput';
 import { CustomSelectInput } from '../common/SelectInput/CustomSelectInput';
 import styles from './index.module.css';
 
@@ -12,15 +11,11 @@ interface Props {
   setSelectedInterviewerFilter: React.Dispatch<
     React.SetStateAction<string[] | null | undefined>
   >;
-  setAdditionalNotesValue: React.Dispatch<
-    React.SetStateAction<string | undefined>
-  >;
 }
 
 export const CalendarSidebar: React.FC<Props> = ({
   setInterviewers,
   setSelectedInterviewerFilter,
-  setAdditionalNotesValue,
 }: Props) => {
   const { data: interviewers } = useFetchAllInterviewers();
 
@@ -52,10 +47,6 @@ export const CalendarSidebar: React.FC<Props> = ({
           setInterviewers(selectedInterviewers);
         }}
       />
-      <div>
-        <div className={styles.notesLabel}>Notes:</div>
-        <MultilineInput onValueChange={setAdditionalNotesValue} />
-      </div>
     </div>
   );
 };

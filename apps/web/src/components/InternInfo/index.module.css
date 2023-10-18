@@ -10,6 +10,11 @@
   gap: 24px;
 }
 
+.header {
+  display: flex;
+  justify-content: space-between;
+}
+
 @media screen and (max-width: 360px) {
   .container > :first-child,
   .container > :last-child {
@@ -30,7 +35,7 @@
   max-width: 100%;
 }
 
-.emailContainer {
+.mainInfoContainer {
   padding: 0 0 15px 0;
   margin: 0;
   color: gray;
@@ -67,4 +72,21 @@
 .logGrid {
   height: 365px;
   width: 220px;
+}
+
+.notesWrapper {
+  display: flex;
+  flex-direction: column-reverse;
+  justify-content: flex-end;
+  gap: 5px;
+}
+
+.notes {
+  line-height: 10px;
+  max-width: 200px;
+  text-wrap: wrap;
+}
+
+.noteInput {
+  display: flex;
 }

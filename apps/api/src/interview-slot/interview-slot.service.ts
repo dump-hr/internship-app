@@ -71,7 +71,6 @@ export class InterviewSlotService {
               start: slotStart,
               end: slotEnd,
               answers: {},
-              notes: interviewSlotDto.notes,
             },
           });
 

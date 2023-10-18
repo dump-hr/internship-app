@@ -1,6 +1,7 @@
 import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
 import {
   BoardAction,
+  CreateNoteRequest,
   InternAction,
   InternDecisionRequest,
   SetInterviewRequest,
@@ -48,7 +49,15 @@ export class InternService {
             priority: 'asc',
           },
         },
-        interviewSlot: true,
+        interviewSlot: {
+          include: {
+            interviewers: {
+              include: {
+                interviewer: true,
+              },
+            },
+          },
+        },
         logs: {
           orderBy: {
             date: 'desc',
@@ -469,6 +478,24 @@ dump.hr`,
         }),
       ),
     );
+  }
+
+  async createNote(internId: string, data: CreateNoteRequest) {
+    const { notes: currentNotes } = await this.prisma.intern.findUnique({
+      where: { id: internId },
+      select: { notes: true },
+    });
+
+    return await this.prisma.intern.update({
+      where: {
+        id: internId,
+      },
+      data: {
+        notes: {
+          set: currentNotes + `${data.note}\n`,
+        },
+      },
+    });
   }
 
   async count() {
