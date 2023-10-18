@@ -137,11 +137,7 @@ const DashboardPage = () => {
     internsWithStatus?.filter(
       (i1) =>
         internsWithStatus?.filter(
-          (i2) =>
-            i1.firstName === i2.firstName &&
-            i1.lastName === i2.lastName &&
-            i1.status !== InternStatus.Rejected &&
-            i2.status !== InternStatus.Rejected,
+          (i2) => i1.firstName === i2.firstName && i1.lastName === i2.lastName,
         ).length > 1,
     ) || [];
 
