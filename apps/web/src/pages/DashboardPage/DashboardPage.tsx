@@ -133,17 +133,27 @@ const DashboardPage = () => {
     },
   ];
 
+  function getFullName(intern: Intern): string {
+    return `${intern.firstName.trim()} ${intern.lastName.trim()}`.toLowerCase();
+  }
+
   const duplicateInterns =
     internsWithStatus?.filter(
       (i1) =>
-        internsWithStatus?.filter(
-          (i2) =>
-            i1.firstName === i2.firstName &&
-            i1.lastName === i2.lastName &&
-            i1.status !== InternStatus.Rejected &&
-            i2.status !== InternStatus.Rejected,
-        ).length > 1,
+        internsWithStatus?.filter((i2) => {
+          const intern1Name = getFullName(i1);
+          const intern2Name = getFullName(i2);
+
+          return intern1Name === intern2Name;
+        }).length > 1,
     ) || [];
+
+  duplicateInterns.sort((i1, i2) => {
+    const intern1Name = getFullName(i1);
+    const intern2Name = getFullName(i2);
+
+    return intern1Name.localeCompare(intern2Name);
+  });
 
   return (
     <AdminPage headerText="Dashboard">
