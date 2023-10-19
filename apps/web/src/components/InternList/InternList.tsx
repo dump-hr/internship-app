@@ -38,7 +38,7 @@ const getTestChip = (internDiscipline: InternDiscipline) => {
   const { discipline, testStatus, testScore } = internDiscipline;
   if (!testStatus) return null;
 
-  const scoreText = testScore ? `(${testScore}b)` : '';
+  const scoreText = testScore !== null ? `(${testScore}b)` : '';
   const label = shortDisciplineLabels[discipline];
 
   return (
@@ -102,7 +102,8 @@ const InternList: React.FC<Props> = ({ data = [], setSelection }) => {
       headerName: 'Intervju',
       description: 'Sort - po broju bodova',
       width: 150,
-      sortComparator: (a, b) => a.interviewSlot?.score - b.interviewSlot?.score,
+      sortComparator: (a, b) =>
+        (a.interviewSlot?.score ?? 0) - (b.interviewSlot?.score ?? 0),
       renderCell: (props: GridRenderCellParams<InternWithStatus>) =>
         getInterviewChip(props.value),
     },
@@ -172,6 +173,7 @@ const InternList: React.FC<Props> = ({ data = [], setSelection }) => {
       }}
     >
       <DataGrid
+        style={{ display: 'flex', flexDirection: 'column-reverse' }}
         rows={rows}
         columns={columns}
         disableColumnFilter

@@ -80,6 +80,13 @@ export const infoTitle = styled.h4`
   line-height: 28px;
 `;
 
+export const link = styled.a`
+  ${fuseDisplay}
+  color: ${colors.gray};
+  font-size: 13px;
+  line-height: 18px;
+`;
+
 export const infoText = styled.p`
   ${fuseDisplay}
   color: ${colors.gray};
@@ -158,7 +165,7 @@ export const statusLabel = styled.p`
   text-transform: uppercase;
 `;
 
-export const statusValue = styled.p`
+export const statusValue = styled.div`
   ${fuseDisplay}
   font-size: 22px;
   font-weight: 700;

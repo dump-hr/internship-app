@@ -21,6 +21,26 @@ export const options: ActionOptions<BoardActionType> = {
       },
     ],
   },
+  [BoardActionType.SetTestStatus]: {
+    description:
+      'Izmijeni test status selektiranih na određenu vrijednost. Napomena: za poništenje termina intervjua koristi CancelTestSlot.',
+    questions: [
+      {
+        id: 'discipline',
+        title: 'Područje',
+        type: QuestionType.Select,
+        options: Object.values(Discipline),
+        registerValue: Discipline.Development,
+      },
+      {
+        id: 'testStatus',
+        title: 'Status testa',
+        type: QuestionType.Select,
+        options: ['', ...Object.values(TestStatus)],
+        registerValue: '',
+      },
+    ],
+  },
   [BoardActionType.SetDiscipline]: {
     description: `Izmijeni discipline status selektiranih na određenu vrijednost. Prazna polja bit će ignorirana.
       Napomena: ovo ne utječe na logiku aplikacije, pa bi intervjue/testove/prava trebalo brisati/izmijeniti ručno.`,
@@ -67,6 +87,18 @@ export const options: ActionOptions<BoardActionType> = {
         title: 'Područje',
         type: QuestionType.Select,
         options: [Discipline.Development, Discipline.Design],
+        registerValue: Discipline.Development,
+      },
+    ],
+  },
+  [BoardActionType.SumTestPoints]: {
+    description: 'Zbraja bodove na testu pripravnika.',
+    questions: [
+      {
+        id: 'discipline',
+        title: 'Područje',
+        type: QuestionType.Select,
+        options: [Discipline.Development],
         registerValue: Discipline.Development,
       },
     ],

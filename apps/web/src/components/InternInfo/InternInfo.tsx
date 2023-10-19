@@ -1,9 +1,19 @@
-import { Intern, InternDiscipline, Question } from '@internship-app/types';
+import {
+  Intern,
+  InternDiscipline,
+  Question,
+  TestStatus,
+} from '@internship-app/types';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import moment from 'moment';
 
-import { internActionLabel } from '../../constants/internConstants';
+import {
+  disciplineLabel,
+  internActionLabel,
+} from '../../constants/internConstants';
+import { Path } from '../../constants/paths';
 import styles from './index.module.css';
+import InternNotes from './InternNotes';
 
 interface InternInfoProps {
   intern: Intern;
@@ -23,26 +33,70 @@ const InternInfo = ({ intern }: InternInfoProps) => {
     date: moment(il.date).format('DD.MM. HH:mm'),
   }));
 
+  const interview = intern.interviewSlot;
+  const interviewInfo =
+    'Intervju: ' +
+    [
+      interview && moment(interview.start).format('DD.MM. HH:mm'),
+      intern.interviewStatus,
+      interview?.interviewers.map((int) => int.interviewer.name).join(', '),
+    ]
+      .filter((a) => a)
+      .join(' | ');
+
+  const testInfo = (ind: InternDiscipline) =>
+    `${disciplineLabel[ind.discipline]} test: ` +
+    [
+      ind.testSlot && moment(ind.testSlot?.start).format('DD.MM. HH:mm'),
+      ind.testSlot && `${ind.testScore}/${ind.testSlot?.maxPoints}`,
+      ind.testStatus,
+    ]
+      .filter((a) => a)
+      .join(' | ');
+
   return (
     <div className={styles.page}>
       <h1 className={styles.internFullName}>
         {intern.firstName} {intern.lastName}
       </h1>
 
-      <div className={styles.emailContainer}>
-        <div>{intern.email}</div>
+      <div className={styles.header}>
+        <div className={styles.mainInfoContainer}>
+          <div>{intern.email}</div>
+          <div>
+            Registracija: {moment(intern.createdAt).format('DD.MM. HH:mm')}
+          </div>
 
-        {Array.isArray(intern.internDisciplines) &&
-          intern.internDisciplines.map(
-            (discipline: InternDiscipline, index: number) => {
-              return (
-                <span key={discipline.discipline}>
-                  {discipline.discipline}
-                  {index !== intern.internDisciplines.length - 1 && ', '}
-                </span>
-              );
-            },
-          )}
+          <div>
+            {intern.internDisciplines
+              .map((ind) => disciplineLabel[ind.discipline])
+              .join(', ')}
+          </div>
+
+          <div>{interviewInfo}</div>
+          {intern.internDisciplines
+            .filter((ind) => ind.testStatus)
+            .map((ind) => (
+              <div key={ind.discipline}>
+                <a
+                  href={
+                    ind.testStatus == TestStatus.Done
+                      ? Path.TestReview.replace(
+                          ':testSlotId',
+                          ind.testSlotId ?? '',
+                        )
+                          .replace(':group', 'intern')
+                          .replace(':groupId', intern.id)
+                      : undefined
+                  }
+                >
+                  {testInfo(ind)}
+                </a>
+              </div>
+            ))}
+        </div>
+
+        <InternNotes intern={intern} />
       </div>
 
       <div className={styles.container}>
@@ -83,6 +137,8 @@ const InternInfo = ({ intern }: InternInfoProps) => {
 
           {Array.isArray(intern.interviewSlot?.answers) &&
             intern.interviewSlot?.answers.map((item: Answer) => {
+              if (!item.value) return null;
+
               return (
                 <div
                   className={item.tick ? styles.tick : styles.atribute}

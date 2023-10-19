@@ -1,6 +1,10 @@
 import {
+  ChooseTestRequest,
   CreateTestSlotsRequest,
   ScheduleTestRequest,
+  SetScoreRequest,
+  StartTestRequest,
+  SubmitTestRequest,
   TestSlotPreviewDto,
   UpdateTestSlotRequest,
 } from '@internship-app/types';
@@ -106,5 +110,57 @@ export class TestSlotController {
     @Body() { internId }: ScheduleTestRequest,
   ) {
     return await this.testSlotService.scheduleTest(slotId, internId);
+  }
+
+  @Post('choose')
+  async chooseTest(@Body() { password }: ChooseTestRequest) {
+    return await this.testSlotService.chooseTest(password);
+  }
+
+  @Post('start/:id')
+  async startTest(
+    @Param('id') testSlotId: string,
+    @Body() { internEmail, password }: StartTestRequest,
+  ) {
+    return await this.testSlotService.startTest(
+      testSlotId,
+      internEmail,
+      password,
+    );
+  }
+
+  @Post('submit/:id')
+  async submitTest(
+    @Param('id') testSlotId: string,
+    @Body() req: SubmitTestRequest,
+  ) {
+    return await this.testSlotService.submitTest(testSlotId, req);
+  }
+
+  @Get('answers/:testSlotId/intern/:internId')
+  @UseGuards(JwtAuthGuard)
+  async getTestAnswersByIntern(
+    @Param('testSlotId') testSlotId: string,
+    @Param('internId') internId: string,
+  ) {
+    return await this.testSlotService.getTestAnswersByIntern(
+      testSlotId,
+      internId,
+    );
+  }
+
+  @Get('answers/:testSlotId/question/:questionId')
+  @UseGuards(JwtAuthGuard)
+  async getTestAnswersByQuestion(@Param('questionId') questionId: string) {
+    return await this.testSlotService.getTestAnswersByQuestion(questionId);
+  }
+
+  @Put('score/:answerId')
+  @UseGuards(JwtAuthGuard)
+  async setScore(
+    @Param('answerId') answerId: string,
+    @Body() { score }: SetScoreRequest,
+  ) {
+    return await this.testSlotService.setScore(answerId, +score);
   }
 }

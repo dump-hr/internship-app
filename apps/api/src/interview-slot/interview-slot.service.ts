@@ -4,7 +4,8 @@ import {
   InternalServerErrorException,
   NotFoundException,
 } from '@nestjs/common';
-import { InterviewStatus } from '@prisma/client';
+import { Discipline, InterviewStatus, Prisma } from '@prisma/client';
+import * as postmark from 'postmark';
 import { PrismaService } from 'src/prisma.service';
 
 import { CreateInterviewSlotDto } from './dto/createInterviewSlot.dto';
@@ -12,6 +13,8 @@ import { CreateInterviewSlotDto } from './dto/createInterviewSlot.dto';
 @Injectable()
 export class InterviewSlotService {
   constructor(private readonly prisma: PrismaService) {}
+
+  private postmark = new postmark.ServerClient(process.env.POSTMARK_API_TOKEN);
 
   async getAll() {
     const interviewSlots = await this.prisma.interviewSlot.findMany({
@@ -68,7 +71,6 @@ export class InterviewSlotService {
               start: slotStart,
               end: slotEnd,
               answers: {},
-              notes: interviewSlotDto.notes,
             },
           });
 
@@ -125,6 +127,9 @@ export class InterviewSlotService {
     const availableSlots = await this.prisma.interviewSlot.findMany({
       where: {
         internId: null,
+        start: {
+          gte: new Date(new Date().getTime() + 12 * 60 * 60 * 1000),
+        },
         AND: [
           {
             interviewers: {
@@ -152,9 +157,79 @@ export class InterviewSlotService {
             : {},
         ],
       },
+      orderBy: {
+        start: 'asc',
+      },
     });
 
     return availableSlots;
+  }
+
+  async getAvailableSlotsByDisciplines() {
+    const disciplineCombinations = await this.prisma.$queryRaw<
+      { disciplines: Discipline[]; needed: number }[]
+    >(
+      Prisma.sql`
+        select disciplines, count(*)::integer as needed from 
+        (
+          select DISTINCT array_agg("InternDiscipline".discipline ORDER BY "priority" ASC) as "disciplines", "Intern".id 
+          from "Intern" 
+		      left join "InternDiscipline" on "InternDiscipline"."internId" = "Intern".id 
+          where "Intern"."interviewStatus" = 'PickTerm'
+		      group by "Intern".id
+        ) as disciplineCombinations
+        group by disciplines
+        order by needed desc
+      `,
+    );
+
+    const interviewSlots = await Promise.all(
+      disciplineCombinations.map(async (dc) => {
+        const [primary, ...other] = dc.disciplines;
+
+        const available = await this.prisma.interviewSlot.count({
+          where: {
+            internId: null,
+            start: {
+              gte: new Date(new Date().getTime() + 12 * 60 * 60 * 1000),
+            },
+            AND: [
+              {
+                interviewers: {
+                  some: {
+                    interviewer: {
+                      disciplines: {
+                        has: primary,
+                      },
+                    },
+                  },
+                },
+              },
+              other.length > 0
+                ? {
+                    interviewers: {
+                      some: {
+                        interviewer: {
+                          disciplines: {
+                            hasSome: other,
+                          },
+                        },
+                      },
+                    },
+                  }
+                : {},
+            ],
+          },
+        });
+
+        return {
+          ...dc,
+          available,
+        };
+      }),
+    );
+
+    return interviewSlots;
   }
 
   async scheduleInterview(slotId: string, internId: string) {
@@ -166,6 +241,9 @@ export class InterviewSlotService {
       throw new NotFoundException('Slot is already taken');
     }
 
+    if (new Date(new Date().getTime() + 11 * 60 * 60 * 1000) > slot.start)
+      throw new NotFoundException('Too late to schedule slot');
+
     const internSlot = await this.prisma.interviewSlot.findFirst({
       where: { internId },
     });
@@ -173,6 +251,30 @@ export class InterviewSlotService {
     if (internSlot) {
       throw new NotFoundException('Intern already has a slot');
     }
+
+    const intern = await this.prisma.intern.findUnique({
+      where: { id: internId },
+    });
+
+    this.postmark.sendEmail({
+      From: 'info@dump.hr',
+      To: intern.email,
+      Subject: 'Uspješno biranje termina za DUMP Internship intervju',
+      TextBody: `Pozdrav ${intern.firstName},
+
+biranje termina intervjua je uspješno provedeno! Termin svog intervjua možeš vidjeti na status stranici: https://internship.dump.hr/status/${intern.id}
+U slučaju da ipak ne možeš doći na odabrani termin, javi nam se na vrijeme na info@dump.hr
+
+Podsjećamo, tvoj intervju će se održati u odabranom terminu u našem uredu (prostorija A223) na FESB-u (Ruđera Boškovića 32).
+
+Naš ured ćeš pronaći tako da kad uđeš kroz glavna vrata FESB-a skreneš desno do kraja hodnika (put referade) dok ne dođeš do stepenica koje su s lijeve strane. Popneš se stepenicama na prvi kat i skreneš lijevo. Nastaviš hodnikom do kraja i s desne strane vidjet ćeš vrata našeg ureda (A223).
+
+Vidimo se!
+
+DUMP Udruga mladih programera
+dump.hr`,
+      MessageStream: 'outbound',
+    });
 
     return await this.prisma.intern.update({
       where: { id: internId, interviewStatus: InterviewStatus.PickTerm },

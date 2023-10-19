@@ -27,6 +27,7 @@ const ScheduleTestPage = () => {
     scheduleTest.mutate({
       internId: params.internId,
       testSlotId: selectedSlot.id,
+      discipline: params.discipline,
     });
   };
 
@@ -35,7 +36,7 @@ const ScheduleTestPage = () => {
   if (isError || !params?.discipline || !params.internId || !slots)
     return (
       <SlotPickerLayout
-        title={`Dogodila se greška (${error}). Molimo kontaktirajte nas na info@dump.hr`}
+        title={`Dogodila se greška (${error}). Molimo kontaktirajte nas po potrebi na info@dump.hr`}
       />
     );
 

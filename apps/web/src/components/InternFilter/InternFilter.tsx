@@ -28,7 +28,7 @@ const initialCriteria: CriteriaSection[] = [
         id: 'main.name',
         type: QuestionType.Field,
         registerValue: '',
-        title: 'Ime',
+        title: 'Ime/mail/testid',
       },
       {
         id: 'main.status',
@@ -83,9 +83,10 @@ const getNewCriteria = (id: string): CriteriaSection => ({
 
 type InternFilterProps = {
   submitHandler: (values: FieldValues) => void;
+  disabled?: boolean;
 };
 
-const InternFilter = ({ submitHandler }: InternFilterProps) => {
+const InternFilter = ({ submitHandler, disabled }: InternFilterProps) => {
   const form = useForm();
   const { unregister, handleSubmit } = form;
   const [criteria, setCriteria] = useState(initialCriteria);
@@ -106,6 +107,7 @@ const InternFilter = ({ submitHandler }: InternFilterProps) => {
         onClick={handleSubmit(submitHandler)}
         variant="contained"
         color="secondary"
+        disabled={disabled}
       >
         Filtriraj
       </Button>

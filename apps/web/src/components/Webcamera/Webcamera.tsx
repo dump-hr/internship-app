@@ -32,15 +32,17 @@ const Webcamera = ({ image, setImage }: WebcameraProps) => {
 
   return (
     <div className={styles.camera}>
-      <Webcam
-        style={{ display: image ? 'none' : 'flex' }}
-        width={videoConstraints.width}
-        height={videoConstraints.height}
-        audio={false}
-        screenshotFormat="image/png"
-        videoConstraints={videoConstraints}
-        ref={webRef}
-      />
+      {!image && (
+        <Webcam
+          style={{ display: 'flex' }}
+          width={videoConstraints.width}
+          height={videoConstraints.height}
+          audio={false}
+          screenshotFormat="image/png"
+          videoConstraints={videoConstraints}
+          ref={webRef}
+        />
+      )}
 
       <img src={image} style={{ display: image ? 'flex' : 'none' }} />
       <IconButton

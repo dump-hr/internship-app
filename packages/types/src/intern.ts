@@ -44,24 +44,26 @@ export enum TestStatus {
 }
 
 export enum CodingLanguage {
+  JavaScript = 'JavaScript',
   Python = 'Python',
+  CSharp = 'CSharp',
   CPP = 'CPP',
   C = 'C',
-  CS = 'CS',
-  JavaScript = 'JavaScript'
+  Java = 'Java',
+  Go = 'Go',
 }
 
 export enum InternLogAction {
   OpenStatusPage = 'OpenStatusPage',
   OpenInterviewPage = 'OpenInterviewPage',
-  OpenTestPage = 'OpenTestPage'
+  OpenTestPage = 'OpenTestPage',
 }
 
 export enum AdminLogAction {
-  Create = "Create",
-  Update = "Update",
-  Delete = "Delete",
-  Email = "Email",
+  Create = 'Create',
+  Update = 'Update',
+  Delete = 'Delete',
+  Email = 'Email',
 }
 
 export type Interviewer = {
@@ -71,6 +73,12 @@ export type Interviewer = {
   email?: string;
 };
 
+export type InterviewerWithInterviewCount = Interviewer & {
+  _count: {
+    interviews: number;
+  };
+};
+
 export type Intern = {
   id: string;
   firstName: string;
@@ -78,10 +86,12 @@ export type Intern = {
   email: string;
   image?: string;
   data: Json;
+  notes: string;
   interviewStatus: InterviewStatus;
   interviewSlot?: InterviewSlot;
   internDisciplines: InternDiscipline[];
   logs: InternLog[];
+  createdAt: Date;
 };
 
 export type InternCreateRequest = {
@@ -98,8 +108,10 @@ export type InternDiscipline = {
   testStatus?: TestStatus;
   testScore?: number;
   testSlot?: TestSlot;
+  testSlotId?: string;
   internId: string;
   intern: Intern;
+  internQuestionAnswers: InternQuestionAnswer[];
 };
 
 export type Slot = {
@@ -108,11 +120,18 @@ export type Slot = {
   end: Date;
 };
 
+export type SlotAvailability = {
+  disciplines: Discipline[];
+  available: number;
+  needed: number;
+};
+
 export type TestSlot = {
   discipline: Discipline;
   location: string;
   capacity: number;
   maxPoints: number;
+  password: string;
   internDisciplines: InternDiscipline[];
   testQuestions: TestQuestion[];
 } & Slot;
@@ -124,7 +143,7 @@ export type TestQuestion = {
   points: number;
   order: number;
   testSlot: TestSlot;
-}
+};
 
 export type InternQuestionAnswer = {
   id: string;
@@ -133,7 +152,7 @@ export type InternQuestionAnswer = {
   score?: number;
   question: TestQuestion;
   internDiscipline: InternDiscipline;
-}
+};
 
 export type InterviewSlot = {
   id: string;
@@ -141,9 +160,9 @@ export type InterviewSlot = {
   end: Date;
   answers: Json;
   score?: number;
-  notes?: string;
   interviewers: InterviewMemberParticipation[];
-  intern: Intern
+  internId?: string;
+  intern: Intern;
 };
 
 export type InterviewMemberParticipation = {
@@ -160,14 +179,14 @@ export type InternLog = {
   internId: string;
   action: InternLogAction;
   date: Date;
-}
+};
 
 export type AdminLog = {
   id: string;
   action: AdminLogAction;
   description: string;
   date: Date;
-}
+};
 
 export type InterviewEvent = {
   id: string;
@@ -176,15 +195,13 @@ export type InterviewEvent = {
   title: string;
   additionalInfo: string;
   interviewers: InterviewMemberParticipation[];
-  notes: string;
   status: InterviewStatus;
 };
 
 export type CreateInterviewSlotDto = {
-  start: string;
-  end: string;
+  start: Date;
+  end: Date;
   interviewers: string[];
-  notes?: string;
 };
 
 export enum InternStatus {
@@ -201,4 +218,9 @@ export type InternDecisionRequest = {
     discipline: Discipline;
     status: DisciplineStatus;
   }[];
+};
+
+export type CreateNoteRequest = {
+  internId: string;
+  note: string;
 };

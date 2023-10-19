@@ -27,7 +27,7 @@ export const EmailBox: React.FC<Props> = ({
         value={body}
         style={{
           width: '100%',
-          height: '50vh',
+          minHeight: '40vh',
           resize: 'none',
           backgroundColor: '#D9D9D9',
           marginBottom: '3rem',

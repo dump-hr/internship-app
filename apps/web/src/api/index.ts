@@ -17,6 +17,7 @@ api.interceptors.request.use((config) => {
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
+
   return config;
 });
 
@@ -37,3 +38,11 @@ api.interceptors.response.use(
     return Promise.reject(error.response.data.message || error.message);
   },
 );
+
+export const runApi = axios.create({
+  baseURL: 'https://code-runner.bdeak.net/run',
+  timeout: 5000,
+  headers: {
+    'Content-Type': 'application/json',
+  },
+});

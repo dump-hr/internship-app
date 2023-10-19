@@ -1,6 +1,7 @@
 import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
 import {
   BoardAction,
+  CreateNoteRequest,
   InternAction,
   InternDecisionRequest,
   SetInterviewRequest,
@@ -41,11 +42,22 @@ export class InternService {
       where: { id },
       include: {
         internDisciplines: {
+          include: {
+            testSlot: true,
+          },
           orderBy: {
             priority: 'asc',
           },
         },
-        interviewSlot: true,
+        interviewSlot: {
+          include: {
+            interviewers: {
+              include: {
+                interviewer: true,
+              },
+            },
+          },
+        },
         logs: {
           orderBy: {
             date: 'desc',
@@ -68,6 +80,9 @@ export class InternService {
             score: true,
           },
         },
+      },
+      orderBy: {
+        createdAt: 'asc',
       },
     });
 
@@ -92,6 +107,21 @@ export class InternService {
               select: {
                 start: true,
                 end: true,
+              },
+            },
+            internQuestionAnswers: {
+              select: {
+                score: true,
+                question: {
+                  select: {
+                    points: true,
+                  },
+                },
+              },
+              orderBy: {
+                question: {
+                  order: 'asc',
+                },
               },
             },
           },
@@ -294,6 +324,12 @@ dump.hr`,
           data: { interviewStatus: action.interviewStatus },
         });
 
+      case 'SetTestStatus':
+        return await this.prisma.internDiscipline.updateMany({
+          where: { internId: { in: internIds }, discipline: action.discipline },
+          data: { testStatus: action.testStatus },
+        });
+
       case 'SetDiscipline':
         return await this.prisma.internDiscipline.updateMany({
           where: { internId: { in: internIds }, discipline: action.discipline },
@@ -380,6 +416,47 @@ dump.hr`,
           },
         });
 
+      case 'SumTestPoints':
+        const disciplinesWithResults =
+          await this.prisma.internDiscipline.findMany({
+            where: {
+              internId: { in: internIds },
+              discipline: action.discipline,
+            },
+            include: {
+              internQuestionAnswers: {
+                select: {
+                  score: true,
+                },
+              },
+            },
+          });
+
+        const updatedDisciplines = disciplinesWithResults.map((d) => ({
+          internId: d.internId,
+          discipline: d.discipline,
+          score: d.internQuestionAnswers.reduce(
+            (acc, curr) => acc + curr.score,
+            0,
+          ),
+        }));
+
+        return await this.prisma.$transaction(
+          updatedDisciplines.map((d) =>
+            this.prisma.internDiscipline.update({
+              where: {
+                internId_discipline: {
+                  discipline: d.discipline,
+                  internId: d.internId,
+                },
+              },
+              data: {
+                testScore: d.score,
+              },
+            }),
+          ),
+        );
+
       default:
         throw new BadRequestException();
     }
@@ -401,6 +478,24 @@ dump.hr`,
         }),
       ),
     );
+  }
+
+  async createNote(internId: string, data: CreateNoteRequest) {
+    const { notes: currentNotes } = await this.prisma.intern.findUnique({
+      where: { id: internId },
+      select: { notes: true },
+    });
+
+    return await this.prisma.intern.update({
+      where: {
+        id: internId,
+      },
+      data: {
+        notes: {
+          set: currentNotes + `${data.note}\n`,
+        },
+      },
+    });
   }
 
   async count() {

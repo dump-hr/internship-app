@@ -23,6 +23,14 @@ async function main() {
         id: 'ante-roca',
       },
       {
+        email: 'ante.roca2@dump.hr',
+        firstName: 'Ante',
+        lastName: 'Roca',
+        interviewStatus: InterviewStatus.Done,
+        data: {},
+        id: 'ante-roca2',
+      },
+      {
         email: 'ana.kovac@example.com',
         firstName: 'Ana',
         lastName: 'Kovač',

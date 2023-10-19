@@ -1,0 +1,37 @@
+.header {
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-left: 24px;
+  margin-right: 24px;
+}
+
+.logoContainer {
+  display: flex;
+  align-items: center;
+
+  .logo {
+    height: 28px;
+    margin-right: 16px;
+  }
+
+  .text {
+    font-size: 24px;
+    font-weight: 400;
+  }
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.startForm {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  margin-top: 64px;
+}

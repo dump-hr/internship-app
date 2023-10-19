@@ -49,6 +49,12 @@ export const NewSlotEdit: React.FC<NewSlotEditProps> = ({ slot, setSlots }) => {
         name="location"
         onChange={handleFieldChange('value')}
       />
+      <InputLabel>Zaporka</InputLabel>
+      <TextField
+        value={slot.password}
+        name="password"
+        onChange={handleFieldChange('value')}
+      />
 
       <Button variant="contained" color="error" onClick={handleDelete}>
         Obriši

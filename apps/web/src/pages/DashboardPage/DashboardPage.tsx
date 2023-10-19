@@ -1,10 +1,11 @@
 import {
+  Discipline,
   DisciplineStatus,
   Intern,
   InternStatus,
   InterviewStatus,
 } from '@internship-app/types';
-import { Button, Grid } from '@mui/material';
+import { Button, Grid, Switch } from '@mui/material';
 import { useState } from 'react';
 import { FieldValues } from 'react-hook-form';
 
@@ -17,7 +18,7 @@ import {
   FilterCriteria,
   getInternFilter,
 } from '../../components/InternFilter/filter';
-import InternList from '../../components/InternList';
+import InternList from '../../components/InternList/InternList';
 import EmailPage from '../EmailPage';
 import c from './DashboardPage.module.css';
 
@@ -53,6 +54,7 @@ const DashboardPage = () => {
   const [emailDialogOpen, setEmailDialogOpen] = useState(false);
   const [actionsOpen, setActionsOpen] = useState(false);
   const toggleActions = () => setActionsOpen((prev) => !prev);
+  const [showDuplicates, setShowDuplicates] = useState(false);
 
   const [filterCriteria, setFilterCriteria] = useState<FilterCriteria>(
     initialState.filterCriteria,
@@ -73,13 +75,19 @@ const DashboardPage = () => {
       value: interns?.length,
     },
     {
+      label: 'Nadol. intervjui',
+      value: interns?.filter(
+        (i) => i.interviewStatus === InterviewStatus.Pending,
+      ).length,
+    },
+    {
       label: 'Obav. intervjui',
       value: interns?.filter((i) => i.interviewStatus === InterviewStatus.Done)
         .length,
     },
     {
-      label: 'Nadol. intervjui',
-      value: interns?.filter((i) => i.interviewStatus === InterviewStatus.Done)
+      label: 'Čeka odluku',
+      value: internsWithStatus?.filter((i) => i.status === InternStatus.Pending)
         .length,
     },
     {
@@ -88,7 +96,65 @@ const DashboardPage = () => {
         (i) => i.status === InternStatus.Approved,
       ).length,
     },
+    {
+      label: 'Dev/Diz/Mark/Mult',
+      value: `${
+        internsWithStatus?.filter(
+          (i) =>
+            i.status === InternStatus.Approved &&
+            i.internDisciplines.some(
+              (ind) => ind.discipline === Discipline.Development,
+            ),
+        ).length ?? ''
+      }/${
+        internsWithStatus?.filter(
+          (i) =>
+            i.status === InternStatus.Approved &&
+            i.internDisciplines.some(
+              (ind) => ind.discipline === Discipline.Design,
+            ),
+        ).length ?? ''
+      }/${
+        internsWithStatus?.filter(
+          (i) =>
+            i.status === InternStatus.Approved &&
+            i.internDisciplines.some(
+              (ind) => ind.discipline === Discipline.Marketing,
+            ),
+        ).length ?? ''
+      }/${
+        internsWithStatus?.filter(
+          (i) =>
+            i.status === InternStatus.Approved &&
+            i.internDisciplines.some(
+              (ind) => ind.discipline === Discipline.Multimedia,
+            ),
+        ).length ?? ''
+      }`,
+    },
   ];
+
+  function getFullName(intern: Intern): string {
+    return `${intern.firstName.trim()} ${intern.lastName.trim()}`.toLowerCase();
+  }
+
+  const duplicateInterns =
+    internsWithStatus?.filter(
+      (i1) =>
+        internsWithStatus?.filter((i2) => {
+          const intern1Name = getFullName(i1);
+          const intern2Name = getFullName(i2);
+
+          return intern1Name === intern2Name;
+        }).length > 1,
+    ) || [];
+
+  duplicateInterns.sort((i1, i2) => {
+    const intern1Name = getFullName(i1);
+    const intern2Name = getFullName(i2);
+
+    return intern1Name.localeCompare(intern2Name);
+  });
 
   return (
     <AdminPage headerText="Dashboard">
@@ -105,13 +171,28 @@ const DashboardPage = () => {
 
       {actionsOpen && <BoardActions internIds={selection} />}
 
-      <InternFilter submitHandler={filterHandler} />
+      <InternFilter submitHandler={filterHandler} disabled={showDuplicates} />
 
       <Grid item xs={12} md={5}>
         <div className={c.buttonsWrapper}>
           <CsvFile
             data={internsWithStatus?.filter(getInternFilter(filterCriteria))}
           />
+          <div className={c.switchWrapper}>
+            Prikaži sve
+            <Switch
+              onChange={() => setShowDuplicates(!showDuplicates)}
+              disabled={duplicateInterns.length === 0}
+            />
+            {duplicateInterns.length === 0 ? (
+              <i style={{ color: '#ababab' }}>Nema duplikata</i>
+            ) : (
+              'Prikaži duplikate'
+            )}
+          </div>
+
+          <Button disabled>Pregledaj dev ispit</Button>
+
           <Button onClick={() => setEmailDialogOpen(true)}>Pošalji mail</Button>
           <Button
             onClick={toggleActions}
@@ -124,7 +205,11 @@ const DashboardPage = () => {
 
       {actionsOpen && <>{selection.length} interna selektirano.</>}
       <InternList
-        data={internsWithStatus?.filter(getInternFilter(filterCriteria))}
+        data={
+          showDuplicates
+            ? duplicateInterns
+            : internsWithStatus?.filter(getInternFilter(filterCriteria))
+        }
         setSelection={setSelection}
       />
 

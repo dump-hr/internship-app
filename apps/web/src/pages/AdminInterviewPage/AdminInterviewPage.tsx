@@ -2,16 +2,17 @@ import {
   InterviewEvent,
   InterviewMemberParticipation,
 } from '@internship-app/types';
-import moment from 'moment';
 import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 
 import { useCreateInterviewSlot } from '../../api/useCreateInterviewSlot';
 import { useDeleteInterviewSlot } from '../../api/useDeleteInterviewSlot';
 import { useFetchInterviewSlots } from '../../api/useFetchInterviewSlots';
+import { useFetchSlotsAvailability } from '../../api/useFetchSlotsAvailability';
 import AdminPage from '../../components/AdminPage';
 import { Calendar } from '../../components/Calendar/Calendar';
 import { CalendarSidebar } from '../../components/CalendarSidebar/CalendarSidebar';
+import SlotsList from '../../components/SlotsList/SlotsList';
 import { calendarHelper } from '../../helpers/calendarHelper';
 import styles from './index.module.css';
 
@@ -31,12 +32,11 @@ export const AdminInterviewPage = () => {
   const [selectedInterviewers, setSelectedInterviewers] = useState<
     string[] | null
   >();
-  const [additionalNotesValue, setAdditionalNotesValue] = useState<
-    string | undefined
-  >();
+
   const [events, setEvents] = useState<MappedEvent[]>([]);
   const { data: interviewSlots, refetchInterviewSlots } =
     useFetchInterviewSlots();
+  const { data: slotsAvailability } = useFetchSlotsAvailability();
 
   const deleteInterviewSlotMutation = useDeleteInterviewSlot();
   const createInterviewSlotMutation = useCreateInterviewSlot();
@@ -57,10 +57,9 @@ export const AdminInterviewPage = () => {
     }
 
     const interviewSlotDto = {
-      start: moment(event.start).format('YYYY-MM-DD HH:mm:ss'),
-      end: moment(event.end).format('YYYY-MM-DD HH:mm:ss'),
+      start: event.start,
+      end: event.end,
       interviewers: selectedInterviewers,
-      notes: additionalNotesValue || '',
     };
 
     createInterviewSlotMutation.mutate(interviewSlotDto, {
@@ -108,9 +107,9 @@ export const AdminInterviewPage = () => {
         <CalendarSidebar
           setSelectedInterviewerFilter={setInterviewerFilter}
           setInterviewers={setSelectedInterviewers}
-          setAdditionalNotesValue={setAdditionalNotesValue}
         />
       </div>
+      <SlotsList data={slotsAvailability} />
     </AdminPage>
   );
 };

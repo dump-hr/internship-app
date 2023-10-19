@@ -25,23 +25,28 @@ ovo su tvoja podrucja:
 `.trim();
 
 export const EmailPage = ({ emails, on, close }: Props) => {
-  const { mutateAsync: makeEmailsMutation } = useMakeEmails();
-  const { mutateAsync: sendEmailsMutation } = useSendEmails();
   const [subject, setSubject] = useState<string>('');
   const [emailPreviewOpen, setEmailPreviewOpen] = useState<boolean>(false);
   const [emailList, setEmailList] = useState<string[]>([]);
   const [text, setText] = useState<string>(defaultEmailText);
 
+  const { mutateAsync: makeEmailsMutation } = useMakeEmails();
+  const { mutateAsync: sendEmailsMutation } = useSendEmails(() => {
+    setSubject('');
+    setEmailPreviewOpen(false);
+    setEmailList([]);
+    setText(defaultEmailText);
+    close?.();
+  });
+
   const makeEmails = async () => {
     const createdEmails = await makeEmailsMutation({ emails, text });
-    console.log(createdEmails);
     setEmailList(createdEmails);
     setEmailPreviewOpen(true);
   };
 
   const sendEmails = async () => {
     await sendEmailsMutation({ emails, text, subject });
-    alert('Emails sent!');
   };
 
   return (

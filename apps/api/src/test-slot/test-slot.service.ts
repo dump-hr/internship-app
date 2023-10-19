@@ -1,15 +1,22 @@
-import { CreateTestSlotsRequest, TestSlot } from '@internship-app/types';
+import {
+  CreateTestSlotsRequest,
+  SubmitTestRequest,
+  TestSlot,
+} from '@internship-app/types';
 import {
   BadRequestException,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
 import { Discipline, TestStatus } from '@prisma/client';
+import * as postmark from 'postmark';
 import { PrismaService } from 'src/prisma.service';
 
 @Injectable()
 export class TestSlotService {
   constructor(private readonly prisma: PrismaService) {}
+
+  private postmark = new postmark.ServerClient(process.env.POSTMARK_API_TOKEN);
 
   async getAll() {
     const testSlots = await this.prisma.testSlot.findMany({
@@ -52,6 +59,7 @@ export class TestSlotService {
             start: slot.start,
             end: slot.end,
             location: slot.location,
+            password: slot.password,
             maxPoints: 0,
           },
         }),
@@ -68,6 +76,7 @@ export class TestSlotService {
         capacity: testSlot.capacity,
         location: testSlot.location,
         maxPoints: testSlot.maxPoints,
+        password: testSlot.password,
         testQuestions: {
           deleteMany: {
             testSlotId: id,
@@ -125,7 +134,7 @@ export class TestSlotService {
       where: {
         discipline,
         start: {
-          gt: new Date(),
+          gte: new Date(new Date().getTime() + 10 * 60 * 1000),
         },
       },
       include: {
@@ -135,11 +144,14 @@ export class TestSlotService {
           },
         },
       },
+      orderBy: {
+        start: 'asc',
+      },
     });
 
-    const availableSlots = slots.filter(
-      (s) => s._count.internDisciplines < s.capacity,
-    );
+    const availableSlots = slots
+      .filter((s) => s._count.internDisciplines < s.capacity)
+      .map((s) => ({ ...s, password: undefined }));
 
     return availableSlots;
   }
@@ -160,7 +172,8 @@ export class TestSlotService {
       throw new NotFoundException('Slot is already taken');
     }
 
-    if (new Date() > slot.start) throw new NotFoundException('Slot is over');
+    if (new Date(new Date().getTime() + 9 * 60 * 1000) > slot.start)
+      throw new NotFoundException('Too late to schedule slot');
 
     const internDiscipline = await this.prisma.internDiscipline.findUnique({
       where: {
@@ -169,11 +182,35 @@ export class TestSlotService {
           discipline: slot.discipline,
         },
       },
+      include: {
+        intern: true,
+      },
     });
 
     if (internDiscipline.testStatus !== TestStatus.PickTerm) {
       throw new NotFoundException('Intern has no right to pick this slot');
     }
+
+    const intern = internDiscipline.intern;
+    await this.postmark.sendEmail({
+      From: 'info@dump.hr',
+      To: intern.email,
+      Subject: 'Uspješno biranje termina za DUMP Internship inicijalni ispit',
+      TextBody: `Pozdrav ${intern.firstName},
+biranje termina inicijalnog dev testa je uspješno provedeno! Termin svog ispita možeš vidjeti na status stranici: https://internship.dump.hr/status/${intern.id}
+U slučaju da ne možeš doći na odabrani termin, javi nam se na vrijeme na info@dump.hr
+
+Također, podsjećamo da će se ispit održati u jednom od računalnih laboratorija FESB-a. Potrebno je doći 10 minuta prije odabranog termina u atrij fakulteta, nakon čega ćemo te uputiti u učionicu u kojoj tipkaš ispit. Ispit rješavaš na našem računalu u jednom od ponuđenih jezika (JavaScript, Python, C#, C++, C, Java, Go). Sastoji se od četiri zadatka za koje imaš 100 minuta.
+
+Primjer ispita možeš vidjeti na sljedećem linku: https://bit.ly/inicijalni-primjer
+
+Tvoj rezultat testa poslat ćemo ti najkasnije tri dana nakon odabranog termina. U slučaju položenog ispita, dobit ćeš link za biranje termina intervjua.
+
+Sretno i vidimo se!
+
+DUMP Udruga mladih programera`,
+      MessageStream: 'outbound',
+    });
 
     return await this.prisma.internDiscipline.update({
       where: {
@@ -189,6 +226,171 @@ export class TestSlotService {
             id: slotId,
           },
         },
+      },
+    });
+  }
+
+  async chooseTest(password: string) {
+    const testSlot = await this.prisma.testSlot.findFirst({
+      where: { password },
+    });
+
+    if (!testSlot) throw new BadRequestException('Such test does not exist!');
+
+    return testSlot;
+  }
+
+  async startTest(testSlotId: string, email: string, password: string) {
+    const internDiscipline = await this.prisma.internDiscipline.findFirst({
+      where: {
+        intern: {
+          email: {
+            equals: email,
+            mode: 'insensitive',
+          },
+        },
+        testSlotId,
+        testStatus: TestStatus.Pending,
+      },
+      include: {
+        testSlot: {
+          include: {
+            testQuestions: {
+              orderBy: {
+                order: 'asc',
+              },
+            },
+          },
+        },
+      },
+    });
+
+    if (!internDiscipline) {
+      throw new BadRequestException(
+        'Test does not exist or intern does not have permission to access',
+      );
+    }
+
+    const slot = internDiscipline.testSlot;
+
+    if (!slot) {
+      throw new NotFoundException('Slot not found');
+    }
+
+    if (password !== slot.password) {
+      throw new BadRequestException('Wrong password');
+    }
+
+    if (new Date() < slot.start) {
+      throw new BadRequestException('Test not started yet');
+    }
+
+    return slot;
+  }
+
+  async submitTest(testSlotId: string, test: SubmitTestRequest) {
+    const internDiscipline = await this.prisma.internDiscipline.findFirst({
+      where: {
+        intern: {
+          email: {
+            equals: test.internEmail,
+            mode: 'insensitive',
+          },
+        },
+        testSlotId,
+        testStatus: TestStatus.Pending,
+      },
+      include: {
+        testSlot: {
+          select: { password: true },
+        },
+      },
+    });
+
+    if (!internDiscipline) {
+      throw new BadRequestException(
+        'Test does not exist or intern does not have permission to submit',
+      );
+    }
+
+    if (internDiscipline.testSlot.password !== test.password) {
+      throw new BadRequestException('Wrong password!');
+    }
+
+    await this.prisma.internDiscipline.update({
+      where: {
+        internId_discipline: {
+          internId: internDiscipline.internId,
+          discipline: internDiscipline.discipline,
+        },
+      },
+      data: {
+        testStatus: TestStatus.Done,
+        internQuestionAnswers: {
+          createMany: {
+            data: test.answers.map((a) => ({
+              code: a.code,
+              questionId: a.questionId,
+              language: a.language,
+            })),
+          },
+        },
+      },
+    });
+
+    return internDiscipline.internId;
+  }
+
+  async getTestAnswersByIntern(testSlotId: string, internId: string) {
+    const internDiscipline = await this.prisma.internDiscipline.findFirst({
+      where: {
+        internId,
+        testSlotId,
+        testStatus: TestStatus.Done,
+      },
+    });
+
+    if (!internDiscipline) {
+      throw new BadRequestException('Test does not exist or is not done');
+    }
+
+    return await this.prisma.internQuestionAnswer.findMany({
+      where: {
+        internDisciplineInternId: internId,
+        internDisciplineDiscipline: internDiscipline.discipline,
+      },
+      include: {
+        question: true,
+      },
+      orderBy: {
+        question: {
+          order: 'asc',
+        },
+      },
+    });
+  }
+
+  async getTestAnswersByQuestion(questionId: string) {
+    return await this.prisma.internQuestionAnswer.findMany({
+      where: {
+        questionId,
+      },
+      include: {
+        question: true,
+      },
+      orderBy: {
+        createdAt: 'asc',
+      },
+    });
+  }
+
+  async setScore(answerId: string, score: number) {
+    return await this.prisma.internQuestionAnswer.update({
+      where: {
+        id: answerId,
+      },
+      data: {
+        score,
       },
     });
   }

@@ -1,5 +1,6 @@
 import { Slot } from '@internship-app/types';
 import { Box, useMediaQuery } from '@mui/material';
+import moment from 'moment';
 import { useState } from 'react';
 
 import { ConfirmDialog } from '../ConfirmDialog';
@@ -25,14 +26,9 @@ const SlotPicker: React.FC<SlotPickerProps> = ({
   const isMobile = useMediaQuery('(max-width:700px)');
 
   const testSlotDateFormat =
-    selectedSlot?.start.toLocaleString('hr-HR', {
-      timeStyle: 'short',
-      dateStyle: 'short',
-    }) +
-    '-' +
-    selectedSlot?.end.toLocaleTimeString('hr-HR', {
-      timeStyle: 'short',
-    });
+    moment(selectedSlot?.start).format('DD.MM. HH:mm') +
+    ' - ' +
+    moment(selectedSlot?.end).format('HH:mm');
 
   if (slots?.length === 0) {
     return (
@@ -78,7 +74,7 @@ const SlotPicker: React.FC<SlotPickerProps> = ({
           setDialogOpen(false);
         }}
         title="Potvrdi odabir termina"
-        description={`Vaš termin bit će rezerviran za ${testSlotDateFormat}.`}
+        description={`Tvoj termin bit će rezerviran za ${testSlotDateFormat}. Odabrani termin se ne može promijeniti!`}
       />
     </Layout>
   );
