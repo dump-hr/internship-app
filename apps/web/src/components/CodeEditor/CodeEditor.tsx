@@ -55,27 +55,30 @@ export const CodeEditor: React.FC<Props> = ({
         onChange={(code) => setCode(code ?? '')}
       />
 
-      <div className={c.sidebar}>
-        <div className={c.task}>
-          <div className={c.taskHeader}>
-            <ButtonGroup variant="outlined" aria-label="outlined button group">
-              <Button disabled={isFirstQuestion} onClick={() => prevQuestion()}>
-                Prethodni
-              </Button>
-              <Button disabled={isLastQuestion} onClick={() => nextQuestion()}>
-                Sljedeći
-              </Button>
-            </ButtonGroup>
+      <div
+        className={c.sidebar}
+        style={{ height: `calc(100vh - ${headerHeight}px)` }}
+      >
+        <div className={c.taskHeader}>
+          <ButtonGroup variant="outlined" aria-label="outlined button group">
+            <Button disabled={isFirstQuestion} onClick={() => prevQuestion()}>
+              Prethodni
+            </Button>
+            <Button disabled={isLastQuestion} onClick={() => nextQuestion()}>
+              Sljedeći
+            </Button>
+          </ButtonGroup>
 
-            <h2 className={c.title}>{questionTitle}</h2>
-          </div>
-          <div
-            className={c.text}
-            dangerouslySetInnerHTML={{ __html: questionText }}
-          ></div>
+          <h2 className={c.title}>{questionTitle}</h2>
         </div>
+        <div
+          className={c.text}
+          dangerouslySetInnerHTML={{ __html: questionText }}
+        ></div>
 
-        <CodeRunner code={code} language={language} />
+        <div className={c.terminal}>
+          <CodeRunner code={code} language={language} />
+        </div>
       </div>
     </main>
   );

@@ -6,19 +6,21 @@
 .sidebar {
   display: flex;
   flex-direction: column;
+  gap: 12px;
+  width: 720px;
 }
 
-.task {
+.taskHeader {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.title {
+  margin: 0;
+}
+
+.text {
+  overflow-y: auto;
   flex-grow: 1;
-  margin-right: 24px;
-
-  .taskHeader {
-    display: flex;
-    align-items: center;
-    gap: 24px;
-  }
-
-  .title {
-    margin: 0;
-  }
 }
