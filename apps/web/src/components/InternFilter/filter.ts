@@ -28,7 +28,7 @@ export type FilterCriteria = {
 };
 
 const checkDisciplineCriteria = (
-  intern: InternWithStatus,
+  intern: InternForDashboard,
   criteria: DisciplineCriteria,
 ) => {
   const ind = intern.internDisciplines.find(
