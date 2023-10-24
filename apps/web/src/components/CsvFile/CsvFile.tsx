@@ -1,9 +1,9 @@
-import { Intern, InternWithStatus } from '@internship-app/types';
+import { Intern, InternForDashboard } from '@internship-app/types';
 import { Button } from '@mui/material';
 import { CSVLink } from 'react-csv';
 
 type Props = {
-  data: InternWithStatus[] | undefined;
+  data: InternForDashboard[] | undefined;
 };
 
 const CsvFile = ({ data }: Props) => {
