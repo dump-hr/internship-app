@@ -35,7 +35,7 @@ export type FormValues = {
 const disciplineEnumKeys = Object.keys(Discipline);
 const disciplineEnumValues = Object.values(Discipline);
 
-const applicationsClosed = false;
+const applicationsClosed = true;
 
 export const ApplicationFormPage = () => {
   const [internDisciplines, setInternDisciplines] = useState<Discipline[]>([]);
