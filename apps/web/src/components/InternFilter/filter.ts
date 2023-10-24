@@ -1,8 +1,8 @@
 import {
   Discipline,
   DisciplineStatus,
+  InternForDashboard,
   InternStatus,
-  InternWithStatus,
   InterviewStatus,
   TestStatus,
 } from '@internship-app/types';
@@ -54,7 +54,7 @@ const checkDisciplineCriteria = (
 };
 
 export const getInternFilter =
-  (criteria: FilterCriteria) => (intern: InternWithStatus) => {
+  (criteria: FilterCriteria) => (intern: InternForDashboard) => {
     const { main } = criteria;
 
     if (

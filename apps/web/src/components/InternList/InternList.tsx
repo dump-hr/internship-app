@@ -1,11 +1,12 @@
 import {
   InternDiscipline,
+  InternForDashboard,
   InternStatus,
-  InternWithStatus,
   InterviewStatus,
 } from '@internship-app/types';
 import { Button, Chip } from '@mui/material';
 import { DataGrid, GridColDef, GridRenderCellParams } from '@mui/x-data-grid';
+import moment from 'moment';
 import { Link } from 'wouter';
 
 import { Path } from '../../constants/paths';
@@ -18,7 +19,7 @@ import {
 } from './consts';
 
 type Props = {
-  data: InternWithStatus[] | undefined;
+  data: InternForDashboard[] | undefined;
   setSelection?: (selection: string[]) => void;
 };
 
@@ -50,7 +51,7 @@ const getTestChip = (internDiscipline: InternDiscipline) => {
   );
 };
 
-const getInterviewChip = (intern: InternWithStatus) => {
+const getInterviewChip = (intern: InternForDashboard) => {
   const props = interviewChipProps[intern.interviewStatus];
   const score = intern.interviewSlot?.score;
 
@@ -104,7 +105,7 @@ const InternList: React.FC<Props> = ({ data = [], setSelection }) => {
       width: 150,
       sortComparator: (a, b) =>
         (a.interviewSlot?.score ?? 0) - (b.interviewSlot?.score ?? 0),
-      renderCell: (props: GridRenderCellParams<InternWithStatus>) =>
+      renderCell: (props: GridRenderCellParams<InternForDashboard>) =>
         getInterviewChip(props.value),
     },
     {
@@ -116,6 +117,18 @@ const InternList: React.FC<Props> = ({ data = [], setSelection }) => {
       renderCell: (
         internDisciplines: GridRenderCellParams<InternDiscipline[]>,
       ) => <>{internDisciplines.value.map(getTestChip)}</>,
+    },
+    {
+      field: 'logCount',
+      headerName: 'Logovi',
+      description: 'Koliko je puta ušao u stranice appa',
+      width: 100,
+    },
+    {
+      field: 'registerDate',
+      headerName: 'Registracija',
+      description: 'Kada se pripravnik registrirao',
+      width: 170,
     },
     {
       field: 'buttonPregledaj',
@@ -160,6 +173,8 @@ const InternList: React.FC<Props> = ({ data = [], setSelection }) => {
       disciplines: intern.internDisciplines,
       interviewStatus: intern,
       testStatus: intern.internDisciplines,
+      registerDate: moment(intern.createdAt).format('DD.MM. HH:mm'),
+      logCount: intern._count.logs,
       buttonIntervju: intern.interviewStatus,
     };
   });
@@ -184,6 +199,8 @@ const InternList: React.FC<Props> = ({ data = [], setSelection }) => {
           columns: {
             columnVisibilityModel: {
               id: false,
+              logCount: false,
+              registerDate: false,
             },
           },
         }}
