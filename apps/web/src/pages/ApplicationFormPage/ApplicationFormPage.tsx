@@ -35,6 +35,8 @@ export type FormValues = {
 const disciplineEnumKeys = Object.keys(Discipline);
 const disciplineEnumValues = Object.values(Discipline);
 
+const applicationsClosed = true;
+
 export const ApplicationFormPage = () => {
   const [internDisciplines, setInternDisciplines] = useState<Discipline[]>([]);
 
@@ -98,6 +100,25 @@ export const ApplicationFormPage = () => {
       });
     }
   };
+
+  if (applicationsClosed) {
+    return (
+      <div className={classes.applicationFormPageWrapper}>
+        <div className={classes.applicationFormIntroSection}>
+          <Logo />
+          <h1 className={classes.applicationFormTitle}>Postani dumpovac!</h1>
+          <img
+            className={classes.applicationFormWelcomeImage}
+            src={formWelcomeImage}
+            alt="form-welcome-image"
+          />
+        </div>
+        <div className={classes.applicationForm}>
+          <h2 className={classes.applicationFormSubtitle}>Prijave zatvorene</h2>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className={classes.applicationFormPageWrapper}>
