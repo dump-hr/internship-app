@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { BadRequestException } from '@nestjs/common/exceptions';
-import { InterviewStatus } from '@prisma/client';
 import { PrismaService } from 'src/prisma.service';
 
 import { CreateInterviewerDto } from './dto/createInterviewer.dto';
