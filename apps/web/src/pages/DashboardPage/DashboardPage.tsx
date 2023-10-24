@@ -12,7 +12,6 @@ import { FieldValues } from 'react-hook-form';
 import { useFetchAllInterns } from '../../api/useFetchAllInterns';
 import AdminPage from '../../components/AdminPage';
 import BoardActions from '../../components/BoardActions';
-import CsvFile from '../../components/CsvFile';
 import InternFilter from '../../components/InternFilter';
 import {
   FilterCriteria,
@@ -175,9 +174,6 @@ const DashboardPage = () => {
 
       <Grid item xs={12} md={5}>
         <div className={c.buttonsWrapper}>
-          <CsvFile
-            data={internsWithStatus?.filter(getInternFilter(filterCriteria))}
-          />
           <div className={c.switchWrapper}>
             Prikaži sve
             <Switch
@@ -192,7 +188,6 @@ const DashboardPage = () => {
           </div>
 
           <Button disabled>Pregledaj dev ispit</Button>
-
           <Button onClick={() => setEmailDialogOpen(true)}>Pošalji mail</Button>
           <Button
             onClick={toggleActions}
