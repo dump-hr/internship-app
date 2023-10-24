@@ -80,6 +80,11 @@ export class InternService {
             score: true,
           },
         },
+        _count: {
+          select: {
+            logs: true,
+          },
+        },
       },
       orderBy: {
         createdAt: 'asc',

@@ -12,24 +12,34 @@ export class InterviewerService {
   async getAll() {
     const interviewers = await this.prisma.interviewer.findMany({
       include: {
-        _count: {
+        interviews: {
           select: {
-            interviews: {
-              where: {
-                interviewSlot: {
-                  intern: {
-                    interviewStatus: InterviewStatus.Done,
-                  },
-                },
+            interviewSlot: {
+              select: {
+                score: true,
               },
             },
           },
         },
       },
     });
-    return interviewers.sort(
-      (a, b) => b._count.interviews - a._count.interviews,
-    );
+
+    const interviewersWithStats = interviewers
+      .map((interviewer) => ({
+        ...interviewer,
+        interviews: null,
+        _count: { interviews: interviewer.interviews.length },
+        _avg: {
+          score:
+            interviewer.interviews.reduce(
+              (acc, curr) => acc + curr.interviewSlot.score,
+              0,
+            ) / interviewer.interviews.length,
+        },
+      }))
+      .sort((a, b) => b._count.interviews - a._count.interviews);
+
+    return interviewersWithStats;
   }
 
   async create(interviewerToCreate: CreateInterviewerDto) {

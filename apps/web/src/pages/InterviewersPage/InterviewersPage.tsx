@@ -107,6 +107,11 @@ const InterviewersPage = () => {
       width: 150,
     },
     {
+      field: 'interviewAverageScore',
+      headerName: 'Avg score',
+      width: 150,
+    },
+    {
       field: 'deleteButton',
       headerName: '',
       width: 100,
@@ -180,6 +185,7 @@ const InterviewersPage = () => {
         Discipline.Marketing,
       ),
       interviewCount: interviewer._count.interviews,
+      interviewAverageScore: interviewer._avg.score?.toFixed(2),
     };
   });
 
