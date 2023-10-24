@@ -128,7 +128,7 @@ export class InterviewSlotService {
       where: {
         internId: null,
         start: {
-          gte: new Date(new Date().getTime() + 12 * 60 * 60 * 1000),
+          gte: new Date(new Date().getTime() + 4 * 60 * 60 * 1000),
         },
         AND: [
           {
@@ -191,7 +191,7 @@ export class InterviewSlotService {
           where: {
             internId: null,
             start: {
-              gte: new Date(new Date().getTime() + 12 * 60 * 60 * 1000),
+              gte: new Date(new Date().getTime() + 4 * 60 * 60 * 1000),
             },
             AND: [
               {
@@ -241,7 +241,10 @@ export class InterviewSlotService {
       throw new NotFoundException('Slot is already taken');
     }
 
-    if (new Date(new Date().getTime() + 11 * 60 * 60 * 1000) > slot.start)
+    if (
+      new Date(new Date().getTime() + 4 * 60 * 60 * 1000 - 60 * 1000) >
+      slot.start
+    )
       throw new NotFoundException('Too late to schedule slot');
 
     const internSlot = await this.prisma.interviewSlot.findFirst({
