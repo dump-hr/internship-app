@@ -8,6 +8,14 @@ import {
 } from '@internship-app/types';
 import toast from 'react-hot-toast';
 
+type DisciplineCriteria = {
+  discipline: Discipline;
+  status: DisciplineStatus | '';
+  testStatus: TestStatus | '';
+  score: string | '';
+  not: boolean;
+};
+
 export type FilterCriteria = {
   main: {
     name: string;
@@ -15,13 +23,34 @@ export type FilterCriteria = {
     interviewStatus: InterviewStatus | '';
   };
   disciplines: {
-    [key: string]: {
-      discipline: Discipline;
-      status: DisciplineStatus | '';
-      testStatus: TestStatus | '';
-      score: string | '';
-    };
+    [key: string]: DisciplineCriteria;
   };
+};
+
+const checkDisciplineCriteria = (
+  intern: InternWithStatus,
+  criteria: DisciplineCriteria,
+) => {
+  const ind = intern.internDisciplines.find(
+    (ind) => ind.discipline === criteria.discipline,
+  );
+  if (!ind) return criteria.not;
+
+  if (criteria.status && ind.status !== criteria.status) return criteria.not;
+
+  if (criteria.testStatus && ind.testStatus !== criteria.testStatus)
+    return criteria.not;
+
+  if (criteria.score) {
+    const expression = criteria.score;
+    try {
+      if (!eval(`${ind.testScore} ${expression}`)) return criteria.not;
+    } catch (err) {
+      toast.error(`Pogreška u filtriranju bodova: ${err}`);
+    }
+  }
+
+  return !criteria.not;
 };
 
 export const getInternFilter =
@@ -45,23 +74,7 @@ export const getInternFilter =
 
     const disciplineCriteria = Object.values(criteria.disciplines || []);
     for (const dc of disciplineCriteria) {
-      const ind = intern.internDisciplines.find(
-        (ind) => ind.discipline === dc.discipline,
-      );
-      if (!ind) return false;
-
-      if (dc.status && ind.status !== dc.status) return false;
-
-      if (dc.testStatus && ind.testStatus !== dc.testStatus) return false;
-
-      if (dc.score) {
-        const expression = dc.score;
-        try {
-          if (!eval(`${ind.testScore} ${expression}`)) return false;
-        } catch (err) {
-          toast.error(`Pogreška u filtriranju bodova: ${err}`);
-        }
-      }
+      if (!checkDisciplineCriteria(intern, dc)) return false;
     }
 
     return true;
