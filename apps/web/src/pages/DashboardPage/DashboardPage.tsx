@@ -18,6 +18,7 @@ import {
   FilterCriteria,
   getInternFilter,
 } from '../../components/InternFilter/filter';
+import { shortDisciplineLabels } from '../../components/InternList/consts';
 import InternList from '../../components/InternList/InternList';
 import EmailPage from '../EmailPage';
 import c from './DashboardPage.module.css';
@@ -97,40 +98,21 @@ const DashboardPage = () => {
       ).length,
     },
     {
-      label: 'Dev/Diz/Mark/Mult',
-      value: `${
-        internsWithStatus?.filter(
-          (i) =>
-            i.status === InternStatus.Approved &&
-            i.internDisciplines.some(
-              (ind) => ind.discipline === Discipline.Development,
-            ),
-        ).length ?? ''
-      }/${
-        internsWithStatus?.filter(
-          (i) =>
-            i.status === InternStatus.Approved &&
-            i.internDisciplines.some(
-              (ind) => ind.discipline === Discipline.Design,
-            ),
-        ).length ?? ''
-      }/${
-        internsWithStatus?.filter(
-          (i) =>
-            i.status === InternStatus.Approved &&
-            i.internDisciplines.some(
-              (ind) => ind.discipline === Discipline.Marketing,
-            ),
-        ).length ?? ''
-      }/${
-        internsWithStatus?.filter(
-          (i) =>
-            i.status === InternStatus.Approved &&
-            i.internDisciplines.some(
-              (ind) => ind.discipline === Discipline.Multimedia,
-            ),
-        ).length ?? ''
-      }`,
+      label: Object.values(Discipline)
+        .map((d) => shortDisciplineLabels[d])
+        .join('/'),
+      value: Object.values(Discipline)
+        .map(
+          (d) =>
+            internsWithStatus?.filter((i) =>
+              i.internDisciplines.some(
+                (ind) =>
+                  ind.discipline === d &&
+                  ind.status === DisciplineStatus.Approved,
+              ),
+            ).length,
+        )
+        .join('/'),
     },
   ];
 
