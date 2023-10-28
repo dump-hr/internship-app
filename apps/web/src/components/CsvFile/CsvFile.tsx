@@ -1,4 +1,8 @@
-import { Intern, InternForDashboard } from '@internship-app/types';
+import {
+  DisciplineStatus,
+  Intern,
+  InternForDashboard,
+} from '@internship-app/types';
 import { Button } from '@mui/material';
 import { CSVLink } from 'react-csv';
 
@@ -23,7 +27,9 @@ const CsvFile = ({ data }: Props) => {
 
     { label: 'Područja', key: 'internDisciplines' },
 
-    { label: 'Staus interviewa', key: 'interviewStatus' },
+    { label: 'Upad područja', key: 'internDisciplinesAccepted' },
+
+    { label: 'Status interviewa', key: 'interviewStatus' },
 
     { label: 'Score', key: 'interviewSlot.score' },
   ];
@@ -31,6 +37,10 @@ const CsvFile = ({ data }: Props) => {
   const formattedData = data?.map((item: Intern) => ({
     ...item,
     internDisciplines: item.internDisciplines
+      .map((el) => el.discipline)
+      .join(', '),
+    internDisciplinesAccepted: item.internDisciplines
+      .filter((el) => el.status === DisciplineStatus.Approved)
       .map((el) => el.discipline)
       .join(', '),
     data: {
