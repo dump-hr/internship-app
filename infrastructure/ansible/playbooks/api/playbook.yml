@@ -25,6 +25,6 @@
     - role: traefik
     - role: api
       vars:
-        docker_tag: latest
+        docker_image: ghcr.io/dump-hr/internship-app:latest
         env_file: production
         api_domain: internship.dump.hr
