@@ -30,12 +30,15 @@
     "bcrypt": "^5.1.1",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.0",
+    "jwks-rsa": "^3.1.0",
     "nunjucks": "^3.2.4",
     "passport": "^0.6.0",
     "passport-jwt": "^4.0.1",
     "postmark": "^3.0.19",
     "reflect-metadata": "^0.1.13",
-    "rxjs": "^7.2.0"
+    "rxjs": "^7.2.0",
+    "workspace": "^0.0.1-preview.1",
+    "yarn": "^1.22.22"
   },
   "devDependencies": {
     "@nestjs/cli": "^9.0.0",
