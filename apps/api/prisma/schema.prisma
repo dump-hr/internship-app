@@ -74,6 +74,7 @@ model TestSlot {
   testQuestions     TestQuestion[]
   createdAt         DateTime           @default(now())
   updatedAt         DateTime           @updatedAt
+  testClusterId     String?
 }
 
 model TestQuestion {
@@ -87,20 +88,67 @@ model TestQuestion {
   createdAt             DateTime               @default(now())
   updatedAt             DateTime               @updatedAt
   internQuestionAnswers InternQuestionAnswer[]
+  TestCaseCluster       TestCaseCluster[]
+}
+
+model TestCaseCluster {
+  id               String             @id @default(uuid())
+  name             String //TODO: Maybe not needed
+  description      String
+  testQuestionId   String
+  testQuestion     TestQuestion       @relation(fields: [testQuestionId], references: [id])
+  points           Int
+  TestCase         TestCase[]
+  EvaluatedCluster EvaluatedCluster[]
+}
+
+model TestCase {
+  id                String          @id @default(uuid())
+  testCaseClusterId String
+  testCaseCluster   TestCaseCluster @relation(fields: [testCaseClusterId], references: [id])
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt
+  EvaluatedCase     EvaluatedCase[]
 }
 
 model InternQuestionAnswer {
-  id                         String           @id @default(uuid())
+  id                         String             @id @default(uuid())
   language                   CodingLanguage
   code                       String
   score                      Int?
-  question                   TestQuestion     @relation(fields: [questionId], references: [id])
+  question                   TestQuestion       @relation(fields: [questionId], references: [id])
   questionId                 String
-  internDiscipline           InternDiscipline @relation(fields: [internDisciplineInternId, internDisciplineDiscipline], references: [internId, discipline])
+  internDiscipline           InternDiscipline   @relation(fields: [internDisciplineInternId, internDisciplineDiscipline], references: [internId, discipline])
   internDisciplineInternId   String
   internDisciplineDiscipline Discipline
-  createdAt                  DateTime         @default(now())
-  updatedAt                  DateTime         @updatedAt
+  createdAt                  DateTime           @default(now())
+  updatedAt                  DateTime           @updatedAt
+  EvaluatedCluster           EvaluatedCluster[]
+  EvaluatedCase              EvaluatedCase[]
+}
+
+model EvaluatedCluster {
+  internQuestionAnswerId String
+  internQuestionAnswer   InternQuestionAnswer @relation(fields: [internQuestionAnswerId], references: [id])
+  testClusterId          String
+  testCluster            TestCaseCluster      @relation(fields: [testClusterId], references: [id])
+  EvaluatedCase          EvaluatedCase[]
+
+  @@id([internQuestionAnswerId, testClusterId])
+}
+
+model EvaluatedCase {
+  testCaseId                             String
+  testCase                               TestCase              @relation(fields: [testCaseId], references: [id])
+  isCorrect                              Boolean
+  userOutput                             String?
+  EvaluatedCluster                       EvaluatedCluster      @relation(fields: [evaluatedClusterInternQuestionAnswerId, evaluatedClusterTestClusterId], references: [internQuestionAnswerId, testClusterId])
+  evaluatedClusterInternQuestionAnswerId String
+  evaluatedClusterTestClusterId          String
+  InternQuestionAnswer                   InternQuestionAnswer? @relation(fields: [internQuestionAnswerId], references: [id])
+  internQuestionAnswerId                 String?
+
+  @@id([testCaseId, evaluatedClusterInternQuestionAnswerId, evaluatedClusterTestClusterId])
 }
 
 model InterviewSlot {
