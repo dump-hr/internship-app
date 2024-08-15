@@ -597,6 +597,23 @@
   dependencies:
     tslib "^2.5.0"
 
+"@azure/msal-browser@^3.20.0":
+  version "3.20.0"
+  resolved "https://registry.yarnpkg.com/@azure/msal-browser/-/msal-browser-3.20.0.tgz#12ae45d0d398dac25b2b37710277103539c23994"
+  integrity sha512-ErsxbfCGIwdqD8jipqdxpfAGiUEQS7MWUe39Rjhl0ZVPsb1JEe9bZCe2+0g23HDH6DGyCAtnTNN9scPtievrMQ==
+  dependencies:
+    "@azure/msal-common" "14.14.0"
+
+"@azure/msal-common@14.14.0":
+  version "14.14.0"
+  resolved "https://registry.yarnpkg.com/@azure/msal-common/-/msal-common-14.14.0.tgz#31a015070d5864ebcf9ebb988fcbc5c5536f22d1"
+  integrity sha512-OxcOk9H1/1fktHh6//VCORgSNJc2dCQObTm6JNmL824Z6iZSO6eFo/Bttxe0hETn9B+cr7gDouTQtsRq3YPuSQ==
+
+"@azure/msal-react@^2.0.22":
+  version "2.0.22"
+  resolved "https://registry.yarnpkg.com/@azure/msal-react/-/msal-react-2.0.22.tgz#cd34ce9c2c77158e41cc4d8a2cabea49da5ce958"
+  integrity sha512-hvXWd8uYJiJr+1Kj2VOxWlLomZpxBfNZSuKxwhKAsieCbNM/4Is83ZMBtX2dMOXXx/llTGArwKzBOcp44R2ZQg==
+
 "@babel/code-frame@^7.0.0", "@babel/code-frame@^7.16.7":
   version "7.22.10"
   resolved "https://registry.yarnpkg.com/@babel/code-frame/-/code-frame-7.22.10.tgz#1c20e612b768fefa75f6e90d6ecb86329247f0a3"
