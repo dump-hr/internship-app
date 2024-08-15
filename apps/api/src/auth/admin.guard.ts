@@ -4,13 +4,9 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
+import { Role } from '@internship-app/types';
 
 import { areArraysOverlapping } from './auth.helper';
-
-declare enum Role {
-  Member = 'Member',
-  Admin = 'Admin',
-}
 
 const supportedRolesPerRole = {
   [Role.Admin]: [Role.Admin],

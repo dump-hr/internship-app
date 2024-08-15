@@ -22,8 +22,6 @@ import { shortDisciplineLabels } from '../../components/InternList/consts';
 import InternList from '../../components/InternList/InternList';
 import EmailPage from '../EmailPage';
 import c from './DashboardPage.module.css';
-import { useMsalAuthentication } from '@azure/msal-react';
-import { InteractionType } from '@azure/msal-browser';
 
 const getInternStatus = (intern: Intern) => {
   if (
