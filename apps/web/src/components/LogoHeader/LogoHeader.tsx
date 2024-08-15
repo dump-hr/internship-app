@@ -1,22 +1,23 @@
 import { Button } from '@mui/material';
-import toast from 'react-hot-toast';
 import { Link } from 'wouter';
-import { navigate } from 'wouter/use-location';
 
 import DUMPLogo from '../../assets/dump-logo.png';
 import { Path } from '../../constants/paths';
 import LayoutSpacing from '../LayoutSpacing/LayoutSpacing';
 import c from './LogoHeader.module.css';
+import { useAccount } from '../../hooks/useAccount';
+import toast from 'react-hot-toast';
 
 type Props = {
   text: string;
 };
 
 const LogoHeader: React.FC<Props> = ({ text }) => {
+  const user = useAccount();
+
   const handleLogout = () => {
-    toast.success('Logged out');
-    localStorage.removeItem('access_token');
-    navigate(Path.Login);
+    user.logout();
+    toast.success('Logout successful');
   };
 
   return (

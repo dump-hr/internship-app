@@ -23,6 +23,10 @@ import InternList from '../../components/InternList/InternList';
 import EmailPage from '../EmailPage';
 import c from './DashboardPage.module.css';
 
+import { useMsalAuthentication } from '@azure/msal-react';
+import { InteractionType } from '@azure/msal-browser';
+import { useAccount } from '../../hooks/useAccount';
+
 const getInternStatus = (intern: Intern) => {
   if (
     intern.internDisciplines.some(
@@ -49,6 +53,9 @@ const initialState: { filterCriteria: FilterCriteria } = {
 };
 
 const DashboardPage = () => {
+  const x = useAccount();
+  console.log(x);
+  useMsalAuthentication(InteractionType.Redirect);
   const { data: interns } = useFetchAllInterns();
 
   const [selection, setSelection] = useState<string[]>([]);

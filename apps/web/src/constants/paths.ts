@@ -8,7 +8,6 @@ export enum Path {
   TestChoose = '/test',
 
   Dashboard = '/admin',
-  Login = '/admin/login',
   Intern = '/admin/intern/:internId',
   Interview = '/admin/interview/:internId',
   Interviewers = '/admin/interviewers',

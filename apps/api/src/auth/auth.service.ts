@@ -5,10 +5,7 @@ import { PrismaService } from 'src/prisma.service';
 
 @Injectable()
 export class AuthService {
-  constructor(
-    private prismaService: PrismaService,
-    private jwtService: JwtService,
-  ) {}
+  constructor(private prismaService: PrismaService) {}
 
   async adminPasswordLogin(email: string, password: string) {
     if (!email) {
@@ -34,13 +31,5 @@ export class AuthService {
     if (!passwordMatch) {
       throw new BadRequestException('Invalid credentials');
     }
-
-    const accessToken = this.jwtService.sign({
-      id: admin.id,
-      email: admin.email,
-      role: 'admin',
-    });
-
-    return accessToken;
   }
 }

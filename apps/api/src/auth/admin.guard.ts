@@ -4,9 +4,13 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { Role } from '@internship-app/types';
 
 import { areArraysOverlapping } from './auth.helper';
+
+enum Role {
+  Member = 'Member',
+  Admin = 'Admin',
+}
 
 const supportedRolesPerRole = {
   [Role.Admin]: [Role.Admin],
@@ -21,6 +25,7 @@ const AzureADGuard = (role: Role) =>
 
     handleRequest(err, user) {
       const supportedRoles = supportedRolesPerRole[role];
+      console.log(user);
 
       if (
         err ||

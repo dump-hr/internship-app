@@ -1,12 +1,13 @@
 import { Body, Controller, Post, UseGuards } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { AdminLogAction } from '@prisma/client';
-import { JwtAuthGuard } from 'src/auth/jwt-auth-guard';
 import { LoggerService } from 'src/logger/logger.service';
 
 import { EmailsDto } from './dto/emails.dto';
 import { EmailsSendDto } from './dto/emailsSend.dto';
 import { EmailService } from './email.service';
+
+import { MemberGuard } from 'src/auth/admin.guard';
 
 @Controller('email')
 @ApiTags('email')
@@ -16,7 +17,7 @@ export class EmailController {
     private readonly loggerService: LoggerService,
   ) {}
 
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(MemberGuard)
   @Post('send')
   async sendEmails(@Body() { emails, text, subject }: EmailsSendDto) {
     await this.loggerService.createAdminLog(
@@ -27,7 +28,7 @@ export class EmailController {
     return await this.emailService.sendEmail(emails, text, subject);
   }
 
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(MemberGuard)
   @Post()
   async makeEmails(@Body() { emails, text }: EmailsDto) {
     const templates = await this.emailService.makeEmail(emails, text);
