@@ -96,6 +96,8 @@ model TestCaseCluster {
   name             String //TODO: Maybe not needed
   description      String
   testQuestionId   String
+  maxExecutionTime Int                @default(1000)
+  maxMemory        Int                @default(256) // Most likely we will differentiatte these by input and now exextion params but just in case
   testQuestion     TestQuestion       @relation(fields: [testQuestionId], references: [id])
   points           Int
   TestCase         TestCase[]
@@ -108,6 +110,8 @@ model TestCase {
   testCaseCluster   TestCaseCluster @relation(fields: [testCaseClusterId], references: [id])
   createdAt         DateTime        @default(now())
   updatedAt         DateTime        @updatedAt
+  input             String[]
+  expectedOutput    String[]
   EvaluatedCase     EvaluatedCase[]
 }
 
@@ -140,8 +144,11 @@ model EvaluatedCluster {
 model EvaluatedCase {
   testCaseId                             String
   testCase                               TestCase              @relation(fields: [testCaseId], references: [id])
-  isCorrect                              Boolean
+  evaluationStatus                       EvaluationResult
   userOutput                             String?
+  executionTime                          Int?
+  memoryUsed                             Int?
+  error                                  String?
   EvaluatedCluster                       EvaluatedCluster      @relation(fields: [evaluatedClusterInternQuestionAnswerId, evaluatedClusterTestClusterId], references: [internQuestionAnswerId, testClusterId])
   evaluatedClusterInternQuestionAnswerId String
   evaluatedClusterTestClusterId          String
@@ -214,6 +221,15 @@ enum TestStatus {
   Pending
   Done
   Missed
+}
+
+enum EvaluationResult {
+  AcceptedAnswer
+  WrongAnswer
+  TimeLimitExceeded
+  MemoryLimitExceeded
+  RuntimeError
+  CompilationError
 }
 
 enum CodingLanguage {

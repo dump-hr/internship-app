@@ -3,6 +3,7 @@ import EventEmitter from 'node:events';
 import fs from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
+import { memoryUsage } from 'node:process';
 
 import {
   BadRequestException,
@@ -12,7 +13,13 @@ import {
 import { fromEvent, map, merge } from 'rxjs';
 
 import { config } from './config';
-import { CodingLanguage } from './types';
+import {
+  CodingLanguage,
+  CreateEvaluationRequest,
+  EvaluateTestCaseResult,
+  TestCase,
+  TestCaseResult,
+} from './types';
 
 @Injectable()
 export class AppService {
@@ -113,6 +120,103 @@ export class AppService {
     stream.emit('stdin', text);
 
     return 'ok';
+  }
+
+  async evaluateTestCases(evaluationParams: CreateEvaluationRequest) {
+    if (!evaluationParams?.testCases?.length) {
+      throw new BadRequestException('No test cases provided');
+    }
+
+    const results = await Promise.all(
+      // Not sure if this messes with memory, will test later
+      evaluationParams.testCases.map((_, index) =>
+        this.evaluateTestCase(evaluationParams, index),
+      ),
+    );
+
+    return results;
+  }
+
+  async evaluateTestCase(
+    evaluationParam: CreateEvaluationRequest,
+    index: number,
+  ): Promise<EvaluateTestCaseResult> {
+    if (evaluationParam.testCases.length <= index) {
+      throw new BadRequestException('No test case provided');
+    }
+
+    const testCase = evaluationParam.testCases[index];
+
+    const { codingLanguage, maxExecutionTime, maxMemory } = evaluationParam;
+
+    const randomPid = Math.floor(Math.random() * 100 + 1).toString(16);
+
+    await this.spawnProgram(randomPid, evaluationParam.code, codingLanguage);
+
+    const stream = this.getStream(randomPid);
+    const startTime = process.hrtime();
+    const startMemory = process.memoryUsage().heapUsed;
+
+    // TODO: possibly refactor this to use a queue / make this function standalone
+    testCase.input.forEach((input) => {
+      stream.emit('stdin', input);
+    });
+
+    const output = [];
+    stream.on('stdout', (data) => {
+      output.push(data.toString());
+    });
+
+    return new Promise((resolve, reject) => {
+      stream.on('exit', (exitCode) => {
+        const endTime = process.hrtime(startTime);
+        const executionTime = (endTime[0] * 1e9 + endTime[1]) / 1e6; // milliseconds
+
+        // Get memory usage
+        const endMemory = process.memoryUsage().heapUsed;
+
+        if (exitCode !== 0) {
+          return reject(
+            new InternalServerErrorException(
+              'Process exited with non-zero exit code',
+            ),
+          );
+        }
+
+        if (Math.abs(endMemory - startMemory) > maxMemory) {
+          return resolve({
+            testCaseId: testCase.id,
+            userOutput: output.join('\n'),
+            evaluationStatus: TestCaseResult.MemoryLimitExceeded,
+            executionTime,
+            memoryUsed: endMemory - startMemory,
+          });
+        }
+
+        if (executionTime > maxExecutionTime) {
+          return resolve({
+            testCaseId: testCase.id,
+            userOutput: output.join('\n'),
+            evaluationStatus: TestCaseResult.TimeLimitExceeded,
+            executionTime,
+            memoryUsed: endMemory - startMemory,
+          });
+        } // TODO: see if this can also be extrapolated into a function
+
+        const outputIsValid =
+          output.join('\n').trim() === testCase.expectedOutput;
+
+        return resolve({
+          testCaseId: testCase.id,
+          userOutput: output.join('\n'),
+          evaluationStatus: outputIsValid
+            ? TestCaseResult.Correct
+            : TestCaseResult.WrongAnswer,
+          executionTime,
+          memoryUsed: endMemory - startMemory, // TODO: Check if this is an accurate representation of memory usage
+        });
+      });
+    });
   }
 
   killProgram(pid: string) {

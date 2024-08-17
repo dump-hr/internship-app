@@ -10,7 +10,11 @@ import {
 } from '@nestjs/common';
 
 import { AppService } from './app.service';
-import { SendStdinRequest, SpawnProgramRequest } from './types';
+import {
+  CreateEvaluationRequest,
+  SendStdinRequest,
+  SpawnProgramRequest,
+} from './types';
 
 @Controller('run')
 export class AppController {
@@ -45,5 +49,10 @@ export class AppController {
   @Delete(':pid')
   killProgram(@Param('pid') pid: string) {
     return this.appService.killProgram(pid);
+  }
+
+  @Post('evaluate')
+  async evaluateTestCases(@Body() cluster: CreateEvaluationRequest) {
+    return await this.appService.evaluateTestCases(cluster);
   }
 }
