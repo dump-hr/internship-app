@@ -1,5 +1,9 @@
 import {
+  CreateEvaluationRequest,
+  CreateEvaluationSubmissionRequest,
   CreateTestSlotsRequest,
+  EvaluateClusterResult,
+  Question,
   SubmitTestRequest,
   TestSlot,
 } from '@internship-app/types';
@@ -8,7 +12,7 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { Discipline, TestStatus } from '@prisma/client';
+import { Discipline, TestCase, TestStatus } from '@prisma/client';
 import * as postmark from 'postmark';
 import { PrismaService } from 'src/prisma.service';
 
@@ -286,6 +290,169 @@ DUMP Udruga mladih programera`,
     }
 
     return slot;
+  }
+
+  async submitEvaluationRequest(
+    questionId: string,
+    request: CreateEvaluationSubmissionRequest,
+  ) {
+    const question = await this.prisma.testQuestion.findUnique({
+      where: { id: questionId },
+      include: {
+        TestCaseCluster: {
+          include: {
+            TestCase: true,
+          },
+        },
+      },
+    });
+
+    if (!question) {
+      throw new NotFoundException('Question not found');
+    }
+
+    const internDiscipline = await this.prisma.internDiscipline.findFirst({
+      where: {
+        intern: {
+          email: {
+            equals: request.internEmail,
+            mode: 'insensitive',
+          },
+        },
+        testSlotId: question.testSlotId,
+        testStatus: TestStatus.Done,
+      },
+      include: {
+        testSlot: {
+          select: { password: true },
+        },
+      },
+    });
+
+    if (!internDiscipline) {
+      throw new BadRequestException(
+        'Test does not exist or intern does not have permission to submit',
+      );
+    }
+
+    if (internDiscipline.testSlot.password !== request.password) {
+      throw new BadRequestException('Wrong password!');
+    }
+
+    const evaluationRequests: CreateEvaluationRequest[] =
+      question.TestCaseCluster.map((cluster) => ({
+        code: request.code,
+        maxExecutionTime: cluster.maxExecutionTime,
+        maxMemory: cluster.maxMemory,
+        codingLanguage: request.language,
+        testCases: cluster.TestCase.map((tc: TestCase) => ({
+          id: tc.id,
+          input: tc.input,
+          expectedOutput: tc.expectedOutput.join('\n'),
+        })),
+      }));
+
+    const promises = evaluationRequests.map((er) =>
+      this.evaluateQuestionCluster(er),
+    );
+
+    const results: EvaluateClusterResult[] = await Promise.all(promises);
+
+    const creation = this.prisma.internQuestionAnswer.create({
+      data: {
+        internDisciplineInternId: internDiscipline.internId,
+        internDisciplineDiscipline: internDiscipline.discipline,
+        questionId,
+        code: request.code,
+        language: request.language,
+        EvaluatedCluster: {
+          createMany: {
+            data: results.map((r) => ({
+              testClusterId: r.clusterId,
+              isAccepted: r.isAccepted,
+              EvaluatedCase: {
+                createMany: {
+                  data: r.testCases.map((tc) => ({
+                    testCaseId: tc.testCaseId,
+                    userOutput: tc.userOutput || undefined,
+                    evaluationStatus: tc.evaluationStatus,
+                    executionTime: tc.executionTime,
+                    memoryUsed: tc.memoryUsed,
+                    error: tc.error || undefined,
+                  })),
+                },
+              },
+            })),
+          },
+        },
+      },
+    });
+
+    await creation;
+
+    return results;
+  }
+
+  async createEvaluationRequests(
+    questionId: string,
+    request: CreateEvaluationSubmissionRequest,
+  ) {
+    const clusters = await this.getClusters(questionId);
+
+    if (!clusters.length) {
+      throw new BadRequestException('No clusters found');
+    }
+
+    const evaluationRequests: CreateEvaluationRequest[] = clusters.map(
+      (cluster) => ({
+        code: request.code,
+        maxExecutionTime: cluster.maxExecutionTime,
+        maxMemory: cluster.maxMemory,
+        codingLanguage: request.language,
+        testCases: cluster.TestCase.map((tc: TestCase) => ({
+          id: tc.id,
+          input: tc.input,
+          expectedOutput: tc.expectedOutput.join('\n'),
+        })),
+      }),
+    );
+
+    return evaluationRequests;
+  }
+
+  async getClusters(testQuestionId: string) {
+    const clusters = await this.prisma.testCaseCluster.findMany({
+      where: {
+        testQuestionId,
+      },
+      include: {
+        TestCase: true,
+      },
+    });
+
+    return clusters;
+  }
+
+  async evaluateQuestionCluster(evaluationRequest: CreateEvaluationRequest) {
+    try {
+      const request = fetch(
+        process.env.CODE_RUNNER || 'http://localhost:3003/evaluate',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(evaluationRequest),
+        },
+      );
+
+      const response = await request;
+      const data: EvaluateClusterResult = await response.json();
+
+      return { ...data, clusterId: evaluationRequest.clusterId };
+    } catch (e) {
+      throw new BadRequestException('Code runner not available');
+    }
   }
 
   async submitTest(testSlotId: string, test: SubmitTestRequest) {

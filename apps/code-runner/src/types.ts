@@ -52,4 +52,5 @@ export type EvaluateTestCaseResult = {
 
 export type EvaluateClusterResult = {
   testCases: EvaluateTestCaseResult[];
+  isAccepted: boolean;
 };

@@ -3,7 +3,6 @@ import EventEmitter from 'node:events';
 import fs from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
-import { memoryUsage } from 'node:process';
 
 import {
   BadRequestException,
@@ -17,7 +16,6 @@ import {
   CodingLanguage,
   CreateEvaluationRequest,
   EvaluateTestCaseResult,
-  TestCase,
   TestCaseResult,
 } from './types';
 

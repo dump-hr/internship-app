@@ -136,6 +136,7 @@ model EvaluatedCluster {
   internQuestionAnswer   InternQuestionAnswer @relation(fields: [internQuestionAnswerId], references: [id])
   testClusterId          String
   testCluster            TestCaseCluster      @relation(fields: [testClusterId], references: [id])
+  isAccepted             Boolean
   EvaluatedCase          EvaluatedCase[]
 
   @@id([internQuestionAnswerId, testClusterId])

@@ -1,5 +1,6 @@
 import {
   ChooseTestRequest,
+  CreateEvaluationSubmissionRequest,
   CreateTestSlotsRequest,
   ScheduleTestRequest,
   SetScoreRequest,
@@ -135,6 +136,14 @@ export class TestSlotController {
     @Body() req: SubmitTestRequest,
   ) {
     return await this.testSlotService.submitTest(testSlotId, req);
+  }
+
+  @Post('evaluate/:questionId')
+  async evaluateQuestion(
+    @Param('questionId') questionId: string,
+    @Body() body: CreateEvaluationSubmissionRequest,
+  ) {
+    return await this.testSlotService.submitEvaluationRequest(questionId, body);
   }
 
   @Get('answers/:testSlotId/intern/:internId')

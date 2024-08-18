@@ -53,6 +53,12 @@ export class AppController {
 
   @Post('evaluate')
   async evaluateTestCases(@Body() cluster: CreateEvaluationRequest) {
-    return await this.appService.evaluateTestCases(cluster);
+    const evaluation = await this.appService.evaluateTestCases(cluster);
+    return {
+      testCases: evaluation,
+      isAccepted: evaluation.every(
+        (e) => e.evaluationStatus === 'AcceptedAnswer',
+      ),
+    };
   }
 }
