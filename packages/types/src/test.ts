@@ -79,4 +79,49 @@ export type SendStdinRequest = {
 
 export type ChooseTestRequest = {
   password: string;
+};
+
+export type EvaluationTestCase = {
+  id: string;
+  input: string[];
+  expectedOutput: string;
+};
+
+export enum TestCaseResult {
+  Correct = 'AcceptedAnswer',
+  WrongAnswer = 'WrongAnswer',
+  TimeLimitExceeded = 'TimeLimitExceeded',
+  MemoryLimitExceeded = 'MemoryLimitExceeded',
+  RuntimeError = 'RuntimeError',
 }
+
+export type CreateEvaluationSubmissionRequest = {
+  code: string;
+  language: CodingLanguage;
+  internEmail?: string;
+  password?: string;
+};
+
+export type CreateEvaluationRequest = {
+  testCases: EvaluationTestCase[];
+  code: string;
+  clusterId?: string;
+  codingLanguage: CodingLanguage;
+  maxMemory: number;
+  maxExecutionTime: number;
+};
+
+export type EvaluateTestCaseResult = {
+  testCaseId: string;
+  evaluationStatus: TestCaseResult;
+  userOutput: string;
+  executionTime?: number;
+  memoryUsed?: number;
+  error?: string;
+};
+
+export type EvaluateClusterResult = {
+  testCases: EvaluateTestCaseResult[];
+  isAccepted: boolean;
+  clusterId: string;
+};
