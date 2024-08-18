@@ -3,13 +3,15 @@ import EventEmitter from 'node:events';
 import fs from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
+import { memoryUsage } from 'node:process';
 
 import {
   BadRequestException,
   Injectable,
   InternalServerErrorException,
 } from '@nestjs/common';
-import { fromEvent, map, merge } from 'rxjs';
+import pidusage from 'pidusage';
+import { fromEvent, interval, map, merge } from 'rxjs';
 
 import { config } from './config';
 import {
@@ -40,6 +42,7 @@ export class AppService {
     }
 
     if (!Object.values(CodingLanguage).includes(language)) {
+      console.log(language);
       throw new BadRequestException('Coding language not supported');
     }
 
@@ -104,6 +107,15 @@ export class AppService {
     );
   }
 
+  getProcessMemoryUsage(pid: number) {
+    return new Promise((resolve, reject) => {
+      pidusage(pid, (err, stats) => {
+        if (err) reject(err);
+        else resolve(stats.memory);
+      });
+    });
+  }
+
   sendStdin(pid: string, text: string) {
     if (!pid) {
       throw new BadRequestException('No pid provided');
@@ -121,18 +133,24 @@ export class AppService {
   }
 
   async evaluateTestCases(evaluationParams: CreateEvaluationRequest) {
-    if (!evaluationParams?.testCases?.length) {
-      throw new BadRequestException('No test cases provided');
+    try {
+      if (!evaluationParams?.testCases?.length) {
+        throw new BadRequestException('No test cases provided');
+      }
+
+      const results = await Promise.all(
+        // Not sure if this messes with memory, will test later
+        evaluationParams.testCases.map((_, index) =>
+          this.evaluateTestCase(evaluationParams, index),
+        ),
+      );
+
+      return results;
+    } catch (e) {
+      console.error(e);
+      //console.log(evaluationParams);
+      throw new InternalServerErrorException('Failed to evaluate test cases');
     }
-
-    const results = await Promise.all(
-      // Not sure if this messes with memory, will test later
-      evaluationParams.testCases.map((_, index) =>
-        this.evaluateTestCase(evaluationParams, index),
-      ),
-    );
-
-    return results;
   }
 
   async evaluateTestCase(
@@ -148,6 +166,10 @@ export class AppService {
     const { codingLanguage, maxExecutionTime, maxMemory } = evaluationParam;
 
     const randomPid = Math.floor(Math.random() * 100 + 1).toString(16);
+
+    if (this.streams.has(randomPid)) {
+      return this.evaluateTestCase(evaluationParam, index);
+    }
 
     await this.spawnProgram(randomPid, evaluationParam.code, codingLanguage);
 
@@ -166,14 +188,9 @@ export class AppService {
     });
 
     return new Promise((resolve, reject) => {
-      stream.on('exit', (exitCode) => {
-        const endTime = process.hrtime(startTime);
-        const executionTime = (endTime[0] * 1e9 + endTime[1]) / 1e6; // milliseconds
-
+      stream.on('exit', async (exitCode) => {
         // Get memory usage
-        const endMemory = process.memoryUsage().heapUsed;
-
-        if (exitCode !== 0) {
+        if (exitCode !== 'Process exited with code 0') {
           return reject(
             new InternalServerErrorException(
               'Process exited with non-zero exit code',
@@ -181,13 +198,16 @@ export class AppService {
           );
         }
 
-        if (Math.abs(endMemory - startMemory) > maxMemory) {
+        const totalMemoryUsage = 100;
+        const executionTime = process.hrtime(startTime)[1] / 1000000;
+
+        if (totalMemoryUsage > maxMemory) {
           return resolve({
             testCaseId: testCase.id,
             userOutput: output.join('\n'),
             evaluationStatus: TestCaseResult.MemoryLimitExceeded,
             executionTime,
-            memoryUsed: endMemory - startMemory,
+            memoryUsed: totalMemoryUsage,
           });
         }
 
@@ -197,7 +217,7 @@ export class AppService {
             userOutput: output.join('\n'),
             evaluationStatus: TestCaseResult.TimeLimitExceeded,
             executionTime,
-            memoryUsed: endMemory - startMemory,
+            memoryUsed: totalMemoryUsage,
           });
         } // TODO: see if this can also be extrapolated into a function
 
@@ -211,7 +231,7 @@ export class AppService {
             ? TestCaseResult.Correct
             : TestCaseResult.WrongAnswer,
           executionTime,
-          memoryUsed: endMemory - startMemory, // TODO: Check if this is an accurate representation of memory usage
+          memoryUsed: totalMemoryUsage, // TODO: Check if this is an accurate representation of memory usage
         });
       });
     });

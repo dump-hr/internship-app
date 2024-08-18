@@ -74,7 +74,6 @@ model TestSlot {
   testQuestions     TestQuestion[]
   createdAt         DateTime           @default(now())
   updatedAt         DateTime           @updatedAt
-  testClusterId     String?
 }
 
 model TestQuestion {

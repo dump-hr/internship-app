@@ -25,6 +25,17 @@ export class AppController {
     return 'ok';
   }
 
+  @Post('evaluate')
+  async evaluateTestCases(@Body() cluster: CreateEvaluationRequest) {
+    const evaluation = await this.appService.evaluateTestCases(cluster);
+    return {
+      testCases: evaluation,
+      isAccepted: evaluation.every(
+        (e) => e.evaluationStatus === 'AcceptedAnswer',
+      ),
+    };
+  }
+
   @Post(':pid')
   async spawnProgram(
     @Param('pid') pid: string,
@@ -49,16 +60,5 @@ export class AppController {
   @Delete(':pid')
   killProgram(@Param('pid') pid: string) {
     return this.appService.killProgram(pid);
-  }
-
-  @Post('evaluate')
-  async evaluateTestCases(@Body() cluster: CreateEvaluationRequest) {
-    const evaluation = await this.appService.evaluateTestCases(cluster);
-    return {
-      testCases: evaluation,
-      isAccepted: evaluation.every(
-        (e) => e.evaluationStatus === 'AcceptedAnswer',
-      ),
-    };
   }
 }

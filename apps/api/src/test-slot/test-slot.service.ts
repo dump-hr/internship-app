@@ -12,7 +12,12 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { Discipline, TestCase, TestStatus } from '@prisma/client';
+import {
+  Discipline,
+  EvaluatedCase,
+  TestCase,
+  TestStatus,
+} from '@prisma/client';
 import * as postmark from 'postmark';
 import { PrismaService } from 'src/prisma.service';
 
@@ -320,7 +325,6 @@ DUMP Udruga mladih programera`,
           },
         },
         testSlotId: question.testSlotId,
-        testStatus: TestStatus.Done,
       },
       include: {
         testSlot: {
@@ -335,13 +339,14 @@ DUMP Udruga mladih programera`,
       );
     }
 
-    if (internDiscipline.testSlot.password !== request.password) {
+    if (internDiscipline.testSlot.password != request.password) {
       throw new BadRequestException('Wrong password!');
     }
 
     const evaluationRequests: CreateEvaluationRequest[] =
       question.TestCaseCluster.map((cluster) => ({
         code: request.code,
+        clusterId: cluster.id,
         maxExecutionTime: cluster.maxExecutionTime,
         maxMemory: cluster.maxMemory,
         codingLanguage: request.language,
@@ -358,37 +363,46 @@ DUMP Udruga mladih programera`,
 
     const results: EvaluateClusterResult[] = await Promise.all(promises);
 
-    const creation = this.prisma.internQuestionAnswer.create({
+    const answerSubmission = await this.prisma.internQuestionAnswer.create({
       data: {
         internDisciplineInternId: internDiscipline.internId,
         internDisciplineDiscipline: internDiscipline.discipline,
         questionId,
         code: request.code,
         language: request.language,
-        EvaluatedCluster: {
-          createMany: {
-            data: results.map((r) => ({
-              testClusterId: r.clusterId,
-              isAccepted: r.isAccepted,
-              EvaluatedCase: {
-                createMany: {
-                  data: r.testCases.map((tc) => ({
-                    testCaseId: tc.testCaseId,
-                    userOutput: tc.userOutput || undefined,
-                    evaluationStatus: tc.evaluationStatus,
-                    executionTime: tc.executionTime,
-                    memoryUsed: tc.memoryUsed,
-                    error: tc.error || undefined,
-                  })),
-                },
-              },
-            })),
-          },
-        },
       },
     });
 
-    await creation;
+    const clusters = await this.prisma.evaluatedCluster.createManyAndReturn({
+      data: results.map((r) => ({
+        internQuestionAnswerId: answerSubmission.id,
+        isAccepted: r.isAccepted,
+        testClusterId: r.clusterId,
+      })),
+    });
+
+    const casesPromises = await this.prisma.evaluatedCase.createMany({
+      data: results.flatMap((r) =>
+        r.testCases.map(
+          (tc) =>
+            ({
+              evaluatedClusterInternQuestionAnswerId: answerSubmission.id,
+              evaluatedClusterTestClusterId: r.clusterId,
+              testCaseId: tc.testCaseId,
+              error: tc.error || '',
+              evaluationStatus: tc.evaluationStatus,
+              executionTime: tc.executionTime || 0,
+              internQuestionAnswerId: answerSubmission.id,
+              memoryUsed: tc.memoryUsed || 0,
+              userOutput: tc.userOutput,
+            } as EvaluatedCase),
+        ),
+      ),
+    });
+
+    if (!answerSubmission || !clusters || !casesPromises) {
+      throw new BadRequestException('Failed to submit evaluation');
+    }
 
     return results;
   }
@@ -436,7 +450,7 @@ DUMP Udruga mladih programera`,
   async evaluateQuestionCluster(evaluationRequest: CreateEvaluationRequest) {
     try {
       const request = fetch(
-        process.env.CODE_RUNNER || 'http://localhost:3003/evaluate',
+        process.env.CODE_RUNNER || 'http://localhost:3003/run/evaluate',
         {
           method: 'POST',
           headers: {
@@ -447,11 +461,15 @@ DUMP Udruga mladih programera`,
       );
 
       const response = await request;
+
+      if (!response.ok) {
+        throw new BadRequestException('Code runner error');
+      }
       const data: EvaluateClusterResult = await response.json();
 
       return { ...data, clusterId: evaluationRequest.clusterId };
     } catch (e) {
-      throw new BadRequestException('Code runner not available');
+      throw new BadRequestException('Code runner not available or has errored');
     }
   }
 
