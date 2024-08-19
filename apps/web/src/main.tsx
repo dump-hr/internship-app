@@ -9,13 +9,19 @@ import ReactDOM from 'react-dom/client';
 import { QueryClient, QueryClientProvider } from 'react-query';
 
 import { App } from './App.tsx';
+import { PublicClientApplication } from '@azure/msal-browser';
+import { msalConfig } from './configs/auth.ts';
+import { MsalProvider } from '@azure/msal-react';
 
 const queryClient = new QueryClient();
+const msalInstance = new PublicClientApplication(msalConfig);
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <QueryClientProvider client={queryClient}>
-      <App />
-    </QueryClientProvider>
+    <MsalProvider instance={msalInstance}>
+      <QueryClientProvider client={queryClient}>
+        <App />
+      </QueryClientProvider>
+    </MsalProvider>
   </React.StrictMode>,
 );

@@ -23,11 +23,12 @@ import {
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiTags } from '@nestjs/swagger';
 import { AdminLogAction, InternLogAction } from '@prisma/client';
-import { JwtAuthGuard } from 'src/auth/jwt-auth-guard';
 import { LoggerService } from 'src/logger/logger.service';
 
 import { CreateInternDto } from './dto/createIntern.dto';
 import { InternService } from './intern.service';
+
+import { AdminGuard, MemberGuard } from 'src/auth/admin.guard';
 
 @Controller('intern')
 @ApiTags('intern')
@@ -38,7 +39,7 @@ export class InternController {
   ) {}
 
   @Get()
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(MemberGuard)
   async getAll() {
     const interns = await this.internService.getAll();
 
@@ -51,7 +52,7 @@ export class InternController {
   }
 
   @Get(':id')
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(MemberGuard)
   async get(@Param('id') id: string) {
     const intern = await this.internService.get(id);
 
@@ -85,7 +86,7 @@ export class InternController {
   }
 
   @Put('setInterview/:internId')
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(MemberGuard)
   async setInterview(
     @Param('internId') internId: string,
     @Body() data: SetInterviewRequest,
@@ -99,7 +100,7 @@ export class InternController {
   }
 
   @Put('setImage/:internId')
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(MemberGuard)
   @UseInterceptors(FileInterceptor('image'))
   async setImage(
     @Param('internId') internId: string,
@@ -122,7 +123,7 @@ export class InternController {
   }
 
   @Put('action/:internId')
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(MemberGuard)
   async applyAction(
     @Param('internId') internId: string,
     @Body() { action }: InternActionRequest,
@@ -136,7 +137,7 @@ export class InternController {
   }
 
   @Put('boardAction')
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(MemberGuard)
   async applyBoardAction(@Body() { action, internIds }: BoardActionRequest) {
     await this.loggerService.createAdminLog(
       AdminLogAction.Update,
@@ -149,7 +150,7 @@ export class InternController {
   }
 
   @Put('setDecision/:internId')
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(MemberGuard)
   async setDecision(
     @Param('internId') internId: string,
     @Body() data: InternDecisionRequest,
@@ -163,7 +164,7 @@ export class InternController {
   }
 
   @Post('note/:internId')
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(MemberGuard)
   async setNote(
     @Param('internId') internId: string,
     @Body() data: CreateNoteRequest,
