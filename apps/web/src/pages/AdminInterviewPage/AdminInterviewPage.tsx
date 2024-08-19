@@ -16,6 +16,9 @@ import SlotsList from '../../components/SlotsList/SlotsList';
 import { calendarHelper } from '../../helpers/calendarHelper';
 import styles from './index.module.css';
 
+import { useMsalAuthentication } from '@azure/msal-react';
+import { InteractionType } from '@azure/msal-browser';
+
 type MappedEvent = {
   id: string;
   start: Date;
@@ -25,6 +28,8 @@ type MappedEvent = {
 };
 
 export const AdminInterviewPage = () => {
+  useMsalAuthentication(InteractionType.Redirect);
+
   const [interviewerFilter, setInterviewerFilter] = useState<
     string[] | null | undefined
   >();

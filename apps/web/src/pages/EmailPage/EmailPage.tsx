@@ -8,6 +8,8 @@ import EmailBox from '../../components/EmailBox';
 import EmailGuide from '../../components/EmailGuide';
 import EmailList from '../../components/EmailList';
 import EmailPreviewList from '../../components/EmailPreviewList';
+import { useMsalAuthentication } from '@azure/msal-react';
+import { InteractionType } from '@azure/msal-browser';
 
 type Props = {
   emails: string[];
@@ -25,6 +27,8 @@ ovo su tvoja podrucja:
 `.trim();
 
 export const EmailPage = ({ emails, on, close }: Props) => {
+  useMsalAuthentication(InteractionType.Redirect);
+
   const [subject, setSubject] = useState<string>('');
   const [emailPreviewOpen, setEmailPreviewOpen] = useState<boolean>(false);
   const [emailList, setEmailList] = useState<string[]>([]);

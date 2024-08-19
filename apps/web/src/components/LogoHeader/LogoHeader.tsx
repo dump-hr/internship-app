@@ -19,6 +19,7 @@ const LogoHeader: React.FC<Props> = ({ text }) => {
     user.logout();
     toast.success('Logout successful');
   };
+  console.log(user);
 
   return (
     <header className={c.header}>
@@ -40,6 +41,7 @@ const LogoHeader: React.FC<Props> = ({ text }) => {
           <Button component={Link} to={Path.TestScheduler}>
             Test Scheduler
           </Button>
+          <h3>{user.user.name}</h3>
           <Button onClick={handleLogout} variant="outlined" color="error">
             Logout
           </Button>

@@ -1,6 +1,10 @@
+import { useMsalAuthentication } from '@azure/msal-react';
 import { useFetchCount } from '../../api/useFetchCount';
+import { InteractionType } from '@azure/msal-browser';
 
 const CounterPage = () => {
+  useMsalAuthentication(InteractionType.Redirect);
+
   const { data } = useFetchCount();
 
   return (

@@ -17,6 +17,8 @@ import { ExistingSlotInfo } from './ExistingSlotInfo';
 import { NewSlotEdit } from './NewSlotEdit';
 import { SlotCard } from './SlotCard';
 import { SlotCardType, TestSlotCard } from './types';
+import { InteractionType } from '@azure/msal-browser';
+import { useMsalAuthentication } from '@azure/msal-react';
 
 moment.locale('hr');
 const locales = {
@@ -31,6 +33,8 @@ const localizer = dateFnsLocalizer({
 });
 
 const TestSchedulerPage = () => {
+  useMsalAuthentication(InteractionType.Redirect);
+
   const [slotsToAdd, setSlotsToAdd] = useState<TestSlotCard[]>([]);
   const [selectedEventStart, setSelectedEventStart] = useState<Date>();
 

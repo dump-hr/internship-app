@@ -10,8 +10,12 @@ import AdminPage from '../../components/AdminPage';
 import { CodeEditor } from '../../components/CodeEditor/CodeEditor';
 import { Path } from '../../constants/paths';
 import c from './TestReviewPage.module.css';
+import { InteractionType } from '@azure/msal-browser';
+import { useMsalAuthentication } from '@azure/msal-react';
 
 const TestReviewPage = () => {
+  useMsalAuthentication(InteractionType.Redirect);
+
   const [, params] = useRoute(Path.TestReview);
 
   const {
