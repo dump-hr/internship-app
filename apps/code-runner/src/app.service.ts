@@ -250,7 +250,7 @@ export class AppService {
             ? TestCaseResult.Correct
             : TestCaseResult.WrongAnswer,
           executionTime,
-          memoryUsed: totalMemoryUsage, // TODO: Check if this is an accurate representation of memory usage
+          memoryUsed: totalMemoryUsage,
         });
       });
     });
