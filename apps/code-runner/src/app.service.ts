@@ -3,7 +3,6 @@ import EventEmitter from 'node:events';
 import fs from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
-import { memoryUsage } from 'node:process';
 
 import {
   BadRequestException,
@@ -11,7 +10,7 @@ import {
   InternalServerErrorException,
 } from '@nestjs/common';
 import pidusage from 'pidusage';
-import { fromEvent, interval, map, merge } from 'rxjs';
+import { fromEvent, map, merge } from 'rxjs';
 
 import { config } from './config';
 import {
@@ -42,7 +41,6 @@ export class AppService {
     }
 
     if (!Object.values(CodingLanguage).includes(language)) {
-      console.log(language);
       throw new BadRequestException('Coding language not supported');
     }
 
@@ -60,9 +58,21 @@ export class AppService {
 
     const stream = this.getStream(pid);
 
+    const interval = setInterval(async () => {
+      try {
+        const memoryUsage = await pidusage(proc.pid);
+        stream.emit('memory', memoryUsage.memory);
+      } catch (e) {
+        clearInterval(interval);
+      }
+    }, 5);
+
+    // TODO: Test on multi cluster solutions
+
     proc.stdout.on('data', (data) => {
       stream.emit('stdout', data);
     });
+
     proc.stderr.on('data', (data) => {
       stream.emit('stdout', data);
     });
@@ -70,7 +80,7 @@ export class AppService {
       proc.stdin.write(data);
     });
 
-    proc.on('exit', (code) => {
+    proc.on('exit', async (code) => {
       stream.emit(
         'exit',
         code !== null ? `Process exited with code ${code}` : 'Process killed',
@@ -148,7 +158,6 @@ export class AppService {
       return results;
     } catch (e) {
       console.error(e);
-      //console.log(evaluationParams);
       throw new InternalServerErrorException('Failed to evaluate test cases');
     }
   }
@@ -175,7 +184,6 @@ export class AppService {
 
     const stream = this.getStream(randomPid);
     const startTime = process.hrtime();
-    const startMemory = process.memoryUsage().heapUsed;
 
     // TODO: possibly refactor this to use a queue / make this function standalone
     testCase.input.forEach((input) => {
@@ -187,8 +195,16 @@ export class AppService {
       output.push(data.toString());
     });
 
+    let peakMemory = 0;
+
     return new Promise((resolve, reject) => {
-      stream.on('exit', async (exitCode) => {
+      stream.on('memory', (memory) => {
+        if (memory > peakMemory) {
+          peakMemory = memory;
+        }
+      });
+
+      stream.on('exit', (exitCode) => {
         // Get memory usage
         if (exitCode !== 'Process exited with code 0') {
           return reject(
@@ -198,8 +214,11 @@ export class AppService {
           );
         }
 
-        const totalMemoryUsage = 100;
+        const totalMemoryUsage = peakMemory / 1024 / 1024;
         const executionTime = process.hrtime(startTime)[1] / 1000000;
+
+        // TODO: I believe the memory usage is a bit too high and the time is wall clock instead of a cpu time,
+        // more precise measurements can be taken but not needed right now
 
         if (totalMemoryUsage > maxMemory) {
           return resolve({
@@ -222,7 +241,7 @@ export class AppService {
         } // TODO: see if this can also be extrapolated into a function
 
         const outputIsValid =
-          output.join('\n').trim() === testCase.expectedOutput;
+          output.join().trim() === testCase.expectedOutput.trim();
 
         return resolve({
           testCaseId: testCase.id,

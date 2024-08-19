@@ -101,6 +101,9 @@ model TestCaseCluster {
   points           Int
   TestCase         TestCase[]
   EvaluatedCluster EvaluatedCluster[]
+
+  // TODO: potentially add options for sample cases
+  // TODO: add answer amount limit
 }
 
 model TestCase {

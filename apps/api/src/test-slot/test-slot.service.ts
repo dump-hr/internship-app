@@ -1,4 +1,5 @@
 import {
+  CompleteEvaluationResult,
   CreateEvaluationRequest,
   CreateEvaluationSubmissionRequest,
   CreateTestSlotsRequest,
@@ -16,6 +17,7 @@ import {
   Discipline,
   EvaluatedCase,
   TestCase,
+  TestCaseCluster,
   TestStatus,
 } from '@prisma/client';
 import * as postmark from 'postmark';
@@ -343,8 +345,11 @@ DUMP Udruga mladih programera`,
       throw new BadRequestException('Wrong password!');
     }
 
-    const evaluationRequests: CreateEvaluationRequest[] =
-      question.TestCaseCluster.map((cluster) => ({
+    const evaluationRequests: {
+      evaluationRequest: CreateEvaluationRequest;
+      cluster: TestCaseCluster;
+    }[] = question.TestCaseCluster.map((cluster) => ({
+      evaluationRequest: {
         code: request.code,
         clusterId: cluster.id,
         maxExecutionTime: cluster.maxExecutionTime,
@@ -355,13 +360,15 @@ DUMP Udruga mladih programera`,
           input: tc.input,
           expectedOutput: tc.expectedOutput.join('\n'),
         })),
-      }));
+      },
+      cluster,
+    }));
 
     const promises = evaluationRequests.map((er) =>
       this.evaluateQuestionCluster(er),
     );
 
-    const results: EvaluateClusterResult[] = await Promise.all(promises);
+    const results: CompleteEvaluationResult[] = await Promise.all(promises);
 
     const answerSubmission = await this.prisma.internQuestionAnswer.create({
       data: {
@@ -379,7 +386,7 @@ DUMP Udruga mladih programera`,
         isAccepted: r.isAccepted,
         testClusterId: r.clusterId,
       })),
-    });
+    }); // TODO: potentially refactor this function a lil bit
 
     const casesPromises = await this.prisma.evaluatedCase.createMany({
       data: results.flatMap((r) =>
@@ -447,7 +454,10 @@ DUMP Udruga mladih programera`,
     return clusters;
   }
 
-  async evaluateQuestionCluster(evaluationRequest: CreateEvaluationRequest) {
+  async evaluateQuestionCluster(clusterEvaluationArguments: {
+    evaluationRequest: CreateEvaluationRequest;
+    cluster: TestCaseCluster;
+  }): Promise<CompleteEvaluationResult> {
     try {
       const request = fetch(
         process.env.CODE_RUNNER || 'http://localhost:3003/run/evaluate',
@@ -456,7 +466,7 @@ DUMP Udruga mladih programera`,
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify(evaluationRequest),
+          body: JSON.stringify(clusterEvaluationArguments.evaluationRequest),
         },
       );
 
@@ -467,7 +477,12 @@ DUMP Udruga mladih programera`,
       }
       const data: EvaluateClusterResult = await response.json();
 
-      return { ...data, clusterId: evaluationRequest.clusterId };
+      return {
+        ...data,
+        clusterId: clusterEvaluationArguments.cluster.id,
+        name: clusterEvaluationArguments.cluster.name,
+        score: data.isAccepted ? clusterEvaluationArguments.cluster.points : 0,
+      };
     } catch (e) {
       throw new BadRequestException('Code runner not available or has errored');
     }

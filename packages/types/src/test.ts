@@ -123,5 +123,12 @@ export type EvaluateTestCaseResult = {
 export type EvaluateClusterResult = {
   testCases: EvaluateTestCaseResult[];
   isAccepted: boolean;
+};
+
+export type CompleteEvaluationResult = {
+  testCases: EvaluateTestCaseResult[];
+  isAccepted: boolean;
   clusterId: string;
+  name: string;
+  score: number;
 };
