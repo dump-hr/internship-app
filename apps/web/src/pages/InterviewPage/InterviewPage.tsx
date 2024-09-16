@@ -21,6 +21,8 @@ import {
 import { Path } from '../../constants/paths';
 import { defaultInterviewValues, interviewQuestions } from './data';
 import InterviewQuestionHandler from './InterviewQuestionHandler';
+import { InteractionType } from '@azure/msal-browser';
+import { useMsalAuthentication } from '@azure/msal-react';
 
 const mapAnswersToQuestions = (
   answers: FieldValues,
@@ -29,6 +31,8 @@ const mapAnswersToQuestions = (
 };
 
 const InterviewPage = () => {
+  useMsalAuthentication(InteractionType.Redirect);
+
   const [, params] = useRoute(Path.Interview);
   const internId = params?.internId;
 

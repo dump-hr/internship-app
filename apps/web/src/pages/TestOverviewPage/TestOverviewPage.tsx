@@ -10,8 +10,12 @@ import { ConfirmDialog } from '../../components/ConfirmDialog';
 import TestSlotInfo from '../../components/TestSlotInfo';
 import { Path } from '../../constants/paths';
 import { TestSlotEditForm } from './TestSlotEditForm';
+import { InteractionType } from '@azure/msal-browser';
+import { useMsalAuthentication } from '@azure/msal-react';
 
 const TestOverviewPage = () => {
+  useMsalAuthentication(InteractionType.Redirect);
+
   const [, params] = useRoute(Path.TestOverview);
   const [isEditOpened, setIsEditOpened] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);

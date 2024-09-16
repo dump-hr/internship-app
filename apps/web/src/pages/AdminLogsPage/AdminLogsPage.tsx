@@ -12,6 +12,8 @@ import { useForm } from 'react-hook-form';
 import { useFetchAdminLogs } from '../../api/useFetchAdminLogs';
 import AdminPage from '../../components/AdminPage';
 import InputHandler from '../../components/InputHandler';
+import { useMsalAuthentication } from '@azure/msal-react';
+import { InteractionType } from '@azure/msal-browser';
 
 const formQuestions: Question[] = [
   {
@@ -36,6 +38,8 @@ const logColumns: GridColDef[] = [
 ];
 
 const AdminLogsPage = () => {
+  useMsalAuthentication(InteractionType.Redirect);
+
   const form = useForm();
   const formValues = form.watch();
   const [paginationModel, setPaginationModel] = useState({
