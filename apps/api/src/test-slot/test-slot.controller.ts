@@ -23,10 +23,10 @@ import {
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { AdminLogAction, Discipline, InternLogAction } from '@prisma/client';
+import { MemberGuard } from 'src/auth/admin.guard';
 import { LoggerService } from 'src/logger/logger.service';
 
 import { TestSlotService } from './test-slot.service';
-import { MemberGuard } from 'src/auth/admin.guard';
 
 @Controller('test-slot')
 @ApiTags('test-slot')

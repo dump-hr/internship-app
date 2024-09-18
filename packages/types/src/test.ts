@@ -129,6 +129,5 @@ export type CompleteEvaluationResult = {
   testCases: EvaluateTestCaseResult[];
   isAccepted: boolean;
   clusterId: string;
-  name: string;
   score: number;
 };

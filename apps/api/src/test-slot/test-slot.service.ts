@@ -4,7 +4,6 @@ import {
   CreateEvaluationSubmissionRequest,
   CreateTestSlotsRequest,
   EvaluateClusterResult,
-  Question,
   SubmitTestRequest,
   TestSlot,
 } from '@internship-app/types';
@@ -308,7 +307,7 @@ DUMP Udruga mladih programera`,
       include: {
         TestCaseCluster: {
           include: {
-            TestCase: true,
+            testCase: true,
           },
         },
       },
@@ -355,7 +354,7 @@ DUMP Udruga mladih programera`,
         maxExecutionTime: cluster.maxExecutionTime,
         maxMemory: cluster.maxMemory,
         codingLanguage: request.language,
-        testCases: cluster.TestCase.map((tc: TestCase) => ({
+        testCases: cluster.testCase.map((tc: TestCase) => ({
           id: tc.id,
           input: tc.input,
           expectedOutput: tc.expectedOutput.join('\n'),
@@ -430,7 +429,7 @@ DUMP Udruga mladih programera`,
         maxExecutionTime: cluster.maxExecutionTime,
         maxMemory: cluster.maxMemory,
         codingLanguage: request.language,
-        testCases: cluster.TestCase.map((tc: TestCase) => ({
+        testCases: cluster.testCase.map((tc: TestCase) => ({
           id: tc.id,
           input: tc.input,
           expectedOutput: tc.expectedOutput.join('\n'),
@@ -447,7 +446,7 @@ DUMP Udruga mladih programera`,
         testQuestionId,
       },
       include: {
-        TestCase: true,
+        testCase: true,
       },
     });
 
@@ -480,7 +479,6 @@ DUMP Udruga mladih programera`,
       return {
         ...data,
         clusterId: clusterEvaluationArguments.cluster.id,
-        name: clusterEvaluationArguments.cluster.name,
         score: data.isAccepted ? clusterEvaluationArguments.cluster.points : 0,
       };
     } catch (e) {
