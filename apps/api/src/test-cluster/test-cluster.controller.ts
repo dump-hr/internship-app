@@ -1,4 +1,4 @@
-import { TestCluster, TestClusterWithTestCases } from '@internship-app/types';
+import { TestClusterWithTestCases } from '@internship-app/types';
 import {
   Body,
   Controller,
@@ -43,10 +43,6 @@ export class TestClusterController {
     const cluster = await this.testClusterService.getSingleAdmin(id);
     const mappedCluster = {
       ...cluster,
-      testCases: cluster.testCase.map((testCase) => ({
-        input: testCase.input,
-        output: testCase.expectedOutput,
-      })),
     } satisfies TestClusterWithTestCases;
 
     return mappedCluster;

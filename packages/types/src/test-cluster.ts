@@ -1,6 +1,6 @@
 export type TestCase = {
   input: string[];
-  output: string[];
+  expectedOutput: string[];
 };
 
 export type TestCluster = {
@@ -15,3 +15,17 @@ export type TestCluster = {
 export type TestClusterWithTestCases = TestCluster & {
   testCases: TestCase[];
 };
+
+export interface CreateTestCaseDto {
+  input: string[];
+  expectedOutput: string[];
+}
+
+export interface CreateTestClusterDto {
+  maxExecutionTime: number;
+  maxMemory: number;
+  points: number;
+  isSample: boolean;
+  testCases: CreateTestCaseDto[];
+  testQuestionId: string;
+}

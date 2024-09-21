@@ -97,7 +97,7 @@ model TestCaseCluster {
   maxMemory        Int                @default(256) // Most likely we will differentiatte these by input and now exextion params but just in case
   testQuestion     TestQuestion       @relation(fields: [testQuestionId], references: [id])
   points           Int
-  testCase         TestCase[]
+  testCases        TestCase[]
   evaluatedCluster EvaluatedCluster[]
   isSample         Boolean            @default(false)
 

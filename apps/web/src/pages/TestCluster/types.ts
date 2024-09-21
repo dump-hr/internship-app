@@ -1,1 +1,1 @@
-export type TestCluster
+export type TestCluster = {};

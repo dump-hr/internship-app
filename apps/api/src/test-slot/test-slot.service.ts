@@ -307,7 +307,7 @@ DUMP Udruga mladih programera`,
       include: {
         TestCaseCluster: {
           include: {
-            testCase: true,
+            testCases: true,
           },
         },
       },
@@ -354,7 +354,7 @@ DUMP Udruga mladih programera`,
         maxExecutionTime: cluster.maxExecutionTime,
         maxMemory: cluster.maxMemory,
         codingLanguage: request.language,
-        testCases: cluster.testCase.map((tc: TestCase) => ({
+        testCases: cluster.testCases.map((tc: TestCase) => ({
           id: tc.id,
           input: tc.input,
           expectedOutput: tc.expectedOutput.join('\n'),
@@ -429,7 +429,7 @@ DUMP Udruga mladih programera`,
         maxExecutionTime: cluster.maxExecutionTime,
         maxMemory: cluster.maxMemory,
         codingLanguage: request.language,
-        testCases: cluster.testCase.map((tc: TestCase) => ({
+        testCases: cluster.testCases.map((tc: TestCase) => ({
           id: tc.id,
           input: tc.input,
           expectedOutput: tc.expectedOutput.join('\n'),
@@ -446,7 +446,7 @@ DUMP Udruga mladih programera`,
         testQuestionId,
       },
       include: {
-        testCase: true,
+        testCases: true,
       },
     });
 

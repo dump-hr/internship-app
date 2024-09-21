@@ -14,7 +14,7 @@ export class TestClusterService {
     const action = await this.prisma.testCaseCluster.create({
       data: {
         ...createTestClusterDto,
-        testCase: {
+        testCases: {
           createMany: { data: createTestClusterDto.testCases },
         },
       },
@@ -29,7 +29,7 @@ export class TestClusterService {
         id: id,
       },
       include: {
-        testCase: {
+        testCases: {
           select: {
             input: true,
             expectedOutput: true,
@@ -60,7 +60,7 @@ export class TestClusterService {
       },
       data: {
         ...updateTestClusterDto,
-        testCase: {
+        testCases: {
           deleteMany: {},
           createMany: { data: updateTestClusterDto.testCases },
         },
