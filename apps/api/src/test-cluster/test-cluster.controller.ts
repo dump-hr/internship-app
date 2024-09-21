@@ -7,52 +7,63 @@ import {
   Param,
   Patch,
   Post,
+  Query,
   UseGuards,
 } from '@nestjs/common';
-import { MemberGuard } from 'src/auth/admin.guard';
+import { AdminGuard, MemberGuard } from 'src/auth/admin.guard';
 
 import { CreateTestClusterDto } from './dto/create-test-cluster.dto';
 import { UpdateTestClusterDto } from './dto/update-test-cluster.dto';
 import { TestClusterService } from './test-cluster.service';
+import { TestClusterQuery } from './dto/test-cluster.query.dto';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('test-cluster')
 @Controller('test-cluster')
 export class TestClusterController {
   constructor(private readonly testClusterService: TestClusterService) {}
 
   @Post()
-  create(@Body() createTestClusterDto: CreateTestClusterDto) {
-    return this.testClusterService.create(createTestClusterDto);
+  @UseGuards(AdminGuard)
+  async create(@Body() createTestClusterDto: CreateTestClusterDto) {
+    return await this.testClusterService.create(createTestClusterDto);
   }
 
   @Get()
-  @UseGuards(MemberGuard)
-  async getAll() {
-    const allClusters = await this.testClusterService.getAllAdmin();
-    const testClustersDto = allClusters.map((tc) => ({
-      ...tc,
-      testCases: tc.testCase.map((testCase) => ({
+  @UseGuards(AdminGuard)
+  async getAllAdmin(@Query() questionId: TestClusterQuery) {
+    const allClusters = await this.testClusterService.getAll(questionId);
+
+    return allClusters;
+  }
+
+  @Get(':id')
+  @UseGuards(AdminGuard)
+  async getSingleAdmin(@Param('id') id: string) {
+    const cluster = await this.testClusterService.getSingleAdmin(id);
+    const mappedCluster = {
+      ...cluster,
+      testCases: cluster.testCase.map((testCase) => ({
         input: testCase.input,
         output: testCase.expectedOutput,
       })),
-    })) satisfies TestClusterWithTestCases[];
+    } satisfies TestClusterWithTestCases;
 
-    return testClustersDto;
-  }
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.testClusterService.findOne(+id);
+    return mappedCluster;
   }
 
   @Patch(':id')
-  update(
+  @UseGuards(AdminGuard)
+  async update(
     @Param('id') id: string,
     @Body() updateTestClusterDto: UpdateTestClusterDto,
   ) {
-    return this.testClusterService.update(+id, updateTestClusterDto);
+    await this.testClusterService.update(id, updateTestClusterDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.testClusterService.remove(+id);
+  @UseGuards(AdminGuard)
+  async remove(@Param('id') id: string) {
+    await this.testClusterService.remove(id);
   }
 }

@@ -8,7 +8,7 @@ export class CreateTestCaseDto {
 
   @ApiProperty()
   @IsString({ each: true })
-  expectedOutput: string;
+  expectedOutput: string[];
 
   //TODO: maybe add recursive validation, had problems with tha
   //in a similar project so if it does not work immediately I will ignore it
@@ -34,4 +34,6 @@ export class CreateTestClusterDto {
   @ApiProperty()
   @IsArray()
   testCases: CreateTestCaseDto[];
+
+  testQuestionId: string;
 }
