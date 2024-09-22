@@ -13,7 +13,7 @@ interface Props {
   label: string;
   menuOptions: { key: string; value: string }[] | undefined;
   isMultiSelect: boolean;
-  valueHandler?: (value: string[]) => void;
+  valueHandler?: (value: string[] | string) => void;
 }
 
 export const CustomSelectInput: React.FC<Props> = ({

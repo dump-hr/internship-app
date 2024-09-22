@@ -60,7 +60,7 @@ export const App = () => {
             <Route path={Path.Interviewers} component={InterviewersPage} />
             <Route path={Path.AdminLogs} component={AdminLogsPage} />
             <Route path={Path.TestCluster} component={TestClusterPage} />
-            <Route
+            <Route 
               path={Path.TestClusterCreate}
               component={CreateTestClusterPage}
             />

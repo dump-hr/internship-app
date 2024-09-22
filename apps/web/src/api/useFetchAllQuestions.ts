@@ -6,5 +6,5 @@ const fetchAllQuestions = () =>
   api.get<never, TestClusterQuestionOption[]>('/question');
 
 export const useFetchAllQuestions = () => {
-  return useQuery('questions', fetchAllQuestions);
+  return useQuery(['questions'], fetchAllQuestions, {});
 };

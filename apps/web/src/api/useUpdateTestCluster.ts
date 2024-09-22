@@ -18,9 +18,6 @@ export const useUpdateTestCluster = () => {
   const queryClient = useQueryClient();
 
   return useMutation(updateTestCluster, {
-    onMutate: () => {
-      toast.loading('Updating test cluster...');
-    },
     onSuccess: (_data, variables) => {
       void queryClient.invalidateQueries(['test-cluster', variables.id]);
       toast.success('Test cluster updated successfully');

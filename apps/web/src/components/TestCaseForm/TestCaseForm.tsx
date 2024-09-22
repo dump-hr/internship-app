@@ -5,9 +5,13 @@ import { MultilineInput } from '../common/MultilineInput/MultilineInput';
 
 export interface TestCaseFormProps {
   onValueChange: (value: CreateTestCaseDto) => void;
+  onSubmitted?: () => void;
 }
 
-export const TestCaseForm = ({ onValueChange }: TestCaseFormProps) => {
+export const TestCaseForm = ({
+  onValueChange,
+  onSubmitted,
+}: TestCaseFormProps) => {
   const { setValue, watch, reset } = useForm<CreateTestCaseDto>({
     defaultValues: {
       input: [],
@@ -18,10 +22,19 @@ export const TestCaseForm = ({ onValueChange }: TestCaseFormProps) => {
   const handleSubmit = () => {
     onValueChange(watch());
     reset();
+    onSubmitted && onSubmitted();
   };
 
   return (
-    <Box>
+    <Box
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '1rem',
+        padding: '1rem',
+      }}
+      bgcolor={'#f5f5f5'}
+    >
       <Typography>Input</Typography>
       <MultilineInput
         onValueChange={(value) => setValue('input', value.split('\n'))}
@@ -30,7 +43,9 @@ export const TestCaseForm = ({ onValueChange }: TestCaseFormProps) => {
       <MultilineInput
         onValueChange={(value) => setValue('expectedOutput', value.split('\n'))}
       />
-      <Button type="button" onClick={handleSubmit} />
+      <Button type="button" onClick={handleSubmit}>
+        Submit
+      </Button>
     </Box>
   );
 };

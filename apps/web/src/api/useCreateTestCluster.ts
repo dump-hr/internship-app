@@ -10,10 +10,8 @@ export const useCreateTestCluster = () => {
   const queryClient = useQueryClient();
 
   return useMutation(createTestCluster, {
-    onMutate: () => {
-      toast.loading('Creating test cluster...');
-    },
     onSuccess: () => {
+      toast.dismiss('create-test-cluster');
       void queryClient.invalidateQueries(['test-cluster']);
       toast.success('Test cluster created successfully');
     },
