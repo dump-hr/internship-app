@@ -17,6 +17,7 @@ export enum Path {
   TestReview = '/admin/test-review/:testSlotId/:group/:groupId',
   AdminLogs = '/admin/admin-logs',
   Counter = '/admin/counter',
+  TestCluster = '/admin/test-cluster',
 
   CatchAll = '/:path*',
 }

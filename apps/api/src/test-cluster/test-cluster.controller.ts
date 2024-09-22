@@ -10,11 +10,15 @@ import {
   Query,
   UseGuards,
 } from '@nestjs/common';
-import { AdminGuard, MemberGuard } from 'src/auth/admin.guard';
 
-import { CreateTestClusterDto, TestClusterQuery, UpdateTestClusterDto } from './dto/testCluster.dto.';
+import {
+  CreateTestClusterDto,
+  TestClusterQuery,
+  UpdateTestClusterDto,
+} from './dto/testCluster.dto.';
 import { TestClusterService } from './test-cluster.service';
 import { ApiTags } from '@nestjs/swagger';
+import { MemberGuard } from 'src/auth/admin.guard';
 
 @ApiTags('test-cluster')
 @Controller('test-cluster')
@@ -22,13 +26,13 @@ export class TestClusterController {
   constructor(private readonly testClusterService: TestClusterService) {}
 
   @Post()
-  @UseGuards(AdminGuard)
+  @UseGuards(MemberGuard)
   async create(@Body() createTestClusterDto: CreateTestClusterDto) {
     return await this.testClusterService.create(createTestClusterDto);
   }
 
   @Get()
-  @UseGuards(AdminGuard)
+  @UseGuards(MemberGuard)
   async getAllAdmin(@Query() questionId: TestClusterQuery) {
     const allClusters = await this.testClusterService.getAll(questionId);
 
@@ -36,7 +40,7 @@ export class TestClusterController {
   }
 
   @Get(':id')
-  @UseGuards(AdminGuard)
+  @UseGuards(MemberGuard)
   async getSingleAdmin(@Param('id') id: string) {
     const cluster = await this.testClusterService.getSingleAdmin(id);
     const mappedCluster = {
@@ -48,7 +52,7 @@ export class TestClusterController {
   }
 
   @Patch(':id')
-  @UseGuards(AdminGuard)
+  @UseGuards(MemberGuard)
   async update(
     @Param('id') id: string,
     @Body() updateTestClusterDto: UpdateTestClusterDto,
@@ -57,7 +61,7 @@ export class TestClusterController {
   }
 
   @Delete(':id')
-  @UseGuards(AdminGuard)
+  @UseGuards(MemberGuard)
   async remove(@Param('id') id: string) {
     await this.testClusterService.remove(id);
   }

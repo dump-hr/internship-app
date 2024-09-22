@@ -5,8 +5,12 @@ import AdminPage from '../../components/AdminPage';
 import TestClusterList from '../TestCluster/TestClusterList';
 import { Button, Modal } from '@mui/material';
 import TestCaseClusterForm from '../../components/TestClusterForm';
+import { InteractionType } from '@azure/msal-browser';
+import { useMsalAuthentication } from '@azure/msal-react';
 
 export const TestClusterPage = () => {
+  useMsalAuthentication(InteractionType.Redirect);
+  
   const { data, isLoading } = useFetchTestClusters();
   const { data: questions } = useFetchAllQuestions();
 
