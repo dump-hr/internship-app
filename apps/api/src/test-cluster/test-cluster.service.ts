@@ -35,6 +35,11 @@ export class TestClusterService {
             expectedOutput: true,
           },
         },
+        testQuestion: {
+          select: {
+            title: true,
+          },
+        },
       },
     });
 
@@ -45,6 +50,13 @@ export class TestClusterService {
     return await this.prisma.testCaseCluster.findMany({
       where: {
         ...(query.testQuestionId && { testQuestionId: query.testQuestionId }),
+      },
+      include: {
+        testQuestion: {
+          select: {
+            title: true,
+          },
+        },
       },
     });
   }

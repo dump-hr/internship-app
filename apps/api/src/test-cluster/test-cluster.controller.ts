@@ -43,6 +43,7 @@ export class TestClusterController {
     const cluster = await this.testClusterService.getSingleAdmin(id);
     const mappedCluster = {
       ...cluster,
+      testQuestionTitle: cluster.testQuestion.title,
     } satisfies TestClusterWithTestCases;
 
     return mappedCluster;

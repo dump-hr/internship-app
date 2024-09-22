@@ -9,6 +9,7 @@ export type TestCluster = {
   maxMemory: number;
   points: number;
   testQuestionId: string;
+  testQuestionTitle: string;
   isSample: boolean;
 };
 
