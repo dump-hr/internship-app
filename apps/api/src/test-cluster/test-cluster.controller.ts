@@ -1,4 +1,4 @@
-import { TestClusterWithTestCases } from '@internship-app/types';
+import { TestCluster, TestClusterWithTestCases } from '@internship-app/types';
 import {
   Body,
   Controller,
@@ -35,8 +35,15 @@ export class TestClusterController {
   @UseGuards(MemberGuard)
   async getAllAdmin(@Query() questionId: TestClusterQuery) {
     const allClusters = await this.testClusterService.getAll(questionId);
-
-    return allClusters;
+    const mapped = allClusters.map(
+      (cluster) =>
+        ({
+          ...cluster,
+          testQuestionTitle: cluster.testQuestion.title,
+          testQuestion: undefined,
+        } as TestCluster),
+    );
+    return mapped;
   }
 
   @Get(':id')

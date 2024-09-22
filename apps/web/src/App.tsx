@@ -26,6 +26,8 @@ import TestPage from './pages/TestPage';
 import TestReviewPage from './pages/TestReviewPage';
 import TestSchedulerPage from './pages/TestSchedulerPage';
 import { TestClusterPage } from './pages/TestClusterPage/TestClusterPage';
+import { CreateTestClusterPage } from './pages/CreateTestClusterPage/CreateTestClusterPage';
+import { EditTestClusterPage } from './pages/EditTestClusterPage/EditTestClusterPage';
 
 const queryClient = new QueryClient();
 
@@ -58,6 +60,14 @@ export const App = () => {
             <Route path={Path.Interviewers} component={InterviewersPage} />
             <Route path={Path.AdminLogs} component={AdminLogsPage} />
             <Route path={Path.TestCluster} component={TestClusterPage} />
+            <Route
+              path={Path.TestClusterCreate}
+              component={CreateTestClusterPage}
+            />
+            <Route
+              path={Path.EditTestCluster}
+              component={EditTestClusterPage}
+            />
             <Route path={Path.Counter} component={CounterPage} />
             <Route path={Path.CatchAll} component={NotFoundPage} />
           </Switch>

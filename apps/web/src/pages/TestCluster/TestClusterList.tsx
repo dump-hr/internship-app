@@ -1,11 +1,9 @@
 import { TestCluster } from '@internship-app/types';
-import { Button, Modal } from '@mui/material';
+import { Button } from '@mui/material';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
-import {
-  TestCaseClusterForm,
-  TestClusterQuestionOption,
-} from '../../components/TestClusterForm/TestClusterForm';
-import { useState } from 'react';
+import { TestClusterQuestionOption } from '../../components/TestClusterForm/TestClusterForm';
+import { Link } from 'wouter';
+import { Path } from '../../constants/paths';
 
 export interface TestClusterListProps {
   testClusters: TestCluster[];
@@ -13,14 +11,11 @@ export interface TestClusterListProps {
 }
 
 const TestClusterList = ({ testClusters }: TestClusterListProps) => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
   const columns: GridColDef[] = [
     { field: 'id', headerName: 'ID', width: 0 },
     { field: 'maxExecutionTime', headerName: 'Max Execution Time', width: 150 },
     { field: 'maxMemory', headerName: 'Max Memory', width: 150 },
     { field: 'points', headerName: 'Points', width: 150 },
-    { field: 'testQuestionId', headerName: 'Test Question ID', width: 0 },
     {
       field: 'testQuestionTitle',
       headerName: 'Test Question Title',
@@ -34,22 +29,12 @@ const TestClusterList = ({ testClusters }: TestClusterListProps) => {
       renderCell: (params) => {
         return (
           <>
-            <Button onClick={() => setIsModalOpen(true)}>Edit</Button>
-            <Modal open={isModalOpen} onClose={() => setIsModalOpen(false)}>
-              <TestCaseClusterForm
-                testQuestions={[]}
-                previousValues={{
-                  id: params.row.id,
-                  maxExecutionTime: params.row.maxExecutionTime,
-                  maxMemory: params.row.maxMemory,
-                  points: params.row.points,
-                  testQuestionId: params.row.testQuestionId,
-                  testQuestionTitle: params.row.testQuestionTitle,
-                  testCases: [], // Crucial TODO: see if this works, if I decide on page instead do a quick reoroute
-                  isSample: params.row.isSample,
-                }}
-              />
-            </Modal>
+            <Button
+              component={Link}
+              to={Path.EditTestCluster.replace(':testClusterId', params.row.id)}
+            >
+              Edit
+            </Button>
           </>
         );
       },

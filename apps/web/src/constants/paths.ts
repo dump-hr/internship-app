@@ -18,6 +18,8 @@ export enum Path {
   AdminLogs = '/admin/admin-logs',
   Counter = '/admin/counter',
   TestCluster = '/admin/test-cluster',
+  TestClusterCreate = '/admin/test-cluster/create',
+  EditTestCluster = '/admin/test-cluster/edit/:testClusterId',
 
   CatchAll = '/:path*',
 }

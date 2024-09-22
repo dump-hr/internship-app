@@ -35,6 +35,7 @@ export const TestCaseClusterForm = ({
         maxExecutionTime: previousValues?.maxExecutionTime || '',
         maxMemory: previousValues?.maxMemory || '',
         points: previousValues?.points || '',
+        testQuestionId: previousValues?.testQuestionId || '',
         isSample: previousValues?.isSample || false,
         testCases: previousValues?.testCases || [],
       } as CreateTestClusterDto,
