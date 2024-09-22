@@ -95,20 +95,19 @@ model TestCaseCluster {
   testQuestionId   String
   maxExecutionTime Int                @default(1000)
   maxMemory        Int                @default(256) // Most likely we will differentiatte these by input and now exextion params but just in case
-  testQuestion     TestQuestion       @relation(fields: [testQuestionId], references: [id])
+  testQuestion     TestQuestion       @relation(fields: [testQuestionId], references: [id], onDelete: Cascade)
   points           Int
   testCases        TestCase[]
   evaluatedCluster EvaluatedCluster[]
   isSample         Boolean            @default(false)
 
-  // TODO: potentially add options for sample cases
   // TODO: add answer amount limit
 }
 
 model TestCase {
   id                String          @id @default(uuid())
   testCaseClusterId String
-  testCaseCluster   TestCaseCluster @relation(fields: [testCaseClusterId], references: [id])
+  testCaseCluster   TestCaseCluster @relation(fields: [testCaseClusterId], references: [id], onDelete: Cascade)
   createdAt         DateTime        @default(now())
   updatedAt         DateTime        @updatedAt
   input             String[]
@@ -134,9 +133,9 @@ model InternQuestionAnswer {
 
 model EvaluatedCluster {
   internQuestionAnswerId String
-  internQuestionAnswer   InternQuestionAnswer @relation(fields: [internQuestionAnswerId], references: [id])
+  internQuestionAnswer   InternQuestionAnswer @relation(fields: [internQuestionAnswerId], references: [id], onDelete: Cascade)
   testClusterId          String
-  testCluster            TestCaseCluster      @relation(fields: [testClusterId], references: [id])
+  testCluster            TestCaseCluster      @relation(fields: [testClusterId], references: [id], onDelete: Cascade)
   isAccepted             Boolean
   evaluatedCases         EvaluatedCase[]
 
@@ -145,16 +144,16 @@ model EvaluatedCluster {
 
 model EvaluatedCase {
   testCaseId                             String
-  testCase                               TestCase              @relation(fields: [testCaseId], references: [id])
+  testCase                               TestCase              @relation(fields: [testCaseId], references: [id], onDelete: Cascade)
   evaluationStatus                       EvaluationResult
   userOutput                             String?
   executionTime                          Int?
   memoryUsed                             Int?
   error                                  String?
-  evaluatedCluster                       EvaluatedCluster      @relation(fields: [evaluatedClusterInternQuestionAnswerId, evaluatedClusterTestClusterId], references: [internQuestionAnswerId, testClusterId])
+  evaluatedCluster                       EvaluatedCluster      @relation(fields: [evaluatedClusterInternQuestionAnswerId, evaluatedClusterTestClusterId], references: [internQuestionAnswerId, testClusterId], onDelete: Cascade)
   evaluatedClusterInternQuestionAnswerId String
   evaluatedClusterTestClusterId          String
-  internQuestionAnswer                   InternQuestionAnswer? @relation(fields: [internQuestionAnswerId], references: [id])
+  internQuestionAnswer                   InternQuestionAnswer? @relation(fields: [internQuestionAnswerId], references: [id], onDelete: SetNull)
   internQuestionAnswerId                 String?
 
   @@id([testCaseId, evaluatedClusterInternQuestionAnswerId, evaluatedClusterTestClusterId])

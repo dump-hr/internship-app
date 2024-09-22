@@ -14,15 +14,17 @@ interface Props {
   menuOptions: { key: string; value: string }[] | undefined;
   isMultiSelect: boolean;
   valueHandler?: (value: string[] | string) => void;
+  defaultValue?: string | string[];
 }
 
 export const CustomSelectInput: React.FC<Props> = ({
   label,
   menuOptions,
+  defaultValue,
   isMultiSelect,
   valueHandler,
 }: Props) => {
-  const [selectedValues, setSelectedValues] = useState([]);
+  const [selectedValues, setSelectedValues] = useState(defaultValue || []);
 
   useEffect(() => {
     valueHandler && valueHandler(selectedValues);

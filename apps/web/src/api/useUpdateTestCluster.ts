@@ -9,7 +9,7 @@ interface FullData {
 }
 
 export const updateTestCluster = (fullData: FullData) =>
-  api.put<Partial<CreateTestClusterDto>>(
+  api.patch<Partial<CreateTestClusterDto>>(
     `/test-cluster/${fullData.id}`,
     fullData.data,
   );

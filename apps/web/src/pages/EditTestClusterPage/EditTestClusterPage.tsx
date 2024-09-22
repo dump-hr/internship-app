@@ -8,6 +8,7 @@ import { useFetchAllQuestions } from '../../api/useFetchAllQuestions';
 export const EditTestClusterPage = () => {
   const [, params] = useRoute(Path.EditTestCluster);
   const testClusterId = params?.testClusterId;
+  console.log(testClusterId);
   const { data, isLoading } = useFetchTestCluster(testClusterId || '');
   const { data: questions, isLoading: isLoadingQuestions } =
     useFetchAllQuestions();

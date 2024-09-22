@@ -8,9 +8,6 @@ export const useDeleteTestCluster = () => {
   const queryClient = useQueryClient();
 
   return useMutation(removeTestCluster, {
-    onMutate: () => {
-      toast.loading('Deleting test cluster...');
-    },
     onSuccess: () => {
       void queryClient.invalidateQueries(['test-cluster']);
       toast.success('Test cluster deleted successfully');

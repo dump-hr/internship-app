@@ -29,24 +29,17 @@ export const TestCaseClusterForm = ({
   onSubmitted,
   previousValues,
 }: TestClusterFormProps) => {
-  const {
-    register,
-    handleSubmit,
-    setValue,
-    formState,
-    watch,
-    getValues,
-    control,
-  } = useForm<CreateTestClusterDto>({
-    defaultValues: {
-      maxExecutionTime: previousValues?.maxExecutionTime || '',
-      maxMemory: previousValues?.maxMemory || '',
-      points: previousValues?.points || '',
-      testQuestionId: previousValues?.testQuestionId || '',
-      isSample: previousValues?.isSample || false,
-      testCases: previousValues?.testCases || [],
-    } as CreateTestClusterDto,
-  });
+  const { register, handleSubmit, setValue, formState, watch, getValues } =
+    useForm<CreateTestClusterDto>({
+      defaultValues: {
+        maxExecutionTime: previousValues?.maxExecutionTime || '',
+        maxMemory: previousValues?.maxMemory || '',
+        points: previousValues?.points || '',
+        testQuestionId: previousValues?.testQuestionId || '',
+        isSample: previousValues?.isSample || false,
+        testCases: previousValues?.testCases || [],
+      } as CreateTestClusterDto,
+    });
 
   const { errors } = formState;
 
@@ -69,7 +62,7 @@ export const TestCaseClusterForm = ({
       ...data,
       maxExecutionTime: Number(data.maxExecutionTime),
       maxMemory: Number(data.maxMemory),
-      points: Number(data.points),
+      points: data.isSample ? 0 : Number(data.points),
     };
 
     if (previousValues)
@@ -92,6 +85,7 @@ export const TestCaseClusterForm = ({
     >
       <CustomSelectInput
         isMultiSelect={false}
+        defaultValue={watch('testQuestionId')}
         menuOptions={testQuestions.map((testQuestion) => {
           return {
             key: testQuestion.id,
@@ -121,7 +115,7 @@ export const TestCaseClusterForm = ({
         <span>{errors.maxExecutionTime.message}</span>
       )}
       <Input
-        {...register('maxExecutionTime')}
+        {...register('maxMemory')}
         defaultValue={previousValues?.maxExecutionTime || ''}
         type="number"
         placeholder="Max program memory (mb)"
@@ -131,6 +125,7 @@ export const TestCaseClusterForm = ({
         {...register('points')}
         defaultValue={previousValues?.points || ''}
         type="number"
+        disabled={watch('isSample')}
         placeholder="Points"
       />
       {errors.points && <span>{errors.points.message}</span>}

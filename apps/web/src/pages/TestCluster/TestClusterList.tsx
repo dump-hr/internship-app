@@ -4,6 +4,7 @@ import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { TestClusterQuestionOption } from '../../components/TestClusterForm/TestClusterForm';
 import { Link } from 'wouter';
 import { Path } from '../../constants/paths';
+import { useDeleteTestCluster } from '../../api/useDeleteTestCluster';
 
 export interface TestClusterListProps {
   testClusters: TestCluster[];
@@ -11,6 +12,17 @@ export interface TestClusterListProps {
 }
 
 const TestClusterList = ({ testClusters }: TestClusterListProps) => {
+  const { mutateAsync } = useDeleteTestCluster();
+
+  const handleDeleteTestCluster = async (id: string) => {
+    const confirmation = window.confirm(
+      'Are you sure you want to delete this test cluster?',
+    );
+    if (!confirmation) return; // Potential TODO: if anybody wants to implement a confirmation modal they are free to do so
+
+    await mutateAsync(id);
+  };
+
   const columns: GridColDef[] = [
     { field: 'id', headerName: 'ID', width: 0 },
     { field: 'maxExecutionTime', headerName: 'Max Execution Time', width: 150 },
@@ -21,21 +33,35 @@ const TestClusterList = ({ testClusters }: TestClusterListProps) => {
       headerName: 'Test Question Title',
       width: 150,
     },
-    { field: 'isSample', headerName: 'Is Sample', width: 150 },
+    { field: 'isSample', headerName: 'Is Sample', width: 350 },
     {
       field: 'buttonEdit',
-      headerName: 'Edit',
-      width: 150,
+      renderHeader: () => <></>,
+      width: 100,
       renderCell: (params) => {
         return (
-          <>
-            <Button
-              component={Link}
-              to={Path.EditTestCluster.replace(':testClusterId', params.row.id)}
-            >
-              Edit
-            </Button>
-          </>
+          <Button
+            component={Link}
+            to={Path.EditTestCluster.replace(':testClusterId', params.row.id)}
+          >
+            Edit
+          </Button>
+        );
+      },
+    },
+    {
+      field: 'buttonDelete',
+      renderHeader: () => <></>,
+      width: 100,
+      renderCell: (params) => {
+        return (
+          <Button
+            variant="contained"
+            color="error"
+            onClick={() => handleDeleteTestCluster(params.row.id as string)}
+          >
+            Delete
+          </Button>
         );
       },
     },
@@ -76,7 +102,6 @@ const TestClusterList = ({ testClusters }: TestClusterListProps) => {
           },
         }}
         pageSizeOptions={[5, 10]}
-        checkboxSelection
       />
     </div>
   );
