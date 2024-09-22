@@ -15,6 +15,7 @@ import { PrismaService } from './prisma.service';
 import { TestSlotModule } from './test-slot/test-slot.module';
 import { ClusterModule } from './cluster/cluster.module';
 import { TestClusterModule } from './test-cluster/test-cluster.module';
+import { QuestionModule } from './question/question.module';
 
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import { TestClusterModule } from './test-cluster/test-cluster.module';
     InterviewerModule,
     ClusterModule,
     TestClusterModule,
+    QuestionModule,
   ],
   controllers: [AppController, AuthController],
   providers: [AppService, PrismaService],

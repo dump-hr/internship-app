@@ -1,18 +1,26 @@
 import { TestCluster } from '@internship-app/types';
-import { Button } from '@mui/material';
+import { Button, Modal } from '@mui/material';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
-import { Link } from 'wouter';
+import {
+  TestCaseClusterForm,
+  TestClusterQuestionOption,
+} from '../../components/TestClusterForm/TestClusterForm';
+import { useState } from 'react';
 
 export interface TestClusterListProps {
   testClusters: TestCluster[];
+  testQuestions?: TestClusterQuestionOption[];
 }
 
 const TestClusterList = ({ testClusters }: TestClusterListProps) => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   const columns: GridColDef[] = [
     { field: 'id', headerName: 'ID', width: 0 },
     { field: 'maxExecutionTime', headerName: 'Max Execution Time', width: 150 },
     { field: 'maxMemory', headerName: 'Max Memory', width: 150 },
     { field: 'points', headerName: 'Points', width: 150 },
+    { field: 'testQuestionId', headerName: 'Test Question ID', width: 0 },
     {
       field: 'testQuestionTitle',
       headerName: 'Test Question Title',
@@ -25,15 +33,24 @@ const TestClusterList = ({ testClusters }: TestClusterListProps) => {
       width: 150,
       renderCell: (params) => {
         return (
-          <Button
-            component={Link}
-            onClick={() => {
-              console.log(params.row.id);
-            }}
-            to={`/test-cluster/${params.row.id}`}
-          >
-            Edit
-          </Button>
+          <>
+            <Button onClick={() => setIsModalOpen(true)}>Edit</Button>
+            <Modal open={isModalOpen} onClose={() => setIsModalOpen(false)}>
+              <TestCaseClusterForm
+                testQuestions={[]}
+                previousValues={{
+                  id: params.row.id,
+                  maxExecutionTime: params.row.maxExecutionTime,
+                  maxMemory: params.row.maxMemory,
+                  points: params.row.points,
+                  testQuestionId: params.row.testQuestionId,
+                  testQuestionTitle: params.row.testQuestionTitle,
+                  testCases: [], // Crucial TODO: see if this works, if I decide on page instead do a quick reoroute
+                  isSample: params.row.isSample,
+                }}
+              />
+            </Modal>
+          </>
         );
       },
     },

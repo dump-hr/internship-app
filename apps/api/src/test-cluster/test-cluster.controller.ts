@@ -12,10 +12,8 @@ import {
 } from '@nestjs/common';
 import { AdminGuard, MemberGuard } from 'src/auth/admin.guard';
 
-import { CreateTestClusterDto } from './dto/create-test-cluster.dto';
-import { UpdateTestClusterDto } from './dto/update-test-cluster.dto';
+import { CreateTestClusterDto, TestClusterQuery, UpdateTestClusterDto } from './dto/testCluster.dto.';
 import { TestClusterService } from './test-cluster.service';
-import { TestClusterQuery } from './dto/test-cluster.query.dto';
 import { ApiTags } from '@nestjs/swagger';
 
 @ApiTags('test-cluster')

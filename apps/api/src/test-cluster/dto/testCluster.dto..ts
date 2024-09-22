@@ -1,5 +1,21 @@
-import { ApiProperty } from '@nestjs/swagger';
-import { IsArray, IsBoolean, IsInt, IsString } from 'class-validator';
+import { ApiProperty, PartialType } from '@nestjs/swagger';
+import {
+  IsArray,
+  IsBoolean,
+  IsInt,
+  IsOptional,
+  IsString,
+  IsUUID,
+} from 'class-validator';
+
+export class TestClusterQuery {
+  @IsOptional()
+  @IsUUID()
+  @ApiProperty({
+    required: false,
+  })
+  testQuestionId?: string;
+}
 
 export class CreateTestCaseDto {
   @ApiProperty()
@@ -37,3 +53,5 @@ export class CreateTestClusterDto {
 
   testQuestionId: string;
 }
+
+export class UpdateTestClusterDto extends PartialType(CreateTestClusterDto) {}

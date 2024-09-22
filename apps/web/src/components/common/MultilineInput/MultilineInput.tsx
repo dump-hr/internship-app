@@ -5,6 +5,7 @@ import styles from './index.module.css';
 interface Props {
   onValueChange: (value: string) => void;
   defaultValue?: string;
+  placeholder?: string;
 }
 
 export const MultilineInput = ({ onValueChange, defaultValue }: Props) => {

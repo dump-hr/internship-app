@@ -4,20 +4,29 @@ import {
 } from '@internship-app/types';
 import { useForm } from 'react-hook-form';
 import { useCreateTestCluster } from '../../api/useCreateTestCluster';
-import { Box, Button, Checkbox, Input, Modal } from '@mui/material';
+import { Box, Button, Checkbox, Input, Modal, Typography } from '@mui/material';
 import { MultilineInput } from '../common/MultilineInput/MultilineInput';
 import { useState } from 'react';
 import { TestCaseForm } from '../TestCaseForm/TestCaseForm';
+import { CustomSelectInput } from '../common/SelectInput/CustomSelectInput';
+import { useUpdateTestCluster } from '../../api/useUpdateTestCluster';
+
+export interface TestClusterQuestionOption {
+  id: string;
+  title: string;
+}
 
 export interface TestClusterFormProps {
-  testQuestionId: string;
+  testQuestions: TestClusterQuestionOption[];
   previousValues?: TestClusterWithTestCases;
+  onSubmitted?: () => void;
 }
 
 //TODO: potentially rewrite a part of this to remove arrow functions and make handlers
 
 export const TestCaseClusterForm = ({
-  testQuestionId,
+  testQuestions,
+  onSubmitted,
   previousValues,
 }: TestClusterFormProps) => {
   const { register, handleSubmit, setValue, formState, watch } =
@@ -44,14 +53,36 @@ export const TestCaseClusterForm = ({
   };
 
   const createTestCluster = useCreateTestCluster();
+  const updateTestCluster = useUpdateTestCluster();
 
-  const onSubmit = (data: CreateTestClusterDto) => {
-    data.testQuestionId = testQuestionId;
-    createTestCluster.mutate(data);
+  const onSubmit = async (data: CreateTestClusterDto) => {
+    if (previousValues)
+      return await updateTestCluster.mutateAsync({
+        data,
+        id: previousValues.id,
+      });
+
+    await createTestCluster.mutateAsync(data);
+
+    onSubmitted && onSubmitted();
   };
 
   return (
     <Box>
+      <CustomSelectInput
+        isMultiSelect={false}
+        menuOptions={testQuestions.map((testQuestion) => {
+          return {
+            key: testQuestion.id,
+            value: testQuestion.title,
+          };
+        })}
+        label="Test question (title)"
+        valueHandler={(selectedTestQuestion) =>
+          setValue('testQuestionId', selectedTestQuestion[0])
+        }
+      />
+      <Typography>Sample test (no points awarded)</Typography>
       <Checkbox
         {...register('isSample')}
         defaultChecked={previousValues?.isSample || false}
@@ -79,6 +110,7 @@ export const TestCaseClusterForm = ({
         placeholder="Points"
       />
       {errors.points && <span>{errors.points.message}</span>}
+      <Typography>Test cases list</Typography>
       {watch('testCases').map((testCase, index) => (
         <Box key={index}>
           <MultilineInput

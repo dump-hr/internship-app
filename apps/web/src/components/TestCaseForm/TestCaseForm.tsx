@@ -1,5 +1,5 @@
 import { CreateTestCaseDto } from '@internship-app/types';
-import { Box, Button } from '@mui/material';
+import { Box, Button, Typography } from '@mui/material';
 import { useForm } from 'react-hook-form';
 import { MultilineInput } from '../common/MultilineInput/MultilineInput';
 
@@ -22,9 +22,11 @@ export const TestCaseForm = ({ onValueChange }: TestCaseFormProps) => {
 
   return (
     <Box>
+      <Typography>Input</Typography>
       <MultilineInput
         onValueChange={(value) => setValue('input', value.split('\n'))}
       />
+      <Typography>Expected Output</Typography>
       <MultilineInput
         onValueChange={(value) => setValue('expectedOutput', value.split('\n'))}
       />

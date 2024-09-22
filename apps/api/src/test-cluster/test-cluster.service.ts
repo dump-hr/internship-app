@@ -1,10 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
 
-import { CreateTestClusterDto } from './dto/create-test-cluster.dto';
-import { UpdateTestClusterDto } from './dto/update-test-cluster.dto';
+import {
+  CreateTestClusterDto,
+  TestClusterQuery,
+  UpdateTestClusterDto,
+} from './dto/testCluster.dto.';
 import { TestCase } from '@prisma/client';
-import { TestClusterQuery } from './dto/test-cluster.query.dto';
 
 @Injectable()
 export class TestClusterService {
