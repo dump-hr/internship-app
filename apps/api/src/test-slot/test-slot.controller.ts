@@ -146,6 +146,19 @@ export class TestSlotController {
     return await this.testSlotService.submitEvaluationRequest(questionId, body);
   }
 
+  @Get('results/:questionId/intern/:internId')
+  async getResults(
+    @Param('questionId') questionId: string,
+    @Param('internId') internId: string,
+  ) {
+    return await this.testSlotService.getResults(questionId, internId);
+  }
+
+  @Get('answers/:answerId/detailed')
+  async getDetailedAnswer(@Param('answerId') answerId: string) {
+    return await this.testSlotService.getDetailedAnswer(answerId);
+  }
+
   @Get('answers/:testSlotId/intern/:internId')
   @UseGuards(MemberGuard)
   async getTestAnswersByIntern(

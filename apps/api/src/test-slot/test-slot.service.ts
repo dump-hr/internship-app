@@ -4,7 +4,9 @@ import {
   CreateEvaluationSubmissionRequest,
   CreateTestSlotsRequest,
   EvaluateClusterResult,
+  ResultSummary,
   SubmitTestRequest,
+  TestCaseResult,
   TestSlot,
 } from '@internship-app/types';
 import {
@@ -543,6 +545,49 @@ DUMP Udruga mladih programera`,
     return internDiscipline.internId;
   }
 
+  async getDetailedAnswer(
+    answerId: string,
+  ): Promise<CompleteEvaluationResult[]> {
+    const answer = await this.prisma.internQuestionAnswer.findUnique({
+      where: {
+        id: answerId,
+      },
+      include: {
+        evaluatedClusters: {
+          include: {
+            testCluster: true,
+            evaluatedCases: true,
+          },
+        },
+      },
+    });
+
+    if (!answer) {
+      throw new NotFoundException('Answer not found');
+    }
+
+    const mapped = answer.evaluatedClusters.map(
+      (ec) =>
+        ({
+          clusterId: ec.testClusterId,
+          isAccepted: ec.isAccepted,
+          isSample: ec.testCluster.isSample,
+          score: ec.isAccepted ? ec.testCluster.points : 0,
+          maxPoints: ec.testCluster.points,
+          testCases: ec.evaluatedCases.map((tc) => ({
+            testCaseId: tc.testCaseId,
+            error: tc.error,
+            evaluationStatus: tc.evaluationStatus as TestCaseResult,
+            executionTime: tc.executionTime,
+            memoryUsed: tc.memoryUsed,
+            userOutput: tc.userOutput,
+          })),
+        } satisfies CompleteEvaluationResult),
+    );
+
+    return mapped;
+  }
+
   async getTestAnswersByIntern(testSlotId: string, internId: string) {
     const internDiscipline = await this.prisma.internDiscipline.findFirst({
       where: {
@@ -563,6 +608,7 @@ DUMP Udruga mladih programera`,
       },
       include: {
         question: true,
+        evaluatedClusters: true,
       },
       orderBy: {
         question: {
@@ -570,6 +616,76 @@ DUMP Udruga mladih programera`,
         },
       },
     });
+  }
+
+  async getResults(
+    questionId: string,
+    internId: string,
+  ): Promise<ResultSummary[]> {
+    const question = await this.prisma.testQuestion.findUnique({
+      where: {
+        id: questionId,
+      },
+      include: {
+        TestCaseCluster: {
+          include: {
+            testCases: true,
+          },
+        },
+      },
+    });
+
+    if (!question) {
+      throw new NotFoundException('Question not found');
+    }
+
+    const internDiscipline = await this.prisma.internDiscipline.findFirst({
+      where: {
+        internId,
+        testSlotId: question.testSlotId,
+        testStatus: TestStatus.Done,
+      },
+    });
+
+    if (!internDiscipline) {
+      throw new BadRequestException('Test does not exist or is not done');
+    }
+
+    const answer = await this.prisma.internQuestionAnswer.findMany({
+      where: {
+        internDisciplineInternId: internId,
+        internDisciplineDiscipline: internDiscipline.discipline,
+        questionId,
+      },
+      include: {
+        evaluatedClusters: {
+          include: {
+            testCluster: true,
+          },
+        },
+      },
+    });
+
+    if (!answer) {
+      throw new BadRequestException('Answer not found');
+    }
+
+    const mapped: ResultSummary[] = answer.map((a) => {
+      return {
+        dateOfSubmission: a.createdAt,
+        isAccepted: a.evaluatedClusters.every((ec) => ec.isAccepted),
+        score: a.evaluatedClusters.reduce(
+          (acc, ec) => acc + (ec.isAccepted ? ec.testCluster.points : 0),
+          0,
+        ),
+        maxPoints: a.evaluatedClusters.reduce(
+          (acc, ec) => acc + ec.testCluster.points,
+          0,
+        ),
+      };
+    });
+
+    return mapped;
   }
 
   async getTestAnswersByQuestion(questionId: string) {

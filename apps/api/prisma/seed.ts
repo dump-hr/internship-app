@@ -10,13 +10,15 @@ import * as bcrypt from 'bcrypt';
 const prisma = new PrismaClient();
 
 async function main() {
-  await prisma.internDiscipline.deleteMany();
+  await prisma.internQuestionAnswer.deleteMany();
   await prisma.testSlot.deleteMany();
   await prisma.testQuestion.deleteMany();
+  await prisma.internDiscipline.deleteMany();
   await prisma.testCaseCluster.deleteMany();
   await prisma.testCase.deleteMany();
   await prisma.interviewSlot.deleteMany();
   await prisma.interviewer.deleteMany();
+  await prisma.internLog.deleteMany();
   await prisma.intern.deleteMany();
   await prisma.admin.deleteMany();
 
