@@ -31,11 +31,11 @@ export const AdminInterviewPage = () => {
   useMsalAuthentication(InteractionType.Redirect);
 
   const [interviewerFilter, setInterviewerFilter] = useState<
-    string[] | null | undefined
+    string[] | string | null | undefined
   >();
   const [filteredEvents, setFilteredEvents] = useState<MappedEvent[]>([]);
   const [selectedInterviewers, setSelectedInterviewers] = useState<
-    string[] | null
+    string[] | string | null
   >();
 
   const [events, setEvents] = useState<MappedEvent[]>([]);
@@ -64,7 +64,7 @@ export const AdminInterviewPage = () => {
     const interviewSlotDto = {
       start: event.start,
       end: event.end,
-      interviewers: selectedInterviewers,
+      interviewers: selectedInterviewers as string[],
     };
 
     createInterviewSlotMutation.mutate(interviewSlotDto, {

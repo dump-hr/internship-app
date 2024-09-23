@@ -6,10 +6,10 @@ import styles from './index.module.css';
 
 interface Props {
   setInterviewers: React.Dispatch<
-    React.SetStateAction<string[] | null | undefined>
+    React.SetStateAction<string[] | string | null | undefined>
   >;
   setSelectedInterviewerFilter: React.Dispatch<
-    React.SetStateAction<string[] | null | undefined>
+    React.SetStateAction<string[] | string | null | undefined>
   >;
 }
 
