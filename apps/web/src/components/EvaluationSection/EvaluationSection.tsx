@@ -12,11 +12,13 @@ export interface EvaluationSectionProps {
   internEmail: string;
   code: string;
   language: CodingLanguage;
+  isOverview?: boolean;
 }
 
 export const EvaluationSection = ({
   code,
   language,
+  isOverview = false,
   internEmail,
   questionId,
 }: EvaluationSectionProps) => {
@@ -51,7 +53,7 @@ export const EvaluationSection = ({
     <Box>
       <Typography variant="h6">Evaluation Section</Typography>
       <ResultsTable results={results || []} />
-      <Button onClick={handleSubmit}>Evaluate Answer</Button>
+      {!isOverview && <Button onClick={handleSubmit}>Evaluate Answer</Button>}
     </Box>
   );
 };

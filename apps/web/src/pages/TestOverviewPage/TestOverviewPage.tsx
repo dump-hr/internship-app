@@ -27,7 +27,7 @@ const TestOverviewPage = () => {
   if (error || !slot) return <>Error: {error}</>;
 
   return (
-    <AdminPage>
+    <AdminPage> 
       <ConfirmDialog
         open={dialogOpen}
         handleClose={(confirmed) => {
