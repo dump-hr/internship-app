@@ -28,7 +28,6 @@ import TestSchedulerPage from './pages/TestSchedulerPage';
 import { TestClusterPage } from './pages/TestClusterPage/TestClusterPage';
 import { CreateTestClusterPage } from './pages/CreateTestClusterPage/CreateTestClusterPage';
 import { EditTestClusterPage } from './pages/EditTestClusterPage/EditTestClusterPage';
-import { MsalProvider } from '@azure/msal-react';
 import { MsalWrapper } from './components/MsalWrapper/MsalWrapper';
 
 const queryClient = new QueryClient();

@@ -21,6 +21,7 @@ import { Path } from '../../constants/paths';
 import { startingPrograms } from '../../constants/startingPrograms';
 import { useLocalSave } from '../../hooks/useLocalSave';
 import c from './TestPage.module.css';
+import EvaluationSection from '../../components/EvaluationSection';
 
 type Answer = {
   isDirty: boolean;
@@ -231,6 +232,16 @@ const TestPage = () => {
         prevQuestion={() => setSelectedQuestion((prev) => prev - 1)}
         isFirstQuestion={selectedQuestion === 0}
         isLastQuestion={selectedQuestion === data.testQuestions.length - 1}
+      />
+      <EvaluationSection
+        code={
+          answers[selectedQuestion].codes[
+            answers[selectedQuestion].currentLanguage
+          ] ?? ''
+        }
+        internEmail={email}
+        language={answers[selectedQuestion].currentLanguage}
+        questionId={data.testQuestions[selectedQuestion].id}
       />
 
       <ConfirmDialog
