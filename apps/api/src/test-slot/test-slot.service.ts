@@ -353,6 +353,8 @@ DUMP Udruga mladih programera`,
         clusterId: cluster.id,
         maxExecutionTime: cluster.maxExecutionTime,
         maxMemory: cluster.maxMemory,
+        isSample: cluster.isSample,
+        maxPoints: cluster.points,
         codingLanguage: request.language,
         testCases: cluster.testCases.map((tc: TestCase) => ({
           id: tc.id,
@@ -478,9 +480,11 @@ DUMP Udruga mladih programera`,
 
       return {
         ...data,
+        isSample: clusterEvaluationArguments.cluster.isSample,
         clusterId: clusterEvaluationArguments.cluster.id,
         score: data.isAccepted ? clusterEvaluationArguments.cluster.points : 0,
-      };
+        maxPoints: clusterEvaluationArguments.cluster.points,
+      }; // TODO: decide if I want to completely cut input and output from response
     } catch (e) {
       throw new BadRequestException('Code runner not available or has errored');
     }

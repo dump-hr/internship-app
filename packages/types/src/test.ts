@@ -111,23 +111,30 @@ export type CreateEvaluationRequest = {
   maxExecutionTime: number;
 };
 
-export type EvaluateTestCaseResult = {
+export type EvaluateTestCaseResultIntern = {
   testCaseId: string;
   evaluationStatus: TestCaseResult;
-  userOutput: string;
   executionTime?: number;
   memoryUsed?: number;
   error?: string;
 };
 
+export type EvaluateTestCaseResultAdmin = EvaluateTestCaseResultIntern & {
+  input: string;
+  expectedOutput: string;
+  userOutput: string;
+};
+
 export type EvaluateClusterResult = {
-  testCases: EvaluateTestCaseResult[];
+  testCases: EvaluateTestCaseResultIntern[] | EvaluateTestCaseResultAdmin[];
   isAccepted: boolean;
 };
 
 export type CompleteEvaluationResult = {
-  testCases: EvaluateTestCaseResult[];
+  testCases: EvaluateTestCaseResultIntern[] | EvaluateTestCaseResultAdmin[];
   isAccepted: boolean;
   clusterId: string;
+  isSample: boolean;
   score: number;
+  maxPoints?: number;
 };
