@@ -138,3 +138,12 @@ export type CompleteEvaluationResult = {
   score: number;
   maxPoints?: number;
 };
+
+export type ResultSummary = {
+  id: string;
+  dateOfSubmission: Date;
+  score: number;
+  code: string;
+  maxPoints: number;
+  isAccepted: boolean;
+};

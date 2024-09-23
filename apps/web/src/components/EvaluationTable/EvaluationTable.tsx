@@ -1,10 +1,9 @@
 import { CompleteEvaluationResult } from '@internship-app/types';
-import { Box, Modal, Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import TestCaseTable from '../TestCaseTable';
 
 export interface EvaluationTableProps {
   result: CompleteEvaluationResult[];
-  isOpen: boolean;
 }
 
 const extractScore = (result: CompleteEvaluationResult[]) => {
@@ -18,9 +17,9 @@ const extractScore = (result: CompleteEvaluationResult[]) => {
   return [counter, maxCounter];
 };
 
-export const EvaluationTable = ({ result, isOpen }: EvaluationTableProps) => {
+export const EvaluationTable = ({ result }: EvaluationTableProps) => {
   const [score, maxScore] = extractScore(result);
-  <Modal open={isOpen}>
+  return (
     <Box>
       <Typography variant="h6">Evaluation Table</Typography>
       <Typography variant="body1">
@@ -30,5 +29,5 @@ export const EvaluationTable = ({ result, isOpen }: EvaluationTableProps) => {
         <TestCaseTable result={item} index={index} />
       ))}
     </Box>
-  </Modal>;
+  );
 };

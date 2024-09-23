@@ -673,6 +673,8 @@ DUMP Udruga mladih programera`,
     const mapped: ResultSummary[] = answer.map((a) => {
       return {
         dateOfSubmission: a.createdAt,
+        code: a.code,
+        id: a.id,
         isAccepted: a.evaluatedClusters.every((ec) => ec.isAccepted),
         score: a.evaluatedClusters.reduce(
           (acc, ec) => acc + (ec.isAccepted ? ec.testCluster.points : 0),
