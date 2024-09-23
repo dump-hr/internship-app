@@ -48,6 +48,11 @@ const TestSchedulerPage = () => {
     const anyOverlap = slotsToShow.some(
       (sta) => !(sta.start >= slot.end || slot.start >= sta.end),
     );
+    const overlapps = slotsToShow.filter(
+      (sta) => !(sta.start >= slot.end || slot.start >= sta.end),
+    );
+    console.log('overlapps', overlapps);
+    console.log('anyOverlap', anyOverlap);
     if (anyOverlap) return toast.error('Nije dozvoljeno preklapanje!');
 
     const newSlot = {

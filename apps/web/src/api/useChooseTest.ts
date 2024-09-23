@@ -3,13 +3,16 @@ import moment from 'moment';
 import toast from 'react-hot-toast';
 import { useMutation } from 'react-query';
 
-import { api } from '.';
+import { unAuthApi } from '.';
 
 const chooseTest = async (req: ChooseTestRequest) => {
   if (!req.password)
     req = { password: localStorage.getItem('test_password') as string };
 
-  return await api.post<ChooseTestRequest, TestSlot>(`/test-slot/choose`, req);
+  return await unAuthApi.post<ChooseTestRequest, TestSlot>(
+    `/test-slot/choose`,
+    req,
+  );
 };
 
 export const useChooseTest = () => {

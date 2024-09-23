@@ -1,10 +1,10 @@
 import type { InterviewSlot } from '@prisma/client';
 import { useQuery } from 'react-query';
 
-import { api } from '.';
+import { unAuthApi } from '.';
 
 const fetchAvailableInterviewSlots = async (internId: string) => {
-  const slots = await api.get<never, InterviewSlot[]>(
+  const slots = await unAuthApi.get<never, InterviewSlot[]>(
     `/interview-slot/available/${internId}`,
   );
   return slots.map((slot) => ({

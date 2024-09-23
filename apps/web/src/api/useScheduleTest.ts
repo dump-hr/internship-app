@@ -4,12 +4,15 @@ import { useMutation, useQueryClient } from 'react-query';
 import { navigate } from 'wouter/use-location';
 
 import { Path } from '../constants/paths';
-import { api } from '.';
+import { unAuthApi } from '.';
 
 const scheduleTest = async ({ testSlotId, internId }: ScheduleTestRequest) => {
-  return await api.patch<never, Intern>(`/test-slot/schedule/${testSlotId}`, {
-    internId,
-  });
+  return await unAuthApi.patch<never, Intern>(
+    `/test-slot/schedule/${testSlotId}`,
+    {
+      internId,
+    },
+  );
 };
 
 export const useScheduleTest = () => {

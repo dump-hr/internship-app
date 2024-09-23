@@ -1,13 +1,13 @@
 import type { Discipline, TestSlot } from '@internship-app/types';
 import { useQuery } from 'react-query';
 
-import { api } from '.';
+import { unAuthApi } from '.';
 
 const fetchAvailableTestSlots = async (
   internId: string,
   discipline: Discipline,
 ) => {
-  const slots = await api.get<never, TestSlot[]>(
+  const slots = await unAuthApi.get<never, TestSlot[]>(
     `/test-slot/available/${discipline}/${internId}`,
   );
   return slots.map((slot) => ({

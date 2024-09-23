@@ -72,3 +72,21 @@ export const runApi = axios.create({
     'Content-Type': 'application/json',
   },
 });
+
+export const unAuthApi = axios.create({
+  baseURL: '/api',
+  headers: {
+    'Content-Type': 'application/json',
+  },
+});
+
+unAuthApi.interceptors.response.use(
+  (response) => response.data,
+  (error: ErrorResponse) => {
+    if (error.response) {
+      return Promise.reject(error.response.data.message);
+    }
+
+    return Promise.reject(error.message);
+  },
+);

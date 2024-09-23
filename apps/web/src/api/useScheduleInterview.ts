@@ -4,13 +4,13 @@ import { useMutation, useQueryClient } from 'react-query';
 import { navigate } from 'wouter/use-location';
 
 import { Path } from '../constants/paths';
-import { api } from '.';
+import { unAuthApi } from '.';
 
 const scheduleInterview = async ({
   interviewSlotId,
   internId,
 }: ScheduleInterviewRequest) => {
-  return await api.patch<never, Intern>(
+  return await unAuthApi.patch<never, Intern>(
     `/interview-slot/schedule/${interviewSlotId}`,
     { internId },
   );

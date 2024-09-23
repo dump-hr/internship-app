@@ -4,12 +4,12 @@ import { useMutation } from 'react-query';
 import { navigate } from 'wouter/use-location';
 
 import { Path } from '../constants/paths';
-import { api } from '.';
+import { unAuthApi } from '.';
 
 const submitTestSlot = async (req: SubmitTestRequest) => {
   req = { ...req, password: localStorage.getItem('test_password') as string };
 
-  return await api.post<never, string>(
+  return await unAuthApi.post<never, string>(
     `/test-slot/submit/${req.testSlotId}`,
     req,
   );

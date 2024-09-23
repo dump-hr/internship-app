@@ -2,12 +2,15 @@ import { StartTestRequest, Test } from '@internship-app/types';
 import toast from 'react-hot-toast';
 import { useMutation } from 'react-query';
 
-import { api } from '.';
+import { unAuthApi } from '.';
 
 const startTestSlot = async (req: StartTestRequest) => {
   req = { ...req, password: localStorage.getItem('test_password') as string };
 
-  return await api.post<never, Test>(`/test-slot/start/${req.testSlotId}`, req);
+  return await unAuthApi.post<never, Test>(
+    `/test-slot/start/${req.testSlotId}`,
+    req,
+  );
 };
 
 export const useStartTestSlot = () => {

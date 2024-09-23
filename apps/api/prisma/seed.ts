@@ -10,6 +10,16 @@ import * as bcrypt from 'bcrypt';
 const prisma = new PrismaClient();
 
 async function main() {
+  await prisma.internDiscipline.deleteMany();
+  await prisma.testSlot.deleteMany();
+  await prisma.testQuestion.deleteMany();
+  await prisma.testCaseCluster.deleteMany();
+  await prisma.testCase.deleteMany();
+  await prisma.interviewSlot.deleteMany();
+  await prisma.interviewer.deleteMany();
+  await prisma.intern.deleteMany();
+  await prisma.admin.deleteMany();
+
   await prisma.intern.createMany({
     data: [
       {
@@ -217,7 +227,7 @@ async function main() {
       {
         discipline: Discipline.Multimedia,
         start: new Date('2023-10-01T11:00:00.000Z'),
-        end: new Date('2025-10-01T11:30:00.000Z'),
+        end: new Date('2023-10-01T11:30:00.000Z'),
         location: 'Test Location 3',
         capacity: 10,
         maxPoints: 50,

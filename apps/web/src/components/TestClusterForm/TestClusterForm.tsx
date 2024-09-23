@@ -130,6 +130,7 @@ export const TestCaseClusterForm = ({
       />
       {errors.points && <span>{errors.points.message}</span>}
       <Typography>Test cases list</Typography>
+      <Button onClick={handleOpenModal}>Add Test Case</Button>
       {watch('testCases').map((testCase, index) => (
         <Box
           key={testCase.input.join('') + testCase.expectedOutput.join('')}
@@ -169,7 +170,6 @@ export const TestCaseClusterForm = ({
           </Button>
         </Box>
       ))}
-      <Button onClick={handleOpenModal}>Add Test Case</Button>
       <Modal open={isModalOpen} onClose={handleCloseModal}>
         <TestCaseForm
           onSubmitted={handleCloseModal}

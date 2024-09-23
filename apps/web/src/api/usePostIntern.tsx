@@ -4,10 +4,10 @@ import { useMutation } from 'react-query';
 import { navigate } from 'wouter/use-location';
 
 import { Path } from '../constants/paths';
-import { api } from '.';
+import { unAuthApi } from '.';
 
 const addIntern = async (newIntern: InternCreateRequest) => {
-  return await api.post<InternCreateRequest, Intern>('/intern', newIntern);
+  return await unAuthApi.post<InternCreateRequest, Intern>('/intern', newIntern);
 };
 
 export const usePostIntern = () => {
