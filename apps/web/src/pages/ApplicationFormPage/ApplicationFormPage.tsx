@@ -6,7 +6,7 @@ import {
 import { Checkbox } from '@mui/joy';
 import { Button, Input } from '@mui/material';
 import clsx from 'clsx';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { usePostIntern } from '../../api/usePostIntern';
@@ -61,7 +61,11 @@ export const ApplicationFormPage = () => {
 
   const { errors } = formState;
 
-  const onSubmit = (data: FormValues) => {
+  useEffect(() => {
+    initDataLayer();
+  }, []);
+
+  const onSubmit = async (data: FormValues) => {
     const internToSend = {
       firstName: data.firstName,
       lastName: data.lastName,
@@ -78,13 +82,11 @@ export const ApplicationFormPage = () => {
       },
     };
 
-    initDataLayer();
-    pushToDataLayer('internship_prijava');
-
     try {
-      createIntern.mutate(internToSend);
+      await createIntern.mutateAsync(internToSend);
+      pushToDataLayer('internship_prijava');
     } catch (err) {
-      console.log(err);
+      console.log('Error', err);
     }
   };
 
