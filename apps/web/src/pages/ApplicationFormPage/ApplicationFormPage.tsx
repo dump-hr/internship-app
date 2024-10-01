@@ -9,6 +9,7 @@ import clsx from 'clsx';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
+import { initDataLayer, pushToDataLayer } from '../../../analytics.ts';
 import { usePostIntern } from '../../api/usePostIntern';
 import formWelcomeImage from '../../assets/form-welcome-image.png';
 import { ApplicationFormInputHandler } from '../../components/ApplicationFormInputHandler/ApplicationFormInputHandler';
@@ -17,7 +18,6 @@ import { SortableDisciplinesContainer } from '../../components/SoratableDiscipli
 import { disciplineLabel } from '../../constants/internConstants';
 import { applicationFormDataQuestions } from './constants/ApplicationFormQuestions';
 import classes from './index.module.css';
-import { initDataLayer, pushToDataLayer } from '../../../analytics.ts';
 
 export type FormValues = {
   firstName: string;
