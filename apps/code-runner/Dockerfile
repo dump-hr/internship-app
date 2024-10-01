@@ -31,7 +31,7 @@ HEALTHCHECK CMD curl -f http://localhost:3003/run/healthz || exit 1
 RUN apk add --no-cache curl \
       build-base \
       python3 \
-      dotnet7-sdk \
+      dotnet6-sdk \
       openjdk17 \
       go musl-dev
 
