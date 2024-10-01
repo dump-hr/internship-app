@@ -17,6 +17,7 @@ import { SortableDisciplinesContainer } from '../../components/SoratableDiscipli
 import { disciplineLabel } from '../../constants/internConstants';
 import { applicationFormDataQuestions } from './constants/ApplicationFormQuestions';
 import classes from './index.module.css';
+import { initDataLayer, pushToDataLayer } from '../../../analytics.ts';
 
 export type FormValues = {
   firstName: string;
@@ -76,6 +77,9 @@ export const ApplicationFormPage = () => {
         reasonForApplying: data.reasonForApplying,
       },
     };
+
+    initDataLayer();
+    pushToDataLayer('internship_prijava');
 
     try {
       createIntern.mutate(internToSend);
