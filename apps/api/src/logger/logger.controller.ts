@@ -1,9 +1,9 @@
 import { GetAdminLogsRequest } from '@internship-app/types';
 import { Controller, Get, Query, UseGuards } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
+import { MemberGuard } from 'src/auth/admin.guard';
 
 import { LoggerService } from './logger.service';
-import { MemberGuard } from 'src/auth/admin.guard';
 
 @Controller('logger')
 @ApiTags('logger')

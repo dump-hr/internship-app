@@ -1,5 +1,7 @@
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 
+import { InteractionType } from '@azure/msal-browser';
+import { useMsalAuthentication } from '@azure/msal-react';
 import { Discipline } from '@internship-app/types';
 import { Box, Button, Typography } from '@mui/material';
 import { format, getDay, parse, startOfWeek } from 'date-fns';
@@ -17,8 +19,6 @@ import { ExistingSlotInfo } from './ExistingSlotInfo';
 import { NewSlotEdit } from './NewSlotEdit';
 import { SlotCard } from './SlotCard';
 import { SlotCardType, TestSlotCard } from './types';
-import { InteractionType } from '@azure/msal-browser';
-import { useMsalAuthentication } from '@azure/msal-react';
 
 moment.locale('hr');
 const locales = {

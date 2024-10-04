@@ -1,13 +1,12 @@
 import { Body, Controller, Post, UseGuards } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { AdminLogAction } from '@prisma/client';
+import { MemberGuard } from 'src/auth/admin.guard';
 import { LoggerService } from 'src/logger/logger.service';
 
 import { EmailsDto } from './dto/emails.dto';
 import { EmailsSendDto } from './dto/emailsSend.dto';
 import { EmailService } from './email.service';
-
-import { MemberGuard } from 'src/auth/admin.guard';
 
 @Controller('email')
 @ApiTags('email')

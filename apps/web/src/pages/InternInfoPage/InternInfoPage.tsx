@@ -1,3 +1,5 @@
+import { InteractionType } from '@azure/msal-browser';
+import { useMsalAuthentication } from '@azure/msal-react';
 import { useRoute } from 'wouter';
 
 import { useFetchIntern } from '../../api/useFetchIntern';
@@ -6,8 +8,6 @@ import DecisionHandler from '../../components/DecisionHandler/DecisionHandler';
 import InternActions from '../../components/InternActions/InternActions';
 import InternInfo from '../../components/InternInfo';
 import { Path } from '../../constants/paths';
-import { useMsalAuthentication } from '@azure/msal-react';
-import { InteractionType } from '@azure/msal-browser';
 
 const InternInfoPage = () => {
   useMsalAuthentication(InteractionType.Redirect);

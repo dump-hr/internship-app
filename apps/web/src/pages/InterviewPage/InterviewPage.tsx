@@ -1,3 +1,5 @@
+import { InteractionType } from '@azure/msal-browser';
+import { useMsalAuthentication } from '@azure/msal-react';
 import { Intern, InterviewStatus, QuestionType } from '@internship-app/types';
 import { Json } from '@internship-app/types/src/json';
 import { useEffect, useState } from 'react';
@@ -21,8 +23,6 @@ import {
 import { Path } from '../../constants/paths';
 import { defaultInterviewValues, interviewQuestions } from './data';
 import InterviewQuestionHandler from './InterviewQuestionHandler';
-import { InteractionType } from '@azure/msal-browser';
-import { useMsalAuthentication } from '@azure/msal-react';
 
 const mapAnswersToQuestions = (
   answers: FieldValues,

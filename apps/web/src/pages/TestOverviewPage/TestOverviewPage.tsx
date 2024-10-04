@@ -1,3 +1,5 @@
+import { InteractionType } from '@azure/msal-browser';
+import { useMsalAuthentication } from '@azure/msal-react';
 import { Box, Button } from '@mui/material';
 import { useState } from 'react';
 import { LoaderIcon } from 'react-hot-toast';
@@ -10,8 +12,6 @@ import { ConfirmDialog } from '../../components/ConfirmDialog';
 import TestSlotInfo from '../../components/TestSlotInfo';
 import { Path } from '../../constants/paths';
 import { TestSlotEditForm } from './TestSlotEditForm';
-import { InteractionType } from '@azure/msal-browser';
-import { useMsalAuthentication } from '@azure/msal-react';
 
 const TestOverviewPage = () => {
   useMsalAuthentication(InteractionType.Redirect);

@@ -9,12 +9,11 @@ import {
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { AdminLogAction } from '@prisma/client';
+import { MemberGuard } from 'src/auth/admin.guard';
 import { LoggerService } from 'src/logger/logger.service';
 
 import { CreateInterviewerDto } from './dto/createInterviewer.dto';
 import { InterviewerService } from './interviewer.service';
-
-import { MemberGuard } from 'src/auth/admin.guard';
 
 @Controller('interviewer')
 @ApiTags('interviewer')

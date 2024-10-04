@@ -1,12 +1,12 @@
 import { Button } from '@mui/material';
+import toast from 'react-hot-toast';
 import { Link } from 'wouter';
 
 import DUMPLogo from '../../assets/dump-logo.png';
 import { Path } from '../../constants/paths';
+import { useAccount } from '../../hooks/useAccount';
 import LayoutSpacing from '../LayoutSpacing/LayoutSpacing';
 import c from './LogoHeader.module.css';
-import { useAccount } from '../../hooks/useAccount';
-import toast from 'react-hot-toast';
 
 type Props = {
   text: string;

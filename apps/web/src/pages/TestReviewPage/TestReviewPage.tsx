@@ -1,3 +1,5 @@
+import { InteractionType } from '@azure/msal-browser';
+import { useMsalAuthentication } from '@azure/msal-react';
 import { InternQuestionAnswer } from '@internship-app/types';
 import { Box, Button, TextField } from '@mui/material';
 import { useEffect, useState } from 'react';
@@ -10,8 +12,6 @@ import AdminPage from '../../components/AdminPage';
 import { CodeEditor } from '../../components/CodeEditor/CodeEditor';
 import { Path } from '../../constants/paths';
 import c from './TestReviewPage.module.css';
-import { InteractionType } from '@azure/msal-browser';
-import { useMsalAuthentication } from '@azure/msal-react';
 
 const TestReviewPage = () => {
   useMsalAuthentication(InteractionType.Redirect);

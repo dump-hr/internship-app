@@ -1,3 +1,5 @@
+import { InteractionType } from '@azure/msal-browser';
+import { useMsalAuthentication } from '@azure/msal-react';
 import {
   InterviewEvent,
   InterviewMemberParticipation,
@@ -15,9 +17,6 @@ import { CalendarSidebar } from '../../components/CalendarSidebar/CalendarSideba
 import SlotsList from '../../components/SlotsList/SlotsList';
 import { calendarHelper } from '../../helpers/calendarHelper';
 import styles from './index.module.css';
-
-import { useMsalAuthentication } from '@azure/msal-react';
-import { InteractionType } from '@azure/msal-browser';
 
 type MappedEvent = {
   id: string;

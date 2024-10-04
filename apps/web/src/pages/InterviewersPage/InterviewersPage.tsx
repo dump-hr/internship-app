@@ -1,3 +1,5 @@
+import { InteractionType } from '@azure/msal-browser';
+import { useMsalAuthentication } from '@azure/msal-react';
 import { Discipline } from '@internship-app/types';
 import { Tooltip } from '@mui/joy';
 import {
@@ -24,8 +26,6 @@ import LayoutSpacing from '../../components/LayoutSpacing/LayoutSpacing';
 import LogoHeader from '../../components/LogoHeader';
 import c from './InterviewersPage.module.css';
 import { DialogsState } from './types';
-import { useMsalAuthentication } from '@azure/msal-react';
-import { InteractionType } from '@azure/msal-browser';
 
 const InterviewersPage = () => {
   useMsalAuthentication(InteractionType.Redirect);

@@ -1,3 +1,5 @@
+import { InteractionType } from '@azure/msal-browser';
+import { useMsalAuthentication } from '@azure/msal-react';
 import { Box, Button, Input, Modal } from '@mui/joy';
 import { useState } from 'react';
 
@@ -8,8 +10,6 @@ import EmailBox from '../../components/EmailBox';
 import EmailGuide from '../../components/EmailGuide';
 import EmailList from '../../components/EmailList';
 import EmailPreviewList from '../../components/EmailPreviewList';
-import { useMsalAuthentication } from '@azure/msal-react';
-import { InteractionType } from '@azure/msal-browser';
 
 type Props = {
   emails: string[];
