@@ -82,7 +82,7 @@ export const Calendar: React.FC<Props> = ({
   return (
     <div>
       <BigCalendar
-        step={20}
+        step={15}
         localizer={localizer}
         style={{ height: 618, width: 685 }}
         defaultView="week"
