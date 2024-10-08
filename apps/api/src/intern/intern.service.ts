@@ -226,6 +226,11 @@ export class InternService {
     Ako imaš pitanja oko internshipa ili procesa prijave slobodno nam se javi na info@dump.hr
     
     U svakom trenutku možeš provjeriti status svoje prijave na https://internship.dump.hr/status/${newIntern.id}
+
+    U nastavku se nalazi link na formu, za područje Marketing, koju je obavezno ispuniti prije samog intervjua za DUMP Internship. 
+    Za ispunjavanje je predviđeno 15ak minuta, ali uzmi vremena koliko god ti treba. 
+
+    Link: https://forms.gle/EQxe44Kv9KFrryYf8
     
     Lijep pozdrav,
     
