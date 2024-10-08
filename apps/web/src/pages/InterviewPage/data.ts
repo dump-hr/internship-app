@@ -22,24 +22,30 @@ export const interviewQuestions: Array<MultistepQuestion<QuestionCategory>> = [
   },
   {
     id: 'g3',
-    title: 'Očekivanja od Internshipa?',
+    title: 'Što znaš o DUMP-u??',
     type: QuestionType.Field,
     category: QuestionCategory.General,
   },
   {
     id: 'g4',
-    title: 'Imaš li laptop na kojem možeš raditi?',
+    title: 'Očekivanja od Internshipa',
     type: QuestionType.Field,
     category: QuestionCategory.General,
   },
   {
     id: 'g5',
-    title: 'Aktivnost u slobodno vrijeme',
+    title: 'Imaš li laptop na kojem možeš raditi?',
     type: QuestionType.Field,
     category: QuestionCategory.General,
   },
   {
     id: 'g6',
+    title: 'Aktivnosti u slobodno vrijeme',
+    type: QuestionType.Field,
+    category: QuestionCategory.General,
+  },
+  {
+    id: 'g7',
     title:
       'Koliko si vremena spreman za izdvojiti za DUMP aktivnosti po području? (izvuć točnu brojku i vidit jel realna)',
     type: QuestionType.Field,
@@ -82,25 +88,12 @@ export const interviewQuestions: Array<MultistepQuestion<QuestionCategory>> = [
   },
   {
     id: 'p6',
-    title: 'Koje je po tebi idealno radno okruženje?',
-    type: QuestionType.Field,
-    category: QuestionCategory.Personal,
-  },
-  {
-    id: 'p7',
     title: 'Želis li postati član DUMP-a, ako da zašto?',
     type: QuestionType.Field,
     category: QuestionCategory.Personal,
   },
   {
-    id: 'p8',
-    title:
-      'Kad bi postao član imaš li nekih ambicija ili vještina koje nisu pokrivene sa ova četiri područja koja bi mogao raditi?',
-    type: QuestionType.Field,
-    category: QuestionCategory.Personal,
-  },
-  {
-    id: 'p9',
+    id: 'p7',
     title: 'Gdje se vidiš za 5 godina?',
     type: QuestionType.Field,
     category: QuestionCategory.Personal,
@@ -135,7 +128,7 @@ export const interviewQuestions: Array<MultistepQuestion<QuestionCategory>> = [
   },
   {
     id: 'dev5',
-    title: 'Imaš li portfolio projekata/github?',
+    title: 'Imaš li neke projekte (github)?',
     type: QuestionType.Field,
     category: QuestionCategory.Development,
   },
@@ -143,13 +136,6 @@ export const interviewQuestions: Array<MultistepQuestion<QuestionCategory>> = [
     id: 'dev6',
     title:
       'Što je tebi najzanimljivija stvar iz svijeta programiranja koju si naučio/la u zadnje vrijeme? Ili topic koji bi htio naucit u buducnosti?',
-    type: QuestionType.Field,
-    category: QuestionCategory.Development,
-  },
-  {
-    id: 'dev7',
-    title:
-      'Ako je netko bezobrazan dodat neko tehnicko overkill pitanje npr n+1, razlika izmedu stabilnog i nestabilnog sorting algoritma, depth binary tree search',
     type: QuestionType.Field,
     category: QuestionCategory.Development,
   },
@@ -181,7 +167,7 @@ export const interviewQuestions: Array<MultistepQuestion<QuestionCategory>> = [
   },
   {
     id: 'diz5',
-    title: 'Imaš li portfolio nekih svojih radova?',
+    title: 'Imaš li neke svoje radove? Možeš li nam pokazati/poslati?',
     type: QuestionType.Field,
     category: QuestionCategory.Design,
   },
@@ -201,46 +187,47 @@ export const interviewQuestions: Array<MultistepQuestion<QuestionCategory>> = [
   },
   {
     id: 'mark2',
+    title: 'Koji dio marketinga te najviše zanima?',
+    type: QuestionType.Field,
+    category: QuestionCategory.Marketing,
+  },
+  {
+    id: 'mark3',
     title:
       'Smatraš li se više kreativnom ili analitičkom osobom? Obrazloži odgovor.',
     type: QuestionType.Field,
     category: QuestionCategory.Marketing,
   },
   {
-    id: 'mark3',
-    title: 'Imaš li iskustva u vođenju profila na društvenim mrežama?',
-    type: QuestionType.Field,
-    category: QuestionCategory.Marketing,
-  },
-  {
     id: 'mark4',
-    title: 'Poznaješ li neke od oglašivačkih alata (fb ads, google ads…)?',
+    title:
+      'Imaš li iskustva u vođenju profila na društvenim mrežama? (Vidit zanima li je to i koje društvene mreže)',
     type: QuestionType.Field,
     category: QuestionCategory.Marketing,
   },
   {
     id: 'mark5',
-    title: 'Imaš li iskustva u pisanju blogova i sličnih tekstova?',
+    title: 'Poznaješ li neke od oglašivačkih alata (meta ads, google ads…)?',
     type: QuestionType.Field,
     category: QuestionCategory.Marketing,
   },
   {
     id: 'mark6',
     title:
-      'Postoji li nešto što nismo pokrili pitanjima u čemu imaš iskustva, a vezano je za marketing?',
+      'Imaš li iskustva u pisanju blogova i sličnih tekstova? (PR-ovi, članci…)',
     type: QuestionType.Field,
     category: QuestionCategory.Marketing,
   },
   {
     id: 'mark7',
     title:
-      'Možeš li navesti primjer neke dobre/upečatljive marketinške kampanje?',
+      'Postoji li nešto što nismo pokrili pitanjima u čemu imaš iskustva, a vezano je za marketing?',
     type: QuestionType.Field,
     category: QuestionCategory.Marketing,
   },
   {
     id: 'mark8',
-    title: 'Koji dio marketinga te najviše zanima?',
+    title: 'Komentari na Google formu',
     type: QuestionType.Field,
     category: QuestionCategory.Marketing,
   },
@@ -260,56 +247,51 @@ export const interviewQuestions: Array<MultistepQuestion<QuestionCategory>> = [
   },
   {
     id: 'mult3',
-    title: 'Jesi li sudjelovao naikakvim projektima?',
-    type: QuestionType.Field,
-    category: QuestionCategory.Multimedia,
-  },
-  {
-    id: 'mult4',
     title:
       'Što ti je najzanimljivije između: slikavanja na eventima, montiranje videa, audio, streamanje?',
     type: QuestionType.Field,
     category: QuestionCategory.Multimedia,
   },
   {
-    id: 'mult5',
+    id: 'mult4',
     title: 'Kakvu vrstu fotografije preferiraš?',
     type: QuestionType.Field,
     category: QuestionCategory.Multimedia,
   },
   {
-    id: 'mult6',
+    id: 'mult5',
     title: 'Znaš li se koristit nekim programima?',
     type: QuestionType.Field,
     category: QuestionCategory.Multimedia,
   },
   {
-    id: 'mult7',
+    id: 'mult6',
     title: 'Imaš li fotoaparat?',
     type: QuestionType.Field,
     category: QuestionCategory.Multimedia,
   },
   {
-    id: 'mult8',
-    title: 'Imas li portfolio?',
+    id: 'mult7',
+    title:
+      'Imas li portfolio? Jesi li sudjelovao na ikakvim projektima/edukacijama?',
     type: QuestionType.Field,
     category: QuestionCategory.Multimedia,
   },
   {
-    id: 'mult9',
+    id: 'mult8',
     title:
       'Koje fotografe/redatelje/yt kanale na temu multimedije pratiš (ako ih pratiš)?',
     type: QuestionType.Field,
     category: QuestionCategory.Multimedia,
   },
   {
-    id: 'mult10',
+    id: 'mult9',
     title: 'Kako bi opisao pripremu za slikavanje/snimanje?',
     type: QuestionType.Field,
     category: QuestionCategory.Multimedia,
   },
   {
-    id: 'mult11',
+    id: 'mult10',
     title: 'Gdje se vidiš za 5 godina s obzirom na ovo područje?',
     type: QuestionType.Field,
     category: QuestionCategory.Multimedia,
@@ -331,7 +313,7 @@ export const interviewQuestions: Array<MultistepQuestion<QuestionCategory>> = [
   {
     id: 'f2',
     title: `Želja za članstvom u DUMP koju je prijavnik pokazao:
-    1 - Nezna ništa o DUMPu i ne pokazuje pretjerane ambicije za ostankom u udruzi, prijavio se više iz želje da nauči
+    1 - Ne zna ništa o DUMPu i ne pokazuje pretjerane ambicije za ostankom u udruzi, prijavio se više iz želje da nauči
     5 - Zna nešto o radu DUMPa van internshipa, pokazuje da bi potencijalnu želju da bude član, ali već period od godine dana mu je predalek pa nemože se najlakše procijenit di će bit u budućnosti
     10 - Zna dosta o radu DUMPa, Daysima i Ciklusima, već sada ostavlja uvjerenje da ima dovoljnu želju da bude budući član`,
     type: QuestionType.Slider,
