@@ -16,6 +16,7 @@ async function bootstrap() {
   const config = new DocumentBuilder()
     .setTitle('Internship API')
     .setDescription('The internship API description')
+    .addBearerAuth()
     .setVersion('1.0')
     .build();
 

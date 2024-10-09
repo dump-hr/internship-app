@@ -21,7 +21,7 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { AdminLogAction, InternLogAction } from '@prisma/client';
 import { JwtAuthGuard } from 'src/auth/jwt-auth-guard';
 import { LoggerService } from 'src/logger/logger.service';
@@ -39,6 +39,7 @@ export class InternController {
 
   @Get()
   @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
   async getAll() {
     const interns = await this.internService.getAll();
 
@@ -52,6 +53,7 @@ export class InternController {
 
   @Get(':id')
   @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
   async get(@Param('id') id: string) {
     const intern = await this.internService.get(id);
 
@@ -86,6 +88,7 @@ export class InternController {
 
   @Put('setInterview/:internId')
   @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
   async setInterview(
     @Param('internId') internId: string,
     @Body() data: SetInterviewRequest,
@@ -100,6 +103,7 @@ export class InternController {
 
   @Put('setImage/:internId')
   @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
   @UseInterceptors(FileInterceptor('image'))
   async setImage(
     @Param('internId') internId: string,
@@ -123,6 +127,7 @@ export class InternController {
 
   @Put('action/:internId')
   @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
   async applyAction(
     @Param('internId') internId: string,
     @Body() { action }: InternActionRequest,
@@ -137,6 +142,7 @@ export class InternController {
 
   @Put('boardAction')
   @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
   async applyBoardAction(@Body() { action, internIds }: BoardActionRequest) {
     await this.loggerService.createAdminLog(
       AdminLogAction.Update,
@@ -150,6 +156,7 @@ export class InternController {
 
   @Put('setDecision/:internId')
   @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
   async setDecision(
     @Param('internId') internId: string,
     @Body() data: InternDecisionRequest,
@@ -164,6 +171,7 @@ export class InternController {
 
   @Post('note/:internId')
   @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
   async setNote(
     @Param('internId') internId: string,
     @Body() data: CreateNoteRequest,

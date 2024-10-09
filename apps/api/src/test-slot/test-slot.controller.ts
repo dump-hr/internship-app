@@ -20,7 +20,7 @@ import {
   Put,
   UseGuards,
 } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { AdminLogAction, Discipline, InternLogAction } from '@prisma/client';
 import { JwtAuthGuard } from 'src/auth/jwt-auth-guard';
 import { LoggerService } from 'src/logger/logger.service';
@@ -37,6 +37,7 @@ export class TestSlotController {
 
   @Get()
   @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
   async getAll() {
     const allSlots = await this.testSlotService.getAll();
     const testSlotsDto: TestSlotPreviewDto[] = allSlots.map((ts) => ({
@@ -51,12 +52,14 @@ export class TestSlotController {
 
   @Get(':id')
   @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
   async get(@Param('id') id: string) {
     return await this.testSlotService.get(id);
   }
 
   @Post()
   @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
   async createTestSlot(@Body() testSlotDto: CreateTestSlotsRequest) {
     await this.loggerService.createAdminLog(
       AdminLogAction.Create,
@@ -68,6 +71,7 @@ export class TestSlotController {
 
   @Put(':id')
   @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
   async updateTestSlot(
     @Param('id') testSlotId: string,
     @Body() { data }: UpdateTestSlotRequest,
@@ -82,6 +86,7 @@ export class TestSlotController {
 
   @Delete(':id')
   @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
   async delete(@Param('id') id: string) {
     await this.loggerService.createAdminLog(
       AdminLogAction.Delete,
@@ -139,6 +144,7 @@ export class TestSlotController {
 
   @Get('answers/:testSlotId/intern/:internId')
   @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
   async getTestAnswersByIntern(
     @Param('testSlotId') testSlotId: string,
     @Param('internId') internId: string,
@@ -151,12 +157,14 @@ export class TestSlotController {
 
   @Get('answers/:testSlotId/question/:questionId')
   @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
   async getTestAnswersByQuestion(@Param('questionId') questionId: string) {
     return await this.testSlotService.getTestAnswersByQuestion(questionId);
   }
 
   @Put('score/:answerId')
   @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
   async setScore(
     @Param('answerId') answerId: string,
     @Body() { score }: SetScoreRequest,

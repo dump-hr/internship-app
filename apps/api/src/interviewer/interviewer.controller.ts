@@ -7,7 +7,7 @@ import {
   Post,
   UseGuards,
 } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { AdminLogAction } from '@prisma/client';
 import { JwtAuthGuard } from 'src/auth/jwt-auth-guard';
 import { LoggerService } from 'src/logger/logger.service';
@@ -25,6 +25,7 @@ export class InterviewerController {
 
   @Get()
   @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
   async getAll() {
     const interviewers = await this.interviewerService.getAll();
     return interviewers;
@@ -32,6 +33,7 @@ export class InterviewerController {
 
   @Post()
   @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
   async create(@Body() interviewer: CreateInterviewerDto) {
     await this.loggerService.createAdminLog(
       AdminLogAction.Create,
@@ -44,6 +46,7 @@ export class InterviewerController {
 
   @Delete(':id')
   @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
   async delete(@Param('id') id: string) {
     await this.loggerService.createAdminLog(
       AdminLogAction.Delete,
@@ -56,6 +59,7 @@ export class InterviewerController {
 
   @Get('participations')
   @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
   async getInterviewersParticipations() {
     return await this.interviewerService.getInterviewersParticipations();
   }
