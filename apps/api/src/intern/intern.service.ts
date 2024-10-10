@@ -218,12 +218,12 @@ export class InternService {
     const marketingFormAdditionalText = `U nastavku se nalazi link na formu, za područje Marketing, koju je obavezno ispuniti prije samog intervjua za DUMP Internship. 
     Za ispunjavanje je predviđeno 15ak minuta, ali uzmi vremena koliko god ti treba. 
 
-    Link: https://bit.ly/4eYHn9o`;
+    Link: https://bit.ly/marketingForma`;
 
     const devFormAdditionalText = `U nastavku se nalazi link na primjer prošlogodišnjeg ispita za smjer programiranja na DUMP Internshipu.
     Zadatke možeš rješavati u jednom od sljedećih jezika: JavaScript, Python, C#, C++, C, Java, Go, a za rješavanje je predviđeno 90 minuta.
 
-    Link: https://bit.ly/484XRLi`;
+    Link: https://bit.ly/PrimjerInicijalnog`;
 
     const generalTextEnding = `Lijep pozdrav,
     
