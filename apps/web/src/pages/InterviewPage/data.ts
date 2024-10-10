@@ -276,7 +276,7 @@ export const interviewQuestions: Array<MultistepQuestion<QuestionCategory>> = [
     max: 5,
     step: 1,
   },
-  
+
   // Multimedia
   {
     id: 'mult1',
