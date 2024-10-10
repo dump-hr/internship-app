@@ -31,6 +31,20 @@ export class InterviewSlotService {
     return interviewSlots;
   }
 
+  async getInterviewSlotWithInterviewers(id: string) {
+    return await this.prisma.interviewSlot.findUnique({
+      where: { id },
+      include: {
+        intern: true,
+        interviewers: {
+          include: {
+            interviewer: true,
+          },
+        },
+      },
+    });
+  }
+
   async deleteInterviewSlot(id: string) {
     const interviewToDelete = await this.prisma.interviewSlot.findUnique({
       where: { id },

@@ -9,7 +9,7 @@ import {
   Post,
   UseGuards,
 } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { AdminLogAction, InternLogAction } from '@prisma/client';
 import { JwtAuthGuard } from 'src/auth/jwt-auth-guard';
 import { LoggerService } from 'src/logger/logger.service';
@@ -27,12 +27,21 @@ export class InterviewSlotController {
 
   @Get()
   @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
   async getAll() {
     return await this.interviewSlotService.getAll();
   }
 
+  @Get('/:id')
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  async getInterviewSlotWithInterviewers(@Param('id') id: string) {
+    return await this.interviewSlotService.getInterviewSlotWithInterviewers(id);
+  }
+
   @Delete('/:id')
   @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
   async deleteInterviewSlot(@Param('id') id: string) {
     await this.loggerService.createAdminLog(
       AdminLogAction.Delete,
@@ -44,6 +53,7 @@ export class InterviewSlotController {
 
   @Post()
   @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
   async createInterviewSlot(@Body() interviewSlotDto: CreateInterviewSlotDto) {
     await this.loggerService.createAdminLog(
       AdminLogAction.Create,
