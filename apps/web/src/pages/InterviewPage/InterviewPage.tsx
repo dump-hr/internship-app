@@ -81,8 +81,9 @@ const InterviewPage = () => {
       const score = Object.values(answers)
         .filter(
           (a) =>
-            a.type === QuestionType.Slider &&
-            a.category === QuestionCategory.Final,
+            (a.type === QuestionType.Slider &&
+            a.category === QuestionCategory.Final)||(a.type === QuestionType.Slider &&
+              a.category === QuestionCategory.Marketing),
         )
         .reduce((acc, curr) => acc + +curr.value, 0);
 
