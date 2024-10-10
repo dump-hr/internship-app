@@ -213,37 +213,36 @@ export class InternService {
     Hvala na prijavi na DUMP Internship 2024. Uskoro ćemo te obavijestiti o sljedećim koracima prijave.
     Ako imaš pitanja oko internshipa ili procesa prijave slobodno nam se javi na info@dump.hr
     
-    U svakom trenutku možeš provjeriti status svoje prijave na https://internship.dump.hr/status/${newIntern.id}
-    
-    Lijep pozdrav,
-    
-    DUMP Udruga mladih programera
-    dump.hr`;
+    U svakom trenutku možeš provjeriti status svoje prijave na https://internship.dump.hr/status/${newIntern.id}`;
 
-    const marketingFormTextBody = `Pozdrav ${internToCreate.firstName},
-
-    Hvala na prijavi na DUMP Internship 2024. Uskoro ćemo te obavijestiti o sljedećim koracima prijave.
-    Ako imaš pitanja oko internshipa ili procesa prijave slobodno nam se javi na info@dump.hr
-    
-    U svakom trenutku možeš provjeriti status svoje prijave na https://internship.dump.hr/status/${newIntern.id}
-
-    U nastavku se nalazi link na formu, za područje Marketing, koju je obavezno ispuniti prije samog intervjua za DUMP Internship. 
+    const marketingFormAdditionalText = `U nastavku se nalazi link na formu, za područje Marketing, koju je obavezno ispuniti prije samog intervjua za DUMP Internship. 
     Za ispunjavanje je predviđeno 15ak minuta, ali uzmi vremena koliko god ti treba. 
 
-    Link: https://forms.gle/EQxe44Kv9KFrryYf8
-    
-    Lijep pozdrav,
+    Link: https://forms.gle/EQxe44Kv9KFrryYf8`;
+
+    const devFormAdditionalText = `U nastavku se nalazi link na primjer prošlogodišnjeg ispita za smjer programiranja na DUMP Internshipu.
+    Zadatke možeš rješavati u jednom od sljedećih jezika: JavaScript, Python, C#, C++, C, Java, Go, a za rješavanje je predviđeno 90 minuta.
+
+    Link: https://docs.google.com/document/d/1sxCjpDm58XdYDQzkDNK-6geArrR0C5EeKQmvW3F3Ou8/edit?usp=sharing`;
+
+    const generalTextEnding = `Lijep pozdrav,
     
     DUMP Udruga mladih programera
     dump.hr`;
+
+    let fullGeneralText = generalTextBody;
+
+    if(internToCreate.disciplines.includes(Discipline.Marketing))
+      fullGeneralText+=`\n\n${marketingFormAdditionalText}`
+
+    if(internToCreate.disciplines.includes(Discipline.Development))
+      fullGeneralText+=`\n\n${devFormAdditionalText}`
 
     this.postmark.sendEmail({
       From: 'info@dump.hr',
       To: internToCreate.email,
       Subject: 'Prijava na DUMP Internship',
-      TextBody: internToCreate.disciplines.includes(Discipline.Marketing)
-        ? marketingFormTextBody
-        : generalTextBody,
+      TextBody: `${fullGeneralText}\n\n${generalTextEnding}`,
       MessageStream: 'outbound',
     });
 
