@@ -27,7 +27,7 @@ export const config: Config = {
   [CodingLanguage.CSharp]: {
     extension: 'cs',
     // create fake csproj so dotnet can run the file
-    command: `echo '<Project Sdk="Microsoft.NET.Sdk"><PropertyGroup><OutputType>Exe</OutputType><TargetFramework>net7.0</TargetFramework><ImplicitUsings>enable</ImplicitUsings><Nullable>enable</Nullable></PropertyGroup></Project>' > tmp.csproj && dotnet build && clear && ./bin/Debug/net7.0/tmp`,
+    command: `echo '<Project Sdk="Microsoft.NET.Sdk"><PropertyGroup><OutputType>Exe</OutputType><TargetFramework>net6.0</TargetFramework><ImplicitUsings>enable</ImplicitUsings><Nullable>enable</Nullable></PropertyGroup></Project>' > tmp.csproj && dotnet build && clear && ./bin/Debug/net6.0/tmp`,
   },
   [CodingLanguage.C]: {
     extension: 'c',
