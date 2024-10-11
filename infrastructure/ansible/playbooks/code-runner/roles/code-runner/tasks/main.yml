@@ -18,6 +18,7 @@
       traefik.http.middlewares.code-runner-retry.retry.initialinterval: '100ms'
       traefik.http.middlewares.code-runner-cors.headers.accesscontrolallowmethods: '*'
       traefik.http.middlewares.code-runner-cors.headers.accesscontrolalloworiginlist: '*'
+      traefik.http.middlewares.code-runner-cors.headers.accesscontrolallowheaders: '*'
       traefik.http.middlewares.code-runner-cors.headers.accesscontrolmaxage: '100'
       traefik.http.middlewares.code-runner-cors.headers.addvaryheader: 'true'
       traefik.http.routers.code-runner.middlewares: 'code-runner-retry, code-runner-cors'
