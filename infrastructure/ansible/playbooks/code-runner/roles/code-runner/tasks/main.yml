@@ -1,0 +1,57 @@
+---
+- name: Generate random container suffix
+  set_fact:
+    container_name: "code-runner-{{ lookup('community.general.random_string', length=8, special=false, upper=false) }}"
+
+- name: Create new code-runner docker container
+  docker_container:
+    name: '{{ container_name }}'
+    image: '{{ docker_image }}'
+    pull: true
+    restart_policy: unless-stopped
+    networks:
+      - name: traefiknet
+    labels:
+      traefik.enable: 'true'
+      traefik.http.routers.code-runner.rule: 'Host(`{{ code_runner_domain }}`)'
+      traefik.http.middlewares.code-runner-retry.retry.attempts: '5'
+      traefik.http.middlewares.code-runner-retry.retry.initialinterval: '100ms'
+      traefik.http.middlewares.code-runner-cors.headers.accesscontrolallowmethods: '*'
+      traefik.http.middlewares.code-runner-cors.headers.accesscontrolalloworiginlist: '*'
+      traefik.http.middlewares.code-runner-cors.headers.accesscontrolmaxage: '100'
+      traefik.http.middlewares.code-runner-cors.headers.addvaryheader: 'true'
+      traefik.http.routers.code-runner.middlewares: 'code-runner-retry, code-runner-cors'
+      # Setting a service property ensures that the generated service name will be consistent between versions
+      traefik.http.services.code-runner.loadbalancer.server.scheme: 'http'
+
+- name: Swap docker containers if new one is healthy
+  block:
+    - name: Check if code-runner docker container is healthy
+      docker_container_info:
+        name: '{{ container_name }}'
+      register: code_runner
+      until: code_runner.exists and code_runner.container.State.Health.Status != 'starting'
+      failed_when: code_runner.container.State.Health.Status != 'healthy'
+      retries: 20
+      delay: 5
+
+    - name: Remove old code-runner docker container
+      docker_container:
+        name: code-runner
+        state: absent
+
+    - name: Rename new code-runner docker container
+      shell: docker rename "{{ container_name }}" code-runner
+
+  rescue:
+    - name: Save unhealthy code-runner docker container logs
+      shell: docker logs "{{ container_name }}" | sed -e 's/\x1b\[[0-9;]*m//g' > "/home/{{ ansible_user }}/unhealthy-$(date +%s)-{{ container_name }}.log" 2>&1
+
+    - name: Remove new unhealthy code-runner docker container
+      docker_container:
+        name: '{{ container_name }}'
+        state: absent
+
+    - name: Return error
+      fail:
+        msg: New code-runner docker container is unhealthy

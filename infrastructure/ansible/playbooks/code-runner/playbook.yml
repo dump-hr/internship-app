@@ -1,0 +1,29 @@
+---
+- hosts: localhost
+  tasks:
+    - name: Check if inventory is empty.
+      fail:
+        msg: '[ERROR] Empty inventory. No host available.'
+      when: groups.all|length == 0
+
+- hosts: web
+  remote_user: root # TODO: promini
+
+  pre_tasks:
+    - name: Update apt cache if needed.
+      become: true
+      apt:
+        update_cache: true
+        cache_valid_time: 3600
+
+  roles:
+    - role: geerlingguy.docker
+      become: true
+      vars:
+        docker_users:
+          - root # TODO: promini
+    - role: traefik
+    - role: code-runner
+      vars:
+        docker_image: ghcr.io/dump-hr/code-runner:latest
+        code_runner_domain: code-runner.bdeak.net
