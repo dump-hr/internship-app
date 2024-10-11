@@ -26,13 +26,15 @@ const SlotsList: React.FC<Props> = ({ data = [] }) => {
     { field: 'enough', headerName: 'Enough', type: 'boolean', width: 100 },
   ];
 
-  const rows = data.map((slot, i) => ({
-    id: i,
-    disciplines: slot.disciplines,
-    available: slot.available,
-    needed: slot.needed,
-    enough: slot.available >= slot.needed,
-  }));
+  const rows = Array.isArray(data)
+    ? data.map((slot, i) => ({
+        id: i,
+        disciplines: slot.disciplines,
+        available: slot.available,
+        needed: slot.needed,
+        enough: slot.available >= slot.needed,
+      }))
+    : [];
 
   return <DataGrid rows={rows} columns={columns} />;
 };
