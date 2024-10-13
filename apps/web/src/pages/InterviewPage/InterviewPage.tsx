@@ -84,7 +84,10 @@ const InterviewPage = () => {
             (a.type === QuestionType.Slider &&
               a.category === QuestionCategory.Final) ||
             (a.type === QuestionType.Slider &&
-              a.category === QuestionCategory.Marketing),
+              a.category === QuestionCategory.Marketing &&
+              intern?.internDisciplines?.some(
+                (discipline) => discipline.discipline === 'Marketing',
+              )),
         )
         .reduce((acc, curr) => acc + +curr.value, 0);
 

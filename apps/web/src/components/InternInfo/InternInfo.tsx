@@ -139,6 +139,10 @@ const InternInfo = ({ intern }: InternInfoProps) => {
             intern.interviewSlot?.answers.map((item: Answer) => {
               if (!item.value) return null;
 
+              if(!intern?.internDisciplines?.some(
+                (discipline) => discipline.discipline === 'Marketing',
+              )  && item.id.includes("mark")) return null;
+
               return (
                 <div
                   className={item.tick ? styles.tick : styles.atribute}
