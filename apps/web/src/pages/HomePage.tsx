@@ -2,15 +2,15 @@ import { Typography } from '@mui/material';
 import { useEffect } from 'react';
 
 export const HomePage = () => {
-  useEffect(() => {
-    const redirect = setTimeout(() => {
-      window.location.href = 'https://dump.hr/internship';
-    }, 1000);
+  // useEffect(() => {
+  //   const redirect = setTimeout(() => {
+  //     window.location.href = 'https://dump.hr/internship';
+  //   }, 1000);
 
-    return () => {
-      clearTimeout(redirect);
-    };
-  }, []);
+  //   return () => {
+  //     clearTimeout(redirect);
+  //   };
+  // }, []);
 
   return (
     <div>
