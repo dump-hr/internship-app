@@ -161,6 +161,24 @@ async function main() {
         category: QuestionCategory.Design,
       },
       {
+        id: 'diz4',
+        title: 'Koje programe poznaješ?',
+        type: QuestionType.Field,
+        category: QuestionCategory.Design,
+      },
+      {
+        id: 'diz5',
+        title: 'Imaš li neke svoje radove? Možeš li nam pokazati/poslati?',
+        type: QuestionType.Field,
+        category: QuestionCategory.Design,
+      },
+      {
+        id: 'diz6',
+        title: 'Pratiš li neke dizajnere i ako da koje?',
+        type: QuestionType.Field,
+        category: QuestionCategory.Design,
+      },
+      {
         id: 'mark1',
         title: 'Zašto te zanima marketing?',
         type: QuestionType.Field,
@@ -185,6 +203,33 @@ async function main() {
         category: QuestionCategory.Marketing,
       },
       {
+        id: 'mark5',
+        title:
+          'Poznaješ li neke od oglašivačkih alata (meta ads, google ads…)?',
+        type: QuestionType.Field,
+        category: QuestionCategory.Marketing,
+      },
+      {
+        id: 'mark6',
+        title:
+          'Imaš li iskustva u pisanju blogova i sličnih tekstova? (PR-ovi, članci…)',
+        type: QuestionType.Field,
+        category: QuestionCategory.Marketing,
+      },
+      {
+        id: 'mark7',
+        title:
+          'Postoji li nešto što nismo pokrili pitanjima u čemu imaš iskustva, a vezano je za marketing?',
+        type: QuestionType.Field,
+        category: QuestionCategory.Marketing,
+      },
+      {
+        id: 'mark8',
+        title: 'Komentari na Google formu',
+        type: QuestionType.Field,
+        category: QuestionCategory.Marketing,
+      },
+      {
         id: 'mark9',
         title: '1. pitanje iz Google forme',
         type: QuestionType.Slider,
@@ -201,6 +246,166 @@ async function main() {
         min: 1,
         max: 5,
         step: 1,
+      },
+      {
+        id: 'mark11',
+        title: `3. pitanje iz Google forme`,
+        type: QuestionType.Slider,
+        category: QuestionCategory.Marketing,
+        min: 1,
+        max: 5,
+        step: 1,
+      },
+      {
+        id: 'mark12',
+        title: `4. pitanje iz Google forme`,
+        type: QuestionType.Slider,
+        category: QuestionCategory.Marketing,
+        min: 1,
+        max: 5,
+        step: 1,
+      },
+      {
+        id: 'mark13',
+        title: `5. pitanje iz Google forme`,
+        type: QuestionType.Slider,
+        category: QuestionCategory.Marketing,
+        min: 1,
+        max: 5,
+        step: 1,
+      },
+      {
+        id: 'mult1',
+        title: 'Što te privuklo multimediji?',
+        type: QuestionType.Field,
+        category: QuestionCategory.Multimedia,
+      },
+      {
+        id: 'mult2',
+        title: 'Što inače slikaješ/snimaš?',
+        type: QuestionType.Field,
+        category: QuestionCategory.Multimedia,
+      },
+      {
+        id: 'mult3',
+        title:
+          'Što ti je najzanimljivije između: slikavanja na eventima, montiranje videa, audio, streamanje?',
+        type: QuestionType.Field,
+        category: QuestionCategory.Multimedia,
+      },
+      {
+        id: 'mult4',
+        title: 'Kakvu vrstu fotografije preferiraš?',
+        type: QuestionType.Field,
+        category: QuestionCategory.Multimedia,
+      },
+      {
+        id: 'mult5',
+        title: 'Znaš li se koristit nekim programima?',
+        type: QuestionType.Field,
+        category: QuestionCategory.Multimedia,
+      },
+      {
+        id: 'mult6',
+        title: 'Imaš li fotoaparat?',
+        type: QuestionType.Field,
+        category: QuestionCategory.Multimedia,
+      },
+      {
+        id: 'mult7',
+        title:
+          'Imas li portfolio? Jesi li sudjelovao na ikakvim projektima/edukacijama?',
+        type: QuestionType.Field,
+        category: QuestionCategory.Multimedia,
+      },
+      {
+        id: 'mult8',
+        title:
+          'Koje fotografe/redatelje/yt kanale na temu multimedije pratiš (ako ih pratiš)?',
+        type: QuestionType.Field,
+        category: QuestionCategory.Multimedia,
+      },
+      {
+        id: 'mult9',
+        title: 'Kako bi opisao pripremu za slikavanje/snimanje?',
+        type: QuestionType.Field,
+        category: QuestionCategory.Multimedia,
+      },
+      {
+        id: 'mult10',
+        title: 'Gdje se vidiš za 5 godina s obzirom na ovo područje?',
+        type: QuestionType.Field,
+        category: QuestionCategory.Multimedia,
+      },
+      {
+        id: 'f1',
+        title: `Količina slobodnog vremena koje posjeduje i spreman je ulozit prijavnik:
+          1 - do 3 sata tjedno
+          5 - 3 do 10 sati tjedno
+          10 - preko 10 sati tjedno`,
+        type: QuestionType.Slider,
+        category: QuestionCategory.Final,
+        min: 1,
+        max: 10,
+        step: 1,
+      },
+      {
+        id: 'f2',
+        title: `Želja za članstvom u DUMP koju je prijavnik pokazao:
+        1 - Ne zna ništa o DUMPu i ne pokazuje pretjerane ambicije za ostankom u udruzi, prijavio se više iz želje da nauči
+        5 - Zna nešto o radu DUMPa van internshipa, pokazuje da bi potencijalnu želju da bude član, ali već period od godine dana mu je predalek pa nemože se najlakše procijenit di će bit u budućnosti
+        10 - Zna dosta o radu DUMPa, Daysima i Ciklusima, već sada ostavlja uvjerenje da ima dovoljnu želju da bude budući član`,
+        type: QuestionType.Slider,
+        category: QuestionCategory.Final,
+        min: 1,
+        max: 10,
+        step: 1,
+      },
+      {
+        id: 'f3',
+        title: `Proaktivnost koju posjeduje i amicioznost koju pokazuje prijavnik:
+        1 - Ne pokazuje ambicije
+        5 - Jako veliki drive i ambicije, utjece na ljude oko sebe sa stvarima kojima se bavi
+        `,
+        type: QuestionType.Slider,
+        category: QuestionCategory.Final,
+        min: 1,
+        max: 5,
+        step: 1,
+      },
+      {
+        id: 'f4',
+        title: `Iskustvo u polju koje je prijavio:
+        1 - nema ga
+        2 - ima minimalno, uglavnom sa faksa/iz škole
+        3 - ima nešto malo, pokušavao je nešto sam ali nije ga išlo, nije ima puno vremena i sl.
+        4 - ima iskustva, radia je sam i sa kolegama/prijateljima u slobodno vrijeme i istaka je par projekata koje ima (da je link na njih)
+        5 - ostavia je dojam da većinu slobodnog vremena provodi radeći (bilo sam bilo na poslu) i eksperminetirajući, da je link na radove/portfolio i dojam je da bi podiga razinu tog polja u udruzi instantno`,
+        type: QuestionType.Slider,
+        category: QuestionCategory.Final,
+        min: 1,
+        max: 5,
+        step: 1,
+      },
+      {
+        id: 'f5',
+        title: `Culture fit procjena:
+        1 - ne bi se uklopia lako, dojam je da bi prkosia mentalitetu i trenutnom stateu udruge
+        2 - možda bi se uklopia, teško je procjenit jer nije ostavia dovoljan utisak (pretjerano je povućen)
+        3 - solidan dojam, tu i tamo odudara od udruge u stavovima ali uklopia bi se uglavnom
+        4 - uklopia bi se dosta dobro u ekipu, ali trebalo bi mu neko vrijeme/uklopia bi se kad bi se opustia
+        5 - idealan fit za DUMP, uklopia bi se dosta brzo`,
+        type: QuestionType.Slider,
+        category: QuestionCategory.Final,
+        min: 1,
+        max: 5,
+        step: 1,
+      },
+      {
+        id: 'f6',
+        title: 'Side notes',
+        type: QuestionType.TextArea,
+        category: QuestionCategory.Final,
       },
     ],
   });

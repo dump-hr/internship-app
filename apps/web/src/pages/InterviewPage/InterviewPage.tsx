@@ -19,16 +19,20 @@ import {
   QuestionCategory,
 } from '../../constants/interviewConstants';
 import { Path } from '../../constants/paths';
-import { defaultInterviewValues, interviewQuestions } from './data';
+import { getDefaultValues } from '../../helpers/setDefaultInterviewValues';
 import InterviewQuestionHandler from './InterviewQuestionHandler';
-
-const mapAnswersToQuestions = (
-  answers: FieldValues,
-): { [key: number]: Json } => {
-  return interviewQuestions.map((q) => ({ ...q, ...answers[q.id] }));
-};
+import { useFetchAllInterviewQuestions } from '../../api/useFetchAllInterviewQuestions';
 
 const InterviewPage = () => {
+  const { data: interviewQuestions = [] } = useFetchAllInterviewQuestions();
+  const defaultInterviewValues = getDefaultValues(interviewQuestions);
+
+  const mapAnswersToQuestions = (
+    answers: FieldValues,
+  ): { [key: number]: Json } => {
+    return interviewQuestions.map((q) => ({ ...q, ...answers[q.id] }));
+  };
+
   const [, params] = useRoute(Path.Interview);
   const internId = params?.internId;
 
