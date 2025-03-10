@@ -140,6 +140,46 @@ model AdminLog {
   date        DateTime       @default(now())
 }
 
+model InterviewQuestion {
+  id               String           @id @default(uuid())
+  question         String
+  questionType     QuestionType
+  questionCategory QuestionCategory
+  minValue         Int?
+  maxValue         Int?
+  stepValue        Int?             @default(1)
+  QuestionOption   QuestionOption[]
+}
+
+model QuestionOption {
+  id                String            @id @default(uuid())
+  questionId        String
+  value             String
+  InterviewQuestion InterviewQuestion @relation(fields: [questionId], references: [id])
+}
+
+enum QuestionCategory {
+  General
+  Personal
+  Dev
+  Marketing
+  Design
+  Multimedia
+  Grade
+}
+
+enum QuestionType {
+  Slider
+  Field
+  Radio
+  Select
+  Checkbox
+  TextArea
+  Date
+  DateTime
+  Number
+}
+
 enum Discipline {
   Development
   Design
