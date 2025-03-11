@@ -148,7 +148,7 @@ const InterviewPage = () => {
         intern={intern}
       />
       <MultistepForm
-        questions={interviewQuestions}
+        questions={interviewQuestions.filter((q) => q.isEnabled)}
         form={form}
         steps={getFilteredInterviewSteps(
           intern.internDisciplines.map((ind) => ind.discipline),
