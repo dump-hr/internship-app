@@ -26,11 +26,11 @@ export class QuestionService {
     return this.prisma.interviewQuestion.create({
       data: {
         question: data.question,
-        questionType: data.questionType,
-        questionCategory: data.questionCategory,
-        // minValue: data.minValue ?? null,
-        // maxValue: data.maxValue ?? null,
-        // stepValue: data.stepValue ?? null,
+        type: data.questionType,
+        category: data.questionCategory,
+        minValue: data.minValue ?? null,
+        maxValue: data.maxValue ?? null,
+        stepValue: data.stepValue ?? null,
       },
     });
   }

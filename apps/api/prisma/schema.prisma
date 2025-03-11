@@ -143,8 +143,8 @@ model AdminLog {
 model InterviewQuestion {
   id               String           @id @default(uuid())
   question         String
-  questionType     QuestionType
-  questionCategory QuestionCategory
+  type     QuestionType
+  category QuestionCategory
   minValue         Int?
   maxValue         Int?
   stepValue        Int?             @default(1)
@@ -165,7 +165,7 @@ enum QuestionCategory {
   Marketing
   Design
   Multimedia
-  Grade
+  Final
 }
 
 enum QuestionType {
