@@ -15,8 +15,9 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { useEffect, useState } from 'react';
 import { nanoid } from 'nanoid';
 import toast from 'react-hot-toast';
+import { usePostInterviewQuestion } from '../../api/usePostInterviewQuestion';
 
-type OptionType = {
+export type OptionType = {
   id: string;
   value: string;
 };
@@ -28,12 +29,12 @@ type QuestionType = {
   min: number | null;
   max: number | null;
   step: number | null;
-  options: {
-    options: OptionType[];
-  };
+  options: OptionType[];
 };
 
 const InterviewQuestionAddForm = () => {
+  const postInterviewQuestion = usePostInterviewQuestion();
+
   const [dialogState, setDialogState] = useState<boolean>(false);
   const [newOptionValue, setNewOptionValue] = useState<string>('');
 
@@ -48,9 +49,7 @@ const InterviewQuestionAddForm = () => {
     min: null,
     max: null,
     step: null,
-    options: {
-      options: [],
-    },
+    options: [],
   });
 
   useEffect(() => {
@@ -72,9 +71,7 @@ const InterviewQuestionAddForm = () => {
 
     setNewQuestion((prev) => ({
       ...prev,
-      options: {
-        options: [],
-      },
+      options: [],
     }));
   }, [newQuestion.type]);
 
@@ -95,12 +92,12 @@ const InterviewQuestionAddForm = () => {
       case newQuestion.category === '':
         toast.error('Category cannot be empty');
         break;
-      case hasOptions && newQuestion.options.options.length < 2:
+      case hasOptions && newQuestion.options.length < 2:
         toast.error('There need to be at least 2 options');
         break;
       default:
-        console.log(newQuestion);
-        
+        postInterviewQuestion.mutate(newQuestion);
+
         resetForm();
         toggleDialog();
         break;
@@ -115,9 +112,7 @@ const InterviewQuestionAddForm = () => {
       min: null,
       max: null,
       step: null,
-      options: {
-        options: [],
-      },
+      options: [],
     });
   };
 
@@ -137,12 +132,7 @@ const InterviewQuestionAddForm = () => {
 
     setNewQuestion((prev) => ({
       ...prev,
-      options: {
-        options: [
-          ...prev.options.options,
-          { id: nanoid(), value: newOptionValue },
-        ],
-      },
+      options: [...prev.options, { id: nanoid(), value: newOptionValue }],
     }));
 
     setNewOptionValue('');
@@ -151,9 +141,7 @@ const InterviewQuestionAddForm = () => {
   const removeOption = (id: string) => {
     setNewQuestion((prev) => ({
       ...prev,
-      options: {
-        options: prev.options.options.filter((option) => option.id !== id),
-      },
+      options: prev.options.filter((option) => option.id !== id),
     }));
   };
 
@@ -161,7 +149,6 @@ const InterviewQuestionAddForm = () => {
     setNewOptionValue(value);
   };
 
-  console.log(newQuestion);
   return (
     <>
       <Button onClick={() => toggleDialog()}>+ Dodaj pitanje</Button>
@@ -271,7 +258,7 @@ const InterviewQuestionAddForm = () => {
                   Dodaj opcije
                 </DialogContentText>
 
-                {newQuestion.options.options.map((option) => (
+                {newQuestion.options.map((option) => (
                   <Box
                     key={option.id}
                     sx={{
@@ -282,7 +269,7 @@ const InterviewQuestionAddForm = () => {
                       p: 1,
                     }}
                   >
-                    <Box sx={{ flexGrow: 1 }}>{option.value}</Box>
+                    <Box>{option.value}</Box>
                     <IconButton
                       color="error"
                       onClick={() => removeOption(option.id)}

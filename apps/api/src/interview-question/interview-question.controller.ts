@@ -1,11 +1,4 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-} from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param } from '@nestjs/common';
 import { InterviewQuestionService } from './interview-question.service';
 import { CreateInterviewQuestionDto } from './dto/create-interview-question.dto';
 import { UpdateInterviewQuestionDto } from './dto/update-interview-question.dto';
@@ -18,7 +11,11 @@ export class InterviewQuestionController {
 
   @Post()
   create(@Body() createInterviewQuestionDto: CreateInterviewQuestionDto) {
-    return this.interviewQuestionService.create(createInterviewQuestionDto);
+    const newInterviewQuestion = this.interviewQuestionService.create(
+      createInterviewQuestionDto,
+    );
+
+    return newInterviewQuestion;
   }
 
   @Get()

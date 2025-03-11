@@ -36,8 +36,8 @@ const getInputComponent = (
       return (
         <Select {...field} fullWidth>
           {question.options.map((option) => (
-            <MenuItem key={option} value={option}>
-              {option || <Typography color="gray">empty</Typography>}
+            <MenuItem key={option.id} value={option.value}>
+              {option.value || <Typography color="gray">empty</Typography>}
             </MenuItem>
           ))}
         </Select>

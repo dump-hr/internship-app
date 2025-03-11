@@ -1,6 +1,8 @@
 import { Question, QuestionType } from '@internship-app/types';
 
-export const getDefaultValues = (questions: Question[]): { [key: string]: string } => {
+export const getDefaultValues = (
+  questions: Question[],
+): { [key: string]: string } => {
   const defaultValueForQuestion = (q: Question) => {
     switch (q.type) {
       case QuestionType.Select:
@@ -23,4 +25,3 @@ export const getDefaultValues = (questions: Question[]): { [key: string]: string
     {},
   );
 };
-
