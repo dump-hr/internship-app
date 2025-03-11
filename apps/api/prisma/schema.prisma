@@ -124,6 +124,7 @@ model InterviewQuestion {
   min       Int?     
   max       Int?
   step      Int?
+  options   Json?
   createdAt DateTime        @default(now())
   updatedAt    DateTime                       @updatedAt
 }

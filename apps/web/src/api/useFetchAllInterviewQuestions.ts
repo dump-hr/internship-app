@@ -1,4 +1,4 @@
-import { MultistepQuestion, Question } from '@internship-app/types';
+import { MultistepQuestion } from '@internship-app/types';
 import { useQuery } from 'react-query';
 
 import { api } from '.';
