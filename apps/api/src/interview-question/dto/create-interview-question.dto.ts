@@ -25,4 +25,7 @@ export class CreateInterviewQuestionDto {
 
   @ApiProperty()
   options: Prisma.JsonArray;
+
+  @ApiProperty()
+  isEnabled: boolean;
 }

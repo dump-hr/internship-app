@@ -1,11 +1,20 @@
-import { DataGrid, GridColDef } from '@mui/x-data-grid';
+import { DataGrid, GridColDef, GridRenderCellParams } from '@mui/x-data-grid';
 import { MultistepQuestion } from '@internship-app/types';
 import { useFetchAllInterviewQuestions } from '../../api/useFetchAllInterviewQuestions';
 import { QuestionCategory } from '../../constants/interviewConstants';
 import { Button } from '@mui/material';
+import { useSetQuestionAvailability } from '../../api/useSetQuestionAvailability';
 
 const InterviewQuestionList = () => {
   const { data: interviewQuestions = [] } = useFetchAllInterviewQuestions();
+  const setQuestionAvailability = useSetQuestionAvailability();
+
+  const toggleAvailability = (params: GridRenderCellParams) => {
+    setQuestionAvailability.mutate({
+      questionId: params.row.id,
+      isEnabled: !params.row.isEnabled,
+    });
+  };
 
   const rows = interviewQuestions.map(
     (question: MultistepQuestion<QuestionCategory>) => ({
@@ -13,6 +22,7 @@ const InterviewQuestionList = () => {
       title: question.title,
       type: question.type,
       category: question.category,
+      isEnabled: question.isEnabled,
     }),
   );
 
@@ -46,10 +56,11 @@ const InterviewQuestionList = () => {
           <div
             style={{
               display: 'flex',
-              gap: '8px',
             }}
           >
-            <Button>DISABLE</Button>
+            <Button onClick={() => toggleAvailability(params)}>
+              {params.row.isEnabled ? 'DISABLE' : 'ENABLE'}
+            </Button>
             <Button>EDIT</Button>
             <Button>STATS</Button>
           </div>

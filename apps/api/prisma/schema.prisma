@@ -125,6 +125,7 @@ model InterviewQuestion {
   max       Int?
   step      Int?
   options   Json?
+  isEnabled Boolean         @default(true)  
   createdAt DateTime        @default(now())
   updatedAt    DateTime                       @updatedAt
 }

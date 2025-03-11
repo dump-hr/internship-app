@@ -1,7 +1,7 @@
-import { Controller, Get, Post, Body, Patch, Param } from '@nestjs/common';
+import { Controller, Get, Post, Body, Put, Param } from '@nestjs/common';
 import { InterviewQuestionService } from './interview-question.service';
 import { CreateInterviewQuestionDto } from './dto/create-interview-question.dto';
-import { UpdateInterviewQuestionDto } from './dto/update-interview-question.dto';
+import { QuestionAvailabilityRequest } from '@internship-app/types';
 
 @Controller('interview-question')
 export class InterviewQuestionController {
@@ -30,14 +30,11 @@ export class InterviewQuestionController {
     return this.interviewQuestionService.findOne(+id);
   }
 
-  @Patch(':id')
-  update(
-    @Param('id') id: string,
-    @Body() updateInterviewQuestionDto: UpdateInterviewQuestionDto,
+  @Put('setAvailability/:questionId')
+  async setAvailability(
+    @Param('questionId') questionId: string,
+    @Body() data: QuestionAvailabilityRequest,
   ) {
-    return this.interviewQuestionService.update(
-      +id,
-      updateInterviewQuestionDto,
-    );
+    return this.interviewQuestionService.setAvailability(questionId, data);
   }
 }

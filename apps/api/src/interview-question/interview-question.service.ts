@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { CreateInterviewQuestionDto } from './dto/create-interview-question.dto';
-import { UpdateInterviewQuestionDto } from './dto/update-interview-question.dto';
 import { PrismaService } from 'src/prisma.service';
+import { QuestionAvailabilityRequest } from '@internship-app/types';
 
 @Injectable()
 export class InterviewQuestionService {
@@ -25,6 +25,17 @@ export class InterviewQuestionService {
           createdAt: 'asc',
         },
       ],
+      select: {
+        id: true,
+        title: true,
+        type: true,
+        category: true,
+        min: true,
+        max: true,
+        step: true,
+        options: true,
+        isEnabled: true,
+      },
     });
 
     return interviewQuestions;
@@ -34,11 +45,15 @@ export class InterviewQuestionService {
     return `This action returns a #${id} interviewQuestion`;
   }
 
-  update(id: number, updateInterviewQuestionDto: UpdateInterviewQuestionDto) {
-    return `This action updates a #${id} interviewQuestion`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} interviewQuestion`;
+  async setAvailability(questionId: string, data: QuestionAvailabilityRequest) {
+    const availability = await this.prisma.interviewQuestion.update({
+      where: {
+        id: questionId,
+      },
+      data: {
+        isEnabled: data.isEnabled,
+      },
+    });
+    return availability;
   }
 }
