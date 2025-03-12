@@ -26,6 +26,7 @@ import TestOverviewPage from './pages/TestOverviewPage';
 import TestPage from './pages/TestPage';
 import TestReviewPage from './pages/TestReviewPage';
 import TestSchedulerPage from './pages/TestSchedulerPage';
+import { InterviewBuilderPage } from './pages/InterviewBuilder/InterviewBuilderPage.tsx';
 
 const queryClient = new QueryClient();
 
@@ -59,6 +60,7 @@ export const App = () => {
             <Route path={Path.Interviewers} component={InterviewersPage} />
             <Route path={Path.AdminLogs} component={AdminLogsPage} />
             <Route path={Path.Counter} component={CounterPage} />
+            <Route path={Path.Builder} component={InterviewBuilderPage} />
             <Route path={Path.CatchAll} component={NotFoundPage} />
           </Switch>
           <Toaster />

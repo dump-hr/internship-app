@@ -16,7 +16,7 @@ const InterviewQuestionHandler = ({
   const questionForValue = {
     ...question,
     id: `${question.id}.value`,
-    title: undefined,
+    question: undefined,
   };
   const questionForTick: Question = {
     id: `${question.id}.tick`,
@@ -25,7 +25,7 @@ const InterviewQuestionHandler = ({
 
   return (
     <Box display="flex" flexDirection="column">
-      <Typography whiteSpace="pre-line">{question.title}</Typography>
+      <Typography whiteSpace="pre-line">{question.question}</Typography>
       <Box display="flex">
         <InputHandler question={questionForValue} form={form} />
         <InputHandler question={questionForTick} form={form} />

@@ -48,9 +48,9 @@ const getInputComponent = (
           {...field}
           marks
           valueLabelDisplay="auto"
-          step={question.step}
-          min={question.min}
-          max={question.max}
+          step={question.stepValue}
+          min={question.minValue}
+          max={question.maxValue}
         />
       );
     case QuestionType.Checkbox:
@@ -70,7 +70,9 @@ const getInputComponent = (
         <TextField
           {...field}
           type="number"
-          InputProps={{ inputProps: { min: question.min, max: question.max } }}
+          InputProps={{
+            inputProps: { min: question.minValue, max: question.maxValue },
+          }}
           onChange={(e) => field.onChange(+e.target.value)}
         />
       );
@@ -84,7 +86,7 @@ const InputHandler = ({ question, form }: InputHandlerProps) => {
 
   return (
     <>
-      {question.title && <InputLabel>{question.title}</InputLabel>}
+      {question.question && <InputLabel>{question.question}</InputLabel>}
       <Controller
         control={control}
         name={question.id}
