@@ -1,4 +1,7 @@
 {
+  "dependencies": {
+    "@nestjs/mapped-types": "*"
+  },
   "name": "internship-app",
   "private": true,
   "packageManager": "yarn@1.22.22",
