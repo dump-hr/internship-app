@@ -20,6 +20,12 @@ export const InterviewQuestions = () => {
       editable: true,
     },
     {
+      field: 'type',
+      headerName: 'Type',
+      flex: 1,
+      editable: true,
+    },
+    {
       field: 'Actions',
       HeaderName: 'Actions',
       flex: 1,
@@ -63,8 +69,10 @@ export const InterviewQuestions = () => {
   if (!allQuestions) return <div>Loading...</div>;
 
   return (
-    <Box sx={{ height: 'auto', width: '100%' }}>
-      <Button>Add new question</Button>
+    <Box sx={{ height: '100%', width: '100%' }}>
+      <Button variant={'outlined'} sx={{ margin: '30px 0' }}>
+        Add new question
+      </Button>
       <DataGrid
         columns={columns}
         rows={allQuestions}
