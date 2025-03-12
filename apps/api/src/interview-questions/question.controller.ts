@@ -19,8 +19,8 @@ export class QuestionController {
     @Body()
     data: {
       question: string;
-      questionType: QuestionType;
-      questionCategory: QuestionCategory;
+      type: QuestionType;
+      category: QuestionCategory;
       minValue?: number | null;
       maxValue?: number;
       stepValue?: number;

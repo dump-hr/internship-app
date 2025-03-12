@@ -17,8 +17,8 @@ export class QuestionService {
 
   async createInterviewQuestion(data: {
     question: string;
-    questionType: QuestionType;
-    questionCategory: QuestionCategory;
+    type: QuestionType;
+    category: QuestionCategory;
     minValue?: number | null;
     maxValue?: number | null;
     stepValue?: number | null;
@@ -26,8 +26,8 @@ export class QuestionService {
     return this.prisma.interviewQuestion.create({
       data: {
         question: data.question,
-        type: data.questionType,
-        category: data.questionCategory,
+        type: data.type,
+        category: data.category,
         minValue: data.minValue ?? null,
         maxValue: data.maxValue ?? null,
         stepValue: data.stepValue ?? null,
