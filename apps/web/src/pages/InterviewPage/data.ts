@@ -1,14 +1,14 @@
 import { Question, QuestionType } from '@internship-app/types';
 
-// import { useFetchAllInterviewQuestions } from '../../api/usefetchAllInterviewQuestions.tsx';
-
-const getDefaultValues = (questions: Question[]): { [key: string]: string } => {
+export const getDefaultValues = (
+  questions: Question[],
+): { [key: string]: string } => {
   const defaultValueForQuestion = (q: Question) => {
     switch (q.type) {
       case QuestionType.Select:
         return q.options[0];
       case QuestionType.Slider:
-        return Math.floor((q.min + q.max) / 2);
+        return Math.floor((q.minValue + q.maxValue) / 2);
       default:
         return '';
     }
@@ -25,5 +25,3 @@ const getDefaultValues = (questions: Question[]): { [key: string]: string } => {
     {},
   );
 };
-
-export const defaultInterviewValues = getDefaultValues(interviewQuestions);

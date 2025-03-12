@@ -21,7 +21,7 @@ import {
   QuestionCategory,
 } from '../../constants/interviewConstants';
 import { Path } from '../../constants/paths';
-import { defaultInterviewValues } from './data';
+import { getDefaultValues } from './data';
 import InterviewQuestionHandler from './InterviewQuestionHandler';
 
 const mapAnswersToQuestions = (
@@ -46,6 +46,7 @@ const InterviewPage = () => {
   const queryClient = useQueryClient();
 
   const [dialogOpen, setDialogOpen] = useState(false);
+  const defaultInterviewValues = getDefaultValues(interviewQuestions || []);
 
   const localFormValue = JSON.parse(
     localStorage.getItem(`interview ${internId}`)!,
@@ -83,7 +84,7 @@ const InterviewPage = () => {
 
   const handleFormSubmit = (internId: string) =>
     form.handleSubmit((data) => {
-      const answers = mapAnswersToQuestions(data, interviewQuestions);
+      const answers = mapAnswersToQuestions(data, interviewQuestions || []);
       const score = Object.values(answers)
         .filter(
           (a) =>
@@ -150,7 +151,6 @@ const InterviewPage = () => {
         intern={intern}
       />
       <MultistepForm
-        questions={interviewQuestions}
         form={form}
         steps={getFilteredInterviewSteps(
           intern.internDisciplines.map((ind) => ind.discipline),
