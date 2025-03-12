@@ -2,6 +2,8 @@ import { MultistepQuestion, Question } from '@internship-app/types';
 import { Box, Button, Step, StepLabel, Stepper } from '@mui/material';
 import { useState } from 'react';
 
+import { useFetchAllInterviewQuestions } from '../../api/usefetchAllInterviewQuestions.tsx';
+
 interface Step<T> {
   label: string;
   category: T;
@@ -22,13 +24,14 @@ type MultistepFormProps<T, FH> = {
 
 const MultistepForm = <T, FH>({
   steps,
-  questions,
+  // questions,
   form,
   onSubmit,
   InputHandler,
 }: MultistepFormProps<T, FH>) => {
   const [currentStep, setCurrentStep] = useState(0);
   const currentCategory = steps[currentStep].category;
+  const interviewQuestions = useFetchAllInterviewQuestions();
 
   return (
     <Box>
@@ -41,11 +44,10 @@ const MultistepForm = <T, FH>({
       </Stepper>
 
       <Box display="flex" flexDirection="column" gap="20px">
-        {questions
-          .filter((q) => q.category === currentCategory)
-          .map((q) => (
-            <InputHandler form={form} question={q} key={q.id} />
-          ))}
+        {interviewQuestions.data &&
+          interviewQuestions.data
+            .filter((q) => q.category === currentCategory)
+            .map((q) => <InputHandler form={form} question={q} key={q.id} />)}
       </Box>
 
       <Box>

@@ -147,8 +147,10 @@ model InterviewQuestion {
   category QuestionCategory
   minValue         Int?
   maxValue         Int?
-  stepValue        Int?             @default(1)
+  stepValue        Int?
   QuestionOption   QuestionOption[]
+  // registerValue String //maknit??
+  required         Boolean          @default(false)
 }
 
 model QuestionOption {
@@ -161,7 +163,7 @@ model QuestionOption {
 enum QuestionCategory {
   General
   Personal
-  Dev
+  Development
   Marketing
   Design
   Multimedia

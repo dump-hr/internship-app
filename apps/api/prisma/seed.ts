@@ -374,35 +374,35 @@ async function main() {
       {
         question: 'Zašto te zanima programiranje?',
         type: QuestionType.Field,
-        category: QuestionCategory.Dev,
+        category: QuestionCategory.Development,
       },
       {
         question: 'Radiš li ili jesi li negdje radio/la kao developer?',
         type: QuestionType.Field,
-        category: QuestionCategory.Dev,
+        category: QuestionCategory.Development,
       },
       {
         question:
           'Možeš li nam ispričati ukratko o projektu koji si radio/la za faks/posao/sebe?',
         type: QuestionType.Field,
-        category: QuestionCategory.Dev,
+        category: QuestionCategory.Development,
       },
       {
         question:
           'Koje programske jezike koristiš? (koji ti je drazi, zasto, koliko iskustva ima sa tim jezikom, je li entuzijastican oko ijednog)',
         type: QuestionType.Field,
-        category: QuestionCategory.Dev,
+        category: QuestionCategory.Development,
       },
       {
         question: 'Imaš li neke projekte (github)?',
         type: QuestionType.Field,
-        category: QuestionCategory.Dev,
+        category: QuestionCategory.Development,
       },
       {
         question:
           'Što je tebi najzanimljivija stvar iz svijeta programiranja koju si naučio/la u zadnje vrijeme? Ili topic koji bi htio naucit u buducnosti?',
         type: QuestionType.Field,
-        category: QuestionCategory.Dev,
+        category: QuestionCategory.Development,
       },
       {
         question: 'Zašto te zanima dizajn?',

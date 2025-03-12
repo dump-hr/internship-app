@@ -1,4 +1,5 @@
 import { Intern, InterviewStatus, QuestionType } from '@internship-app/types';
+import { Question } from '@internship-app/types/';
 import { Json } from '@internship-app/types/src/json';
 import { useEffect, useState } from 'react';
 import { FieldValues, useForm } from 'react-hook-form';
@@ -7,6 +8,7 @@ import { useQueryClient } from 'react-query';
 import { Link, useRoute } from 'wouter';
 import { navigate } from 'wouter/use-location';
 
+import { useFetchAllInterviewQuestions } from '../../api/usefetchAllInterviewQuestions.tsx';
 import { useFetchIntern } from '../../api/useFetchIntern';
 import { useSetImage } from '../../api/useSetImage';
 import { useSetInterview } from '../../api/useSetInterview';
@@ -19,19 +21,23 @@ import {
   QuestionCategory,
 } from '../../constants/interviewConstants';
 import { Path } from '../../constants/paths';
-import { defaultInterviewValues, interviewQuestions } from './data';
+import { defaultInterviewValues } from './data';
 import InterviewQuestionHandler from './InterviewQuestionHandler';
 
 const mapAnswersToQuestions = (
   answers: FieldValues,
+  interviewQuestions: Question[],
 ): { [key: number]: Json } => {
-  return interviewQuestions.map((q) => ({ ...q, ...answers[q.id] }));
+  return interviewQuestions.map(
+    (q) => (console.log(answers[q.id]), { ...q, ...answers[q.id] }),
+  );
 };
 
 const InterviewPage = () => {
   const [, params] = useRoute(Path.Interview);
   const internId = params?.internId;
 
+  const { data: interviewQuestions } = useFetchAllInterviewQuestions();
   const { data: intern, isFetching } = useFetchIntern(internId);
   const setInterview = useSetInterview(() => {
     navigate(Path.Intern.replace(':internId', params?.internId || ''));
@@ -77,7 +83,7 @@ const InterviewPage = () => {
 
   const handleFormSubmit = (internId: string) =>
     form.handleSubmit((data) => {
-      const answers = mapAnswersToQuestions(data);
+      const answers = mapAnswersToQuestions(data, interviewQuestions);
       const score = Object.values(answers)
         .filter(
           (a) =>
