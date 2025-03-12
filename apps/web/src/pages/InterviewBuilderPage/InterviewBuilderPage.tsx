@@ -1,3 +1,5 @@
+import AdminPage from '../../components/AdminPage';
+
 export const InterviewBuilderPage = () => {
-  return <></>;
+  return <AdminPage headerText="Interview builder"></AdminPage>;
 };

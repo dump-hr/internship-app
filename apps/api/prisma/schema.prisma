@@ -45,18 +45,19 @@ model Intern {
 }
 
 model InternDiscipline {
-  internId              String
-  intern                Intern                 @relation(fields: [internId], references: [id])
-  discipline            Discipline
-  priority              Int
-  status                DisciplineStatus
-  testSlot              TestSlot?              @relation(fields: [testSlotId], references: [id])
-  testSlotId            String?
-  testStatus            TestStatus?
-  testScore             Int?
-  createdAt             DateTime               @default(now())
-  updatedAt             DateTime               @updatedAt
-  internQuestionAnswers InternQuestionAnswer[]
+  internId                 String
+  intern                   Intern                    @relation(fields: [internId], references: [id])
+  discipline               Discipline
+  priority                 Int
+  status                   DisciplineStatus
+  testSlot                 TestSlot?                 @relation(fields: [testSlotId], references: [id])
+  testSlotId               String?
+  testStatus               TestStatus?
+  testScore                Int?
+  createdAt                DateTime                  @default(now())
+  updatedAt                DateTime                  @updatedAt
+  internQuestionAnswers    InternQuestionAnswer[]
+  interviewQuestionAnswers InterviewQuestionAnswer[]
 
   @@id([internId, discipline])
 }
@@ -116,6 +117,42 @@ model InterviewSlot {
   interviewers InterviewMemberParticipation[]
 }
 
+model InterviewQuestion {
+  id        String                    @id @default(uuid())
+  question  String
+  type      InterviewQuestionType
+  category  InterviewQuestionCategory
+  details   InterviewQuestionDetails? @relation("QuestionDetails") // Defined the relation by name here
+  answers   InterviewQuestionAnswer[]
+  createdAt DateTime                  @default(now())
+  updatedAt DateTime                  @updatedAt
+}
+
+model InterviewQuestionDetails {
+  id         String   @id @default(uuid())
+  questionId String   @unique
+  options    Json?
+  min        Int?
+  max        Int?
+  step       Int?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  // Reverse relation using the same name as in the InterviewQuestion model
+  question InterviewQuestion @relation("QuestionDetails", fields: [questionId], references: [id])
+}
+
+model InterviewQuestionAnswer {
+  id                         String            @id @default(uuid())
+  question                   InterviewQuestion @relation(fields: [questionId], references: [id])
+  questionId                 String
+  internDiscipline           InternDiscipline  @relation(fields: [internDisciplineInternId, internDisciplineDiscipline], references: [internId, discipline])
+  internDisciplineInternId   String
+  internDisciplineDiscipline Discipline
+  createdAt                  DateTime          @default(now())
+  updatedAt                  DateTime          @updatedAt
+}
+
 model InterviewMemberParticipation {
   interviewSlotId String
   interviewSlot   InterviewSlot @relation(fields: [interviewSlotId], references: [id], onDelete: Cascade)
@@ -159,6 +196,28 @@ enum InterviewStatus {
   Pending
   Done
   Missed
+}
+
+enum InterviewQuestionType {
+  Field
+  TextArea
+  Select
+  Slider
+  Checkbox
+  Date
+  DateTime
+  Radio
+  Number
+}
+
+enum InterviewQuestionCategory {
+  General
+  Personal
+  Development
+  Design
+  Marketing
+  Multimedia
+  Final
 }
 
 enum TestStatus {
