@@ -153,7 +153,7 @@ const InternInfo = ({ intern }: InternInfoProps) => {
                   key={item.id}
                 >
                   <h3 className={styles.itemTitle}>
-                    {item.title} {!item.tick || '⚠️'}
+                    {item.question} {!item.tick || '⚠️'}
                   </h3>
                   <span>{item.value}</span>
                 </div>

@@ -300,11 +300,6 @@ async function main() {
         category: QuestionCategory.General,
       },
       {
-        question: 'Jesi li se prethodno prijavljivao na DUMP Internship?',
-        type: QuestionType.Field,
-        category: QuestionCategory.General,
-      },
-      {
         question: 'Što znaš o DUMP-u??',
         type: QuestionType.Field,
         category: QuestionCategory.General,

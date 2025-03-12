@@ -16,7 +16,7 @@ const InterviewQuestionHandler = ({
   const questionForValue = {
     ...question,
     id: `${question.id}.value`,
-    title: undefined,
+    question: undefined,
   };
   const questionForTick: Question = {
     id: `${question.id}.tick`,

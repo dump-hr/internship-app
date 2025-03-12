@@ -12,16 +12,27 @@ export enum QuestionType {
   Number = 'Number',
 }
 
-export type Question = { id: string; question?: string, required?: boolean, registerValue? : any, category: QuestionCategory } & (
+export type Question = {
+  id: string;
+  question?: string;
+  required?: boolean;
+  registerValue?: any;
+  category?: QuestionCategory;
+} & (
   | { type: QuestionType.Field }
   | { type: QuestionType.TextArea }
   | { type: QuestionType.Checkbox; options?: string[] }
-  | { type: QuestionType.Slider; minValue: number; maxValue: number; stepValue: number }
+  | {
+      type: QuestionType.Slider;
+      minValue: number;
+      maxValue: number;
+      stepValue: number;
+    }
   | { type: QuestionType.Select; options: string[] }
   | { type: QuestionType.Date }
-  | { type: QuestionType.DateTime}
+  | { type: QuestionType.DateTime }
   | { type: QuestionType.Radio; options: string[] }
-  | { type: QuestionType.Number, minValue?: number, maxValue?: number }
+  | { type: QuestionType.Number; minValue?: number; maxValue?: number }
 );
 
 export type MultistepQuestion<T> = Question & {
