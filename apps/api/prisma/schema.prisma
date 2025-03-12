@@ -122,7 +122,7 @@ model InterviewQuestion {
   question  String
   type      InterviewQuestionType
   category  InterviewQuestionCategory
-  details   InterviewQuestionDetails? @relation("QuestionDetails") // Defined the relation by name here
+  details   InterviewQuestionDetails? @relation("QuestionDetails")
   answers   InterviewQuestionAnswer[]
   createdAt DateTime                  @default(now())
   updatedAt DateTime                  @updatedAt
@@ -137,8 +137,6 @@ model InterviewQuestionDetails {
   step       Int?
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
-
-  // Reverse relation using the same name as in the InterviewQuestion model
   question InterviewQuestion @relation("QuestionDetails", fields: [questionId], references: [id])
 }
 
