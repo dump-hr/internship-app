@@ -44,6 +44,10 @@ export const App = () => {
             <Route path={Path.Interview} component={InterviewPage} />
             <Route path={Path.InterviewPicker} component={AdminInterviewPage} />
             <Route
+              path={Path.InterviewBuilder}
+              component={AdminInterviewPage}
+            />
+            <Route
               path={Path.ScheduleInterview}
               component={ScheduleInterviewPage}
             />
