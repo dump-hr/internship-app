@@ -1,4 +1,9 @@
-import { Intern, InterviewStatus, QuestionType } from '@internship-app/types';
+import {
+  Intern,
+  InterviewStatus,
+  QuestionType,
+  QuestionCategory,
+} from '@internship-app/types';
 import { Json } from '@internship-app/types/src/json';
 import { useEffect, useState } from 'react';
 import { FieldValues, useForm } from 'react-hook-form';
@@ -14,10 +19,7 @@ import AdminPage from '../../components/AdminPage';
 import { ConfirmDialog } from '../../components/ConfirmDialog';
 import IntervieweeInfo from '../../components/IntervieweeInfo';
 import MultistepForm from '../../components/MultistepForm';
-import {
-  filterInterviewSteps as getFilteredInterviewSteps,
-  QuestionCategory,
-} from '../../constants/interviewConstants';
+import { filterInterviewSteps as getFilteredInterviewSteps } from '../../constants/interviewConstants';
 import { Path } from '../../constants/paths';
 import { getDefaultValues } from '../../helpers/setDefaultInterviewValues';
 import InterviewQuestionHandler from './InterviewQuestionHandler';

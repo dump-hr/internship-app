@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from 'react-query';
 import toast from 'react-hot-toast';
 import { api } from '.';
-import { OptionType } from '../components/InterviewQuestionAddForm/InterviewQuestionAddForm';
+import { OptionType } from '../components/InterviewQuestionAddHandler/InterviewQuestionAddHandler';
 
 type QuestionToCreate = {
   title: string;

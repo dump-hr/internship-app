@@ -1,7 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { CreateInterviewQuestionDto } from './dto/create-interview-question.dto';
 import { PrismaService } from 'src/prisma.service';
-import { QuestionAvailabilityRequest } from '@internship-app/types';
+import {
+  QuestionAvailabilityRequest,
+  SetInterviewQuestionRequest,
+} from '@internship-app/types';
 
 @Injectable()
 export class InterviewQuestionService {
@@ -41,10 +44,6 @@ export class InterviewQuestionService {
     return interviewQuestions;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} interviewQuestion`;
-  }
-
   async setAvailability(questionId: string, data: QuestionAvailabilityRequest) {
     const availability = await this.prisma.interviewQuestion.update({
       where: {
@@ -55,5 +54,26 @@ export class InterviewQuestionService {
       },
     });
     return availability;
+  }
+
+  async setInterviewQuestion(
+    questionId: string,
+    data: SetInterviewQuestionRequest,
+  ) {
+    const interviewQuestion = await this.prisma.interviewQuestion.update({
+      where: {
+        id: questionId,
+      },
+      data: {
+        title: data.title,
+        type: data.type,
+        category: data.category,
+        min: data.min,
+        max: data.max,
+        step: data.step,
+        options: data.options,
+      },
+    });
+    return interviewQuestion;
   }
 }

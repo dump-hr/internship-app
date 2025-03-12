@@ -1,13 +1,24 @@
 import { DataGrid, GridColDef, GridRenderCellParams } from '@mui/x-data-grid';
-import { MultistepQuestion } from '@internship-app/types';
+import { InterviewQuestion } from '@internship-app/types';
 import { useFetchAllInterviewQuestions } from '../../api/useFetchAllInterviewQuestions';
-import { QuestionCategory } from '../../constants/interviewConstants';
 import { Button } from '@mui/material';
 import { useSetQuestionAvailability } from '../../api/useSetQuestionAvailability';
+import { useState } from 'react';
+import InterviewQuestionDialog from '../InterviewQuestionDialog/InterviewQuestionDialog';
+import { useSetInterviewQuestion } from '../../api/useSetInterviewQuestion';
 
 const InterviewQuestionList = () => {
   const { data: interviewQuestions = [] } = useFetchAllInterviewQuestions();
   const setQuestionAvailability = useSetQuestionAvailability();
+  const setInterviewQuestion = useSetInterviewQuestion();
+
+  const [dialogState, setDialogState] = useState<boolean>(false);
+  const [selectedQuestion, setSelectedQuestion] =
+    useState<InterviewQuestion | null>(null);
+
+  const toggleDialog = () => {
+    setDialogState(!dialogState);
+  };
 
   const toggleAvailability = (params: GridRenderCellParams) => {
     setQuestionAvailability.mutate({
@@ -16,15 +27,29 @@ const InterviewQuestionList = () => {
     });
   };
 
-  const rows = interviewQuestions.map(
-    (question: MultistepQuestion<QuestionCategory>) => ({
-      id: question.id,
-      title: question.title,
-      type: question.type,
-      category: question.category,
-      isEnabled: question.isEnabled,
-    }),
-  );
+  const handleEdit = (params: GridRenderCellParams) => {
+    const questionToUpdate = interviewQuestions.find(
+      (question: InterviewQuestion) => question.id === params.row.id,
+    );
+
+    if (questionToUpdate) {
+      setSelectedQuestion(questionToUpdate);
+      toggleDialog();
+    }
+  };
+
+  const handleSubmitEdit = (question: InterviewQuestion) => {
+    setInterviewQuestion.mutate(question);
+    toggleDialog();
+  };
+
+  const rows = interviewQuestions.map((question: InterviewQuestion) => ({
+    id: question.id,
+    title: question.title,
+    type: question.type,
+    category: question.category,
+    isEnabled: question.isEnabled,
+  }));
 
   const columns: GridColDef[] = [
     {
@@ -61,7 +86,7 @@ const InterviewQuestionList = () => {
             <Button onClick={() => toggleAvailability(params)}>
               {params.row.isEnabled ? 'DISABLE' : 'ENABLE'}
             </Button>
-            <Button>EDIT</Button>
+            <Button onClick={() => handleEdit(params)}>EDIT</Button>
             <Button>STATS</Button>
           </div>
         );
@@ -96,6 +121,16 @@ const InterviewQuestionList = () => {
         pageSizeOptions={[5, 10]}
         disableRowSelectionOnClick
       />
+
+      {selectedQuestion && (
+        <InterviewQuestionDialog
+          open={dialogState}
+          onClose={() => toggleDialog()}
+          onSubmit={handleSubmitEdit}
+          initialQuestion={selectedQuestion}
+          mode="edit"
+        />
+      )}
     </div>
   );
 };
