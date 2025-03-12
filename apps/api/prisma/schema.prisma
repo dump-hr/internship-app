@@ -104,16 +104,17 @@ model InternQuestionAnswer {
 }
 
 model InterviewSlot {
-  id           String                         @id @default(uuid())
-  intern       Intern?                        @relation(fields: [internId], references: [id])
-  internId     String?                        @unique
-  start        DateTime
-  end          DateTime
-  answers      Json
-  score        Int?
-  createdAt    DateTime                       @default(now())
-  updatedAt    DateTime                       @updatedAt
-  interviewers InterviewMemberParticipation[]
+  id            String                         @id @default(uuid())
+  intern        Intern?                        @relation(fields: [internId], references: [id])
+  internId      String?                        @unique
+  start         DateTime
+  end           DateTime
+  answers       Json
+  score         Int?
+  createdAt     DateTime                       @default(now())
+  updatedAt     DateTime                       @updatedAt
+  interviewers  InterviewMemberParticipation[]
+  interviewQuestionAnswer InterviewQuestionAnswer[]
 }
 
 model InterviewMemberParticipation {
@@ -138,6 +139,35 @@ model AdminLog {
   action      AdminLogAction
   description String
   date        DateTime       @default(now())
+}
+
+model InterviewQuestion {
+  id               String             @id @default(uuid())
+  title            String
+  type             QuestionType
+  category         QuestionCategory
+  min              Int?
+  max              Int?
+  step             Int?
+  options          String[]           @default([])
+  isActive         Boolean            @default(true)
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime           @updatedAt
+  interviewQuestionAnswers InterviewQuestionAnswer[]
+}
+
+model InterviewQuestionAnswer {
+  id              String            @id @default(uuid())
+  value           Json
+  flagged         Boolean           @default(false)
+  question        InterviewQuestion @relation(fields: [questionId], references: [id])
+  questionId      String
+  interviewSlot   InterviewSlot     @relation(fields: [interviewSlotId], references: [id], onDelete: Cascade)
+  interviewSlotId String
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+
+  @@unique([questionId, interviewSlotId])
 }
 
 enum Discipline {
@@ -189,4 +219,21 @@ enum AdminLogAction {
   Update
   Delete
   Email
+}
+
+enum QuestionType {
+  Field
+  TextArea
+  Select
+  Slider
+}
+
+enum QuestionCategory {
+  General
+  Personal
+  Development
+  Design
+  Marketing
+  Multimedia
+  Final
 }
