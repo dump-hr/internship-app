@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InterviewQuestionDto } from './dto/interview-question.dto';
 import { PrismaService } from 'src/prisma.service';
+import { InterviewQuestion } from '@prisma/client';
 
 @Injectable()
 export class InterviewQuestionService {
@@ -54,12 +55,30 @@ export class InterviewQuestionService {
   }
 
   async getAll() {
-    const interviewSlots = await this.prisma.interviewQuestion.findMany({
+    const interviewQuestions = await this.prisma.interviewQuestion.findMany({
       include: {
         details: true,
       },
     });
-    return interviewSlots;
+    const interviewQuestionDtos =
+      this.getDtosFromInterviewQuestionList(interviewQuestions);
+    return interviewQuestionDtos;
+  }
+
+  private getDtosFromInterviewQuestionList(
+    interviewQuestions: InterviewQuestion[],
+  ) {
+    const interviewQuestionDtos: InterviewQuestionDto[] =
+      interviewQuestions.map((q) => {
+        return {
+          id: q.id,
+          category: q.category,
+          type: q.type,
+          question: q.question,
+        };
+      });
+
+    return interviewQuestionDtos;
   }
 
   async getAnswersByQuestionId(questionId: string) {
