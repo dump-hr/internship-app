@@ -8,11 +8,12 @@ import {
   IsJSON,
   IsOptional,
   IsString,
+  IsUUID,
   Max,
   Min,
 } from 'class-validator';
 
-export class CreateInterviewQuestionDetailsDto {
+export class InterviewQuestionDetailsDto {
   @IsOptional()
   @IsJSON()
   options?: any;
@@ -32,7 +33,11 @@ export class CreateInterviewQuestionDetailsDto {
   step?: number;
 }
 
-export class CreateInterviewQuestionDto {
+export class InterviewQuestionDto {
+  @IsOptional()
+  @IsUUID()
+  id?: string;
+
   @IsString()
   question: string;
 
@@ -43,5 +48,5 @@ export class CreateInterviewQuestionDto {
   category: InterviewQuestionCategory;
 
   @IsOptional()
-  details?: CreateInterviewQuestionDetailsDto;
+  details?: InterviewQuestionDetailsDto;
 }
