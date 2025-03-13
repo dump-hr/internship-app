@@ -4,14 +4,14 @@ import { InterviewQuestionDto } from './dto/interview-question.dto';
 import { AdminLogAction } from '@prisma/client';
 import { LoggerService } from 'src/logger/logger.service';
 
-@Controller('interview')
+@Controller('interview/questions')
 export class InterviewQuestionController {
   constructor(
     private readonly InterviewQuestionService: InterviewQuestionService,
     private readonly loggerService: LoggerService,
   ) {}
 
-  @Post('questions/save')
+  @Post('save')
   async update(@Body() InterviewQuestionDtos: InterviewQuestionDto[]) {
     await this.loggerService.createAdminLog(
       AdminLogAction.Create,
@@ -24,7 +24,7 @@ export class InterviewQuestionController {
     return updatedQuestions;
   }
 
-  @Get('questions')
+  @Get()
   async getAll() {
     return await this.InterviewQuestionService.getAll();
   }
