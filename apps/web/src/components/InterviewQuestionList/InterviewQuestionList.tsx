@@ -6,6 +6,8 @@ import { useSetQuestionAvailability } from '../../api/useSetQuestionAvailability
 import { useState } from 'react';
 import InterviewQuestionDialog from '../InterviewQuestionDialog/InterviewQuestionDialog';
 import { useSetInterviewQuestion } from '../../api/useSetInterviewQuestion';
+import { Link } from 'wouter';
+import { Path } from '../../constants/paths';
 
 const InterviewQuestionList = () => {
   const { data: interviewQuestions = [] } = useFetchAllInterviewQuestions();
@@ -87,7 +89,12 @@ const InterviewQuestionList = () => {
               {params.row.isEnabled ? 'DISABLE' : 'ENABLE'}
             </Button>
             <Button onClick={() => handleEdit(params)}>EDIT</Button>
-            <Button>STATS</Button>
+            <Button
+              component={Link}
+              to={Path.QuestionStats.replace(':questionId', params.row.id)}
+            >
+              STATS
+            </Button>
           </div>
         );
       },

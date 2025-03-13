@@ -1,14 +1,17 @@
-import { Question, QuestionType } from '@internship-app/types';
+import {
+  InterviewQuestion,
+  QuestionType,
+} from '@internship-app/types';
 
 export const getDefaultValues = (
-  questions: Question[],
+  questions: InterviewQuestion[],
 ): { [key: string]: string } => {
-  const defaultValueForQuestion = (q: Question) => {
+  const defaultValueForQuestion = (q: InterviewQuestion) => {
     switch (q.type) {
       case QuestionType.Select:
         return q.options[0];
       case QuestionType.Slider:
-        return Math.floor((q.min + q.max) / 2);
+        if (q.min && q.max) return Math.floor((q.min + q.max) / 2);
       default:
         return '';
     }

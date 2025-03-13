@@ -77,4 +77,9 @@ export class InterviewSlotController {
   ) {
     return await this.interviewSlotService.scheduleInterview(slotId, internId);
   }
+
+  @Get('interview-answers/:questionId')
+  async getInterviewAnswers(@Param('questionId') questionId: string) {
+    return await this.interviewSlotService.getAnswersToQuestion(questionId);
+  }
 }

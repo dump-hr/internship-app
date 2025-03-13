@@ -55,9 +55,11 @@ const InterviewQuestionDialog = ({
   );
 
   useEffect(() => {
-    initialQuestion && mode === 'edit'
-      ? setQuestion(initialQuestion)
-      : setQuestion(defaultQuestion);
+    if (open) {
+      initialQuestion && mode === 'edit'
+        ? setQuestion(initialQuestion)
+        : setQuestion(defaultQuestion);
+    }
   }, [initialQuestion, open, mode]);
 
   useEffect(() => {
