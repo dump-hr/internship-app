@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { CreateInterviewDto } from './dto/create-interview.dto';
+import { CreateInterviewQuestionDto } from './dto/create-interview.dto';
 import { UpdateInterviewDto } from './dto/update-interview.dto';
 import { PrismaService } from 'src/prisma.service';
 
@@ -7,11 +7,29 @@ import { PrismaService } from 'src/prisma.service';
 export class InterviewService {
   constructor(private readonly prisma: PrismaService) {}
 
-  create(createInterviewDto: CreateInterviewDto) {
-    return 'This action adds a new interview';
+  async create(createInterviewQuestionDto: CreateInterviewQuestionDto) {
+    const { details, ...questionData } = createInterviewQuestionDto;
+
+    const newQuestion = await this.prisma.interviewQuestion.create({
+      data: {
+        ...questionData,
+        details: details
+          ? {
+              create: {
+                options: details.options || null,
+                min: details.min || null,
+                max: details.max || null,
+                step: details.step || null,
+              },
+            }
+          : undefined,
+      },
+    });
+
+    return newQuestion;
   }
 
-  async getAllQuestions() {
+  async getAll() {
     const interviewSlots = await this.prisma.interviewQuestion.findMany({
       include: {
         details: true,
@@ -27,15 +45,7 @@ export class InterviewService {
     return answers;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} interview`;
-  }
-
   update(id: number, updateInterviewDto: UpdateInterviewDto) {
     return `This action updates a #${id} interview`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} interview`;
   }
 }

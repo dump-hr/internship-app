@@ -1,4 +1,6 @@
 import { PartialType } from '@nestjs/swagger';
-import { CreateInterviewDto } from './create-interview.dto';
+import { CreateInterviewQuestionDto } from './create-interview.dto';
 
-export class UpdateInterviewDto extends PartialType(CreateInterviewDto) {}
+export class UpdateInterviewDto extends PartialType(
+  CreateInterviewQuestionDto,
+) {}

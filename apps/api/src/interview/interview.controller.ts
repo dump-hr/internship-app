@@ -1,30 +1,33 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
-  UseGuards,
-} from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param } from '@nestjs/common';
 import { InterviewService } from './interview.service';
-import { CreateInterviewDto } from './dto/create-interview.dto';
+import { CreateInterviewQuestionDto } from './dto/create-interview.dto';
 import { UpdateInterviewDto } from './dto/update-interview.dto';
-import { JwtAuthGuard } from 'src/auth/jwt-auth-guard';
+import { AdminLogAction } from '@prisma/client';
+import { LoggerService } from 'src/logger/logger.service';
 
 @Controller('interview')
 export class InterviewController {
-  constructor(private readonly interviewService: InterviewService) {}
+  constructor(
+    private readonly interviewService: InterviewService,
+    private readonly loggerService: LoggerService,
+  ) {}
 
-  @Post()
-  create(@Body() createInterviewDto: CreateInterviewDto) {
-    return this.interviewService.create(createInterviewDto);
+  @Post('questions')
+  async create(@Body() createInterviewQuestionDto: CreateInterviewQuestionDto) {
+    await this.loggerService.createAdminLog(
+      AdminLogAction.Create,
+      `Kreiranje pitanja ${createInterviewQuestionDto.question}`,
+    );
+
+    const newInterviewer = await this.interviewService.create(
+      createInterviewQuestionDto,
+    );
+    return newInterviewer;
   }
 
   @Get('questions')
-  async getAllQuestions() {
-    return await this.interviewService.getAllQuestions();
+  async getAll() {
+    return await this.interviewService.getAll();
   }
 
   @Get('answers/:questionId')
@@ -38,10 +41,5 @@ export class InterviewController {
     @Body() updateInterviewDto: UpdateInterviewDto,
   ) {
     return this.interviewService.update(+id, updateInterviewDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.interviewService.remove(+id);
   }
 }
