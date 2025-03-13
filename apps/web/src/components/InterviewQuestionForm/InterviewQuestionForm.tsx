@@ -16,21 +16,29 @@ export const InterviewQuestionForm = ({ onSubmit }) => {
   const [question, setQuestion] = useState('');
   const [category, setCategory] = useState('');
   const [type, setType] = useState('');
+  const [option, setOption] = useState('');
+  const [minValue, setMinValue] = useState('');
+  const [maxValue, setMaxValue] = useState('');
+  const [stepValue, setStepValue] = useState('');
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: Event) => {
     e.preventDefault();
     if (!question.trim()) return;
     onSubmit({ question, category, type });
     setQuestion('');
     setCategory('');
     setType('');
+    setOption('');
+    setMinValue('');
+    setMaxValue('');
+    setStepValue('');
   };
   return (
     <Card
       sx={{
         width: '90%',
         height: 'auto',
-        mt: 4,
+        m: 4,
         p: 2,
       }}
     >
@@ -90,18 +98,55 @@ export const InterviewQuestionForm = ({ onSubmit }) => {
             ))}
           </Select>
 
-          {type === 'Select' && (
+          {(type === 'Select' || type === 'Radio' || type === 'Checkbox') && (
             <>
               <TextField
                 label="Options"
                 fullWidth
                 variant="outlined"
                 value={option}
-                onChange={(e) => setQuestion(e.target.value)}
+                onChange={(e) => setOption(e.target.value)}
                 required
                 sx={{ height: '50px', width: '200px' }}
               />
               <Button>Add option</Button>
+            </>
+          )}
+
+          {type === 'Slider' && (
+            <>
+              <TextField
+                sx={{ height: '50px', width: '200px' }}
+                label="Min value"
+                type="number"
+                fullWidth
+                variant="outlined"
+                value={minValue}
+                onChange={(e) => setMinValue(e.target.value)}
+                required
+              />
+
+              <TextField
+                sx={{ height: '50px', width: '200px' }}
+                label="Max value"
+                type="number"
+                fullWidth
+                variant="outlined"
+                value={maxValue}
+                onChange={(e) => setMaxValue(e.target.value)}
+                required
+              />
+
+              <TextField
+                sx={{ height: '50px', width: '200px' }}
+                label="Step value"
+                type="number"
+                fullWidth
+                variant="outlined"
+                value={stepValue}
+                onChange={(e) => setStepValue(e.target.value)}
+                required
+              />
             </>
           )}
 

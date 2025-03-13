@@ -1,6 +1,7 @@
 import { QuestionType } from '@internship-app/types/';
 import { Box, Button, MenuItem, Select } from '@mui/material';
 import {
+  DataGrid,
   GridCellParams,
   GridColDef,
   GridRenderEditCellParams,
@@ -20,9 +21,9 @@ interface SelectEditProps extends GridRenderEditCellParams {
 export const InterviewQuestions = () => {
   const { data: allQuestions } = useFetchAllInterviewQuestions();
   const [rowModesModel, setRowModesModel] = useState<GridRowModesModel>({});
-
+  const [showForm, setShowForm] = useState(false);
   const handleAddQuestionClick = () => {
-    return <InterviewQuestionForm />;
+    setShowForm((prev) => !prev);
   };
 
   const handleEditClick = (id: string) => {
@@ -136,25 +137,32 @@ export const InterviewQuestions = () => {
   if (!allQuestions) return <div>Loading...</div>;
 
   return (
-    <InterviewQuestionForm />
-    // <Box sx={{ height: '100%', width: '100%' }}>
-    //   <Button
-    //     variant="outlined"
-    //     sx={{ margin: '30px 0' }}
-    //     onClick={handleAddQuestionClick}
-    //   >
-    //     Add new question
-    //   </Button>
-    //   <DataGrid
-    //     columns={columns}
-    //     rows={allQuestions}
-    //     editMode="row"
-    //     rowModesModel={rowModesModel}
-    //     onRowModesModelChange={setRowModesModel}
-    //     processRowUpdate={processRowUpdate}
-    //     autoHeight
-    //     pageSizeOptions={[10, 20, 50, 100]}
-    //   />
-    // </Box>
+    <>
+      <Box sx={{ height: '100%', width: '100%', padding: '50px' }}>
+        <Button
+          variant="outlined"
+          sx={{ margin: '30px 0' }}
+          onClick={handleAddQuestionClick}
+          className="add-new-question-button"
+        >
+          {showForm ? 'Close form' : 'Add question'}
+        </Button>
+        {showForm && <InterviewQuestionForm />}
+        <DataGrid
+          columns={columns}
+          rows={allQuestions}
+          editMode="row"
+          rowModesModel={rowModesModel}
+          onRowModesModelChange={setRowModesModel}
+          processRowUpdate={processRowUpdate}
+          autoHeight
+          initialState={{
+            pagination: {
+              paginationModel: { pageSize: 10 },
+            },
+          }}
+        />
+      </Box>
+    </>
   );
 };
