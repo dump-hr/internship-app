@@ -20,6 +20,13 @@ export class InterviewService {
     return interviewSlots;
   }
 
+  async getAnswersByQuestionId(questionId: string) {
+    const answers = await this.prisma.interviewQuestionAnswer.findMany({
+      where: { questionId },
+    });
+    return answers;
+  }
+
   findOne(id: number) {
     return `This action returns a #${id} interview`;
   }

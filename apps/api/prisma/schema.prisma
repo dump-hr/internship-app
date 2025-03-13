@@ -129,15 +129,15 @@ model InterviewQuestion {
 }
 
 model InterviewQuestionDetails {
-  id         String   @id @default(uuid())
-  questionId String   @unique
+  id         String            @id @default(uuid())
+  questionId String            @unique
   options    Json?
   min        Int?
   max        Int?
   step       Int?
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
-  question InterviewQuestion @relation("QuestionDetails", fields: [questionId], references: [id])
+  createdAt  DateTime          @default(now())
+  updatedAt  DateTime          @updatedAt
+  question   InterviewQuestion @relation("QuestionDetails", fields: [questionId], references: [id])
 }
 
 model InterviewQuestionAnswer {
@@ -147,6 +147,7 @@ model InterviewQuestionAnswer {
   internDiscipline           InternDiscipline  @relation(fields: [internDisciplineInternId, internDisciplineDiscipline], references: [internId, discipline])
   internDisciplineInternId   String
   internDisciplineDiscipline Discipline
+  answer                     String
   createdAt                  DateTime          @default(now())
   updatedAt                  DateTime          @updatedAt
 }

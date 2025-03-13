@@ -27,9 +27,9 @@ export class InterviewController {
     return await this.interviewService.getAllQuestions();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.interviewService.findOne(+id);
+  @Get('answers/:questionId')
+  async getAnswersByQuestionId(@Param('questionId') questionId: string) {
+    return await this.interviewService.getAnswersByQuestionId(questionId);
   }
 
   @Patch(':id')

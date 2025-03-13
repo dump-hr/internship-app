@@ -248,6 +248,31 @@ async function main() {
     ],
   });
 
+  await prisma.interviewQuestion.createMany({
+    data: [
+      {
+        id: 'q1',
+        question: 'What inspired you to pursue development?',
+        type: 'TextArea',
+        category: 'Development',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+    ],
+  });
+
+  await prisma.interviewQuestionAnswer.createMany({
+    data: [
+      {
+        id: 'a1',
+        questionId: 'q1',
+        internDisciplineDiscipline: 'Development',
+        internDisciplineInternId: 'ante-roca',
+        answer: 'Video games',
+      },
+    ],
+  });
+
   await prisma.interviewSlot.create({
     data: {
       id: '1',
