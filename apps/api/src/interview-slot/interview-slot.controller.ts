@@ -1,4 +1,7 @@
-import { ScheduleInterviewRequest } from '@internship-app/types';
+import {
+  ScheduleInterviewRequest,
+  SetAnswerFlagRequest,
+} from '@internship-app/types';
 import {
   Body,
   Controller,
@@ -81,5 +84,13 @@ export class InterviewSlotController {
   @Get('interview-answers/:questionId')
   async getInterviewAnswers(@Param('questionId') questionId: string) {
     return await this.interviewSlotService.getAnswersToQuestion(questionId);
+  }
+
+  @Patch('flag-answer/:slotId')
+  async flagAnswer(
+    @Param('slotId') slotId: string,
+    @Body() { questionId }: SetAnswerFlagRequest,
+  ) {
+    return await this.interviewSlotService.flagAnswer(slotId, questionId);
   }
 }

@@ -330,4 +330,25 @@ export class InterviewSlotService {
 
     return answersToQuestion;
   }
+
+  async flagAnswer(slotId: string, questionId: string) {
+    const currentSlot = await this.prisma.interviewSlot.findUnique({
+      where: { id: slotId },
+    });
+
+    const answers = currentSlot.answers as Record<string, any>[];
+
+    const answerIndex = answers.findIndex((answer) => answer.id === questionId);
+
+    answers[answerIndex].isFlaged = !answers[answerIndex].isFlaged;
+
+    const flaggedAnswer = await this.prisma.interviewSlot.update({
+      where: { id: slotId },
+      data: {
+        answers: answers,
+      },
+    });
+
+    return flaggedAnswer;
+  }
 }

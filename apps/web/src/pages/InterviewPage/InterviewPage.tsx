@@ -32,7 +32,11 @@ const InterviewPage = () => {
   const mapAnswersToQuestions = (
     answers: FieldValues,
   ): { [key: number]: Json } => {
-    return interviewQuestions.map((q) => ({ ...q, ...answers[q.id] }));
+    return interviewQuestions.map((q) => ({
+      ...q,
+      ...answers[q.id],
+      isFlaged: false,
+    }));
   };
 
   const [, params] = useRoute(Path.Interview);

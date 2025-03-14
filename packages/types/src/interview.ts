@@ -10,3 +10,8 @@ export type SetInterviewRequest = {
   answers: Json;
   score: number;
 };
+
+export type SetAnswerFlagRequest = {
+  slotId: string;
+  questionId: string;
+};

@@ -1,23 +1,37 @@
 import { Link, useRoute } from 'wouter';
 import { Path } from '../../constants/paths';
 import { useFetchInterviewQuestionAnswers } from '../../api/useFetchInterviewQuestionAnswers';
-import { DataGrid, GridColDef } from '@mui/x-data-grid';
+import { DataGrid, GridColDef, GridRenderCellParams } from '@mui/x-data-grid';
 import { Button, Typography } from '@mui/material';
 import AdminPage from '../../components/AdminPage';
+import { useSetAnswerFlag } from '../../api/useSetAnwerFlag';
+import { SetAnswerFlagRequest } from '@internship-app/types';
 
 const InterviewQuestionStats = () => {
   const [, params] = useRoute(Path.QuestionStats);
   const questionId = params?.questionId;
+  const setAnswerFlag = useSetAnswerFlag();
 
   if (!questionId) return <p>Invalid question Id</p>;
 
   const { data: answers } = useFetchInterviewQuestionAnswers(questionId);
 
-  if (!answers) return <></>;
+  const filteredAnswers = answers?.filter((a) => a.answer && a.answer.value);
 
-  if (answers.length < 1) return <h1>No answers to this question</h1>;
+  if (!filteredAnswers) return <h1>Loading...</h1>;
 
-  const rows = answers.map((item) => ({
+  if (filteredAnswers.length < 1) return <h1>No answers to this question</h1>;
+
+  const handleAnswerFlag = (params: GridRenderCellParams) => {
+    const answer = filteredAnswers.find((a) => a.intern.id === params.row.id);
+    const request: SetAnswerFlagRequest = {
+      slotId: answer.slotId,
+      questionId: answer.answer.id,
+    };
+    setAnswerFlag.mutate(request);
+  };
+
+  const rows = filteredAnswers.map((item) => ({
     id: item.intern.id,
     fullName: item.intern.firstName.concat(' ', item.intern.lastName),
     value: item.answer.value,
@@ -54,7 +68,7 @@ const InterviewQuestionStats = () => {
               display: 'flex',
             }}
           >
-            <Button>FLAG</Button>
+            <Button onClick={() => handleAnswerFlag(params)}>FLAG</Button>
             <Button
               component={Link}
               to={Path.Intern.replace(':internId', params.row.id)}
@@ -67,6 +81,8 @@ const InterviewQuestionStats = () => {
     },
   ];
 
+  console.log(filteredAnswers);
+
   return (
     <AdminPage>
       <Typography
@@ -77,7 +93,7 @@ const InterviewQuestionStats = () => {
           textAlign: 'center',
         }}
       >
-        {answers[0].answer.title}
+        {filteredAnswers[0].answer.title}
       </Typography>
       <div
         style={{
