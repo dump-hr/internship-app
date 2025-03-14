@@ -1,5 +1,6 @@
 import { InterviewQuestionType } from '@internship-app/types';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import OptionCreator from './OptionCreator';
 
 interface InterviewQuestionDetailsPros {
   type: InterviewQuestionType;
@@ -15,9 +16,20 @@ interface InterviewQuestionDetailsType {
 const InterviewQuestionDetails: React.FC<InterviewQuestionDetailsPros> = ({
   type,
 }) => {
-  const [details, setDetails] = useState<InterviewQuestionDetailsType | null>(
-    getDetailsFromType(),
-  );
+  const [details, setDetails] = useState<InterviewQuestionDetailsType | null>();
+  const [options, setOptions] = useState<string[] | undefined>();
+
+  useEffect(() => {
+    setDetails(getDetailsFromType());
+  }, []);
+
+  useEffect(() => {
+    if (details) setOptions(details.options);
+  }, [details]);
+
+  useEffect(() => {
+    setDetails({ ...details, options: options });
+  }, [options]);
 
   function getDetailsFromType(): InterviewQuestionDetailsType | null {
     let newDetails = null;
@@ -50,7 +62,9 @@ const InterviewQuestionDetails: React.FC<InterviewQuestionDetailsPros> = ({
     <>
       {details && (
         <form className="interview-question-details">
-          {details.options && <label>Opcije:</label>}
+          {details.options && (
+            <OptionCreator options={details.options} setOptions={setOptions} />
+          )}
           {details.min !== null && (
             <label>
               Min:
