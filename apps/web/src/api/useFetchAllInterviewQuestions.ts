@@ -1,9 +1,9 @@
 import { useQuery } from 'react-query';
 import { api } from '.';
-import { InterviewQuestion } from '@internship-app/types';
+import { InterviewQuestion, Question } from '@internship-app/types';
 
 const fetchAllInterviewQuestions = async () => {
-  return api.get<never, Array<InterviewQuestion>>('/interview-question');
+  return api.get<never, Array<Question>>('/interview-question');
 };
 
 export const useFetchAllInterviewQuestions = () => {

@@ -1,6 +1,8 @@
 import { Question, QuestionType } from '@internship-app/types';
 import {
   Checkbox,
+  FormControlLabel,
+  FormGroup,
   InputLabel,
   MenuItem,
   Select,
@@ -54,12 +56,34 @@ const getInputComponent = (
         />
       );
     case QuestionType.Checkbox:
+      const values = field.value ? field.value.split(' - ') : [];
+      const options = question.options || [];
+
       return (
-        <Checkbox
-          {...field}
-          checked={field.value}
-          onChange={(e) => field.onChange(e.target.checked)}
-        />
+        <FormGroup>
+          {options.map((option) => {
+            const isChecked = values.includes(option.value);
+
+            return (
+              <FormControlLabel
+                key={option.id}
+                control={
+                  <Checkbox
+                    checked={isChecked}
+                    onChange={() => {
+                      const newValues = isChecked
+                        ? values.filter((val: string) => val !== option.value)
+                        : [...values, option.value];
+
+                      field.onChange(newValues.join(' - '));
+                    }}
+                  />
+                }
+                label={option.value}
+              />
+            );
+          })}
+        </FormGroup>
       );
     case QuestionType.Date:
       return <TextField {...field} type="date" />;
@@ -81,7 +105,6 @@ const getInputComponent = (
 
 const InputHandler = ({ question, form }: InputHandlerProps) => {
   const { control } = form;
-
   return (
     <>
       {question.title && <InputLabel>{question.title}</InputLabel>}

@@ -1,12 +1,13 @@
 import {
   InterviewQuestion,
+  Question,
   QuestionType,
 } from '@internship-app/types';
 
 export const getDefaultValues = (
-  questions: InterviewQuestion[],
+  questions: Question[],
 ): { [key: string]: string } => {
-  const defaultValueForQuestion = (q: InterviewQuestion) => {
+  const defaultValueForQuestion = (q: Question) => {
     switch (q.type) {
       case QuestionType.Select:
         return q.options[0];

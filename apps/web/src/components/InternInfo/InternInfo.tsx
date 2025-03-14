@@ -155,7 +155,14 @@ const InternInfo = ({ intern }: InternInfoProps) => {
                   <h3 className={styles.itemTitle}>
                     {item.title} {!item.tick || '⚠️'}
                   </h3>
+
                   <span>{item.value}</span>
+
+                  {/* <span>
+                    {typeof item.value === 'object'
+                      ? JSON.stringify(item.value)
+                      : item.value.toString()}
+                  </span> */}
                 </div>
               );
             })}

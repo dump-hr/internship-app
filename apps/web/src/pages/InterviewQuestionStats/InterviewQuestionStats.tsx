@@ -13,9 +13,9 @@ const InterviewQuestionStats = () => {
 
   const { data: answers } = useFetchInterviewQuestionAnswers(questionId);
 
-  if (!answers) return;
+  if (!answers) return <></>;
 
-  console.log(answers);
+  if (answers.length < 1) return <h1>No answers to this question</h1>;
 
   const rows = answers.map((item) => ({
     id: item.intern.id,
@@ -78,7 +78,7 @@ const InterviewQuestionStats = () => {
         }}
       >
         {answers[0].answer.title}
-      </Typography>{' '}
+      </Typography>
       <div
         style={{
           width: '80%',

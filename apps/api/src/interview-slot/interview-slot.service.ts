@@ -314,10 +314,10 @@ export class InterviewSlotService {
 
     const answersToQuestion = interviewSlots
       .map((slot) => {
-        const answers = slot.answers as any[];
+        const answers = Array.isArray(slot.answers) ? slot.answers : [];
 
         const questionAnswer = answers.find(
-          (answer) => answer.id === questionId,
+          (answer: any) => answer.id === questionId,
         );
 
         return {
