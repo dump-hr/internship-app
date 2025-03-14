@@ -10,9 +10,11 @@ import {
 } from '@mui/material';
 import { useState } from 'react';
 
+import { useCreateInterviewQuestion } from '../../api/useCreateInterviewQuestion.tsx';
 import { QuestionCategory } from '../../constants/interviewConstants.ts';
+import toast from 'react-hot-toast';
 
-export const InterviewQuestionForm = ({ onSubmit }) => {
+export const InterviewQuestionForm = () => {
   const [question, setQuestion] = useState('');
   const [category, setCategory] = useState('');
   const [type, setType] = useState('');
@@ -21,18 +23,45 @@ export const InterviewQuestionForm = ({ onSubmit }) => {
   const [maxValue, setMaxValue] = useState('');
   const [stepValue, setStepValue] = useState('');
 
-  const handleSubmit = (e: Event) => {
+  const { mutate, error } = useCreateInterviewQuestion();
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
     if (!question.trim()) return;
-    onSubmit({ question, category, type });
-    setQuestion('');
-    setCategory('');
-    setType('');
-    setOption('');
-    setMinValue('');
-    setMaxValue('');
-    setStepValue('');
+
+    const questionData = {
+      question,
+      category: category as QuestionCategory,
+      type: type as QuestionType,
+      option,
+      minValue:
+        type === 'Slider' ? (minValue ? Number(minValue) : null) : undefined,
+      maxValue:
+        type === 'Slider' ? (maxValue ? Number(maxValue) : null) : undefined,
+      stepValue:
+        type === 'Slider' ? (stepValue ? Number(stepValue) : null) : undefined,
+    };
+
+    try {
+      mutate(questionData);
+
+      setQuestion('');
+      setCategory('');
+      setType('');
+      setOption('');
+      setMinValue('');
+      setMaxValue('');
+      setStepValue('');
+
+      toast.success('Question added successfully');
+    } catch (err) {
+      console.error('Error submitting question:', err);
+    }
   };
+
+  if (error) return <div>Error: {error}</div>;
+
   return (
     <Card
       sx={{

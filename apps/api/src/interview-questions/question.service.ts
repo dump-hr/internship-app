@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { QuestionCategory, QuestionType } from '@prisma/client';
+import { InternalServerErrorException } from '@nestjs/common';
 
 import { PrismaService } from '../prisma.service';
-
+import { CreateInterviewQuestionDto } from './dto/createInterviewQuestion.dto';
 @Injectable()
 export class QuestionService {
   constructor(private readonly prisma: PrismaService) {}
@@ -15,23 +15,23 @@ export class QuestionService {
     }
   }
 
-  async createInterviewQuestion(data: {
-    question: string;
-    type: QuestionType;
-    category: QuestionCategory;
-    minValue?: number | null;
-    maxValue?: number | null;
-    stepValue?: number | null;
-  }) {
-    return this.prisma.interviewQuestion.create({
-      data: {
-        question: data.question,
-        type: data.type,
-        category: data.category,
-        minValue: data.minValue ?? null,
-        maxValue: data.maxValue ?? null,
-        stepValue: data.stepValue ?? null,
-      },
-    });
+  async createInterviewQuestion(data: CreateInterviewQuestionDto) {
+    try {
+      return await this.prisma.interviewQuestion.create({
+        data: {
+          question: data.question,
+          type: data.type,
+          category: data.category,
+          minValue: data.minValue,
+          maxValue: data.maxValue,
+          stepValue: data.stepValue,
+        },
+      });
+    } catch (error) {
+      throw new InternalServerErrorException(
+        'Failed to create interview question',
+        error.message,
+      );
+    }
   }
 }
