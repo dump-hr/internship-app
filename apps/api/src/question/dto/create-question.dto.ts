@@ -1,4 +1,5 @@
 import {
+  IsArray,
   IsBoolean,
   IsEnum,
   IsInt,
@@ -32,4 +33,9 @@ export class CreateQuestionDto {
   @IsOptional()
   @IsBoolean()
   isEnabled?: boolean;
+
+  @IsOptional()
+  @IsArray()
+  @IsString({ each: true })
+  options?: string[] | null;
 }

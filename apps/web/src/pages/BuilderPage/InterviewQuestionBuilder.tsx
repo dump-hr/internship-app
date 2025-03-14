@@ -7,15 +7,25 @@ import {
 import LayoutSpacing from '../../components/LayoutSpacing';
 import LogoHeader from '../../components/LogoHeader';
 import { useState } from 'react';
-import { Question } from '@internship-app/types';
+import { InterviewQuestion } from '@internship-app/types';
+import { useCreateInterviewQuestion } from '../../api/useCreateInterviewQuestion';
+import toast, { Toaster } from 'react-hot-toast';
 
 export const InterviewQuestionBuilder = () => {
   const { data: allQuestions, isFetching } = useFetchInterviewQuestions();
 
   const [modalOpen, setModalOpen] = useState(false);
 
-  const handleAddQuestion = (newQuestion: Question) => {
+  const createInterviewQuestion = useCreateInterviewQuestion();
+
+  const handleAddQuestion = (newQuestion: InterviewQuestion) => {
     console.log('Dodano pitanje:', newQuestion);
+
+    createInterviewQuestion.mutate(newQuestion, {
+      onSuccess: () => {
+        toast.success('Pitanje uspješno dodano!');
+      },
+    });
   };
 
   if (isFetching) {
@@ -51,6 +61,7 @@ export const InterviewQuestionBuilder = () => {
           <QuestionInfo question={question} />
         ))}
       </LayoutSpacing>
+      <Toaster />
     </div>
   );
 };

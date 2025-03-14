@@ -134,15 +134,9 @@ model InterviewQuestion {
    maxValue         Int?
    stepValue        Int?               @default(1)
    isEnabled        Boolean            @default(true) 
-   questionOptions  QuestionOption[]
+   options          String[]
  }
- 
- model QuestionOption {
-    id                String            @id @default(uuid())
-    questionId        String
-    value             String
-    InterviewQuestion InterviewQuestion @relation(fields: [questionId], references: [id], onDelete: Cascade)
- }
+
  
  enum QuestionType {
    Field
