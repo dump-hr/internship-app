@@ -1,6 +1,7 @@
 import { Question, QuestionType } from '@internship-app/types';
 import {
   Checkbox,
+  FormControlLabel,
   InputLabel,
   MenuItem,
   Select,
@@ -15,6 +16,7 @@ import {
   FieldValues,
   UseFormReturn,
 } from 'react-hook-form';
+import { Radio } from '@mui/joy';
 
 type InputHandlerProps = {
   question: Question;
@@ -55,11 +57,46 @@ const getInputComponent = (
       );
     case QuestionType.Checkbox:
       return (
-        <Checkbox
-          {...field}
-          checked={field.value}
-          onChange={(e) => field.onChange(e.target.checked)}
-        />
+        <>
+          {question.options &&
+            question.options.map((option) => (
+              <FormControlLabel
+                key={option}
+                control={
+                  <Checkbox
+                    checked={field.value?.includes(option)}
+                    onChange={(e) => {
+                      const selectedOptions = e.target.checked
+                        ? [...(field.value || []), option]
+                        : field.value.filter((val: string) => val !== option);
+                      field.onChange(selectedOptions);
+                    }}
+                    value={option}
+                  />
+                }
+                label={option}
+              />
+            ))}
+        </>
+      );
+    case QuestionType.Radio:
+      return (
+        <>
+          {question.options.map((option) => (
+            <FormControlLabel
+              key={option}
+              control={
+                <Radio
+                  {...field}
+                  value={option}
+                  checked={field.value === option}
+                  onChange={(e) => field.onChange(e.target.value)}
+                />
+              }
+              label={option}
+            />
+          ))}
+        </>
       );
     case QuestionType.Date:
       return <TextField {...field} type="date" />;
