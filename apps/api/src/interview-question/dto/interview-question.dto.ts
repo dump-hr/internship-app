@@ -1,8 +1,10 @@
 import {
+  Discipline,
   InterviewQuestionCategory,
   InterviewQuestionType,
 } from '@prisma/client';
 import {
+  IsBoolean,
   IsEnum,
   IsInt,
   IsJSON,
@@ -46,6 +48,12 @@ export class InterviewQuestionDto {
 
   @IsEnum(InterviewQuestionCategory)
   category: InterviewQuestionCategory;
+
+  @IsEnum(Discipline)
+  discipline?: Discipline;
+
+  @IsBoolean()
+  isEnabled: boolean;
 
   @IsOptional()
   details?: InterviewQuestionDetailsDto;

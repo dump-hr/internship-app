@@ -122,6 +122,8 @@ model InterviewQuestion {
   question  String
   type      InterviewQuestionType
   category  InterviewQuestionCategory
+  discipline Discipline?
+  isEnabled Boolean
   details   InterviewQuestionDetails? @relation("QuestionDetails")
   answers   InterviewQuestionAnswer[]
   createdAt DateTime                  @default(now())
@@ -212,10 +214,7 @@ enum InterviewQuestionType {
 enum InterviewQuestionCategory {
   General
   Personal
-  Development
-  Design
-  Marketing
-  Multimedia
+  DisciplineSpecific
   Final
 }
 

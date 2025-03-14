@@ -75,6 +75,8 @@ export class InterviewQuestionService {
           category: q.category,
           type: q.type,
           question: q.question,
+          isEnabled: q.isEnabled,
+          discipline: q.discipline,
         };
       });
 

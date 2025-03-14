@@ -2,6 +2,8 @@ import { TestStatus } from '@internship-app/types';
 import {
   Discipline,
   DisciplineStatus,
+  InterviewQuestionCategory,
+  InterviewQuestionType,
   InterviewStatus,
   PrismaClient,
 } from '@prisma/client';
@@ -253,8 +255,20 @@ async function main() {
       {
         id: 'q1',
         question: 'What inspired you to pursue development?',
-        type: 'TextArea',
-        category: 'Development',
+        type: InterviewQuestionType.TextArea,
+        category: InterviewQuestionCategory.DisciplineSpecific,
+        discipline: Discipline.Development,
+        isEnabled: true,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        id: 'q2',
+        question: 'What inspired you to pursue marketing?',
+        type: InterviewQuestionType.Slider,
+        category: InterviewQuestionCategory.DisciplineSpecific,
+        discipline: Discipline.Marketing,
+        isEnabled: true,
         createdAt: new Date(),
         updatedAt: new Date(),
       },
@@ -269,6 +283,18 @@ async function main() {
         internDisciplineDiscipline: 'Development',
         internDisciplineInternId: 'ante-roca',
         answer: 'Video games',
+      },
+    ],
+  });
+
+  await prisma.interviewQuestionDetails.createMany({
+    data: [
+      {
+        id: 'd1',
+        questionId: 'q2',
+        min: 0,
+        max: 100,
+        step: 1,
       },
     ],
   });

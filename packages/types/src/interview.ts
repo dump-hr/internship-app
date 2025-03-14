@@ -1,3 +1,4 @@
+import { Discipline } from './intern';
 import { Json } from './json';
 
 export type ScheduleInterviewRequest = {
@@ -26,10 +27,7 @@ export enum InterviewQuestionType {
 export enum InterviewQuestionCategory {
   General = 'General',
   Personal = 'Personal',
-  Development = 'Development',
-  Design = 'Design',
-  Marketing = 'Marketing',
-  Multimedia = 'Multimedia',
+  DisciplineSpecific = 'DisciplineSpecific',
   Final = 'Final',
 }
 
@@ -39,13 +37,15 @@ export type InterviewQuestion = {
   type: InterviewQuestionType;
   category: InterviewQuestionCategory;
   details?: InterviewQuestionDetails;
+  isEnabled: boolean;
+  discipline?: Discipline;
 };
 
 export type InterviewQuestionDetails = {
   id: string;
   questionId: string;
-  options: string[];
-  min: number;
-  max: number;
-  step: number;
+  options?: string[];
+  min?: number;
+  max?: number;
+  step?: number;
 };

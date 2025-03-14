@@ -1,4 +1,5 @@
 import { InterviewQuestion } from '@internship-app/types';
+import InterviewQuestionContainer from '../InterviewQuestionContainer/InterviewQuestionContainer';
 
 interface InterviewQuestionListProps {
   interviewQuestions?: InterviewQuestion[];
@@ -7,12 +8,12 @@ interface InterviewQuestionListProps {
 const InterviewQuestionList: React.FC<InterviewQuestionListProps> = ({
   interviewQuestions,
 }) => {
-  console.log(interviewQuestions);
-
   return (
     <>
       {interviewQuestions ? (
-        interviewQuestions.map((q) => <p key={q.id}>{q.question}</p>)
+        interviewQuestions.map((q) => (
+          <InterviewQuestionContainer interviewQuestion={q} />
+        ))
       ) : (
         <p>Trenutno nema pitanja.</p>
       )}
