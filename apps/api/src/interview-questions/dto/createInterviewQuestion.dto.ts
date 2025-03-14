@@ -1,11 +1,15 @@
 import { QuestionCategory, QuestionType } from '@prisma/client';
 import {
+  IsArray,
   IsEnum,
   IsNumber,
   IsOptional,
   IsPositive,
   IsString,
+  Validate,
 } from 'class-validator';
+
+import { IsMinLessThanMax } from '../../utility/sliderValidator';
 
 export class CreateInterviewQuestionDto {
   @IsString()
@@ -17,6 +21,7 @@ export class CreateInterviewQuestionDto {
   @IsEnum(QuestionType)
   type: QuestionType;
 
+  @Validate(IsMinLessThanMax)
   @IsOptional()
   @IsNumber()
   @IsPositive()
@@ -31,4 +36,9 @@ export class CreateInterviewQuestionDto {
   @IsNumber()
   @IsPositive()
   stepValue?: number | null;
+
+  @IsOptional()
+  @IsArray()
+  @IsString({ each: true })
+  options?: string[] | null;
 }

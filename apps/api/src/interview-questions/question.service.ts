@@ -1,8 +1,8 @@
-import { Injectable } from '@nestjs/common';
-import { InternalServerErrorException } from '@nestjs/common';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
 
 import { PrismaService } from '../prisma.service';
 import { CreateInterviewQuestionDto } from './dto/createInterviewQuestion.dto';
+
 @Injectable()
 export class QuestionService {
   constructor(private readonly prisma: PrismaService) {}
@@ -25,6 +25,7 @@ export class QuestionService {
           minValue: data.minValue,
           maxValue: data.maxValue,
           stepValue: data.stepValue,
+          options: data.options,
         },
       });
     } catch (error) {

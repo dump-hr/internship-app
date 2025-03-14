@@ -9,21 +9,36 @@ import {
   Typography,
 } from '@mui/material';
 import { useState } from 'react';
+import toast from 'react-hot-toast';
 
 import { useCreateInterviewQuestion } from '../../api/useCreateInterviewQuestion.tsx';
 import { QuestionCategory } from '../../constants/interviewConstants.ts';
-import toast from 'react-hot-toast';
 
 export const InterviewQuestionForm = () => {
   const [question, setQuestion] = useState('');
   const [category, setCategory] = useState('');
   const [type, setType] = useState('');
-  const [option, setOption] = useState('');
+  const [options, setOptions] = useState<string[]>([]);
+  const [newOption, setNewOption] = useState('');
   const [minValue, setMinValue] = useState('');
   const [maxValue, setMaxValue] = useState('');
   const [stepValue, setStepValue] = useState('');
 
   const { mutate, error } = useCreateInterviewQuestion();
+
+  const handleAddOption = () => {
+    if (newOption.trim() === '') {
+      toast.error("Option can't be empty");
+      return;
+    }
+    setOptions([...options, newOption]);
+    setNewOption('');
+  };
+
+  const handleRemoveOption = (index: number) => {
+    const updatedOptions = options.filter((_, i) => i !== index);
+    setOptions(updatedOptions);
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -34,7 +49,7 @@ export const InterviewQuestionForm = () => {
       question,
       category: category as QuestionCategory,
       type: type as QuestionType,
-      option,
+      options,
       minValue:
         type === 'Slider' ? (minValue ? Number(minValue) : null) : undefined,
       maxValue:
@@ -44,12 +59,18 @@ export const InterviewQuestionForm = () => {
     };
 
     try {
+      if (type === 'Slider' && minValue >= maxValue) {
+        toast.error('Maximum value is less or equal to the maximum value.');
+        return;
+      }
+
       mutate(questionData);
 
       setQuestion('');
       setCategory('');
       setType('');
-      setOption('');
+      setOptions([]);
+      setNewOption('');
       setMinValue('');
       setMaxValue('');
       setStepValue('');
@@ -133,12 +154,38 @@ export const InterviewQuestionForm = () => {
                 label="Options"
                 fullWidth
                 variant="outlined"
-                value={option}
-                onChange={(e) => setOption(e.target.value)}
-                required
+                value={newOption}
+                onChange={(e) => setNewOption(e.target.value)}
                 sx={{ height: '50px', width: '200px' }}
               />
-              <Button>Add option</Button>
+              <Button onClick={handleAddOption}>Add option</Button>
+
+              {options.length > 0 && (
+                <div style={{ width: '100%' }}>
+                  <Typography variant="subtitle1">Options:</Typography>
+                  {options.map((opt, index) => (
+                    <div
+                      key={index}
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '10px',
+                        marginBottom: '5px',
+                      }}
+                    >
+                      <Typography>{opt}</Typography>
+                      <Button
+                        variant="contained"
+                        color="secondary"
+                        size="small"
+                        onClick={() => handleRemoveOption(index)}
+                      >
+                        Remove
+                      </Button>
+                    </div>
+                  ))}
+                </div>
+              )}
             </>
           )}
 
