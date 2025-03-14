@@ -141,23 +141,15 @@ model AdminLog {
 }
 
 model InterviewQuestion {
-  id               String           @id @default(uuid())
-  question         String
-  type     QuestionType
-  category QuestionCategory
-  minValue         Int?
-  maxValue         Int?
-  stepValue        Int?
-  QuestionOption   QuestionOption[]
-  // registerValue String //maknit??
-  required         Boolean          @default(false)
-}
-
-model QuestionOption {
-  id                String            @id @default(uuid())
-  questionId        String
-  value             String
-  InterviewQuestion InterviewQuestion @relation(fields: [questionId], references: [id])
+  id        String           @id @default(uuid())
+  question  String
+  type      QuestionType
+  category  QuestionCategory
+  minValue  Int?
+  maxValue  Int?
+  stepValue Int?
+  options   String[]
+  required  Boolean          @default(false)
 }
 
 enum QuestionCategory {
