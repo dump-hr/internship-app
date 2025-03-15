@@ -8,13 +8,13 @@ import {
   FormControlLabel,
   Switch,
 } from '@mui/material';
-import { InterviewQuestion, QuestionType } from '@internship-app/types';
+import { Question, QuestionType } from '@internship-app/types';
 
 type EditQuestionModalProps = {
-  question: InterviewQuestion;
+  question: Question;
   open: boolean;
   onClose: () => void;
-  handleEditQuestion: (updatedQuestion: InterviewQuestion) => void;
+  handleEditQuestion: (updatedQuestion: Question) => void;
 };
 
 export const EditQuestionModal = ({
@@ -24,10 +24,10 @@ export const EditQuestionModal = ({
   handleEditQuestion,
 }: EditQuestionModalProps) => {
   const [editedQuestion, setEditedQuestion] = useState<string>(
-    question.question,
+    question.question ?? '',
   );
   const [newOption, setNewOption] = useState<string>('');
-  const [options, setOptions] = useState<string[] | []>(question.options || []);
+  const [options, setOptions] = useState<string[] | []>(question.options ?? []);
   const [isEnabled, setIsEnabled] = useState<boolean>(true);
 
   const handleSave = () => {

@@ -1,14 +1,11 @@
-import { InterviewQuestion } from '@internship-app/types';
+import { Question } from '@internship-app/types';
 import { toast } from 'react-hot-toast';
 import { useMutation, useQueryClient } from 'react-query';
 
 import { api } from '.';
 
-const updateInterviewQuestion = async (question: InterviewQuestion) => {
-  return await api.patch<never, InterviewQuestion>(
-    `/interview-questions`,
-    question,
-  );
+const updateInterviewQuestion = async (question: Question) => {
+  return await api.patch<never, Question>(`/interview-questions`, question);
 };
 
 export const useUpdateInterviewQuestion = () => {

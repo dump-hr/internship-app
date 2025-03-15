@@ -1,4 +1,4 @@
-import { MultistepQuestion, Question } from '@internship-app/types';
+import { Question } from '@internship-app/types';
 import { Box, Button, Step, StepLabel, Stepper } from '@mui/material';
 import { useState } from 'react';
 
@@ -14,7 +14,7 @@ type HandlerProps<FH> = {
 
 type MultistepFormProps<T, FH> = {
   steps: Step<T>[];
-  questions: MultistepQuestion<T>[];
+  questions: Question[];
   form: FH;
   onSubmit: () => void;
   InputHandler: React.FC<HandlerProps<FH>>;
@@ -30,6 +30,7 @@ const MultistepForm = <T, FH>({
   const [currentStep, setCurrentStep] = useState(0);
   const currentCategory = steps[currentStep].category;
 
+  console.log(questions);
   return (
     <Box>
       <Stepper activeStep={currentStep} nonLinear>

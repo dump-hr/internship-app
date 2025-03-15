@@ -1,4 +1,9 @@
-import { Intern, InterviewStatus, QuestionType } from '@internship-app/types';
+import {
+  Intern,
+  InterviewStatus,
+  Question,
+  QuestionType,
+} from '@internship-app/types';
 import { Json } from '@internship-app/types/src/json';
 import { useEffect, useState } from 'react';
 import { FieldValues, useForm } from 'react-hook-form';
@@ -19,18 +24,24 @@ import {
   QuestionCategory,
 } from '../../constants/interviewConstants';
 import { Path } from '../../constants/paths';
-import { defaultInterviewValues, interviewQuestions } from './data';
 import InterviewQuestionHandler from './InterviewQuestionHandler';
+import { useFetchInterviewQuestions } from '../../api/useFetchInterviewQuestions';
+import { getDefaultValues } from './data';
 
 const mapAnswersToQuestions = (
   answers: FieldValues,
+  interviewQuestions: Question[],
 ): { [key: number]: Json } => {
-  return interviewQuestions.map((q) => ({ ...q, ...answers[q.id] }));
+  return interviewQuestions.map(
+    (q) => (console.log(answers[q.id]), { ...q, ...answers[q.id] }),
+  );
 };
 
 const InterviewPage = () => {
   const [, params] = useRoute(Path.Interview);
   const internId = params?.internId;
+
+  const { data: interviewQuestions } = useFetchInterviewQuestions();
 
   const { data: intern, isFetching } = useFetchIntern(internId);
   const setInterview = useSetInterview(() => {
@@ -44,6 +55,9 @@ const InterviewPage = () => {
   const localFormValue = JSON.parse(
     localStorage.getItem(`interview ${internId}`)!,
   );
+
+  const defaultInterviewValues = getDefaultValues(interviewQuestions || []);
+
   const form = useForm<FieldValues>({
     defaultValues: { ...defaultInterviewValues, ...localFormValue },
   });
@@ -77,7 +91,7 @@ const InterviewPage = () => {
 
   const handleFormSubmit = (internId: string) =>
     form.handleSubmit((data) => {
-      const answers = mapAnswersToQuestions(data);
+      const answers = mapAnswersToQuestions(data, interviewQuestions || []);
       const score = Object.values(answers)
         .filter(
           (a) =>
@@ -144,7 +158,7 @@ const InterviewPage = () => {
         intern={intern}
       />
       <MultistepForm
-        questions={interviewQuestions}
+        questions={interviewQuestions || []}
         form={form}
         steps={getFilteredInterviewSteps(
           intern.internDisciplines.map((ind) => ind.discipline),

@@ -7,7 +7,7 @@ import {
 import LayoutSpacing from '../../components/LayoutSpacing';
 import LogoHeader from '../../components/LogoHeader';
 import { useEffect, useState } from 'react';
-import { InterviewQuestion } from '@internship-app/types';
+import { Question } from '@internship-app/types';
 import { useCreateInterviewQuestion } from '../../api/useCreateInterviewQuestion';
 import toast, { Toaster } from 'react-hot-toast';
 import { useUpdateInterviewQuestion } from '../../api/useUpdateInterviewQuestion';
@@ -15,7 +15,7 @@ import { useUpdateInterviewQuestion } from '../../api/useUpdateInterviewQuestion
 export const InterviewQuestionBuilder = () => {
   const { data: allQuestions, isFetching } = useFetchInterviewQuestions();
 
-  const [questions, setQuestions] = useState<InterviewQuestion[] | []>([]);
+  const [questions, setQuestions] = useState<Question[] | []>([]);
   const [modalOpen, setModalOpen] = useState(false);
 
   const createInterviewQuestion = useCreateInterviewQuestion();
@@ -28,16 +28,16 @@ export const InterviewQuestionBuilder = () => {
     }
   }, [allQuestions]);
 
-  const handleAddQuestion = (newQuestion: InterviewQuestion) => {
+  const handleAddQuestion = (newQuestion: Question) => {
     createInterviewQuestion.mutate(newQuestion, {
-      onSuccess: (savedQuestion: InterviewQuestion) => {
+      onSuccess: (savedQuestion: Question) => {
         toast.success('Pitanje uspješno dodano!');
         setQuestions((prevQuestions) => [savedQuestion, ...prevQuestions]);
       },
     });
   };
 
-  const handleEditQuestion = (updatedQuestion: InterviewQuestion) => {
+  const handleEditQuestion = (updatedQuestion: Question) => {
     setQuestions((prevQuestions) =>
       prevQuestions.map((q) =>
         q.id === updatedQuestion.id ? updatedQuestion : q,

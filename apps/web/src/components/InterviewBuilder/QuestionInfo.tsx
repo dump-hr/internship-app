@@ -1,4 +1,4 @@
-import { InterviewQuestion } from '@internship-app/types';
+import { Question } from '@internship-app/types';
 
 import {
   Card,
@@ -13,8 +13,8 @@ import { useState } from 'react';
 import { EditQuestionModal } from './EditQuestionModal';
 
 type QuestionInfoProps = {
-  question: InterviewQuestion;
-  handleEditQuestion: (updatedQuestion: InterviewQuestion) => void;
+  question: Question;
+  handleEditQuestion: (updatedQuestion: Question) => void;
 };
 
 const disciplineColors = {
@@ -34,7 +34,7 @@ export const QuestionInfo = ({
   const [editOpenModal, setEditOpenModal] = useState<boolean>(false);
   const [isEnabled, setIsEnabled] = useState<boolean>(question.isEnabled);
 
-  const categoryColor = disciplineColors[question.category] || '#000';
+  const categoryColor = disciplineColors[question.category ?? 'General'];
 
   const handleSwitchChange = () => {
     const updatedQuestion = { ...question, isEnabled: !isEnabled };
