@@ -12,7 +12,7 @@ const InterviewQuestionList: React.FC<InterviewQuestionListProps> = ({
     <>
       {interviewQuestions ? (
         interviewQuestions.map((q) => (
-          <InterviewQuestionContainer interviewQuestion={q} />
+          <InterviewQuestionContainer interviewQuestion={q} key={q.id} />
         ))
       ) : (
         <p>Trenutno nema pitanja.</p>

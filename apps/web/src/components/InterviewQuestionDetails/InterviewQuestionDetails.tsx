@@ -1,6 +1,6 @@
 import { InterviewQuestionType } from '@internship-app/types';
 import { useEffect, useState } from 'react';
-import OptionCreator from './OptionCreator';
+import OptionCreator from '../OptionCreator/OptionCreator';
 
 interface InterviewQuestionDetailsPros {
   type: InterviewQuestionType;
@@ -20,16 +20,18 @@ const InterviewQuestionDetails: React.FC<InterviewQuestionDetailsPros> = ({
   const [options, setOptions] = useState<string[] | undefined>();
 
   useEffect(() => {
-    setDetails(getDetailsFromType());
+    loadDetails();
   }, []);
 
   useEffect(() => {
-    if (details) setOptions(details.options);
-  }, [details]);
-
-  useEffect(() => {
-    setDetails({ ...details, options: options });
+    if (details) setDetails({ ...details, options: options });
   }, [options]);
+
+  function loadDetails() {
+    const newDetails = getDetailsFromType();
+    setDetails(newDetails);
+    setOptions(newDetails?.options);
+  }
 
   function getDetailsFromType(): InterviewQuestionDetailsType | null {
     let newDetails = null;
@@ -61,29 +63,29 @@ const InterviewQuestionDetails: React.FC<InterviewQuestionDetailsPros> = ({
   return (
     <>
       {details && (
-        <form className="interview-question-details">
+        <div className="interview-question-details">
           {details.options && (
             <OptionCreator options={details.options} setOptions={setOptions} />
           )}
-          {details.min !== null && (
+          {details.min !== undefined && (
             <label>
               Min:
               <input type="number" />
             </label>
           )}
-          {details.max !== null && (
+          {details.max !== undefined && (
             <label>
               Max:
               <input type="number" />
             </label>
           )}
-          {details.step !== null && (
+          {details.step !== undefined && (
             <label>
               Step:
               <input type="number" />
             </label>
           )}
-        </form>
+        </div>
       )}
     </>
   );

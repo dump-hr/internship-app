@@ -4,7 +4,7 @@ import {
   InterviewQuestionCategory,
   InterviewQuestionType,
 } from '@internship-app/types';
-import InterviewQuestionDetails from './InterviewQuestionDetails';
+import InterviewQuestionDetails from '../InterviewQuestionDetails/InterviewQuestionDetails';
 
 interface InterviewQuestionEditorProps {
   interviewQuestion: InterviewQuestion;
@@ -28,7 +28,9 @@ const InterviewQuestionEditor: React.FC<InterviewQuestionEditorProps> = ({
           defaultValue={interviewQuestion.type}
         >
           {interviewQuestionTypes.map((t) => (
-            <option value={t}>{t}</option>
+            <option value={t} key={t}>
+              {t}
+            </option>
           ))}
         </select>
       </label>
@@ -39,7 +41,9 @@ const InterviewQuestionEditor: React.FC<InterviewQuestionEditorProps> = ({
           defaultValue={interviewQuestion.category}
         >
           {interviewQuestionCategories.map((c) => (
-            <option value={c}>{c}</option>
+            <option value={c} key={c}>
+              {c}
+            </option>
           ))}
         </select>
       </label>
@@ -49,7 +53,9 @@ const InterviewQuestionEditor: React.FC<InterviewQuestionEditorProps> = ({
           Područje:
           <select name="interview-question-category">
             {disciplines.map((d) => (
-              <option value={d}>{d}</option>
+              <option value={d} key={d}>
+                {d}
+              </option>
             ))}
           </select>
         </label>

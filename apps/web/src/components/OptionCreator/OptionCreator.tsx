@@ -16,19 +16,31 @@ const OptionCreator: React.FC<OptionCreatorProps> = ({
     setOptions([...options, newOption]);
   }
 
+  function deleteOption(option: string) {
+    const newOptions = options.filter((o) => o !== option);
+    setOptions(newOptions);
+  }
+
   return (
-    <label>
-      Opcije:
-      {options.map((o) => (
-        <p key={o}>{o}</p>
-      ))}
-      <input
-        value={newOption}
-        onChange={(e) => setNewOption(e.target.value)}
-        type="text"
-      />
-      <Button onClick={addNewOption}>Add</Button>
-    </label>
+    <>
+      <p>Opcije:</p>
+      <div className="options">
+        {options.map((o) => (
+          <div className="option" key={o}>
+            <p>{o}</p>
+            <Button onClick={() => deleteOption(o)}>Delete</Button>
+          </div>
+        ))}
+      </div>
+      <label>
+        <input
+          value={newOption}
+          onChange={(e) => setNewOption(e.target.value)}
+          type="text"
+        />
+        <Button onClick={addNewOption}>Add</Button>
+      </label>
+    </>
   );
 };
 

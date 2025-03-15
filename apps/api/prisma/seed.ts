@@ -272,6 +272,16 @@ async function main() {
         createdAt: new Date(),
         updatedAt: new Date(),
       },
+      {
+        id: 'q3',
+        question: 'What inspired you to pursue design?',
+        type: InterviewQuestionType.Radio,
+        category: InterviewQuestionCategory.General,
+        discipline: null,
+        isEnabled: true,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
     ],
   });
 
@@ -295,6 +305,11 @@ async function main() {
         min: 0,
         max: 100,
         step: 1,
+      },
+      {
+        id: 'd2',
+        questionId: 'q3',
+        options: ['optionA', 'optionB', 'optionC'],
       },
     ],
   });
