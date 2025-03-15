@@ -1,25 +1,25 @@
-import { QuestionType } from '@internship-app/types/';
-import { Box, Button, MenuItem, Select } from '@mui/material';
+import { Box, Button } from '@mui/material';
 import {
   DataGrid,
   GridCellParams,
   GridColDef,
-  GridRenderEditCellParams,
   GridRowModes,
   GridRowModesModel,
 } from '@mui/x-data-grid';
 import { useState } from 'react';
 
 import { useFetchAllInterviewQuestions } from '../../api/usefetchAllInterviewQuestions.tsx';
-import { QuestionCategory } from '../../constants/interviewConstants.ts';
 import { InterviewQuestionForm } from '../InterviewQuestionForm/InterviewQuestionForm.tsx';
+import { useUpdateInterviewQuestion } from '../../api/useUpdateInterviewQuestion.ts';
+import toast from 'react-hot-toast';
 
-interface SelectEditProps extends GridRenderEditCellParams {
-  options: string[];
-}
+// interface SelectEditProps extends GridRenderEditCellParams {
+//   options: string[];
+// }
 
 export const InterviewQuestions = () => {
   const { data: allQuestions } = useFetchAllInterviewQuestions();
+  const { mutateAsync } = useUpdateInterviewQuestion();
   const [rowModesModel, setRowModesModel] = useState<GridRowModesModel>({});
   const [showForm, setShowForm] = useState(false);
   const handleAddQuestionClick = () => {
@@ -30,32 +30,62 @@ export const InterviewQuestions = () => {
     setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.Edit } });
   };
 
-  const handleSaveClick = (id: string) => {
-    setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } });
+  const handleSaveClick = async (id: string) => {
+    if (!allQuestions) return;
+    const updatedRow = allQuestions.find((question) => question.id === id);
+
+    if (!updatedRow) return;
+
+    if (!updatedRow.question?.trim()) {
+      toast.error(`Question cant be empty`);
+      return;
+    }
+
+    try {
+      await mutateAsync({
+        id: updatedRow.id,
+        question: updatedRow.question,
+      });
+
+      setRowModesModel((prev) => ({
+        ...prev,
+        [id]: { mode: GridRowModes.View },
+      }));
+    } catch (error) {
+      console.error('Error updating question:', error);
+      toast.error('Error updating question.');
+    }
   };
 
-  const processRowUpdate = (newRow: any) => {
-    console.log('Updated row:', newRow);
-    return newRow;
+  const processRowUpdate = async (newRow: any) => {
+    try {
+      await mutateAsync({ id: newRow.id, question: newRow.question });
+
+      return newRow;
+    } catch (error) {
+      toast.error('Failed to update question.');
+      console.error(' Mutation failed:', error);
+      return newRow;
+    }
   };
 
-  const SelectEdit = ({ id, value, field, options, api }: SelectEditProps) => {
-    return (
-      <Select
-        value={value}
-        onChange={(event) => {
-          api.setEditCellValue({ id, field, value: event.target.value });
-        }}
-        fullWidth
-      >
-        {options.map((option) => (
-          <MenuItem key={option} value={option}>
-            {option}
-          </MenuItem>
-        ))}
-      </Select>
-    );
-  };
+  // const SelectEdit = ({ id, value, field, options, api }: SelectEditProps) => {
+  //   return (
+  //     <Select
+  //       value={value}
+  //       onChange={(event) => {
+  //         api.setEditCellValue({ id, field, value: event.target.value });
+  //       }}
+  //       fullWidth
+  //     >
+  //       {options.map((option) => (
+  //         <MenuItem key={option} value={option}>
+  //           {option}
+  //         </MenuItem>
+  //       ))}
+  //     </Select>
+  //   );
+  // };
 
   const columns: GridColDef[] = [
     {
@@ -68,19 +98,16 @@ export const InterviewQuestions = () => {
       field: 'category',
       headerName: 'Category',
       flex: 1,
-      editable: true,
-      renderEditCell: (params) => (
-        <SelectEdit {...params} options={Object.values(QuestionCategory)} />
-      ),
+      editable: false,
+      // renderEditCell: (params) => (
+      //   <SelectEdit {...params} options={Object.values(QuestionCategory)} />
+      // ),
     },
     {
       field: 'type',
       headerName: 'Type',
       flex: 1,
-      editable: true,
-      renderEditCell: (params) => (
-        <SelectEdit {...params} options={Object.values(QuestionType)} />
-      ),
+      editable: false,
     },
     {
       field: 'actions',

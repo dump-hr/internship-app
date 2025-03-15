@@ -32,7 +32,7 @@ api.interceptors.response.use(
     if (error.response.status === 401) {
       history.pushState(null, '', Path.Login);
       toast.error(
-        error.response.data.message || error.message || 'Forbbiden access',
+        error.response.data.message || error.message || 'Forbidden access',
       );
     }
     return Promise.reject(error.response.data.message || error.message);

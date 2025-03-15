@@ -35,4 +35,21 @@ export class QuestionService {
       );
     }
   }
+
+  async updateInterviewQuestion(id: string, data: string) {
+    try {
+      const updated = await this.prisma.interviewQuestion.update({
+        where: { id: id },
+        data: { question: data },
+      });
+
+      return updated;
+    } catch (error) {
+      console.error(' Interview question update failed:', error.message);
+      throw new InternalServerErrorException(
+        'Failed to update interview question',
+        error.message,
+      );
+    }
+  }
 }
