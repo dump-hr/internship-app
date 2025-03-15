@@ -1,19 +1,11 @@
 import { useMutation, useQueryClient } from 'react-query';
 import toast from 'react-hot-toast';
 import { api } from '.';
-import { OptionType } from '../components/InterviewQuestionAddHandler/InterviewQuestionAddHandler';
+import { MultistepQuestion, QuestionCategory } from '@internship-app/types';
 
-type QuestionToCreate = {
-  title: string;
-  type: string;
-  category: string;
-  min: number | null;
-  max: number | null;
-  step: number | null;
-  options: OptionType[];
-};
-
-const addInterviewQuestion = async (newQuestion: QuestionToCreate) => {
+const addInterviewQuestion = async (
+  newQuestion: MultistepQuestion<QuestionCategory>,
+) => {
   await api.post('/interview-question', newQuestion);
 };
 

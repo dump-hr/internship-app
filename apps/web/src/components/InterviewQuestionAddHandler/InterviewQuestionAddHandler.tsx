@@ -2,7 +2,7 @@ import { Button } from '@mui/material';
 import { useState } from 'react';
 import { usePostInterviewQuestion } from '../../api/usePostInterviewQuestion';
 import InterviewQuestionDialog from '../InterviewQuestionDialog/InterviewQuestionDialog';
-import { InterviewQuestion } from '@internship-app/types';
+import { MultistepQuestion, QuestionCategory } from '@internship-app/types';
 
 const InterviewQuestionAddHandler = () => {
   const postInterviewQuestion = usePostInterviewQuestion();
@@ -12,7 +12,7 @@ const InterviewQuestionAddHandler = () => {
     setDialogState(!dialogState);
   };
 
-  const handleSubmitAdd = (question: InterviewQuestion) => {
+  const handleSubmitAdd = (question: MultistepQuestion<QuestionCategory>) => {
     postInterviewQuestion.mutate(question);
     toggleDialog();
   };

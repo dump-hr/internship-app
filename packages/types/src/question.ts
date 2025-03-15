@@ -25,16 +25,16 @@ export type Question = {
   title?: string;
   required?: boolean;
   registerValue?: any;
-  isEnabled: boolean;
+  isEnabled?: boolean;
 } & (
   | { type: QuestionType.Field }
   | { type: QuestionType.TextArea }
-  | { type: QuestionType.Checkbox; options?: OptionType[] }
+  | { type: QuestionType.Checkbox; options?: string[] }
   | { type: QuestionType.Slider; min: number; max: number; step: number }
-  | { type: QuestionType.Select; options: OptionType[] }
+  | { type: QuestionType.Select; options: string[] }
   | { type: QuestionType.Date }
   | { type: QuestionType.DateTime }
-  | { type: QuestionType.Radio; options: OptionType[] }
+  | { type: QuestionType.Radio; options: string[] }
   | { type: QuestionType.Number; min?: number; max?: number }
 );
 
@@ -47,22 +47,7 @@ export type QuestionAvailabilityRequest = {
   isEnabled: boolean;
 };
 
-export type OptionType = {
-  id: string;
-  value: string;
-};
-
-export type InterviewQuestion = {
-  id: string;
-  title: string;
-  type: QuestionType;
-  category: QuestionCategory;
-  min: number | null;
-  max: number | null;
-  step: number | null;
-  options: OptionType[];
-  isEnabled: boolean;
-};
+export type InterviewQuestion = {};
 
 export type SetInterviewQuestionRequest = {
   id: string;
@@ -72,5 +57,5 @@ export type SetInterviewQuestionRequest = {
   min: number | null;
   max: number | null;
   step: number | null;
-  options: OptionType[];
+  options: string[];
 };

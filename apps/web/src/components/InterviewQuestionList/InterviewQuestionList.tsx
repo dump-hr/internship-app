@@ -1,5 +1,10 @@
 import { DataGrid, GridColDef, GridRenderCellParams } from '@mui/x-data-grid';
-import { InterviewQuestion } from '@internship-app/types';
+import {
+  MultistepQuestion,
+  QuestionCategory,
+  QuestionType,
+  SetInterviewQuestionRequest,
+} from '@internship-app/types';
 import { useFetchAllInterviewQuestions } from '../../api/useFetchAllInterviewQuestions';
 import { Button } from '@mui/material';
 import { useSetQuestionAvailability } from '../../api/useSetQuestionAvailability';
@@ -16,7 +21,7 @@ const InterviewQuestionList = () => {
 
   const [dialogState, setDialogState] = useState<boolean>(false);
   const [selectedQuestion, setSelectedQuestion] =
-    useState<InterviewQuestion | null>(null);
+    useState<MultistepQuestion<QuestionCategory> | null>(null);
 
   const toggleDialog = () => {
     setDialogState(!dialogState);
@@ -31,7 +36,8 @@ const InterviewQuestionList = () => {
 
   const handleEdit = (params: GridRenderCellParams) => {
     const questionToUpdate = interviewQuestions.find(
-      (question: InterviewQuestion) => question.id === params.row.id,
+      (question: MultistepQuestion<QuestionCategory>) =>
+        question.id === params.row.id,
     );
 
     if (questionToUpdate) {
@@ -40,18 +46,45 @@ const InterviewQuestionList = () => {
     }
   };
 
-  const handleSubmitEdit = (question: InterviewQuestion) => {
-    setInterviewQuestion.mutate(question);
+  const handleSubmitEdit = (question: MultistepQuestion<QuestionCategory>) => {
+    const request: SetInterviewQuestionRequest = {
+      id: question.id,
+      title: question.title || '',
+      type: question.type,
+      category: question.category,
+      min: null,
+      max: null,
+      step: null,
+      options: [],
+    };
+
+    if (question.type === QuestionType.Slider) {
+      request.min = question.min;
+      request.max = question.max;
+      request.step = question.step;
+    }
+
+    if (
+      question.type === QuestionType.Checkbox ||
+      question.type === QuestionType.Select ||
+      question.type === QuestionType.Radio
+    ) {
+      request.options = question.options || [];
+    }
+
+    setInterviewQuestion.mutate(request);
     toggleDialog();
   };
 
-  const rows = interviewQuestions.map((question: InterviewQuestion) => ({
-    id: question.id,
-    title: question.title,
-    type: question.type,
-    category: question.category,
-    isEnabled: question.isEnabled,
-  }));
+  const rows = interviewQuestions.map(
+    (question: MultistepQuestion<QuestionCategory>) => ({
+      id: question.id,
+      title: question.title,
+      type: question.type,
+      category: question.category,
+      isEnabled: question.isEnabled,
+    }),
+  );
 
   const columns: GridColDef[] = [
     {

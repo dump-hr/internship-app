@@ -7,17 +7,19 @@ import AdminPage from '../../components/AdminPage';
 import { useSetAnswerFlag } from '../../api/useSetAnwerFlag';
 import { SetAnswerFlagRequest } from '@internship-app/types';
 
+const flaggedRowStyle = {
+  backgroundColor: 'red',
+};
+
 const InterviewQuestionStats = () => {
   const [, params] = useRoute(Path.QuestionStats);
   const questionId = params?.questionId;
   const setAnswerFlag = useSetAnswerFlag();
 
-  if (!questionId) return <p>Invalid question Id</p>;
-
+  if (!questionId) return <h1>Question not found</h1>;
   const { data: answers } = useFetchInterviewQuestionAnswers(questionId);
 
   const filteredAnswers = answers?.filter((a) => a.answer && a.answer.value);
-
   if (!filteredAnswers) return <h1>Loading...</h1>;
 
   if (filteredAnswers.length < 1) return <h1>No answers to this question</h1>;
@@ -35,6 +37,7 @@ const InterviewQuestionStats = () => {
     id: item.intern.id,
     fullName: item.intern.firstName.concat(' ', item.intern.lastName),
     value: item.answer.value,
+    isFlaged: item.answer.isFlaged || false,
   }));
 
   const columns: GridColDef[] = [
@@ -81,8 +84,6 @@ const InterviewQuestionStats = () => {
     },
   ];
 
-  console.log(filteredAnswers);
-
   return (
     <AdminPage>
       <Typography
@@ -120,6 +121,12 @@ const InterviewQuestionStats = () => {
           }}
           pageSizeOptions={[5]}
           disableRowSelectionOnClick
+          getRowClassName={(params) =>
+            params.row.isFlaged ? 'flagged-row' : ''
+          }
+          sx={{
+            '& .flagged-row': flaggedRowStyle,
+          }}
         />
       </div>
     </AdminPage>

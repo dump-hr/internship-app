@@ -24,18 +24,21 @@ const getMainQuestions = (slot: TestSlot): Question[] => [
     title: 'Početak',
     type: QuestionType.DateTime,
     registerValue: moment(slot.start).format('YYYY-MM-DDTHH:mm:ss'),
+    isEnabled: true,
   },
   {
     id: 'end',
     title: 'Kraj',
     type: QuestionType.DateTime,
     registerValue: moment(slot.end).format('YYYY-MM-DDTHH:mm:ss'),
+    isEnabled: true,
   },
   {
     id: 'location',
     title: 'Lokacija',
     type: QuestionType.Field,
     registerValue: slot.location,
+    isEnabled: true,
   },
   {
     id: 'capacity',
@@ -43,6 +46,7 @@ const getMainQuestions = (slot: TestSlot): Question[] => [
     type: QuestionType.Number,
     min: slot.internDisciplines.length,
     registerValue: slot.capacity,
+    isEnabled: true,
   },
   {
     id: 'maxPoints',
@@ -50,12 +54,14 @@ const getMainQuestions = (slot: TestSlot): Question[] => [
     type: QuestionType.Number,
     min: 0,
     registerValue: slot.maxPoints,
+    isEnabled: true,
   },
   {
     id: 'password',
     title: 'Zaporka',
     type: QuestionType.Field,
     registerValue: slot.password,
+    isEnabled: true,
   },
 ];
 

@@ -16,17 +16,26 @@ import { useEffect, useState } from 'react';
 import { nanoid } from 'nanoid';
 import toast from 'react-hot-toast';
 import {
-  InterviewQuestion,
+  MultistepQuestion,
   QuestionCategory,
   QuestionType,
 } from '@internship-app/types';
+import { is } from 'date-fns/locale';
 
 type InterviewQuestionDialogProps = {
   open: boolean;
   onClose: () => void;
-  onSubmit: (question: InterviewQuestion) => void;
-  initialQuestion?: InterviewQuestion;
+  onSubmit: (question: MultistepQuestion<QuestionCategory>) => void;
+  initialQuestion?: MultistepQuestion<QuestionCategory>;
   mode: 'add' | 'edit';
+};
+
+const isOptionType = (type: QuestionType) => {
+  return (
+    type === QuestionType.Select ||
+    type === QuestionType.Radio ||
+    type === QuestionType.Checkbox
+  );
 };
 
 const InterviewQuestionDialog = ({
@@ -38,19 +47,15 @@ const InterviewQuestionDialog = ({
 }: InterviewQuestionDialogProps) => {
   const [newOptionValue, setNewOptionValue] = useState<string>('');
 
-  const defaultQuestion: InterviewQuestion = {
+  const defaultQuestion: MultistepQuestion<QuestionCategory> = {
     id: nanoid(),
     title: '',
     type: QuestionType.Field,
     category: QuestionCategory.General,
-    min: null,
-    max: null,
-    step: null,
-    options: [],
     isEnabled: false,
   };
 
-  const [question, setQuestion] = useState<InterviewQuestion>(
+  const [question, setQuestion] = useState<MultistepQuestion<QuestionCategory>>(
     initialQuestion || defaultQuestion,
   );
 
@@ -63,31 +68,38 @@ const InterviewQuestionDialog = ({
   }, [initialQuestion, open, mode]);
 
   useEffect(() => {
-    if (question.type === 'Slider') {
-      setQuestion((prev) => ({
-        ...prev,
-        min: prev.min || 1,
-        max: prev.max || 5,
-        step: prev.step || 1,
-      }));
-    } else {
-      setQuestion((prev) => ({
-        ...prev,
-        min: null,
-        max: null,
-        step: null,
-      }));
-    }
+    switch (question.type) {
+      case QuestionType.Slider:
+        setQuestion((prev) => {
+          return {
+            ...prev,
+            type: QuestionType.Slider,
+            min: 'min' in prev ? prev.min : 1,
+            max: 'max' in prev ? prev.max : 5,
+            step: 'step' in prev ? prev.step : 1,
+          } as MultistepQuestion<QuestionCategory>;
+        });
+        break;
 
-    if (
-      question.type !== 'Select' &&
-      question.type !== 'Radio' &&
-      question.type !== 'Checkbox'
-    ) {
-      setQuestion((prev) => ({
-        ...prev,
-        options: [],
-      }));
+      case QuestionType.Select:
+      case QuestionType.Radio:
+      case QuestionType.Checkbox:
+        setQuestion((prev) => {
+          return {
+            ...prev,
+            type: question.type,
+            options: 'options' in prev ? prev.options : [],
+          } as MultistepQuestion<QuestionCategory>;
+        });
+        break;
+      default:
+        setQuestion((prev) => {
+          return {
+            ...prev,
+            type: question.type,
+          } as MultistepQuestion<QuestionCategory>;
+        });
+        break;
     }
   }, [question.type]);
 
@@ -102,7 +114,7 @@ const InterviewQuestionDialog = ({
       case question.title === '':
         toast.error('Title cannot be empty');
         break;
-      case hasOptions && question.options.length < 2:
+      case hasOptions && (!question.options || question.options.length < 2):
         toast.error('There need to be at least 2 options');
         break;
       default:
@@ -112,36 +124,49 @@ const InterviewQuestionDialog = ({
   };
 
   const handleSliderChange = (key: string, value: string) => {
-    const parsedValue = parseInt(value);
     setQuestion((prev) => ({
       ...prev,
-      [key]: parsedValue,
+      [key]: parseInt(value),
     }));
   };
 
   const addOption = () => {
-    if (!newOptionValue.trim()) {
+    const trimmedOption = newOptionValue.trim();
+    if (!trimmedOption) {
       toast.error('Option cannot be empty');
       return;
     }
 
-    setQuestion((prev) => ({
-      ...prev,
-      options: [...prev.options, { id: nanoid(), value: newOptionValue }],
-    }));
+    setQuestion((prev) => {
+      if (!isOptionType(prev.type)) return prev;
+
+      const prevOptions = ('options' in prev ? prev.options : []) ?? [];
+
+      if (prevOptions.includes(trimmedOption)) {
+        toast.error('Ta opcija već postoji');
+        return prev;
+      }
+
+      return {
+        ...prev,
+        options: [...prevOptions, trimmedOption],
+      } as MultistepQuestion<QuestionCategory>;
+    });
 
     setNewOptionValue('');
   };
 
-  const removeOption = (id: string) => {
-    setQuestion((prev) => ({
-      ...prev,
-      options: prev.options.filter((option) => option.id !== id),
-    }));
-  };
+  const removeOption = (optionToRemove: string) => {
+    setQuestion((prev) => {
+      if (!isOptionType(prev.type)) return prev;
 
-  const handleNewOptionChange = (value: string) => {
-    setNewOptionValue(value);
+      const prevOptions = ('options' in prev ? prev.options : []) ?? [];
+
+      return {
+        ...prev,
+        options: prevOptions.filter((option) => option !== optionToRemove),
+      } as MultistepQuestion<QuestionCategory>;
+    });
   };
 
   return (
@@ -169,10 +194,13 @@ const InterviewQuestionDialog = ({
               displayEmpty
               value={question.type}
               onChange={(e) =>
-                setQuestion((prevState) => ({
-                  ...prevState,
-                  type: e.target.value as QuestionType,
-                }))
+                setQuestion(
+                  (prevState) =>
+                    ({
+                      ...prevState,
+                      type: e.target.value as QuestionType,
+                    }) as MultistepQuestion<QuestionCategory>,
+                )
               }
             >
               <MenuItem value="" disabled>
@@ -254,9 +282,9 @@ const InterviewQuestionDialog = ({
             <Box sx={{ mb: 2 }}>
               <DialogContentText sx={{ mb: 1 }}>Dodaj opcije</DialogContentText>
 
-              {question.options.map((option) => (
+              {question.options?.map((option, index) => (
                 <Box
-                  key={option.id}
+                  key={index}
                   sx={{
                     display: 'flex',
                     alignItems: 'center',
@@ -265,10 +293,10 @@ const InterviewQuestionDialog = ({
                     p: 1,
                   }}
                 >
-                  <Box>{option.value}</Box>
+                  <Box>{option}</Box>
                   <IconButton
                     color="error"
-                    onClick={() => removeOption(option.id)}
+                    onClick={() => removeOption(option)}
                     size="small"
                   >
                     <DeleteIcon />
@@ -283,7 +311,7 @@ const InterviewQuestionDialog = ({
                   fullWidth
                   placeholder="Vrijednost opcije"
                   value={newOptionValue}
-                  onChange={(e) => handleNewOptionChange(e.target.value)}
+                  onChange={(e) => setNewOptionValue(e.target.value)}
                 />
                 <Button variant="outlined" size="small" onClick={addOption}>
                   + Dodaj
