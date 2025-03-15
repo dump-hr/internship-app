@@ -16,7 +16,7 @@ export class EmailController {
     private readonly loggerService: LoggerService,
   ) {}
 
-  @UseGuards(JwtAuthGuard)
+  /*@UseGuards(JwtAuthGuard)
   @Post('send')
   async sendEmails(@Body() { emails, text, subject }: EmailsSendDto) {
     await this.loggerService.createAdminLog(
@@ -25,7 +25,7 @@ export class EmailController {
     );
 
     return await this.emailService.sendEmail(emails, text, subject);
-  }
+  }*/
 
   @UseGuards(JwtAuthGuard)
   @Post()

@@ -1,15 +1,15 @@
 import { Injectable } from '@nestjs/common';
 import * as nunjucks from 'nunjucks';
-import * as postmark from 'postmark';
+//import * as postmark from 'postmark';
 import { PrismaService } from 'src/prisma.service';
 
 @Injectable()
 export class EmailService {
   constructor(private readonly prisma: PrismaService) {}
 
-  private postmark = new postmark.ServerClient(process.env.POSTMARK_API_TOKEN);
+  //private postmark = new postmark.ServerClient(process.env.POSTMARK_API_TOKEN);
 
-  async sendEmail(emails: string[], text: string, subject: string) {
+  /*async sendEmail(emails: string[], text: string, subject: string) {
     const interns = await this.prisma.intern.findMany({
       where: { email: { in: emails } },
       select: {
@@ -48,7 +48,7 @@ export class EmailService {
         });
       }),
     );
-  }
+  }*/
 
   async makeEmail(emails: string[], text: string) {
     const interns = await this.prisma.intern.findMany({

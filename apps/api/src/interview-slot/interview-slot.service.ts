@@ -5,7 +5,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { Discipline, InterviewStatus, Prisma } from '@prisma/client';
-import * as postmark from 'postmark';
+//import * as postmark from 'postmark';
 import { PrismaService } from 'src/prisma.service';
 
 import { CreateInterviewSlotDto } from './dto/createInterviewSlot.dto';
@@ -14,7 +14,7 @@ import { CreateInterviewSlotDto } from './dto/createInterviewSlot.dto';
 export class InterviewSlotService {
   constructor(private readonly prisma: PrismaService) {}
 
-  private postmark = new postmark.ServerClient(process.env.POSTMARK_API_TOKEN);
+  //private postmark = new postmark.ServerClient(process.env.POSTMARK_API_TOKEN);
 
   async getAll() {
     const interviewSlots = await this.prisma.interviewSlot.findMany({
@@ -259,7 +259,7 @@ export class InterviewSlotService {
       where: { id: internId },
     });
 
-    this.postmark.sendEmail({
+    /*this.postmark.sendEmail({
       From: 'info@dump.hr',
       To: intern.email,
       Subject: 'Uspješno biranje termina za DUMP Internship intervju',
@@ -277,7 +277,7 @@ Vidimo se!
 DUMP Udruga mladih programera
 dump.hr`,
       MessageStream: 'outbound',
-    });
+    });*/
 
     return await this.prisma.intern.update({
       where: { id: internId, interviewStatus: InterviewStatus.PickTerm },
