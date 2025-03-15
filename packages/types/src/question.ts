@@ -59,3 +59,17 @@ export type SetInterviewQuestionRequest = {
   step: number | null;
   options: string[];
 };
+
+export type QuestionAnswer = {
+  id: string;
+  title: string;
+  type: QuestionType;
+  category: QuestionCategory;
+  min: number | null;
+  max: number | null;
+  step: number | null;
+  options: string[];
+  isFlaged: boolean;
+  isEnabled: boolean;
+  value: string;
+};

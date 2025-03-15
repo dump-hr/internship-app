@@ -8,7 +8,7 @@ import { useSetAnswerFlag } from '../../api/useSetAnwerFlag';
 import { SetAnswerFlagRequest } from '@internship-app/types';
 
 const flaggedRowStyle = {
-  backgroundColor: 'red',
+  backgroundColor: 'rgba(255, 0, 0, 0.3)',
 };
 
 const InterviewQuestionStats = () => {
@@ -16,19 +16,17 @@ const InterviewQuestionStats = () => {
   const questionId = params?.questionId;
   const setAnswerFlag = useSetAnswerFlag();
 
-  if (!questionId) return <h1>Question not found</h1>;
-  const { data: answers } = useFetchInterviewQuestionAnswers(questionId);
-
+  const { data: answers } = useFetchInterviewQuestionAnswers(questionId || '');
   const filteredAnswers = answers?.filter((a) => a.answer && a.answer.value);
-  if (!filteredAnswers) return <h1>Loading...</h1>;
 
+  if (!filteredAnswers) return <h1>Loading...</h1>;
   if (filteredAnswers.length < 1) return <h1>No answers to this question</h1>;
 
   const handleAnswerFlag = (params: GridRenderCellParams) => {
     const answer = filteredAnswers.find((a) => a.intern.id === params.row.id);
     const request: SetAnswerFlagRequest = {
-      slotId: answer.slotId,
-      questionId: answer.answer.id,
+      slotId: answer?.slotId || '',
+      questionId: answer?.answer.id || '',
     };
     setAnswerFlag.mutate(request);
   };
@@ -38,14 +36,31 @@ const InterviewQuestionStats = () => {
     fullName: item.intern.firstName.concat(' ', item.intern.lastName),
     value: item.answer.value,
     isFlaged: item.answer.isFlaged || false,
+    question: item.answer.title,
   }));
 
   const columns: GridColDef[] = [
     { field: 'fullName', headerName: 'Ime i prezime', width: 150 },
     {
+      field: 'question',
+      headerName: 'Pitanje',
+      width: 400,
+      renderCell: (params) => (
+        <Typography
+          style={{
+            overflowX: 'hidden',
+            whiteSpace: 'normal',
+            maxHeight: '4em',
+          }}
+        >
+          {params.value}
+        </Typography>
+      ),
+    },
+    {
       field: 'value',
       headerName: 'Odgovor',
-      width: 500,
+      width: 275,
       renderCell: (params) => (
         <div
           style={{
@@ -61,7 +76,7 @@ const InterviewQuestionStats = () => {
     {
       field: 'actions',
       headerName: '',
-      width: 285,
+      width: 210,
       sortable: false,
       align: 'right',
       renderCell: (params) => {
@@ -86,16 +101,6 @@ const InterviewQuestionStats = () => {
 
   return (
     <AdminPage>
-      <Typography
-        style={{
-          fontSize: '2rem',
-          display: 'flex',
-          justifyContent: 'center',
-          textAlign: 'center',
-        }}
-      >
-        {filteredAnswers[0].answer.title}
-      </Typography>
       <div
         style={{
           width: '80%',
@@ -108,6 +113,7 @@ const InterviewQuestionStats = () => {
           style={{ display: 'flex', flexDirection: 'column-reverse' }}
           rows={rows}
           columns={columns}
+          getRowHeight={() => 80}
           disableColumnFilter
           initialState={{
             pagination: {

@@ -4,7 +4,6 @@ import { useMutation } from 'react-query';
 import { SetAnswerFlagRequest } from '@internship-app/types';
 
 const setAnswerFlag = async (req: SetAnswerFlagRequest) => {
-  console.log('req', req);
   return await api.patch(`interview-slot/flag-answer/${req.slotId}`, {
     questionId: req.questionId,
   });

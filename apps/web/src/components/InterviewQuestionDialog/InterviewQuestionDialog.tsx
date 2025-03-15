@@ -20,7 +20,6 @@ import {
   QuestionCategory,
   QuestionType,
 } from '@internship-app/types';
-import { is } from 'date-fns/locale';
 
 type InterviewQuestionDialogProps = {
   open: boolean;
@@ -112,10 +111,16 @@ const InterviewQuestionDialog = ({
   const handleFormSubmit = () => {
     switch (true) {
       case question.title === '':
-        toast.error('Title cannot be empty');
+        toast.error('Pitanje nesmi biti prazno');
         break;
       case hasOptions && (!question.options || question.options.length < 2):
-        toast.error('There need to be at least 2 options');
+        toast.error('Stavi bar 2 opcije');
+        break;
+      case isSlider &&
+        (question.min === null ||
+          question.max === null ||
+          question.step === null):
+        toast.error('Slider opcije nesme bit prazne');
         break;
       default:
         onSubmit(question);
@@ -133,7 +138,7 @@ const InterviewQuestionDialog = ({
   const addOption = () => {
     const trimmedOption = newOptionValue.trim();
     if (!trimmedOption) {
-      toast.error('Option cannot be empty');
+      toast.error('Opcija nesmi bit prazna');
       return;
     }
 
@@ -190,7 +195,7 @@ const InterviewQuestionDialog = ({
           />
           <FormControl fullWidth sx={{ mb: 2 }}>
             <Select
-              id="type-selecttion"
+              id="type-selection"
               displayEmpty
               value={question.type}
               onChange={(e) =>
@@ -206,15 +211,11 @@ const InterviewQuestionDialog = ({
               <MenuItem value="" disabled>
                 Tip pitanja
               </MenuItem>
-              <MenuItem value={QuestionType.Field}>Field</MenuItem>
-              <MenuItem value={QuestionType.TextArea}>TextArea</MenuItem>
-              <MenuItem value={QuestionType.Select}>Select</MenuItem>
-              <MenuItem value={QuestionType.Checkbox}>Checkbox</MenuItem>
-              <MenuItem value={QuestionType.Date}>Date</MenuItem>
-              <MenuItem value={QuestionType.DateTime}>DateTime</MenuItem>
-              <MenuItem value={QuestionType.Radio}>Radio</MenuItem>
-              <MenuItem value={QuestionType.Number}>Number</MenuItem>
-              <MenuItem value={QuestionType.Slider}>Slider</MenuItem>
+              {Object.values(QuestionType).map((type) => (
+                <MenuItem key={type} value={type}>
+                  {type}
+                </MenuItem>
+              ))}
             </Select>
           </FormControl>
 
@@ -233,16 +234,11 @@ const InterviewQuestionDialog = ({
               <MenuItem value="" disabled>
                 Kategorija
               </MenuItem>
-              <MenuItem value={QuestionCategory.General}>General</MenuItem>
-              <MenuItem value={QuestionCategory.Development}>
-                Development
-              </MenuItem>
-              <MenuItem value={QuestionCategory.Design}>Design</MenuItem>
-              <MenuItem value={QuestionCategory.Marketing}>Marketing</MenuItem>
-              <MenuItem value={QuestionCategory.Multimedia}>
-                Multimedia
-              </MenuItem>
-              <MenuItem value={QuestionCategory.Final}>Final</MenuItem>
+              {Object.values(QuestionCategory).map((category) => (
+                <MenuItem key={category} value={category}>
+                  {category}
+                </MenuItem>
+              ))}
             </Select>
           </FormControl>
 

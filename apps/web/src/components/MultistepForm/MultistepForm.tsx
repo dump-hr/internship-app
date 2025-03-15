@@ -30,8 +30,6 @@ const MultistepForm = <T, FH>({
   const [currentStep, setCurrentStep] = useState(0);
   const currentCategory = steps[currentStep].category;
 
-  console.log(questions);
-
   return (
     <Box>
       <Stepper activeStep={currentStep} nonLinear>

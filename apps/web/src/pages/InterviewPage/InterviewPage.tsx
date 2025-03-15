@@ -88,7 +88,6 @@ const InterviewPage = () => {
   const handleFormSubmit = (internId: string) =>
     form.handleSubmit((data) => {
       const answers = mapAnswersToQuestions(data);
-      console.log(answers);
       const score = Object.values(answers)
         .filter(
           (a) =>

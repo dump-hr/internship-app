@@ -38,8 +38,8 @@ const getInputComponent = (
       return (
         <Select {...field} fullWidth>
           {question.options.map((option) => (
-            <MenuItem key={option.id} value={option.value}>
-              {option.value || <Typography color="gray">empty</Typography>}
+            <MenuItem key={option} value={option}>
+              {option || <Typography color="gray">empty</Typography>}
             </MenuItem>
           ))}
         </Select>
@@ -62,24 +62,24 @@ const getInputComponent = (
       return (
         <FormGroup>
           {options.map((option) => {
-            const isChecked = values.includes(option.value);
+            const isChecked = values.includes(option);
 
             return (
               <FormControlLabel
-                key={option.id}
+                key={option}
                 control={
                   <Checkbox
                     checked={isChecked}
                     onChange={() => {
                       const newValues = isChecked
-                        ? values.filter((val: string) => val !== option.value)
-                        : [...values, option.value];
+                        ? values.filter((val: string) => val !== option)
+                        : [...values, option];
 
                       field.onChange(newValues.join(' - '));
                     }}
                   />
                 }
-                label={option.value}
+                label={option}
               />
             );
           })}

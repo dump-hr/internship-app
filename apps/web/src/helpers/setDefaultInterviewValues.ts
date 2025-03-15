@@ -1,5 +1,4 @@
 import {
-  InterviewQuestion,
   Question,
   QuestionType,
 } from '@internship-app/types';
@@ -13,6 +12,7 @@ export const getDefaultValues = (
         return q.options[0];
       case QuestionType.Slider:
         if (q.min && q.max) return Math.floor((q.min + q.max) / 2);
+        return '';
       default:
         return '';
     }
