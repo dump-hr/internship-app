@@ -1,5 +1,5 @@
 import { Answer } from '@internship-app/types';
-import { InterviewSlot } from '@prisma/client';
+import { InterviewSlot } from '@internship-app/types';
 import { useEffect, useState } from 'react';
 
 export const useAnswerIdForQuestion = (

@@ -9,6 +9,7 @@ import { Discipline, InterviewStatus, Prisma } from '@prisma/client';
 import { PrismaService } from 'src/prisma.service';
 
 import { CreateInterviewSlotDto } from './dto/createInterviewSlot.dto';
+import { Answer } from '@internship-app/types';
 
 @Injectable()
 export class InterviewSlotService {
@@ -297,27 +298,29 @@ export class InterviewSlotService {
     answerId: string,
   ) {
     try {
-      const updated = await this.prisma.interviewSlot.update({
+      const slot = await this.prisma.interviewSlot.findUnique({
         where: { id: slotId },
-        data: {
-          answers: {
-            update: {
-              where: {
-                id: answerId,
-              },
-              data: {
-                question: question,
-              },
-            },
-          },
-        },
+        select: { answers: true },
       });
-    } catch (error) {
-      console.error(
-        `Error finding and updating question in answer:${error.message}`,
+
+      if (!slot || !Array.isArray(slot.answers)) {
+        throw new Error('Slot not found or answers are not in expected format');
+      }
+
+      const updatedAnswers = slot.answers.map((answer: Answer) =>
+        answer.id === answerId ? { ...answer, question } : answer,
       );
+
+      await this.prisma.interviewSlot.update({
+        where: { id: slotId },
+        data: { answers: updatedAnswers },
+      });
+
+      return { success: true };
+    } catch (error) {
+      console.error(`Error updating question in answer: ${error.message}`);
       throw new InternalServerErrorException(
-        `Error finding and updating question in answer:${error.message}`,
+        `Error updating question: ${error.message}`,
       );
     }
   }
