@@ -59,4 +59,14 @@ export class InterviewQuestionsController {
       updateInterviewQuestionDto,
     );
   }
+
+  @Get(':id/answers')
+  async getQuestionAnswers(@Param('id') id: string) {
+    return this.interviewQuestionsService.getQuestionAnswers(id);
+  }
+
+  @Patch('answers/:id/flag')
+  async toggleAnswerFlag(@Param('id') id: string) {
+    return this.interviewQuestionsService.toggleAnswerFlag(id);
+  }
 }

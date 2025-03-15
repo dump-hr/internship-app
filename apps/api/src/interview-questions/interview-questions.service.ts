@@ -67,4 +67,28 @@ export class InterviewQuestionsService {
       data: updateInterviewQuestionDto,
     });
   }
+
+  async getQuestionAnswers(id: string) {
+    return this.prisma.interviewQuestionAnswer.findMany({
+      where: { questionId: id },
+      include: {
+        interviewSlot: {
+          include: {
+            intern: true,
+          },
+        },
+      },
+    });
+  }
+
+  async toggleAnswerFlag(id: string) {
+    const answer = await this.prisma.interviewQuestionAnswer.findUnique({
+      where: { id },
+    });
+
+    return this.prisma.interviewQuestionAnswer.update({
+      where: { id },
+      data: { flagged: !answer?.flagged },
+    });
+  }
 }

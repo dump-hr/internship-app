@@ -706,6 +706,113 @@ async function main() {
       step: q.step || null,
     })),
   });
+
+  await prisma.interviewSlot.update({
+    where: { id: '1' },
+    data: { internId: 'ante-roca' },
+  });
+
+  await prisma.interviewSlot.update({
+    where: { id: '2' },
+    data: { internId: 'marija-juric' },
+  });
+
+  const questions = await prisma.interviewQuestion.findMany({
+    where: {
+      title: {
+        in: [
+          'Mjesto stanovanja (ljeto/zima)',
+          'Koje programske jezike koristiš? (koji ti je drazi, zasto, koliko iskustva ima sa tim jezikom, je li entuzijastican oko ijednog)',
+          `Količina slobodnog vremena koje posjeduje i spreman je ulozit prijavnik:
+      1 - do 3 sata tjedno
+      5 - 3 do 10 sati tjedno
+      10 - preko 10 sati tjedno`,
+          'Želis li postati član DUMP-a, ako da zašto?',
+          '1. pitanje iz Google forme',
+        ],
+      },
+    },
+    orderBy: { title: 'asc' },
+  });
+
+  // Create answers for Ante Roca (slot 1)
+  await prisma.interviewQuestionAnswer.createMany({
+    data: [
+      {
+        questionId: questions[0].id,
+        interviewSlotId: '1',
+        value: { slider: 4 },
+        flagged: false,
+      },
+      {
+        questionId: questions[1].id,
+        interviewSlotId: '1',
+        value: {
+          field: 'JavaScript i Python. Najviše iskustva imam s JavaScriptom.',
+        },
+        flagged: false,
+      },
+      {
+        questionId: questions[2].id,
+        interviewSlotId: '1',
+        value: { slider: 8 },
+        flagged: false,
+      },
+      {
+        questionId: questions[3].id,
+        interviewSlotId: '1',
+        value: { field: 'Zagreb (ljeto), Split (zima)' },
+        flagged: false,
+      },
+      {
+        questionId: questions[4].id,
+        interviewSlotId: '1',
+        value: {
+          field:
+            'Da, želim učiti od iskusnih developera i raditi na realnim projektima.',
+        },
+        flagged: false,
+      },
+    ],
+  });
+
+  // Create answers for Marija Jurić (slot 2)
+  await prisma.interviewQuestionAnswer.createMany({
+    data: [
+      {
+        questionId: questions[0].id,
+        interviewSlotId: '2',
+        value: { slider: 3 },
+        flagged: false,
+      },
+      {
+        questionId: questions[1].id,
+        interviewSlotId: '2',
+        value: { field: 'C++ i Java, posebno me zanima game development.' },
+        flagged: false,
+      },
+      {
+        questionId: questions[2].id,
+        interviewSlotId: '2',
+        value: { slider: 6 },
+        flagged: false,
+      },
+      {
+        questionId: questions[3].id,
+        interviewSlotId: '2',
+        value: { field: 'Zadar cijelu godinu' },
+        flagged: true,
+      },
+      {
+        questionId: questions[4].id,
+        interviewSlotId: '2',
+        value: {
+          field: 'Još razmišljam, ali zanima me rad u timskom okruženju.',
+        },
+        flagged: false,
+      },
+    ],
+  });
 }
 
 main()
