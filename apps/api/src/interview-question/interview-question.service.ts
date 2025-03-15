@@ -19,13 +19,17 @@ export class InterviewQuestionService {
               ? {
                   upsert: {
                     update: {
-                      options: details.options || null,
+                      options: details.options
+                        ? JSON.stringify(details.options)
+                        : null,
                       min: details.min || null,
                       max: details.max || null,
                       step: details.step || null,
                     },
                     create: {
-                      options: details.options || null,
+                      options: details.options
+                        ? JSON.stringify(details.options)
+                        : null,
                       min: details.min || null,
                       max: details.max || null,
                       step: details.step || null,
