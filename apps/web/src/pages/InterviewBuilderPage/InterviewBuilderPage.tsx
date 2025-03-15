@@ -4,9 +4,11 @@ import { useFetchAllInterviewQuestions } from '../../api/useFetchAllInterviewQue
 import InterviewQuestionList from '../../components/InterviewQuestionList/InterviewQuestionList';
 import { InterviewQuestion } from '@internship-app/types';
 import { useEffect, useState } from 'react';
+import { usePostInterviewQuestions } from '../../api/usePostInterviewQuestions';
 
 export const InterviewBuilderPage = () => {
   const { data, isLoading } = useFetchAllInterviewQuestions();
+  const postInterviewQuestions = usePostInterviewQuestions();
   const [interviewQuestions, setInterviewQuestions] = useState<
     InterviewQuestion[]
   >([]);
@@ -19,7 +21,9 @@ export const InterviewBuilderPage = () => {
     <AdminPage headerText="Interview builder">
       <h1>Trenutna pitanja</h1>
       <Button>Dodaj pitanje</Button>
-      <Button>Spremi promjene</Button>
+      <Button onClick={() => postInterviewQuestions.mutate(interviewQuestions)}>
+        Spremi promjene
+      </Button>
       {isLoading ? (
         <p>Loading...</p>
       ) : (

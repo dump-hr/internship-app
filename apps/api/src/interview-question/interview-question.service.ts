@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InterviewQuestionDto } from './dto/interview-question.dto';
 import { PrismaService } from 'src/prisma.service';
-import { InterviewQuestion } from '@prisma/client';
 
 @Injectable()
 export class InterviewQuestionService {
