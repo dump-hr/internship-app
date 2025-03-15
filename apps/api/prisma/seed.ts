@@ -309,7 +309,7 @@ async function main() {
       {
         id: 'd2',
         questionId: 'q3',
-        options: ['optionA', 'optionB', 'optionC'],
+        options: JSON.stringify(['optionA', 'optionB', 'optionC']),
       },
     ],
   });

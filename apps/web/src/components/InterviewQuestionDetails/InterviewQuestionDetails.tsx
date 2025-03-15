@@ -1,9 +1,12 @@
-import { InterviewQuestionType } from '@internship-app/types';
+import {
+  InterviewQuestion,
+  InterviewQuestionType,
+} from '@internship-app/types';
 import { useEffect, useState } from 'react';
 import OptionCreator from '../OptionCreator/OptionCreator';
 
 interface InterviewQuestionDetailsPros {
-  type: InterviewQuestionType;
+  interviewQuestion: InterviewQuestion;
 }
 
 interface InterviewQuestionDetailsType {
@@ -14,7 +17,7 @@ interface InterviewQuestionDetailsType {
 }
 
 const InterviewQuestionDetails: React.FC<InterviewQuestionDetailsPros> = ({
-  type,
+  interviewQuestion,
 }) => {
   const [details, setDetails] = useState<InterviewQuestionDetailsType | null>();
   const [options, setOptions] = useState<string[] | undefined>();
@@ -29,14 +32,15 @@ const InterviewQuestionDetails: React.FC<InterviewQuestionDetailsPros> = ({
 
   function loadDetails() {
     const newDetails = getDetailsFromType();
-    setDetails(newDetails);
-    setOptions(newDetails?.options);
+    console.log(newDetails);
+    setDetails(interviewQuestion.details);
+    setOptions(interviewQuestion.details?.options);
   }
 
   function getDetailsFromType(): InterviewQuestionDetailsType | null {
     let newDetails = null;
 
-    switch (type) {
+    switch (interviewQuestion.type) {
       case InterviewQuestionType.Field:
       case InterviewQuestionType.TextArea:
       case InterviewQuestionType.Date:
@@ -67,22 +71,22 @@ const InterviewQuestionDetails: React.FC<InterviewQuestionDetailsPros> = ({
           {details.options && (
             <OptionCreator options={details.options} setOptions={setOptions} />
           )}
-          {details.min !== undefined && (
+          {details.min && (
             <label>
               Min:
-              <input type="number" />
+              <input type="number" defaultValue={details.min} />
             </label>
           )}
-          {details.max !== undefined && (
+          {details.max && (
             <label>
               Max:
-              <input type="number" />
+              <input type="number" defaultValue={details.max} />
             </label>
           )}
-          {details.step !== undefined && (
+          {details.step && (
             <label>
               Step:
-              <input type="number" />
+              <input type="number" defaultValue={details.step} />
             </label>
           )}
         </div>

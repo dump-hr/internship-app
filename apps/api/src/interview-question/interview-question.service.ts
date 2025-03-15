@@ -65,8 +65,18 @@ export class InterviewQuestionService {
     return interviewQuestionDtos;
   }
 
+  async getAnswersByQuestionId(questionId: string) {
+    const answers = await this.prisma.interviewQuestionAnswer.findMany({
+      where: { questionId },
+      include: {
+        internDiscipline: true,
+      },
+    });
+    return answers;
+  }
+
   private getDtosFromInterviewQuestionList(
-    interviewQuestions: InterviewQuestion[],
+    interviewQuestions: InterviewQuestionDto[],
   ) {
     const interviewQuestionDtos: InterviewQuestionDto[] =
       interviewQuestions.map((q) => {
@@ -77,19 +87,15 @@ export class InterviewQuestionService {
           question: q.question,
           isEnabled: q.isEnabled,
           discipline: q.discipline,
+          details: {
+            options: q.details?.options ? JSON.parse(q.details?.options) : null,
+            min: q.details?.min,
+            max: q.details?.max,
+            step: q.details?.step,
+          },
         };
       });
 
     return interviewQuestionDtos;
-  }
-
-  async getAnswersByQuestionId(questionId: string) {
-    const answers = await this.prisma.interviewQuestionAnswer.findMany({
-      where: { questionId },
-      include: {
-        internDiscipline: true,
-      },
-    });
-    return answers;
   }
 }

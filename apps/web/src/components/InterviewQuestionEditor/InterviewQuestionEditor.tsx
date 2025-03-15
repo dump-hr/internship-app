@@ -64,7 +64,7 @@ const InterviewQuestionEditor: React.FC<InterviewQuestionEditorProps> = ({
         Pitanje:
         <input type="text" defaultValue={interviewQuestion.question} />
       </label>
-      <InterviewQuestionDetails type={interviewQuestion.type} />
+      <InterviewQuestionDetails interviewQuestion={interviewQuestion} />
     </form>
   );
 };
