@@ -32,8 +32,15 @@ export const QuestionInfo = ({
   handleEditQuestion,
 }: QuestionInfoProps) => {
   const [editOpenModal, setEditOpenModal] = useState<boolean>(false);
+  const [isEnabled, setIsEnabled] = useState<boolean>(question.isEnabled);
 
   const categoryColor = disciplineColors[question.category] || '#000';
+
+  const handleSwitchChange = () => {
+    const updatedQuestion = { ...question, isEnabled: !isEnabled };
+    setIsEnabled(!isEnabled);
+    handleEditQuestion(updatedQuestion);
+  };
 
   return (
     <Card
@@ -65,8 +72,8 @@ export const QuestionInfo = ({
         </CardContent>
 
         <FormControlLabel
-          label={question.isEnabled ? 'Disable' : 'Enable'}
-          control={<Switch checked={question.isEnabled} />}
+          label={isEnabled ? 'Disable' : 'Enable'}
+          control={<Switch checked={isEnabled} onChange={handleSwitchChange} />}
         />
         <Button
           variant="outlined"
