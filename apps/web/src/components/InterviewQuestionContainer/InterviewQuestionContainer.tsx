@@ -4,14 +4,31 @@ import {
 } from '@internship-app/types';
 import { Button } from '@mui/material';
 import InterviewQuestionEditor from '../InterviewQuestionEditor/InterviewQuestionEditor';
+import { useEffect, useState } from 'react';
 
 interface InterviewQuestionContainerProps {
-  interviewQuestion: InterviewQuestion;
+  question: InterviewQuestion;
+  setInterviewQuestions: Function;
 }
 
 const InterviewQuestionContainer: React.FC<InterviewQuestionContainerProps> = ({
-  interviewQuestion,
+  question,
+  setInterviewQuestions,
 }) => {
+  const [interviewQuestion, setInterviewQuestion] = useState(question);
+
+  useEffect(() => {
+    updateQuestions();
+  }, [interviewQuestion]);
+
+  function updateQuestions() {
+    setInterviewQuestions((prev: InterviewQuestion[]) =>
+      prev.map((q: InterviewQuestion) =>
+        q.id === interviewQuestion.id ? interviewQuestion : q,
+      ),
+    );
+  }
+
   return (
     <>
       <div className="interview-question-container">
@@ -26,7 +43,10 @@ const InterviewQuestionContainer: React.FC<InterviewQuestionContainerProps> = ({
         <Button>Edit</Button>
         <Button>Stats</Button>
       </div>
-      <InterviewQuestionEditor interviewQuestion={interviewQuestion} />
+      <InterviewQuestionEditor
+        interviewQuestion={interviewQuestion}
+        setInterviewQuestion={setInterviewQuestion}
+      />
     </>
   );
 };

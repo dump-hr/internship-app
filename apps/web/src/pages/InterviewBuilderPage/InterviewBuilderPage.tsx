@@ -23,7 +23,10 @@ export const InterviewBuilderPage = () => {
       {isLoading ? (
         <p>Loading...</p>
       ) : (
-        <InterviewQuestionList interviewQuestions={interviewQuestions} />
+        <InterviewQuestionList
+          interviewQuestions={interviewQuestions}
+          setInterviewQuestions={setInterviewQuestions}
+        />
       )}
     </AdminPage>
   );

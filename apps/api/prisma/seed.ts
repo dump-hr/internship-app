@@ -302,7 +302,7 @@ async function main() {
       {
         id: 'd1',
         questionId: 'q2',
-        min: 0,
+        min: 20,
         max: 100,
         step: 1,
       },

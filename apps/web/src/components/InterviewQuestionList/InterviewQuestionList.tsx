@@ -3,16 +3,22 @@ import InterviewQuestionContainer from '../InterviewQuestionContainer/InterviewQ
 
 interface InterviewQuestionListProps {
   interviewQuestions?: InterviewQuestion[];
+  setInterviewQuestions: Function;
 }
 
 const InterviewQuestionList: React.FC<InterviewQuestionListProps> = ({
   interviewQuestions,
+  setInterviewQuestions,
 }) => {
   return (
     <>
       {interviewQuestions ? (
         interviewQuestions.map((q) => (
-          <InterviewQuestionContainer interviewQuestion={q} key={q.id} />
+          <InterviewQuestionContainer
+            question={q}
+            setInterviewQuestions={setInterviewQuestions}
+            key={q.id}
+          />
         ))
       ) : (
         <p>Trenutno nema pitanja.</p>

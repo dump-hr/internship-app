@@ -2,38 +2,43 @@ import {
   InterviewQuestion,
   InterviewQuestionType,
 } from '@internship-app/types';
-import { useEffect, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 import OptionCreator from '../OptionCreator/OptionCreator';
 
 interface InterviewQuestionDetailsPros {
   interviewQuestion: InterviewQuestion;
+  setInterviewQuestion: Function;
 }
 
 interface InterviewQuestionDetailsType {
-  options?: string[];
-  min?: number;
-  max?: number;
-  step?: number;
+  options?: string[] | null;
+  min?: number | null;
+  max?: number | null;
+  step?: number | null;
 }
 
 const InterviewQuestionDetails: React.FC<InterviewQuestionDetailsPros> = ({
   interviewQuestion,
+  setInterviewQuestion,
 }) => {
-  const [details, setDetails] = useState<InterviewQuestionDetailsType | null>();
   const [options, setOptions] = useState<string[] | undefined>();
 
   useEffect(() => {
     loadDetails();
-  }, []);
+  }, [interviewQuestion.type]);
 
   useEffect(() => {
-    if (details) setDetails({ ...details, options: options });
+    setInterviewQuestion({
+      ...interviewQuestion,
+      details: { ...interviewQuestion.details, options },
+    });
   }, [options]);
 
   function loadDetails() {
-    const newDetails = getDetailsFromType();
-    console.log(newDetails);
-    setDetails(interviewQuestion.details);
+    setInterviewQuestion({
+      ...interviewQuestion,
+      details: getDetailsFromType(),
+    });
     setOptions(interviewQuestion.details?.options);
   }
 
@@ -41,21 +46,31 @@ const InterviewQuestionDetails: React.FC<InterviewQuestionDetailsPros> = ({
     let newDetails = null;
 
     switch (interviewQuestion.type) {
-      case InterviewQuestionType.Field:
-      case InterviewQuestionType.TextArea:
-      case InterviewQuestionType.Date:
-      case InterviewQuestionType.DateTime:
-        break;
       case InterviewQuestionType.Checkbox:
       case InterviewQuestionType.Select:
       case InterviewQuestionType.Radio:
-        newDetails = { options: [] };
+        newDetails = {
+          options: interviewQuestion.details?.options ?? [],
+          min: null,
+          max: null,
+          step: null,
+        };
         break;
       case InterviewQuestionType.Number:
-        newDetails = { min: 0, max: 100 };
+        newDetails = {
+          options: null,
+          min: interviewQuestion.details?.min ?? 0,
+          max: interviewQuestion.details?.max ?? 100,
+          step: null,
+        };
         break;
       case InterviewQuestionType.Slider:
-        newDetails = { min: 0, max: 100, step: 1 };
+        newDetails = {
+          options: null,
+          min: interviewQuestion.details?.min ?? 0,
+          max: interviewQuestion.details?.max ?? 100,
+          step: interviewQuestion.details?.step ?? 1,
+        };
         break;
       default:
         break;
@@ -64,29 +79,57 @@ const InterviewQuestionDetails: React.FC<InterviewQuestionDetailsPros> = ({
     return newDetails;
   }
 
+  function handleInputChange(e: ChangeEvent<HTMLInputElement>) {
+    setInterviewQuestion({
+      ...interviewQuestion,
+      details: {
+        ...interviewQuestion.details,
+        [e.target.name]: e.target.value,
+      },
+    });
+  }
+
   return (
     <>
-      {details && (
+      {interviewQuestion.details && (
         <div className="interview-question-details">
-          {details.options && (
-            <OptionCreator options={details.options} setOptions={setOptions} />
+          {interviewQuestion.details.options && (
+            <OptionCreator
+              options={interviewQuestion.details.options}
+              setOptions={setOptions}
+            />
           )}
-          {details.min && (
+          {interviewQuestion.details.min && (
             <label>
               Min:
-              <input type="number" defaultValue={details.min} />
+              <input
+                name="min"
+                type="number"
+                value={interviewQuestion.details.min}
+                onChange={handleInputChange}
+              />
             </label>
           )}
-          {details.max && (
+          {interviewQuestion.details.max && (
             <label>
               Max:
-              <input type="number" defaultValue={details.max} />
+              <input
+                name="max"
+                type="number"
+                value={interviewQuestion.details.max}
+                onChange={handleInputChange}
+              />
             </label>
           )}
-          {details.step && (
+          {interviewQuestion.details.step && (
             <label>
               Step:
-              <input type="number" defaultValue={details.step} />
+              <input
+                name="step"
+                type="number"
+                value={interviewQuestion.details.step}
+                onChange={handleInputChange}
+              />
             </label>
           )}
         </div>
