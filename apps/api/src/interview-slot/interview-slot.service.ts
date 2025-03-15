@@ -4,11 +4,22 @@ import {
   InternalServerErrorException,
   NotFoundException,
 } from '@nestjs/common';
-import { Discipline, InterviewStatus, Prisma } from '@prisma/client';
+import {
+  Discipline,
+  InterviewStatus,
+  Prisma,
+  QuestionCategory,
+} from '@prisma/client';
 import * as postmark from 'postmark';
 import { PrismaService } from 'src/prisma.service';
 
 import { CreateInterviewSlotDto } from './dto/createInterviewSlot.dto';
+import { JsonValue } from '@prisma/client/runtime/library';
+import {
+  MultistepQuestion,
+  Question,
+  QuestionAnswer,
+} from '@internship-app/types';
 
 @Injectable()
 export class InterviewSlotService {
@@ -317,7 +328,7 @@ export class InterviewSlotService {
         const answers = Array.isArray(slot.answers) ? slot.answers : [];
 
         const questionAnswer = answers.find(
-          (answer: any) => answer.id === questionId,
+          (answer: QuestionAnswer) => answer.id === questionId,
         );
 
         return {
@@ -336,7 +347,9 @@ export class InterviewSlotService {
       where: { id: slotId },
     });
 
-    const answers = currentSlot.answers as Record<string, any>[];
+    const answers = currentSlot.answers as QuestionAnswer[];
+
+    console.log(answers);
 
     const answerIndex = answers.findIndex((answer) => answer.id === questionId);
 
