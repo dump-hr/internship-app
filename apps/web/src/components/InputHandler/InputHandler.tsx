@@ -1,8 +1,14 @@
 import { Question, QuestionType } from '@internship-app/types';
 import {
   Checkbox,
+  FormControl,
+  FormControlLabel,
+  FormGroup,
+  FormLabel,
   InputLabel,
   MenuItem,
+  Radio,
+  RadioGroup,
   Select,
   Slider,
   TextareaAutosize,
@@ -42,24 +48,63 @@ const getInputComponent = (
           ))}
         </Select>
       );
+    case QuestionType.Radio:
+      return (
+        <FormControl>
+          <RadioGroup
+            value={field.value || ''}
+            onChange={(e) => field.onChange(e.target.value)}
+          >
+            {question.options?.map((option, index) => (
+              <FormControlLabel
+                key={index}
+                value={option}
+                control={<Radio />}
+                label={option}
+              />
+            ))}
+          </RadioGroup>
+        </FormControl>
+      );
     case QuestionType.Slider:
       return (
         <Slider
           {...field}
           marks
           valueLabelDisplay="auto"
-          step={question.step}
-          min={question.min}
-          max={question.max}
+          step={question.stepValue}
+          min={question.minValue}
+          max={question.maxValue}
         />
       );
     case QuestionType.Checkbox:
       return (
-        <Checkbox
-          {...field}
-          checked={field.value}
-          onChange={(e) => field.onChange(e.target.checked)}
-        />
+        <FormGroup>
+          {question.options?.map((option, index) => (
+            <FormControlLabel
+              key={index}
+              control={
+                <Checkbox
+                  checked={
+                    Array.isArray(field.value)
+                      ? field.value.includes(option)
+                      : false
+                  }
+                  onChange={(e) => {
+                    const currentValue = Array.isArray(field.value)
+                      ? field.value
+                      : [];
+                    const newValue = e.target.checked
+                      ? [...currentValue, option]
+                      : currentValue.filter((item) => item !== option);
+                    field.onChange(newValue);
+                  }}
+                />
+              }
+              label={option}
+            />
+          ))}
+        </FormGroup>
       );
     case QuestionType.Date:
       return <TextField {...field} type="date" />;

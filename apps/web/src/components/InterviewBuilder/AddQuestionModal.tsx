@@ -49,6 +49,7 @@ export const AddQuestionModal = ({
 
   const handleTypeChange = (e: SelectChangeEvent<QuestionType>) => {
     const newType = e.target.value as QuestionType;
+    console.log(newType);
     setFormData((prev) => {
       switch (newType) {
         case QuestionType.Select:
@@ -105,10 +106,10 @@ export const AddQuestionModal = ({
     }
 
     if (
-      (formData.options?.length === 0 &&
-        formData.type === QuestionType.Select) ||
-      formData.type === QuestionType.Checkbox ||
-      formData.type === QuestionType.Radio
+      formData.options?.length === 0 &&
+      (formData.type === QuestionType.Select ||
+        formData.type === QuestionType.Checkbox ||
+        formData.type === QuestionType.Radio)
     ) {
       return 'Morate dodati opcije za ovaj tip';
     }
@@ -167,7 +168,7 @@ export const AddQuestionModal = ({
             fullWidth
             label="Pitanje"
             name="question"
-            value={formData.question}
+            value={formData.question || ''}
             onChange={handleInputChange}
           />
         </Box>
