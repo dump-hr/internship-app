@@ -122,6 +122,9 @@ const InterviewQuestionDialog = ({
           question.step === null):
         toast.error('Slider opcije nesme bit prazne');
         break;
+      case isSlider && (question.min >= question.max || question.step <= 0):
+        toast.error('Slider opcije nisu ispravne');
+        break;
       default:
         onSubmit(question);
         break;
