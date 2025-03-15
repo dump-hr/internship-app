@@ -83,9 +83,10 @@ const InterviewQuestionEditor: React.FC<InterviewQuestionEditorProps> = ({
           Područje:
           <select
             name="discipline"
-            value={formData.discipline}
+            value={formData.discipline ?? ''}
             onChange={handleInputChange}
           >
+            <option value="">Odaberi područje</option>
             {disciplines.map((d) => (
               <option value={d} key={d}>
                 {d}

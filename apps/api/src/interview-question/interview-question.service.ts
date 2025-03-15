@@ -39,7 +39,11 @@ export class InterviewQuestionService {
               : undefined,
           },
           create: {
-            ...questionData,
+            question: questionData.question,
+            category: questionData.category,
+            discipline: questionData.discipline,
+            isEnabled: questionData.isEnabled,
+            type: questionData.type,
             details: details
               ? {
                   create: {
