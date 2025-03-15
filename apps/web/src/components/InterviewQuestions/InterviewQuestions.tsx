@@ -12,6 +12,9 @@ import { useFetchAllInterviewQuestions } from '../../api/usefetchAllInterviewQue
 import { InterviewQuestionForm } from '../InterviewQuestionForm/InterviewQuestionForm.tsx';
 import { useUpdateInterviewQuestion } from '../../api/useUpdateInterviewQuestion.ts';
 import toast from 'react-hot-toast';
+import { useAnswerIdForQuestion } from '../../api/useAnswerIdByQuestion.ts';
+import { useFetchAllInterviewSlots } from '../../api/useFetchAllInterviewSlots.tsx';
+import { InterviewSlot } from '@internship-app/types';
 
 // interface SelectEditProps extends GridRenderEditCellParams {
 //   options: string[];
@@ -20,6 +23,8 @@ import toast from 'react-hot-toast';
 export const InterviewQuestions = () => {
   const { data: allQuestions } = useFetchAllInterviewQuestions();
   const { mutateAsync } = useUpdateInterviewQuestion();
+  const slots = useFetchAllInterviewSlots().data as InterviewSlot[] | undefined;
+  const answerId = useAnswerIdForQuestion('aaaa', slots);
   const [rowModesModel, setRowModesModel] = useState<GridRowModesModel>({});
   const [showForm, setShowForm] = useState(false);
   const handleAddQuestionClick = () => {

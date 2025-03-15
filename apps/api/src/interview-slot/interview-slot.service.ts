@@ -170,16 +170,15 @@ export class InterviewSlotService {
       { disciplines: Discipline[]; needed: number }[]
     >(
       Prisma.sql`
-        select disciplines, count(*)::integer as needed from 
-        (
-          select DISTINCT array_agg("InternDiscipline".discipline ORDER BY "priority" ASC) as "disciplines", "Intern".id 
-          from "Intern" 
-		      left join "InternDiscipline" on "InternDiscipline"."internId" = "Intern".id 
-          where "Intern"."interviewStatus" = 'PickTerm'
-		      group by "Intern".id
-        ) as disciplineCombinations
-        group by disciplines
-        order by needed desc
+          select disciplines, count(*) ::integer as needed
+          from (select DISTINCT array_agg("InternDiscipline".discipline ORDER BY "priority" ASC) as "disciplines",
+                                "Intern".id
+                from "Intern"
+                         left join "InternDiscipline" on "InternDiscipline"."internId" = "Intern".id
+                where "Intern"."interviewStatus" = 'PickTerm'
+                group by "Intern".id) as disciplineCombinations
+          group by disciplines
+          order by needed desc
       `,
     );
 
@@ -290,5 +289,36 @@ export class InterviewSlotService {
         },
       },
     });
+  }
+
+  async updateQuestionInAnswers(
+    slotId: string,
+    question: string,
+    answerId: string,
+  ) {
+    try {
+      const updated = await this.prisma.interviewSlot.update({
+        where: { id: slotId },
+        data: {
+          answers: {
+            update: {
+              where: {
+                id: answerId,
+              },
+              data: {
+                question: question,
+              },
+            },
+          },
+        },
+      });
+    } catch (error) {
+      console.error(
+        `Error finding and updating question in answer:${error.message}`,
+      );
+      throw new InternalServerErrorException(
+        `Error finding and updating question in answer:${error.message}`,
+      );
+    }
   }
 }
