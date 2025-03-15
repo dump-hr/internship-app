@@ -1,4 +1,4 @@
-import { Question } from '@internship-app/types';
+import { InterviewQuestion } from '@internship-app/types';
 
 import {
   Card,
@@ -9,9 +9,12 @@ import {
   Box,
   FormControlLabel,
 } from '@mui/material';
+import { useState } from 'react';
+import { EditQuestionModal } from './EditQuestionModal';
 
 type QuestionInfoProps = {
-  question: Question;
+  question: InterviewQuestion;
+  handleEditQuestion: (updatedQuestion: InterviewQuestion) => void;
 };
 
 const disciplineColors = {
@@ -24,7 +27,12 @@ const disciplineColors = {
   Final: '#999',
 };
 
-export const QuestionInfo = ({ question }: QuestionInfoProps) => {
+export const QuestionInfo = ({
+  question,
+  handleEditQuestion,
+}: QuestionInfoProps) => {
+  const [editOpenModal, setEditOpenModal] = useState<boolean>(false);
+
   const categoryColor = disciplineColors[question.category] || '#000';
 
   return (
@@ -60,13 +68,24 @@ export const QuestionInfo = ({ question }: QuestionInfoProps) => {
           label={question.isEnabled ? 'Disable' : 'Enable'}
           control={<Switch checked={question.isEnabled} />}
         />
-        <Button variant="outlined" sx={{ mx: 2 }}>
+        <Button
+          variant="outlined"
+          sx={{ mx: 2 }}
+          onClick={() => setEditOpenModal(true)}
+        >
           Edit
         </Button>
 
         <Button variant="contained" color="primary">
           Stats
         </Button>
+
+        <EditQuestionModal
+          question={question}
+          open={editOpenModal}
+          onClose={() => setEditOpenModal(false)}
+          handleEditQuestion={handleEditQuestion}
+        />
       </Box>
     </Card>
   );

@@ -1,11 +1,18 @@
-import { Question } from '@internship-app/types';
+import { InterviewQuestion } from '@internship-app/types';
 import { useQuery } from 'react-query';
 import { api } from '.';
 
-const fetchInterviewQuestions = async () => {
-  return await api.get<never, Question[]>('interview-questions');
+const fetchInterviewQuestions = async (): Promise<InterviewQuestion[]> => {
+  return await api.get<never, InterviewQuestion[]>('interview-questions');
 };
 
 export const useFetchInterviewQuestions = () => {
-  return useQuery(['interview-questions'], fetchInterviewQuestions);
+  return useQuery<InterviewQuestion[], Error>(
+    ['interview-questions'],
+    fetchInterviewQuestions,
+    {
+      staleTime: 1000 * 60 * 5,
+      refetchOnWindowFocus: false,
+    },
+  );
 };
