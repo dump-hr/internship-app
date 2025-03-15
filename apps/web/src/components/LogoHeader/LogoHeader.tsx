@@ -27,6 +27,9 @@ const LogoHeader: React.FC<Props> = ({ text }) => {
           <h3 className={c.text}>{text}</h3>
         </div>
         <nav className={c.navigation}>
+          <Button component={Link} to={Path.InterviewBuilder}>
+            Interview Builder
+          </Button>
           <Button component={Link} to={Path.Dashboard}>
             Dashboard
           </Button>

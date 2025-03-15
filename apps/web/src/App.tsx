@@ -26,6 +26,7 @@ import TestOverviewPage from './pages/TestOverviewPage';
 import TestPage from './pages/TestPage';
 import TestReviewPage from './pages/TestReviewPage';
 import TestSchedulerPage from './pages/TestSchedulerPage';
+import { InterviewBuilderPage } from './pages/InterviewBuilderPage';
 
 const queryClient = new QueryClient();
 
@@ -43,6 +44,10 @@ export const App = () => {
             <Route path={Path.Status} component={StatusPage} />
             <Route path={Path.Interview} component={InterviewPage} />
             <Route path={Path.InterviewPicker} component={AdminInterviewPage} />
+            <Route
+              path={Path.InterviewBuilder}
+              component={InterviewBuilderPage}
+            />
             <Route
               path={Path.ScheduleInterview}
               component={ScheduleInterviewPage}
