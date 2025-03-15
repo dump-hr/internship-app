@@ -32,7 +32,9 @@ export const QuestionInfo = ({
   handleEditQuestion,
 }: QuestionInfoProps) => {
   const [editOpenModal, setEditOpenModal] = useState<boolean>(false);
-  const [isEnabled, setIsEnabled] = useState<boolean>(question.isEnabled);
+  const [isEnabled, setIsEnabled] = useState<boolean>(
+    question.isEnabled ?? true,
+  );
 
   const categoryColor = disciplineColors[question.category ?? 'General'];
 

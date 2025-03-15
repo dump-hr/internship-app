@@ -37,7 +37,6 @@ export const EditQuestionModal = ({
       options,
       isEnabled,
     };
-    console.log(updatedQuestion);
 
     handleEditQuestion(updatedQuestion);
     onClose();

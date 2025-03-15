@@ -20,6 +20,10 @@ export type Question = {
   category?: QuestionCategory;
   options?: string[];
   isEnabled?: boolean;
+  type?: QuestionType;
+  minValue?: number;
+  maxValue?: number;
+  stepValue?: number;
 } & (
   | { type: QuestionType.Field }
   | { type: QuestionType.TextArea }

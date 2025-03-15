@@ -13,7 +13,7 @@ import {
   FormControl,
   IconButton,
 } from '@mui/material';
-import { InterviewQuestion, QuestionType } from '@internship-app/types';
+import { Question, QuestionType } from '@internship-app/types';
 import { QuestionCategory } from '../../constants/interviewConstants';
 import { toast } from 'react-hot-toast';
 import { Add, Remove } from '@mui/icons-material';
@@ -21,7 +21,7 @@ import { Add, Remove } from '@mui/icons-material';
 type AddQuestionModalProps = {
   open: boolean;
   onClose: () => void;
-  handleAddQuestion: (question: InterviewQuestion) => void;
+  handleAddQuestion: (question: Question) => void;
 };
 
 export const AddQuestionModal = ({
@@ -29,16 +29,16 @@ export const AddQuestionModal = ({
   onClose,
   handleAddQuestion,
 }: AddQuestionModalProps) => {
-  const defaultQuestion: InterviewQuestion = {
-    question: '',
+  const defaultQuestion: Partial<Question> = {
     category: QuestionCategory.General,
     type: QuestionType.Field,
     isEnabled: true,
-    stepValue: 1,
     options: [],
   };
 
-  const [formData, setFormData] = useState<InterviewQuestion>(defaultQuestion);
+  const [formData, setFormData] = useState<Question>(
+    defaultQuestion as Question,
+  );
 
   const handleInputChange = (
     e: React.ChangeEvent<{ name: string; value: string }>,
@@ -48,10 +48,31 @@ export const AddQuestionModal = ({
   };
 
   const handleTypeChange = (e: SelectChangeEvent<QuestionType>) => {
-    setFormData((prev) => ({ ...prev, type: e.target.value as QuestionType }));
-    setFormData((prev) => ({ ...prev, options: [] }));
-  };
+    const newType = e.target.value as QuestionType;
+    setFormData((prev) => {
+      switch (newType) {
+        case QuestionType.Select:
+        case QuestionType.Checkbox:
+        case QuestionType.Radio:
+          return {
+            ...prev,
+            type: newType,
+            options: prev.options || [],
+          };
+        case QuestionType.Slider:
+          return {
+            ...prev,
+            type: newType,
+            minValue: prev.minValue ?? 0,
+            maxValue: prev.maxValue ?? 5,
+            stepValue: prev.stepValue ?? 1,
+          };
 
+        default:
+          return { ...prev, type: newType };
+      }
+    });
+  };
   const handleCategoryChange = (e: SelectChangeEvent<QuestionCategory>) => {
     setFormData((prev) => ({
       ...prev,

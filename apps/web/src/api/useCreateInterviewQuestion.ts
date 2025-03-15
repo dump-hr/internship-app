@@ -1,10 +1,10 @@
 import { useMutation, useQueryClient } from 'react-query';
 
 import { api } from './index.ts';
-import { InterviewQuestion } from '@internship-app/types';
+import { Question } from '@internship-app/types';
 
-const createInterviewQuestion = (data: InterviewQuestion) =>
-  api.post<InterviewQuestion, never>('/interview-questions', data);
+const createInterviewQuestion = (data: Question) =>
+  api.post<Question, never>('/interview-questions', data);
 
 export const useCreateInterviewQuestion = () => {
   const queryClient = useQueryClient();

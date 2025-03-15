@@ -31,6 +31,7 @@ const MultistepForm = <T, FH>({
   const currentCategory = steps[currentStep].category;
 
   console.log(questions);
+
   return (
     <Box>
       <Stepper activeStep={currentStep} nonLinear>
@@ -41,9 +42,9 @@ const MultistepForm = <T, FH>({
         ))}
       </Stepper>
 
-      <Box display="flex" flexDirection="column" gap="20px">
+      <Box display="flex" flexDirection="column" gap="20px" sx={{ mt: 5 }}>
         {questions
-          .filter((q) => q.category === currentCategory)
+          .filter((q) => q.category === currentCategory && q.isEnabled === true)
           .map((q) => (
             <InputHandler form={form} question={q} key={q.id} />
           ))}
