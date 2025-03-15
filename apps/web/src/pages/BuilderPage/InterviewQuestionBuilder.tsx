@@ -10,6 +10,7 @@ import { useEffect, useState } from 'react';
 import { InterviewQuestion } from '@internship-app/types';
 import { useCreateInterviewQuestion } from '../../api/useCreateInterviewQuestion';
 import toast, { Toaster } from 'react-hot-toast';
+import { useUpdateInterviewQuestion } from '../../api/useUpdateInterviewQuestion';
 
 export const InterviewQuestionBuilder = () => {
   const { data: allQuestions, isFetching } = useFetchInterviewQuestions();
@@ -18,20 +19,20 @@ export const InterviewQuestionBuilder = () => {
   const [modalOpen, setModalOpen] = useState(false);
 
   const createInterviewQuestion = useCreateInterviewQuestion();
+  const updateInterviewQuestion = useUpdateInterviewQuestion();
 
   useEffect(() => {
     if (allQuestions) {
-      setQuestions(allQuestions);
+      const sortedQuestions = allQuestions.reverse();
+      setQuestions(sortedQuestions);
     }
   }, [allQuestions]);
 
   const handleAddQuestion = (newQuestion: InterviewQuestion) => {
-    console.log('Dodano pitanje:', newQuestion);
-
     createInterviewQuestion.mutate(newQuestion, {
-      onSuccess: () => {
+      onSuccess: (savedQuestion: InterviewQuestion) => {
         toast.success('Pitanje uspješno dodano!');
-        setQuestions((prevQuestions) => [...prevQuestions, newQuestion]);
+        setQuestions((prevQuestions) => [savedQuestion, ...prevQuestions]);
       },
     });
   };
@@ -42,6 +43,7 @@ export const InterviewQuestionBuilder = () => {
         q.id === updatedQuestion.id ? updatedQuestion : q,
       ),
     );
+    updateInterviewQuestion.mutate(updatedQuestion);
   };
 
   if (isFetching) {

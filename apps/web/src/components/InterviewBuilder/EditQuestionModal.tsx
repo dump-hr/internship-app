@@ -4,15 +4,10 @@ import {
   Box,
   TextField,
   Button,
-  Select,
-  MenuItem,
-  InputLabel,
-  FormControl,
   Typography,
   FormControlLabel,
   Switch,
 } from '@mui/material';
-import { QuestionCategory } from '../../constants/interviewConstants';
 import { InterviewQuestion, QuestionType } from '@internship-app/types';
 
 type EditQuestionModalProps = {
@@ -31,7 +26,6 @@ export const EditQuestionModal = ({
   const [editedQuestion, setEditedQuestion] = useState<string>(
     question.question,
   );
-  const [category, setCategory] = useState<QuestionCategory>(question.category);
   const [newOption, setNewOption] = useState<string>('');
   const [options, setOptions] = useState<string[] | []>(question.options || []);
   const [isEnabled, setIsEnabled] = useState<boolean>(true);
@@ -40,10 +34,11 @@ export const EditQuestionModal = ({
     const updatedQuestion = {
       ...question,
       question: editedQuestion,
-      category,
       options,
       isEnabled,
     };
+    console.log(updatedQuestion);
+
     handleEditQuestion(updatedQuestion);
     onClose();
   };
@@ -67,7 +62,7 @@ export const EditQuestionModal = ({
           p: 4,
           boxShadow: 24,
           borderRadius: 2,
-          width: 400,
+          width: 600,
         }}
       >
         <Typography variant="h6">Uredi Pitanje</Typography>
@@ -78,20 +73,6 @@ export const EditQuestionModal = ({
           value={editedQuestion}
           onChange={(e) => setEditedQuestion(e.target.value)}
         />
-
-        <FormControl fullWidth margin="normal">
-          <InputLabel>Category</InputLabel>
-          <Select
-            value={category}
-            onChange={(e) => setCategory(e.target.value as QuestionCategory)}
-          >
-            {Object.values(QuestionCategory).map((cat) => (
-              <MenuItem key={cat} value={cat}>
-                {cat}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
 
         {(question.type === QuestionType.Radio ||
           question.type === QuestionType.Checkbox ||

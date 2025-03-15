@@ -1,8 +1,8 @@
-import { Injectable } from '@nestjs/common';
-import { QuestionCategory, QuestionType } from '@prisma/client';
-
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
-import { CreateQuestionDto } from './dto/create-question.dto';
+import { CreateQuestionDto } from './dto/createQuestion.dto';
+import { EditQuestionDto } from './dto/editQuestion.dto';
+import { NotFoundError } from 'rxjs';
 
 @Injectable()
 export class QuestionService {
@@ -18,5 +18,24 @@ export class QuestionService {
     });
 
     return newQuestion;
+  }
+
+  async editInterviewQuestion(editQuestionDto: EditQuestionDto) {
+    const question = await this.prisma.interviewQuestion.findUnique({
+      where: { id: editQuestionDto.id },
+    });
+
+    if (!question) {
+      throw new NotFoundException('Not founded question.');
+    }
+
+    return await this.prisma.interviewQuestion.update({
+      where: { id: question.id },
+      data: {
+        question: editQuestionDto.question,
+        options: editQuestionDto.options,
+        isEnabled: editQuestionDto.isEnabled,
+      },
+    });
   }
 }

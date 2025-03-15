@@ -1,8 +1,9 @@
 import { QuestionService } from './question.service';
 import { ApiTags } from '@nestjs/swagger';
 
-import { Body, Controller, Get, Post } from '@nestjs/common';
-import { CreateQuestionDto } from './dto/create-question.dto';
+import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
+import { CreateQuestionDto } from './dto/createQuestion.dto';
+import { EditQuestionDto } from './dto/editQuestion.dto';
 
 @Controller('interview-questions')
 @ApiTags('interview-questions')
@@ -17,5 +18,10 @@ export class QuestionController {
   @Post()
   async create(@Body() createQuestionDto: CreateQuestionDto) {
     return this.questionService.createInterviewQuestion(createQuestionDto);
+  }
+
+  @Patch()
+  async update(@Body() question: EditQuestionDto) {
+    return await this.questionService.editInterviewQuestion(question);
   }
 }
