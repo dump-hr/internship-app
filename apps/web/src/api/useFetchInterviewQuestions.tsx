@@ -9,3 +9,21 @@ const fetchInterviewQuestions = async () => {
 export function useFetchInterviewQuestions() {
   return useQuery(['interview-question'], fetchInterviewQuestions);
 }
+
+const fetchInterviewQuestion = async (
+  id: string,
+): Promise<InterviewQuestion> => {
+  const res = await fetch(`/api/interview-question/${id}`);
+  return res.json();
+};
+
+export function useFetchInterviewQuestion(id: string) {
+  return useQuery(
+    ['interview-question', id],
+    () => fetchInterviewQuestion(id),
+    {
+      enabled: !!id,
+      staleTime: 1000 * 60,
+    },
+  );
+}

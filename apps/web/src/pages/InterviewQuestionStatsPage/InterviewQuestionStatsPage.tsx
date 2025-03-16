@@ -16,28 +16,36 @@ import { useFetchQuestionAnswers } from '../../api/useFetchQuestionAnswers';
 import { Path } from '../../constants/paths';
 import { useToggleQuestionAnswer } from '../../api/useToggleQuestionAnswer';
 import AdminPage from '../../components/AdminPage';
+import { useFetchInterviewQuestion } from '../../api/useFetchInterviewQuestions';
 
 export const InterviewQuestionStatsPage: React.FC = () => {
   const [, params] = useRoute(Path.InterviewQuestionStats);
-  const questionId = params?.questionId;
+  const questionId = params?.questionId || '';
 
   const {
     data: answers,
     error,
     isLoading,
-  } = useFetchQuestionAnswers(questionId!);
+  } = useFetchQuestionAnswers(questionId);
   const { mutate: toggleAnswerFlag } = useToggleQuestionAnswer();
+
+  const { data: question, isLoading: questionLoading } =
+    useFetchInterviewQuestion(questionId);
 
   const handleFlag = (answerId: string) => {
     toggleAnswerFlag(answerId);
   };
 
-  if (isLoading) return <Typography>Loading stats...</Typography>;
+  if (isLoading || questionLoading)
+    return <Typography>Loading stats...</Typography>;
   if (error) return <Typography>Error loading stats.</Typography>;
 
   return (
     <AdminPage headerText="Question Statistics">
       <Box sx={{ p: 2 }}>
+        <Typography variant="h6" gutterBottom sx={{ mb: 5 }}>
+          {question ? question.title : 'Question Stats'}
+        </Typography>
         <TableContainer component={Paper}>
           <Table>
             <TableHead>
