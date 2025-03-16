@@ -76,8 +76,8 @@ const getInputComponent = (
               marks
               valueLabelDisplay="auto"
               step={question.details.step ?? 1}
-              min={question.details.min}
-              max={question.details.max}
+              min={question.details.min ?? 1}
+              max={question.details.max ?? 100}
             />
           )}
         </>

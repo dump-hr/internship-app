@@ -32,6 +32,11 @@ export class InterviewQuestionController {
     return await this.InterviewQuestionService.getAll();
   }
 
+  @Get('enabled')
+  async getEnabled() {
+    return await this.InterviewQuestionService.getEnabled();
+  }
+
   @Get(':questionId')
   async get(@Param('questionId') questionId: string) {
     return await this.InterviewQuestionService.get(questionId);

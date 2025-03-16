@@ -2,11 +2,13 @@ import {
   InterviewQuestion,
   InterviewQuestionCategory,
 } from '@internship-app/types';
-import { Button } from '@mui/material';
+import { Button, Chip } from '@mui/material';
 import InterviewQuestionEditor from '../InterviewQuestionEditor/InterviewQuestionEditor';
 import { useEffect, useState } from 'react';
 import { Link } from 'wouter';
 import { Path } from '../../constants/paths';
+import styles from './InterviewQuestionContainer.module.css';
+import { shortDisciplineLabels } from '../InternList/consts';
 
 interface InterviewQuestionContainerProps {
   question: InterviewQuestion;
@@ -43,19 +45,33 @@ const InterviewQuestionContainer: React.FC<InterviewQuestionContainerProps> = ({
 
   return (
     <>
-      <div className="interview-question-container">
+      <div className={styles.interviewQuestionContainer}>
         <p>{interviewQuestion.question}</p>
-        <p>
-          {interviewQuestion.category ===
-          InterviewQuestionCategory.DisciplineSpecific
-            ? interviewQuestion.discipline
-            : interviewQuestion.category}
-        </p>
-        <Button onClick={toggleEnableQuestion}>
+        <Chip
+          label={
+            interviewQuestion.category ===
+            InterviewQuestionCategory.DisciplineSpecific
+              ? interviewQuestion.discipline
+              : interviewQuestion.category
+          }
+          key={interviewQuestion.id}
+        />
+        <Button
+          onClick={toggleEnableQuestion}
+          variant="contained"
+          color={interviewQuestion.isEnabled ? 'error' : 'success'}
+        >
           {interviewQuestion.isEnabled ? 'Disable' : 'Enable'}
         </Button>
-        <Button onClick={toggleQuestionEditor}>Edit</Button>
-        <Button component={Link} to={statsPath}>
+        <Button onClick={toggleQuestionEditor} variant="contained">
+          Edit
+        </Button>
+        <Button
+          component={Link}
+          to={statsPath}
+          variant="contained"
+          color="secondary"
+        >
           Stats
         </Button>
       </div>

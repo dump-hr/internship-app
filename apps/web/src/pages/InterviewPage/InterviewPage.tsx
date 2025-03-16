@@ -26,8 +26,8 @@ import {
 import { Path } from '../../constants/paths';
 import { defaultInterviewValues } from './data';
 import InterviewQuestionHandler from './InterviewQuestionHandler';
-import { useFetchAllInterviewQuestions } from '../../api/useFetchAllInterviewQuestions';
 import { usePostInterviewQuestionAnswers } from '../../api/usePostInterviewQuestionAnswers';
+import { useFetchEnabledInterviewQuestions } from '../../api/useFetchEnabledInterviewQuestions';
 
 const InterviewPage = () => {
   const [, params] = useRoute(Path.Interview);
@@ -35,7 +35,7 @@ const InterviewPage = () => {
 
   const { data: intern, isFetching } = useFetchIntern(internId);
   const { data: interviewQuestions, isLoading } =
-    useFetchAllInterviewQuestions();
+    useFetchEnabledInterviewQuestions();
   const setInterview = useSetInterview(() => {
     navigate(Path.Intern.replace(':internId', params?.internId || ''));
   });

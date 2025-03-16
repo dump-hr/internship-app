@@ -75,6 +75,21 @@ export class InterviewQuestionService {
     return interviewQuestionDtos;
   }
 
+  async getEnabled() {
+    const allInterviewQuestions = await this.prisma.interviewQuestion.findMany({
+      include: {
+        details: true,
+      },
+    });
+    const enabledInterviewQuestions = allInterviewQuestions.filter(
+      (q) => q.isEnabled,
+    );
+    const interviewQuestionDtos = this.getDtosFromInterviewQuestionList(
+      enabledInterviewQuestions,
+    );
+    return interviewQuestionDtos;
+  }
+
   async get(questionId: string) {
     const interviewQuestion = await this.prisma.interviewQuestion.findUnique({
       where: { id: questionId },

@@ -1,0 +1,12 @@
+.interviewQuestionContainer {
+  display: grid;
+  grid-template-columns: 3fr 1fr 1fr 1fr 1fr;
+  align-items: center;
+  gap: 30px;
+}
+
+.interviewQuestionContainer > p {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

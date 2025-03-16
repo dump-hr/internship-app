@@ -9,6 +9,7 @@ import {
 } from '@internship-app/types';
 import { useEffect, useRef, useState } from 'react';
 import { usePostInterviewQuestions } from '../../api/usePostInterviewQuestions';
+import styles from './InterviewBuilderPage.module.css';
 
 export const InterviewBuilderPage = () => {
   const { data, isLoading } = useFetchAllInterviewQuestions();
@@ -37,11 +38,19 @@ export const InterviewBuilderPage = () => {
 
   return (
     <AdminPage headerText="Interview builder">
-      <h1>Trenutna pitanja</h1>
-      <Button onClick={createNewQuestion}>Dodaj pitanje</Button>
-      <Button onClick={() => postInterviewQuestions.mutate(interviewQuestions)}>
-        Spremi promjene
-      </Button>
+      <div className={styles.interviewBuilderHead}>
+        <h3>Trenutna pitanja</h3>
+        <Button onClick={createNewQuestion} variant="contained" color="info">
+          Dodaj pitanje
+        </Button>
+        <Button
+          onClick={() => postInterviewQuestions.mutate(interviewQuestions)}
+          variant="contained"
+          color="info"
+        >
+          Spremi promjene
+        </Button>
+      </div>
       {isLoading ? (
         <p>Loading...</p>
       ) : (
