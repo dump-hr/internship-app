@@ -57,7 +57,11 @@ export const InterviewQuestionStatsPage: React.FC = () => {
                         ? `${answer.interviewSlot.intern.firstName} ${answer.interviewSlot.intern.lastName}`
                         : 'N/A'}
                     </TableCell>
-                    <TableCell>{JSON.stringify(answer.value)}</TableCell>
+                    <TableCell
+                      sx={{ color: answer.flagged ? 'red' : 'inherit' }}
+                    >
+                      {JSON.stringify(answer.value)}
+                    </TableCell>
                     <TableCell>
                       {new Date(answer.createdAt).toLocaleString()}
                     </TableCell>

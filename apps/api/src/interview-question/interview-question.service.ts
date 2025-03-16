@@ -25,7 +25,9 @@ export class InterviewQuestionService {
   }
 
   async findAll() {
-    const questions = await this.prisma.interviewQuestion.findMany();
+    const questions = await this.prisma.interviewQuestion.findMany({
+      orderBy: { updatedAt: 'desc' },
+    });
     return questions;
   }
 
