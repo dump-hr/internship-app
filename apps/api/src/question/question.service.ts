@@ -77,7 +77,9 @@ export class QuestionService {
             internName: slot.intern
               ? `${slot.intern.firstName} ${slot.intern.lastName}`
               : 'Nepoznato',
+            question: question.question,
             answer: answerItem.value,
+            tick: answerItem.tick ?? false,
             interviewDate: slot.start,
           };
         }
@@ -85,9 +87,6 @@ export class QuestionService {
       })
       .filter((item: Answer) => item !== null);
 
-    return {
-      question,
-      answers,
-    };
+    return answers;
   }
 }
