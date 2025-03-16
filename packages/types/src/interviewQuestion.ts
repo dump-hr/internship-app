@@ -1,7 +1,7 @@
 import { QuestionCategory, QuestionType } from './question';
 
 export type InterviewQuestion = {
-  id: string;
+  id?: string;
   title: string;
   type: QuestionType;
   category: QuestionCategory;

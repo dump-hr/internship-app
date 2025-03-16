@@ -7,9 +7,18 @@ import { PrismaService } from 'src/prisma.service';
 export class InterviewQuestionService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async create(createInterviewQuestionDto: CreateInterviewQuestionDto) {
+  async create(dto: CreateInterviewQuestionDto) {
     const newQuestion = await this.prisma.interviewQuestion.create({
-      data: createInterviewQuestionDto,
+      data: {
+        title: dto.title.trim(),
+        type: dto.type,
+        category: dto.category,
+        min: dto.min ?? null,
+        max: dto.max ?? null,
+        step: dto.step ?? null,
+        options: dto.options ?? [],
+        isActive: dto.isActive ?? true,
+      },
     });
 
     return newQuestion;

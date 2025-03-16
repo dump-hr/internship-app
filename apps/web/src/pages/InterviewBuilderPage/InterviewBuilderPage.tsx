@@ -12,10 +12,17 @@ import {
   Button,
   Box,
   Typography,
+  Dialog,
+  DialogTitle,
+  DialogContent,
 } from '@mui/material';
+import { useState } from 'react';
+import { AddInterviewQuestionForm } from '../../components/AddInterviewQuestionForm';
 
 export const InterviewBuilderPage = () => {
   const { data, isLoading, error } = useFetchInterviewQuestions();
+
+  const [openAddForm, setOpenAddForm] = useState(false);
 
   if (isLoading)
     return (
@@ -41,13 +48,26 @@ export const InterviewBuilderPage = () => {
           variant="contained"
           color="primary"
           sx={{ mb: 2 }}
-          onClick={() => {
-            // Implement "Add question"
-            console.log('Add question clicked');
-          }}
+          onClick={() => setOpenAddForm(true)}
         >
           Add Question
         </Button>
+
+        <Dialog
+          open={openAddForm}
+          onClose={() => setOpenAddForm(false)}
+          fullWidth
+          maxWidth="sm"
+          disableEnforceFocus
+        >
+          <DialogTitle>Add Interview Question</DialogTitle>
+          <DialogContent>
+            <AddInterviewQuestionForm
+              onSuccess={() => setOpenAddForm(false)}
+              onCancel={() => setOpenAddForm(false)}
+            />
+          </DialogContent>
+        </Dialog>
 
         <TableContainer component={Paper}>
           <Table>
