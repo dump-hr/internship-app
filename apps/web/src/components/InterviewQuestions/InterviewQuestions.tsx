@@ -1,12 +1,11 @@
 import { InterviewSlot } from '@internship-app/types';
 import { Question } from '@internship-app/types/';
 import { Box, Button, MenuItem, Select } from '@mui/material';
-
 import {
   DataGrid,
   GridCellParams,
-  GridRenderEditCellParams,
   GridColDef,
+  GridRenderEditCellParams,
   GridRowModes,
   GridRowModesModel,
 } from '@mui/x-data-grid';
@@ -156,7 +155,7 @@ export const InterviewQuestions = () => {
       flex: 1,
       renderCell: (params: GridCellParams) => {
         const isEditing = rowModesModel[params.id]?.mode === GridRowModes.Edit;
-        const isDisabled = params.row.disabled;
+        // const isDisabled = params.row.disabled;
         return (
           <Box sx={{ display: 'flex', gap: 1 }}>
             {isEditing ? (
@@ -176,13 +175,13 @@ export const InterviewQuestions = () => {
                 Edit
               </Button>
             )}
-            <Button
-              variant="contained"
-              size="small"
-              onClick={() => console.log(params.id)}
-            >
-              {isDisabled ? 'Enable' : 'Disable'}
-            </Button>
+            {/*<Button*/}
+            {/*  variant="contained"*/}
+            {/*  size="small"*/}
+            {/*  onClick={() => console.log(params.id)}*/}
+            {/*>*/}
+            {/*  {isDisabled ? 'Enable' : 'Disable'}*/}
+            {/*</Button>*/}
           </Box>
         );
       },
@@ -230,6 +229,7 @@ export const InterviewQuestions = () => {
               paginationModel: { pageSize: 10 },
             },
           }}
+          pageSizeOptions={[10, 20, 25, 30, 40, 50, 100]}
         />
       </Box>
     </>
