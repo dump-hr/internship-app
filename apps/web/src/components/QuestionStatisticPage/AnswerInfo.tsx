@@ -22,7 +22,6 @@ export const AnswerInfo = ({ answer }: AnswerInfoProps) => {
   const handleViewInternInfo = () => {
     navigate(Path.Intern.replace(':internId', answer.internId));
   };
-
   return (
     <Card
       sx={{
@@ -37,7 +36,11 @@ export const AnswerInfo = ({ answer }: AnswerInfoProps) => {
       >
         <Box display="flex" alignItems="center" gap="10px">
           <Typography variant="h6">{answer.internName}:</Typography>
-          <Typography variant="body1">{answer.answer}</Typography>
+          <Typography variant="body1">
+            {Array.isArray(answer.answer)
+              ? answer.answer.join(', ')
+              : answer.answer}
+          </Typography>
         </Box>
         <Box display="flex" alignItems="center" gap="10px">
           <Button variant="outlined" color="primary" onClick={handleFlag}>

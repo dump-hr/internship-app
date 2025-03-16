@@ -9,6 +9,7 @@ const fetchAllAnswers = async (id: string) => {
 
 export const useFetchAllAnswers = (id: string) => {
   return useQuery(['answers', id], () => fetchAllAnswers(id), {
+    enabled: !!id,
     staleTime: 0,
     cacheTime: 1000 * 60 * 15,
     refetchOnMount: 'always',
