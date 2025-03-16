@@ -1,47 +1,88 @@
-import { Answer, InterviewSlot } from '@internship-app/types';
+import { InterviewSlot } from '@internship-app/types';
 
 import { useFetchAllInterviewSlots } from '../../api/useFetchAllInterviewSlots.tsx';
+import { DataGrid, GridColDef } from '@mui/x-data-grid';
+import { Box } from '@mui/material';
 
 export const InterviewStatsAnswers = () => {
   const slots = useFetchAllInterviewSlots().data as InterviewSlot[] | undefined;
 
   if (!slots) return <div>Loading...</div>;
 
-  console.log(typeof slots);
-
-  const extractAnswers = (data: InterviewSlot[]): Answer[] => {
+  const extractAnswersWithInterns = (data: InterviewSlot[]) => {
     return data.flatMap((slot) => {
+      const internName = `${slot.intern.firstName} ${slot.intern.lastName}`;
+
       if (Array.isArray(slot.answers)) {
-        return slot.answers;
+        return slot.answers.map((answer) => ({
+          id: slot.id,
+          internName,
+          question: answer.question,
+          answer: answer.value,
+        }));
       } else if (typeof slot.answers === 'object' && slot.answers !== null) {
-        return Object.values(slot.answers);
+        return Object.values(slot.answers).map((answer) => ({
+          id: slot.id,
+          internName,
+          question: answer,
+          answer: answer,
+        }));
       }
       return [];
     });
   };
 
-  const allAnswers: Answer[] = extractAnswers(slots);
+  const allAnswersWithInterns = extractAnswersWithInterns(slots);
 
-  const getAnswerForQuestion = (
-    data: Answer[],
+  const getAnswersForQuestion = (
+    data: {
+      id: string;
+      internName: string;
+      question: string;
+      answer: string;
+    }[],
     question: string,
-  ): string | null => {
-    const found = data.find(
+  ) => {
+    return data.filter(
       (item) => item.question.toLowerCase() === question.toLowerCase(),
     );
-    return found ? found.value : null;
   };
 
   const questionToFind =
     'Jesi li se prethodno prijavljivao na DUMP Internship?';
-  const answer = getAnswerForQuestion(allAnswers, questionToFind);
+  const answersWithInterns = getAnswersForQuestion(
+    allAnswersWithInterns,
+    questionToFind,
+  );
 
-  console.log(answer);
+  const columns: GridColDef[] = [
+    {
+      field: 'internName',
+      headerName: 'Intern',
+      flex: 1,
+      editable: false,
+    },
+    {
+      field: 'answer',
+      headerName: 'Answer',
+      flex: 1,
+      editable: false,
+    },
+  ];
 
   return (
-    <div>
-      <h3>Answer for: {questionToFind}</h3>
-      <p>{answer ? answer : 'No answer found'}</p>
-    </div>
+    <Box>
+      <DataGrid
+        columns={columns}
+        rows={answersWithInterns}
+        autoHeight
+        getRowId={(row) => row.id}
+        initialState={{
+          pagination: {
+            paginationModel: { pageSize: 10 },
+          },
+        }}
+      />
+    </Box>
   );
 };
