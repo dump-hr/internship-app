@@ -7,6 +7,7 @@ import {
 import { Discipline, InterviewStatus, Prisma } from '@prisma/client';
 import { PrismaService } from 'src/prisma.service';
 import { CreateInterviewSlotDto } from './dto/createInterviewSlot.dto';
+import { Answer } from '@internship-app/types';
 
 @Injectable()
 export class InterviewSlotService {
@@ -307,5 +308,37 @@ export class InterviewSlotService {
         }
       }
     }
+  }
+
+  async updateAnswer(answer: Answer) {
+    const slot = await this.prisma.interviewSlot.findUnique({
+      where: { internId: answer.internId },
+    });
+
+    if (!slot) {
+      throw new NotFoundException('Not founded interview slot.');
+    }
+
+    const answers = slot.answers as any[];
+
+    const answerIndex = answers.findIndex(
+      (item) => item.id === answer.questionId,
+    );
+    if (answerIndex === -1) {
+      throw new NotFoundException('Answer not found in the interview slot.');
+    }
+
+    const updatedAnswers = [...answers];
+    updatedAnswers[answerIndex] = {
+      ...updatedAnswers[answerIndex],
+      tick: answer.tick,
+    };
+
+    return this.prisma.interviewSlot.update({
+      where: { id: slot.id },
+      data: {
+        answers: updatedAnswers,
+      },
+    });
   }
 }

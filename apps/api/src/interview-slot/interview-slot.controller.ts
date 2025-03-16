@@ -1,4 +1,4 @@
-import { ScheduleInterviewRequest } from '@internship-app/types';
+import { Answer, ScheduleInterviewRequest } from '@internship-app/types';
 import {
   Body,
   Controller,
@@ -76,5 +76,10 @@ export class InterviewSlotController {
     @Body() { internId }: ScheduleInterviewRequest,
   ) {
     return await this.interviewSlotService.scheduleInterview(slotId, internId);
+  }
+
+  @Patch('statistics')
+  async updateAnswers(@Body() answer: Answer) {
+    return await this.interviewSlotService.updateAnswer(answer);
   }
 }

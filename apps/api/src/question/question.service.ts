@@ -78,6 +78,7 @@ export class QuestionService {
               ? `${slot.intern.firstName} ${slot.intern.lastName}`
               : 'Nepoznato',
             question: question.question,
+            questionId: question.id,
             answer: answerItem.value,
             tick: answerItem.tick ?? false,
             interviewDate: slot.start,
