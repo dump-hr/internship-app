@@ -18,14 +18,14 @@ export class EmailController {
 
   @UseGuards(JwtAuthGuard)
   @Post('send')
-  /*async sendEmails(@Body() { emails, text, subject }: EmailsSendDto) {
+  async sendEmails(@Body() { emails, text, subject }: EmailsSendDto) {
     await this.loggerService.createAdminLog(
       AdminLogAction.Email,
       `Poslan mail ${emails.join(',')} naziva ${subject}`,
     );
 
     return await this.emailService.sendEmail(emails, text, subject);
-  }*/
+  }
   @UseGuards(JwtAuthGuard)
   @Post()
   async makeEmails(@Body() { emails, text }: EmailsDto) {

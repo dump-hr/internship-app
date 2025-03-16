@@ -2,8 +2,10 @@ import {
   InterviewQuestion,
   InterviewQuestionType,
   Question,
+  QuestionType,
 } from '@internship-app/types';
 import {
+  Checkbox,
   FormControlLabel,
   InputLabel,
   MenuItem,
@@ -64,6 +66,14 @@ const getInputComponent = (
               />
             ))}
         </RadioGroup>
+      );
+    case QuestionType.Checkbox:
+      return (
+        <Checkbox
+          {...field}
+          checked={field.value}
+          onChange={(e) => field.onChange(e.target.checked)}
+        />
       );
     case InterviewQuestionType.Slider:
       return (

@@ -3,6 +3,10 @@
   grid-template-columns: 3fr 1fr 1fr 1fr 1fr;
   align-items: center;
   gap: 30px;
+  background-color: rgb(245, 245, 245);
+  border-radius: 30px;
+  padding: 20px;
+  margin: 10px 0;
 }
 
 .interviewQuestionContainer > p {

@@ -3,4 +3,7 @@
   grid-template-columns: 2fr 1fr 1fr;
   margin: 20px 0px;
   gap: 20px;
+  background-color: rgb(245, 245, 245);
+  border-radius: 30px;
+  padding: 20px;
 }

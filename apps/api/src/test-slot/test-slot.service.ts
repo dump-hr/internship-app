@@ -16,7 +16,7 @@ import { PrismaService } from 'src/prisma.service';
 export class TestSlotService {
   constructor(private readonly prisma: PrismaService) {}
 
-  //private postmark = new postmark.ServerClient(process.env.POSTMARK_API_TOKEN);
+  private postmark = new postmark.ServerClient(process.env.POSTMARK_API_TOKEN);
 
   async getAll() {
     const testSlots = await this.prisma.testSlot.findMany({
@@ -192,7 +192,7 @@ export class TestSlotService {
     }
 
     const intern = internDiscipline.intern;
-    /*await this.postmark.sendEmail({
+    await this.postmark.sendEmail({
       From: 'info@dump.hr',
       To: intern.email,
       Subject: 'Uspješno biranje termina za DUMP Internship inicijalni ispit',
@@ -210,7 +210,7 @@ Sretno i vidimo se!
 
 DUMP Udruga mladih programera`,
       MessageStream: 'outbound',
-    });*/
+    });
 
     return await this.prisma.internDiscipline.update({
       where: {

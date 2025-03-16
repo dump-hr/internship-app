@@ -86,8 +86,6 @@ const InterviewPage = () => {
       ? interviewQuestions.map((q) => ({ ...q, ...answers[q.id] }))
       : {};
 
-    console.log(answersToQuestions);
-
     return answersToQuestions;
   };
 
@@ -107,8 +105,6 @@ const InterviewPage = () => {
             internId: intern?.id ?? '',
           }))
       : [];
-
-    console.log(formattedAnswers);
 
     return formattedAnswers;
   }
@@ -131,7 +127,6 @@ const InterviewPage = () => {
 
       setInterview.mutate({ internId, answers, score });
       const formattedAnswers = formatInterviewQuestionAnswers(data);
-      console.log(formattedAnswers);
       addAnswers.mutate(formattedAnswers);
     })();
 

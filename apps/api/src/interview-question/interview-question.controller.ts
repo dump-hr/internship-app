@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Body, Param, Patch } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Param,
+  Patch,
+  UseGuards,
+} from '@nestjs/common';
 import { InterviewQuestionService } from './interview-question.service';
 import {
   InterviewQuestionAnswerDto,
@@ -6,6 +14,7 @@ import {
 } from './dto/interview-question.dto';
 import { AdminLogAction } from '@prisma/client';
 import { LoggerService } from 'src/logger/logger.service';
+import { JwtAuthGuard } from 'src/auth/jwt-auth-guard';
 
 @Controller('interview/questions')
 export class InterviewQuestionController {
@@ -15,6 +24,7 @@ export class InterviewQuestionController {
   ) {}
 
   @Post('save')
+  @UseGuards(JwtAuthGuard)
   async update(@Body() InterviewQuestionDtos: InterviewQuestionDto[]) {
     await this.loggerService.createAdminLog(
       AdminLogAction.Create,
@@ -28,21 +38,25 @@ export class InterviewQuestionController {
   }
 
   @Get()
+  @UseGuards(JwtAuthGuard)
   async getAll() {
     return await this.InterviewQuestionService.getAll();
   }
 
   @Get('enabled')
+  @UseGuards(JwtAuthGuard)
   async getEnabled() {
     return await this.InterviewQuestionService.getEnabled();
   }
 
   @Get(':questionId')
+  @UseGuards(JwtAuthGuard)
   async get(@Param('questionId') questionId: string) {
     return await this.InterviewQuestionService.get(questionId);
   }
 
   @Get('answers/:questionId')
+  @UseGuards(JwtAuthGuard)
   async getAnswersByQuestionId(@Param('questionId') questionId: string) {
     return await this.InterviewQuestionService.getAnswersByQuestionId(
       questionId,
@@ -50,6 +64,7 @@ export class InterviewQuestionController {
   }
 
   @Post('answers')
+  @UseGuards(JwtAuthGuard)
   async addAnswers(
     @Body() InterviewQuestionAnswersDtos: InterviewQuestionAnswerDto[],
   ) {
@@ -65,6 +80,7 @@ export class InterviewQuestionController {
   }
 
   @Patch('answers/:answerId')
+  @UseGuards(JwtAuthGuard)
   async updateFlag(
     @Param('answerId') answerId: string,
     @Body() { flag }: { flag: boolean },
