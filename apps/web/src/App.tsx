@@ -17,6 +17,7 @@ import InternInfoPage from './pages/InternInfoPage';
 import { InterviewBuilderPage } from './pages/InterviewBuilderPage/InterviewBuilderPage.tsx';
 import InterviewersPage from './pages/InterviewersPage';
 import InterviewPage from './pages/InterviewPage';
+import { InterviewStatsPage } from './pages/InterviewStatsPage';
 import LoginPage from './pages/LoginPage';
 import { NotFoundPage } from './pages/NotFoundPage';
 import ScheduleInterviewPage from './pages/ScheduleInterviewPage';
@@ -27,7 +28,6 @@ import TestOverviewPage from './pages/TestOverviewPage';
 import TestPage from './pages/TestPage';
 import TestReviewPage from './pages/TestReviewPage';
 import TestSchedulerPage from './pages/TestSchedulerPage';
-import { InterviewStatsPage } from './pages/InterviewStatsPage';
 
 const queryClient = new QueryClient();
 

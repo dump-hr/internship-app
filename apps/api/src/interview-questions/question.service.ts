@@ -55,20 +55,4 @@ export class QuestionService {
       );
     }
   }
-
-  // async updateQuestionStatus(id: string, status: boolean) {
-  //   try {
-  //     const updated = await this.prisma.interviewQuestion.update({
-  //       where: { id: id },
-  //       data: { disabled: status },
-  //     });
-  //     return updated;
-  //   } catch (error) {
-  //     console.error('Interview question status update failed:', error.message);
-  //     throw new InternalServerErrorException(
-  //       'Failed to update status interview question',
-  //       error.message,
-  //     );
-  //   }
-  // }
 }

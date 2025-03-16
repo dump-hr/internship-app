@@ -11,6 +11,7 @@ import {
 } from '@mui/x-data-grid';
 import { useState } from 'react';
 import toast from 'react-hot-toast';
+import { Link } from 'wouter';
 
 import { useAnswerIdForQuestion } from '../../api/useAnswerIdByQuestion.ts';
 import { useFetchAllInterviewQuestions } from '../../api/usefetchAllInterviewQuestions.tsx';
@@ -98,6 +99,11 @@ export const InterviewQuestions = () => {
       return newRow;
     }
   };
+
+  // const handleStatsNavigation = (question: string) => {
+  //   console.log(question);
+  //   window.location.href = Path.InterviewStats.replace(':question', question);
+  // };
 
   const SelectEdit = ({ id, value, field, options, api }: SelectEditProps) => {
     return (
@@ -190,15 +196,19 @@ export const InterviewQuestions = () => {
       field: 'stats',
       headerName: 'Stats',
       flex: 1,
-      renderCell: (params: GridCellParams) => (
-        <Button
-          variant="outlined"
-          size="small"
-          onClick={() => console.log(params.id)}
-        >
-          Stats
-        </Button>
-      ),
+      renderCell: (params: GridCellParams) => {
+        const questionId = params.row.id;
+        return (
+          <Button
+            variant="outlined"
+            size="small"
+            component={Link}
+            to={`/admin/interview-stats/${questionId}`}
+          >
+            Stats
+          </Button>
+        );
+      },
     },
   ];
 
