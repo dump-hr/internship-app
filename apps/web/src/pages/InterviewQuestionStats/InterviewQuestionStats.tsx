@@ -23,14 +23,17 @@ const InterviewQuestionStats = () => {
 
   const handleAnswerFlag = (params: GridRenderCellParams) => {
     const answer = answers.find((a) => a.intern.id === params.row.id);
+
+    const firstAnswerElement = Array.isArray(answer?.answer)
+      ? answer?.answer[0]
+      : null;
+
     const request: SetAnswerFlagRequest = {
       slotId: answer?.slotId || '',
-      questionId: answer?.answer.id || '',
+      questionId: firstAnswerElement.id || '',
     };
     setAnswerFlag.mutate(request);
   };
-
-  console.log(answers);
 
   const rows = answers.map((item) => {
     const answer = Array.isArray(item.answer) ? item.answer[0] : null;
@@ -102,8 +105,6 @@ const InterviewQuestionStats = () => {
       },
     },
   ];
-
-  console.log(answers);
 
   return (
     <AdminPage>
