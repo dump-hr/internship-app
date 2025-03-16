@@ -14,6 +14,8 @@ import {
 import { Path } from '../../constants/paths';
 import styles from './index.module.css';
 import InternNotes from './InternNotes';
+import { QuestionCategory } from '../../constants/interviewConstants';
+import { mapCategoryToDiscipline } from '../../helpers/mapCategoryToDiscipline';
 
 interface InternInfoProps {
   intern: Intern;
@@ -134,18 +136,25 @@ const InternInfo = ({ intern }: InternInfoProps) => {
           <span>
             <b>Score:</b> {intern.interviewSlot?.score}
           </span>
-
           {Array.isArray(intern.interviewSlot?.answers) &&
             intern.interviewSlot?.answers.map((item: Answer) => {
               if (!item.value) return null;
 
-              if (
-                !intern?.internDisciplines?.some(
-                  (discipline) => discipline.discipline === 'Marketing',
-                ) &&
-                item.id.includes('mark')
-              )
+              const shouldShowQuestion =
+                !item.category ||
+                item.category === QuestionCategory.General ||
+                item.category === QuestionCategory.Personal ||
+                item.category === QuestionCategory.Final ||
+                intern?.internDisciplines?.some((discipline) => {
+                  return (
+                    discipline.discipline ===
+                    mapCategoryToDiscipline(item.category)
+                  );
+                });
+
+              if (!shouldShowQuestion) {
                 return null;
+              }
 
               return (
                 <div
@@ -153,9 +162,14 @@ const InternInfo = ({ intern }: InternInfoProps) => {
                   key={item.id}
                 >
                   <h3 className={styles.itemTitle}>
-                    {item.title} {!item.tick || '⚠️'}
+                    {item.question} {!item.tick || '⚠️'}
                   </h3>
-                  <span>{item.value}</span>
+
+                  {Array.isArray(item.value) ? (
+                    <span>{item.value.join(', ')}</span>
+                  ) : (
+                    <span>{item.value}</span>
+                  )}
                 </div>
               );
             })}

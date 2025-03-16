@@ -125,6 +125,41 @@ model InterviewMemberParticipation {
   @@id([interviewSlotId, interviewerId])
 }
 
+model InterviewQuestion {
+   id               String             @id @default(uuid())
+   question         String
+   type             QuestionType
+   category         QuestionCategory
+   minValue         Int?
+   maxValue         Int?
+   stepValue        Int?               @default(1)
+   isEnabled        Boolean            @default(true) 
+   options          String[]
+ }
+
+ 
+ enum QuestionType {
+   Field
+   TextArea
+   Select
+   Slider
+   Checkbox
+   Date
+   DateTime
+   Radio
+   Number
+ }
+ 
+ enum QuestionCategory {
+   General
+   Personal
+   Development
+   Design
+   Marketing
+   Multimedia
+   Final
+ }
+
 model InternLog {
   id       String          @id @default(uuid())
   intern   Intern          @relation(fields: [internId], references: [id])

@@ -8,5 +8,6 @@ import { InterviewSlotService } from './interview-slot.service';
 @Module({
   controllers: [InterviewSlotController],
   providers: [InterviewSlotService, LoggerService, PrismaService],
+  exports: [InterviewSlotService],
 })
 export class InterviewSlotModule {}

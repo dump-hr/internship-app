@@ -8,7 +8,9 @@ const fetchIntern = (id: string) => api.get<never, Intern>(`/intern/${id}`);
 export const useFetchIntern = (id: string | undefined) => {
   return useQuery(['intern', id], () => fetchIntern(id as string), {
     enabled: !!id,
-    staleTime: Infinity,
+    staleTime: 0,
+    refetchOnMount: true,
+    refetchOnWindowFocus: false,
     retry: false,
   });
 };

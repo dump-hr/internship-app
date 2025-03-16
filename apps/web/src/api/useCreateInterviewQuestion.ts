@@ -1,0 +1,21 @@
+import { useMutation, useQueryClient } from 'react-query';
+
+import { api } from './index.ts';
+import { Question } from '@internship-app/types';
+
+const createInterviewQuestion = (data: Question) =>
+  api.post<Question, never>('/interview-questions', data);
+
+export const useCreateInterviewQuestion = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation(createInterviewQuestion, {
+    onMutate: () => {},
+    onSuccess: () => {
+      void queryClient.invalidateQueries(['interview-questions']);
+    },
+    onError: (error: string) => {
+      console.log('error creating interview question: ', error);
+    },
+  });
+};
