@@ -7,7 +7,7 @@ import { PrismaService } from 'src/prisma.service';
 export class EmailService {
   constructor(private readonly prisma: PrismaService) {}
 
-  private postmark = new postmark.ServerClient(process.env.POSTMARK_API_TOKEN);
+  //private postmark = new postmark.ServerClient(process.env.POSTMARK_API_TOKEN);
 
   async sendEmail(emails: string[], text: string, subject: string) {
     const interns = await this.prisma.intern.findMany({
@@ -37,6 +37,7 @@ export class EmailService {
 
     const template = nunjucks.compile(text);
 
+    /*
     return Promise.all(
       interns.map((intern) => {
         return this.postmark.sendEmail({
@@ -47,7 +48,7 @@ export class EmailService {
           MessageStream: 'outbound',
         });
       }),
-    );
+    );*/
   }
 
   async makeEmail(emails: string[], text: string) {

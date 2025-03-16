@@ -16,7 +16,7 @@ import { PrismaService } from 'src/prisma.service';
 export class TestSlotService {
   constructor(private readonly prisma: PrismaService) {}
 
-  private postmark = new postmark.ServerClient(process.env.POSTMARK_API_TOKEN);
+  //private postmark = new postmark.ServerClient(process.env.POSTMARK_API_TOKEN);
 
   async getAll() {
     const testSlots = await this.prisma.testSlot.findMany({
@@ -191,7 +191,7 @@ export class TestSlotService {
       throw new NotFoundException('Intern has no right to pick this slot');
     }
 
-    const intern = internDiscipline.intern;
+    /*const intern = internDiscipline.intern;
     await this.postmark.sendEmail({
       From: 'info@dump.hr',
       To: intern.email,
@@ -210,7 +210,7 @@ Sretno i vidimo se!
 
 DUMP Udruga mladih programera`,
       MessageStream: 'outbound',
-    });
+    });*/
 
     return await this.prisma.internDiscipline.update({
       where: {
