@@ -20,6 +20,7 @@ import { useState } from 'react';
 import { AddInterviewQuestionForm } from '../../components/AddInterviewQuestionForm';
 import { InterviewQuestion } from '@internship-app/types';
 import { EditInterviewQuestionForm } from '../../components/EditInterviewQuestionForm';
+import { useToggleInterviewQuestion } from '../../api/useToggleInterviewQuestion';
 
 export const InterviewBuilderPage = () => {
   const { data, isLoading, error } = useFetchInterviewQuestions();
@@ -29,6 +30,8 @@ export const InterviewBuilderPage = () => {
   const [openEditForm, setOpenEditForm] = useState(false);
   const [questionToEdit, setQuestionToEdit] =
     useState<InterviewQuestion | null>(null);
+
+  const { mutate: toggleQuestion } = useToggleInterviewQuestion();
 
   if (isLoading)
     return (
@@ -136,11 +139,7 @@ export const InterviewBuilderPage = () => {
                       variant="outlined"
                       color={q.isActive ? 'secondary' : 'primary'}
                       onClick={() => {
-                        console.log(
-                          q.isActive ? 'Disable question' : 'Enable question',
-                          q.id,
-                        );
-                        // Implement toggle status
+                        toggleQuestion(q.id!);
                       }}
                     >
                       {q.isActive ? 'Disable' : 'Enable'}

@@ -41,4 +41,9 @@ export class InterviewQuestionController {
       updateInterviewQuestionDto,
     );
   }
+
+  @Patch(':id/toggle')
+toggleIsActive(@Param('id') id: string) {
+  return this.interviewQuestionService.toggleIsActive(id);
+}
 }
