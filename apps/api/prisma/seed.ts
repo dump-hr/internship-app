@@ -431,6 +431,7 @@ async function main() {
       max: q.max ?? null,
       step: q.step ?? null,
     })),
+    skipDuplicates: true,
   });
 
   await prisma.intern.createMany({
@@ -544,6 +545,7 @@ async function main() {
         id: 'mia-babic',
       },
     ],
+    skipDuplicates: true,
   });
 
   await prisma.internDiscipline.createMany({
@@ -635,6 +637,7 @@ async function main() {
         priority: 1,
       },
     ],
+    skipDuplicates: true,
   });
 
   await prisma.interviewer.createMany({
@@ -669,6 +672,7 @@ async function main() {
         disciplines: [Discipline.Development],
       },
     ],
+    skipDuplicates: true,
   });
 
   await prisma.interviewSlot.create({
@@ -706,6 +710,37 @@ async function main() {
         password: await bcrypt.hash('dump.1950', 10),
       },
     ],
+    skipDuplicates: true,
+  });
+
+  await prisma.interviewSlot.update({
+    where: { id: '1' },
+    data: { internId: 'ana-kovac' },
+  });
+
+  await prisma.interviewSlot.update({
+    where: { id: '2' },
+    data: { internId: 'ante-roca' },
+  });
+
+  const interviewQuestionAnswers = [
+    {
+      value: 'Veliki prioritet',
+      flagged: false,
+      questionId: 'p1',
+      interviewSlotId: '1',
+    },
+    {
+      value: 'Ne znam, moram razmisliti',
+      flagged: false,
+      questionId: 'p1',
+      interviewSlotId: '2',
+    },
+  ];
+
+  await prisma.interviewQuestionAnswer.createMany({
+    data: interviewQuestionAnswers,
+    skipDuplicates: true,
   });
 }
 

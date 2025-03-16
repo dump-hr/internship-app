@@ -62,4 +62,31 @@ export class InterviewQuestionService {
       data: { isActive: !question.isActive },
     });
   }
+
+  async getQuestionAnswers(questionId: string) {
+    return await this.prisma.interviewQuestionAnswer.findMany({
+      where: { questionId },
+      include: {
+        interviewSlot: {
+          include: {
+            intern: true,
+          },
+        },
+      },
+    });
+  }
+
+  async toggleAnswerFlag(id: string) {
+    const answer = await this.prisma.interviewQuestionAnswer.findUnique({
+      where: { id },
+    });
+    if (!answer) {
+      throw new NotFoundException('Answer not found');
+    }
+
+    return await this.prisma.interviewQuestionAnswer.update({
+      where: { id },
+      data: { flagged: !answer.flagged },
+    });
+  }
 }

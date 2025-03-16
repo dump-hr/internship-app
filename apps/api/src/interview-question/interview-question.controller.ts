@@ -43,7 +43,17 @@ export class InterviewQuestionController {
   }
 
   @Patch(':id/toggle')
-toggleIsActive(@Param('id') id: string) {
-  return this.interviewQuestionService.toggleIsActive(id);
-}
+  async toggleIsActive(@Param('id') id: string) {
+    return await this.interviewQuestionService.toggleIsActive(id);
+  }
+
+  @Get(':id/answers')
+  async getQuestionAnswers(@Param('id') id: string) {
+    return await this.interviewQuestionService.getQuestionAnswers(id);
+  }
+
+  @Patch('answers/:id/flag')
+  async toggleAnswerFlag(@Param('id') id: string) {
+    return await this.interviewQuestionService.toggleAnswerFlag(id);
+  }
 }
