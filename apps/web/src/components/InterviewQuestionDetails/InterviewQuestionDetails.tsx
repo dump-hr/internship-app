@@ -46,7 +46,6 @@ const InterviewQuestionDetails: React.FC<InterviewQuestionDetailsPros> = ({
     let newDetails = null;
 
     switch (interviewQuestion.type) {
-      case InterviewQuestionType.Checkbox:
       case InterviewQuestionType.Select:
       case InterviewQuestionType.Radio:
         newDetails = {

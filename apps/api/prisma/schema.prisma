@@ -204,7 +204,6 @@ enum InterviewQuestionType {
   TextArea
   Select
   Slider
-  Checkbox
   Date
   DateTime
   Radio

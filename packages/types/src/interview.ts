@@ -17,7 +17,6 @@ export enum InterviewQuestionType {
   TextArea = 'TextArea',
   Select = 'Select',
   Slider = 'Slider',
-  Checkbox = 'Checkbox',
   Date = 'Date',
   DateTime = 'DateTime',
   Radio = 'Radio',

@@ -4,7 +4,6 @@ import {
   Question,
 } from '@internship-app/types';
 import {
-  Checkbox,
   FormControlLabel,
   InputLabel,
   MenuItem,
@@ -76,20 +75,12 @@ const getInputComponent = (
               {...field}
               marks
               valueLabelDisplay="auto"
-              step={question.details.step}
+              step={question.details.step ?? 1}
               min={question.details.min}
               max={question.details.max}
             />
           )}
         </>
-      );
-    case InterviewQuestionType.Checkbox:
-      return (
-        <Checkbox
-          {...field}
-          checked={field.value}
-          onChange={(e) => field.onChange(e.target.checked)}
-        />
       );
     case InterviewQuestionType.Date:
       return <TextField {...field} type="date" />;

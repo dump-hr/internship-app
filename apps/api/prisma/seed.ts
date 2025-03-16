@@ -583,16 +583,6 @@ async function main() {
       },
       {
         id: 'fin3',
-        question: 'Checkbox?',
-        type: InterviewQuestionType.Checkbox,
-        category: InterviewQuestionCategory.Final,
-        discipline: null,
-        isEnabled: true,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      },
-      {
-        id: 'fin4',
         question: 'Date?',
         type: InterviewQuestionType.Date,
         category: InterviewQuestionCategory.Final,
@@ -602,7 +592,7 @@ async function main() {
         updatedAt: new Date(),
       },
       {
-        id: 'fin5',
+        id: 'fin4',
         question: 'DateTime?',
         type: InterviewQuestionType.DateTime,
         category: InterviewQuestionCategory.Final,
@@ -612,7 +602,7 @@ async function main() {
         updatedAt: new Date(),
       },
       {
-        id: 'fin6',
+        id: 'fin5',
         question: 'Field?',
         type: InterviewQuestionType.Field,
         category: InterviewQuestionCategory.Final,
@@ -622,7 +612,7 @@ async function main() {
         updatedAt: new Date(),
       },
       {
-        id: 'fin7',
+        id: 'fin6',
         question: 'Number?',
         type: InterviewQuestionType.Number,
         category: InterviewQuestionCategory.Final,
@@ -632,7 +622,7 @@ async function main() {
         updatedAt: new Date(),
       },
       {
-        id: 'fin8',
+        id: 'fin7',
         question: 'Slider?',
         type: InterviewQuestionType.Slider,
         category: InterviewQuestionCategory.Final,
@@ -642,7 +632,7 @@ async function main() {
         updatedAt: new Date(),
       },
       {
-        id: 'fin9',
+        id: 'fin8',
         question: 'TextArea?',
         type: InterviewQuestionType.TextArea,
         category: InterviewQuestionCategory.Final,

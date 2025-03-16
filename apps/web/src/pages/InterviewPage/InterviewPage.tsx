@@ -95,15 +95,17 @@ const InterviewPage = () => {
     answers: FieldValues,
   ): InterviewQuestionAnswer[] {
     const formattedAnswers: InterviewQuestionAnswer[] = interviewQuestions
-      ? interviewQuestions.map((q) => ({
-          id: '',
-          questionId: q.id,
-          question: q,
-          flag: false,
-          answer: answers[q.id].value ?? '',
-          intern: intern ?? ({} as Intern),
-          internId: intern?.id ?? '',
-        }))
+      ? interviewQuestions
+          .filter((q) => !!answers[q.id])
+          .map((q) => ({
+            id: '',
+            questionId: q.id,
+            question: q,
+            flag: false,
+            answer: answers[q.id].value.toString(),
+            intern: intern ?? ({} as Intern),
+            internId: intern?.id ?? '',
+          }))
       : [];
 
     console.log(formattedAnswers);
