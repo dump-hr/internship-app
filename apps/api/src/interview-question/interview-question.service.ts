@@ -36,13 +36,16 @@ export class InterviewQuestionService {
     return question;
   }
 
-  async update(
-    id: string,
-    updateInterviewQuestionDto: UpdateInterviewQuestionDto,
-  ) {
+  async update(id: string, dto: UpdateInterviewQuestionDto) {
     return await this.prisma.interviewQuestion.update({
       where: { id },
-      data: updateInterviewQuestionDto,
+      data: {
+        ...dto,
+        min: dto.min ?? null,
+        max: dto.max ?? null,
+        step: dto.step ?? null,
+        options: dto.options && dto.options.length === 0 ? [] : dto.options,
+      },
     });
   }
 }

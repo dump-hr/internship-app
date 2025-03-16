@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Put, Param } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param } from '@nestjs/common';
 import { InterviewQuestionService } from './interview-question.service';
 import { CreateInterviewQuestionDto } from './dto/create-interview-question.dto';
 import { UpdateInterviewQuestionDto } from './dto/update-interview-question.dto';
@@ -31,7 +31,7 @@ export class InterviewQuestionController {
     return question;
   }
 
-  @Put(':id')
+  @Patch(':id')
   async update(
     @Param('id') id: string,
     @Body() updateInterviewQuestionDto: UpdateInterviewQuestionDto,
