@@ -96,7 +96,7 @@ const InterviewPage = () => {
   ): InterviewQuestionAnswer[] {
     const formattedAnswers: InterviewQuestionAnswer[] = interviewQuestions
       ? interviewQuestions
-          .filter((q) => !!answers[q.id])
+          .filter((q) => !!answers[q.id] && !!answers[q.id].value)
           .map((q) => ({
             id: '',
             questionId: q.id,
@@ -116,7 +116,6 @@ const InterviewPage = () => {
   const handleFormSubmit = (internId: string) =>
     form.handleSubmit((data) => {
       const answers = mapAnswersToQuestions(data);
-      console.log(data);
       const score = Object.values(answers)
         .filter(
           (a) =>
@@ -130,9 +129,9 @@ const InterviewPage = () => {
         )
         .reduce((acc, curr) => acc + +curr.value, 0);
 
-      console.log(score);
       setInterview.mutate({ internId, answers, score });
       const formattedAnswers = formatInterviewQuestionAnswers(data);
+      console.log(formattedAnswers);
       addAnswers.mutate(formattedAnswers);
     })();
 

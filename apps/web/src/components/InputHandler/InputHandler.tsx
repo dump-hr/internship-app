@@ -31,8 +31,6 @@ const getInputComponent = (
   question: InterviewQuestion | Question,
   field: ControllerRenderProps<FieldValues>,
 ) => {
-  console.log(question);
-
   switch (question.type) {
     case InterviewQuestionType.Field:
       return <TextField {...field} fullWidth />;
