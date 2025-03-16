@@ -6,13 +6,16 @@ import { api } from './index.ts';
 const updateInterviewQuestion = async ({
   id,
   question,
+  disabled,
 }: {
   id: string;
   question: string;
+  disabled: boolean;
 }) => {
   try {
     const response = await api.patch(`/interview-questions/question/${id}`, {
       question,
+      disabled,
     });
 
     return response.data;

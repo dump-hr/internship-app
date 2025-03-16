@@ -1,9 +1,11 @@
 import { InterviewSlot } from '@internship-app/types';
 import { Question } from '@internship-app/types/';
-import { Box, Button } from '@mui/material';
+import { Box, Button, MenuItem, Select } from '@mui/material';
+
 import {
   DataGrid,
   GridCellParams,
+  GridRenderEditCellParams,
   GridColDef,
   GridRowModes,
   GridRowModesModel,
@@ -17,6 +19,10 @@ import { useFetchAllInterviewSlots } from '../../api/useFetchAllInterviewSlots.t
 import { useUpdateInterviewQuestion } from '../../api/useUpdateInterviewQuestion.ts';
 import { useUpdateQuestionInAnswers } from '../../api/useUpdateQuestionInAnswers.ts';
 import { InterviewQuestionForm } from '../InterviewQuestionForm/InterviewQuestionForm.tsx';
+
+interface SelectEditProps extends GridRenderEditCellParams {
+  options: string[];
+}
 
 export const InterviewQuestions = () => {
   const { data: allQuestions } = useFetchAllInterviewQuestions();
@@ -54,6 +60,7 @@ export const InterviewQuestions = () => {
       await mutateAsync({
         id: updatedRow.id,
         question: updatedRow.question,
+        disabled: updatedRow.disabled,
       });
 
       setRowModesModel((prev) => ({
@@ -79,7 +86,11 @@ export const InterviewQuestions = () => {
     });
 
     try {
-      await mutateAsync({ id: newRow.id, question: newRow.question });
+      await mutateAsync({
+        id: newRow.id,
+        question: newRow.question,
+        disabled: Boolean(newRow.disabled),
+      });
 
       return newRow;
     } catch (error) {
@@ -87,6 +98,28 @@ export const InterviewQuestions = () => {
       console.error(' Mutation failed:', error);
       return newRow;
     }
+  };
+
+  const SelectEdit = ({ id, value, field, options, api }: SelectEditProps) => {
+    return (
+      <Select
+        value={value}
+        onChange={(event) => {
+          api.setEditCellValue({
+            id,
+            field,
+            value: event.target.value === 'true',
+          });
+        }}
+        fullWidth
+      >
+        {options.map((option) => (
+          <MenuItem key={option} value={option}>
+            {option}
+          </MenuItem>
+        ))}
+      </Select>
+    );
   };
 
   const columns: GridColDef[] = [
@@ -109,11 +142,21 @@ export const InterviewQuestions = () => {
       editable: false,
     },
     {
+      field: 'disabled',
+      headerName: 'Disabled?',
+      flex: 1,
+      editable: true,
+      renderEditCell: (params) => (
+        <SelectEdit {...params} options={['true', 'false']} />
+      ),
+    },
+    {
       field: 'actions',
       headerName: 'Actions',
       flex: 1,
       renderCell: (params: GridCellParams) => {
         const isEditing = rowModesModel[params.id]?.mode === GridRowModes.Edit;
+        const isDisabled = params.row.disabled;
         return (
           <Box sx={{ display: 'flex', gap: 1 }}>
             {isEditing ? (
@@ -138,7 +181,7 @@ export const InterviewQuestions = () => {
               size="small"
               onClick={() => console.log(params.id)}
             >
-              Disable
+              {isDisabled ? 'Enable' : 'Disable'}
             </Button>
           </Box>
         );

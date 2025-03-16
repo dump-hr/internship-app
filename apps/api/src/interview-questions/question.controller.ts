@@ -39,12 +39,12 @@ export class QuestionController {
   @Patch('/question/:id')
   async updateInterviewQuestion(
     @Param('id') id: string,
-    @Body() body: { question: string },
+    @Body() body: { question: string; disabled: boolean },
   ) {
     try {
       const updated = await this.questionService.updateInterviewQuestion(
         id,
-        body.question,
+        body,
       );
 
       return updated;
