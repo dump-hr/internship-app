@@ -5,6 +5,7 @@ import { Path } from '../../constants/paths.ts';
 import { useFetchAllInterviewQuestions } from '../../api/usefetchAllInterviewQuestions.tsx';
 import { Question } from '@internship-app/types/';
 import classes from './index.module.css';
+import LogoHeader from '../../components/LogoHeader';
 
 export const InterviewStatsPage = () => {
   const [, params] = useRoute(Path.InterviewStats);
@@ -21,9 +22,12 @@ export const InterviewStatsPage = () => {
     return <div>No question selected</div>;
 
   return (
-    <main className={classes.questionStats}>
-      <h1>Question Stats</h1>
-      <InterviewStatsAnswers questionToFind={questionToFind.question} />
-    </main>
+    <>
+      <LogoHeader text={'Question Stats'} />
+      <main className={classes.questionStats}>
+        <h1>Question Stats</h1>
+        <InterviewStatsAnswers questionToFind={questionToFind.question} />
+      </main>
+    </>
   );
 };

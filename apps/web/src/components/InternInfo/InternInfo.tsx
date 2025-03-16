@@ -141,11 +141,13 @@ const InternInfo = ({ intern }: InternInfoProps) => {
 
               if (
                 !intern?.internDisciplines?.some(
-                  (discipline) => discipline.discipline === 'Marketing',
+                  (discipline) =>
+                    discipline.discipline.toLowerCase() === 'marketing',
                 ) &&
-                item.id.includes('mark')
+                item.category === 'Marketing'
               )
                 return null;
+
               const formattedValue = Array.isArray(item.value)
                 ? item.value.join(', ')
                 : item.value;
