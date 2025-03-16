@@ -17,13 +17,12 @@ const InterviewQuestionStats = () => {
   const setAnswerFlag = useSetAnswerFlag();
 
   const { data: answers } = useFetchInterviewQuestionAnswers(questionId || '');
-  const filteredAnswers = answers?.filter((a) => a.answer && a.answer.value);
 
-  if (!filteredAnswers) return <h1>Loading...</h1>;
-  if (filteredAnswers.length < 1) return <h1>No answers to this question</h1>;
+  if (!answers) return <h1>Loading...</h1>;
+  if (answers.length < 1) return <h1>No answers to this question</h1>;
 
   const handleAnswerFlag = (params: GridRenderCellParams) => {
-    const answer = filteredAnswers.find((a) => a.intern.id === params.row.id);
+    const answer = answers.find((a) => a.intern.id === params.row.id);
     const request: SetAnswerFlagRequest = {
       slotId: answer?.slotId || '',
       questionId: answer?.answer.id || '',
@@ -31,13 +30,18 @@ const InterviewQuestionStats = () => {
     setAnswerFlag.mutate(request);
   };
 
-  const rows = filteredAnswers.map((item) => ({
-    id: item.intern.id,
-    fullName: item.intern.firstName.concat(' ', item.intern.lastName),
-    value: item.answer.value,
-    isFlaged: item.answer.isFlaged || false,
-    question: item.answer.title,
-  }));
+  console.log(answers);
+
+  const rows = answers.map((item) => {
+    const answer = Array.isArray(item.answer) ? item.answer[0] : null;
+    return {
+      id: item.intern.id,
+      fullName: item.intern.firstName.concat(' ', item.intern.lastName),
+      value: answer.value,
+      isFlaged: answer.isFlaged || false,
+      question: answer.title,
+    };
+  });
 
   const columns: GridColDef[] = [
     { field: 'fullName', headerName: 'Ime i prezime', width: 150 },
@@ -50,7 +54,7 @@ const InterviewQuestionStats = () => {
           style={{
             overflowX: 'hidden',
             whiteSpace: 'normal',
-            maxHeight: '4em',
+            maxHeight: '6em',
           }}
         >
           {params.value}
@@ -62,15 +66,15 @@ const InterviewQuestionStats = () => {
       headerName: 'Odgovor',
       width: 275,
       renderCell: (params) => (
-        <div
+        <Typography
           style={{
             overflowX: 'hidden',
             whiteSpace: 'normal',
-            maxHeight: '4em',
+            maxHeight: '6em',
           }}
         >
           {params.value}
-        </div>
+        </Typography>
       ),
     },
     {
@@ -99,6 +103,8 @@ const InterviewQuestionStats = () => {
     },
   ];
 
+  console.log(answers);
+
   return (
     <AdminPage>
       <div
@@ -113,7 +119,7 @@ const InterviewQuestionStats = () => {
           style={{ display: 'flex', flexDirection: 'column-reverse' }}
           rows={rows}
           columns={columns}
-          getRowHeight={() => 80}
+          getRowHeight={() => 100}
           disableColumnFilter
           initialState={{
             pagination: {

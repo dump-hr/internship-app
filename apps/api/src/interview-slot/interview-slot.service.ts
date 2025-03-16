@@ -327,17 +327,32 @@ export class InterviewSlotService {
       .map((slot) => {
         const answers = Array.isArray(slot.answers) ? slot.answers : [];
 
-        const questionAnswer = answers.find(
-          (answer: QuestionAnswer) => answer.id === questionId,
-        );
+        const questionAnswers = answers
+          .filter((answer) => {
+            const typedAnswer = answer as QuestionAnswer;
+            return typedAnswer.id === questionId;
+          })
+          .map((answer) => {
+            const typedAnswer = answer as QuestionAnswer;
+            return {
+              id: typedAnswer.id,
+              isFlaged: typedAnswer.isFlaged,
+              title: typedAnswer.title,
+              value: typedAnswer.value,
+              type: typedAnswer.type,
+              category: typedAnswer.category,
+            };
+          });
 
         return {
           slotId: slot.id,
           intern: slot.intern,
-          answer: questionAnswer,
+          answer: questionAnswers.filter(
+            (answer: QuestionAnswer) => answer.value !== '',
+          ),
         };
       })
-      .filter((item) => item.answer !== null);
+      .filter((item) => item.answer.length > 0);
 
     return answersToQuestion;
   }
