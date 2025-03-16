@@ -1,4 +1,4 @@
-import { Discipline, InternDiscipline } from './intern';
+import { Discipline, Intern, InternDiscipline } from './intern';
 import { Json } from './json';
 
 export type ScheduleInterviewRequest = {
@@ -54,9 +54,8 @@ export type InterviewQuestionAnswer = {
   id: string;
   question: InterviewQuestion;
   questionId: string;
-  internDiscipline: InternDiscipline;
-  internDisciplineInternId: string;
-  internDisciplineDiscipline: Discipline;
+  intern: Intern;
+  internId: string;
   answer: string;
   flag: boolean;
 };

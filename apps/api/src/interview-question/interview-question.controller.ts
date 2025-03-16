@@ -1,6 +1,9 @@
 import { Controller, Get, Post, Body, Param, Patch } from '@nestjs/common';
 import { InterviewQuestionService } from './interview-question.service';
-import { InterviewQuestionDto } from './dto/interview-question.dto';
+import {
+  InterviewQuestionAnswerDto,
+  InterviewQuestionDto,
+} from './dto/interview-question.dto';
 import { AdminLogAction } from '@prisma/client';
 import { LoggerService } from 'src/logger/logger.service';
 
@@ -39,6 +42,21 @@ export class InterviewQuestionController {
     return await this.InterviewQuestionService.getAnswersByQuestionId(
       questionId,
     );
+  }
+
+  @Post('answers')
+  async addAnswers(
+    @Body() InterviewQuestionAnswersDtos: InterviewQuestionAnswerDto[],
+  ) {
+    await this.loggerService.createAdminLog(
+      AdminLogAction.Create,
+      `Dodavanje odgovora na pitanja`,
+    );
+
+    const updatedQuestions = await this.InterviewQuestionService.addAnswers(
+      InterviewQuestionAnswersDtos,
+    );
+    return updatedQuestions;
   }
 
   @Patch('answers/:answerId')

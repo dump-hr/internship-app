@@ -1,5 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { InterviewQuestionDto } from './dto/interview-question.dto';
+import {
+  InterviewQuestionAnswerDto,
+  InterviewQuestionDto,
+} from './dto/interview-question.dto';
 import { PrismaService } from 'src/prisma.service';
 
 @Injectable()
@@ -89,9 +92,7 @@ export class InterviewQuestionService {
     const answers = await this.prisma.interviewQuestionAnswer.findMany({
       where: { questionId },
       include: {
-        internDiscipline: {
-          include: { intern: true },
-        },
+        intern: true,
       },
     });
     return answers;
@@ -104,6 +105,19 @@ export class InterviewQuestionService {
         flag,
       },
     });
+  }
+
+  async addAnswers(interviewQuestionAnswers: InterviewQuestionAnswerDto[]) {
+    const newAnswers = await this.prisma.interviewQuestionAnswer.createMany({
+      data: interviewQuestionAnswers.map((dto: InterviewQuestionAnswerDto) => ({
+        questionId: dto.questionId,
+        internId: dto.internId,
+        answer: dto.answer,
+        flag: dto.flag,
+      })),
+    });
+
+    return newAnswers;
   }
 
   private getDtosFromInterviewQuestionList(

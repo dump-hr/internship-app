@@ -1,4 +1,9 @@
-import { Intern, InterviewStatus, QuestionType } from '@internship-app/types';
+import {
+  Intern,
+  InterviewQuestionAnswer,
+  InterviewStatus,
+  QuestionType,
+} from '@internship-app/types';
 import { Json } from '@internship-app/types/src/json';
 import { useEffect, useState } from 'react';
 import { FieldValues, useForm } from 'react-hook-form';
@@ -22,6 +27,7 @@ import { Path } from '../../constants/paths';
 import { defaultInterviewValues } from './data';
 import InterviewQuestionHandler from './InterviewQuestionHandler';
 import { useFetchAllInterviewQuestions } from '../../api/useFetchAllInterviewQuestions';
+import { usePostInterviewQuestionAnswers } from '../../api/usePostInterviewQuestionAnswers';
 
 const InterviewPage = () => {
   const [, params] = useRoute(Path.Interview);
@@ -33,6 +39,7 @@ const InterviewPage = () => {
   const setInterview = useSetInterview(() => {
     navigate(Path.Intern.replace(':internId', params?.internId || ''));
   });
+  const addAnswers = usePostInterviewQuestionAnswers();
   const setImage = useSetImage();
   const queryClient = useQueryClient();
 
@@ -84,6 +91,26 @@ const InterviewPage = () => {
     return answersToQuestions;
   };
 
+  function formatInterviewQuestionAnswers(
+    answers: FieldValues,
+  ): InterviewQuestionAnswer[] {
+    const formattedAnswers: InterviewQuestionAnswer[] = interviewQuestions
+      ? interviewQuestions.map((q) => ({
+          id: '',
+          questionId: q.id,
+          question: q,
+          flag: false,
+          answer: answers[q.id].value ?? '',
+          intern: intern ?? ({} as Intern),
+          internId: intern?.id ?? '',
+        }))
+      : [];
+
+    console.log(formattedAnswers);
+
+    return formattedAnswers;
+  }
+
   const handleFormSubmit = (internId: string) =>
     form.handleSubmit((data) => {
       const answers = mapAnswersToQuestions(data);
@@ -102,8 +129,9 @@ const InterviewPage = () => {
         .reduce((acc, curr) => acc + +curr.value, 0);
 
       console.log(score);
-
       setInterview.mutate({ internId, answers, score });
+      const formattedAnswers = formatInterviewQuestionAnswers(data);
+      addAnswers.mutate(formattedAnswers);
     })();
 
   const handleSetImage = async (base64: string) => {

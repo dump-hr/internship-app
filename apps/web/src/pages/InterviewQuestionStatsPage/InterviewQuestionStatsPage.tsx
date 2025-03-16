@@ -52,8 +52,7 @@ const InterviewQuestionStatsPage = () => {
                 interviewQuestionAnswers.map((a) => (
                   <div key={a.id} className="question-answer">
                     <p>
-                      {a.internDiscipline.intern.firstName}{' '}
-                      {a.internDiscipline.intern.lastName}: {a.answer}
+                      {a.intern.firstName} {a.intern.lastName}: {a.answer}
                     </p>
                     <Button
                       variant="contained"
@@ -62,10 +61,7 @@ const InterviewQuestionStatsPage = () => {
                     >
                       Flag
                     </Button>
-                    <Button
-                      component={Link}
-                      to={internPath + a.internDiscipline.intern.id}
-                    >
+                    <Button component={Link} to={internPath + a.intern.id}>
                       Uđu u pripravnika
                     </Button>
                   </div>

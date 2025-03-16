@@ -29,35 +29,35 @@ model Interviewer {
 }
 
 model Intern {
-  id                String             @id @default(uuid())
-  firstName         String
-  lastName          String
-  email             String             @unique
-  image             String?
-  data              Json
-  notes             String             @default("")
-  interviewStatus   InterviewStatus    @default(NoRight)
-  interviewSlot     InterviewSlot?
-  internDisciplines InternDiscipline[]
-  createdAt         DateTime           @default(now())
-  updatedAt         DateTime           @updatedAt
-  logs              InternLog[]
+  id                      String                    @id @default(uuid())
+  firstName               String
+  lastName                String
+  email                   String                    @unique
+  image                   String?
+  data                    Json
+  notes                   String                    @default("")
+  interviewStatus         InterviewStatus           @default(NoRight)
+  interviewSlot           InterviewSlot?
+  internDisciplines       InternDiscipline[]
+  createdAt               DateTime                  @default(now())
+  updatedAt               DateTime                  @updatedAt
+  logs                    InternLog[]
+  InterviewQuestionAnswer InterviewQuestionAnswer[]
 }
 
 model InternDiscipline {
-  internId                 String
-  intern                   Intern                    @relation(fields: [internId], references: [id])
-  discipline               Discipline
-  priority                 Int
-  status                   DisciplineStatus
-  testSlot                 TestSlot?                 @relation(fields: [testSlotId], references: [id])
-  testSlotId               String?
-  testStatus               TestStatus?
-  testScore                Int?
-  createdAt                DateTime                  @default(now())
-  updatedAt                DateTime                  @updatedAt
-  internQuestionAnswers    InternQuestionAnswer[]
-  interviewQuestionAnswers InterviewQuestionAnswer[]
+  internId              String
+  intern                Intern                 @relation(fields: [internId], references: [id])
+  discipline            Discipline
+  priority              Int
+  status                DisciplineStatus
+  testSlot              TestSlot?              @relation(fields: [testSlotId], references: [id])
+  testSlotId            String?
+  testStatus            TestStatus?
+  testScore             Int?
+  createdAt             DateTime               @default(now())
+  updatedAt             DateTime               @updatedAt
+  internQuestionAnswers InternQuestionAnswer[]
 
   @@id([internId, discipline])
 }
@@ -118,16 +118,16 @@ model InterviewSlot {
 }
 
 model InterviewQuestion {
-  id        String                    @id @default(uuid())
-  question  String
-  type      InterviewQuestionType
-  category  InterviewQuestionCategory
+  id         String                    @id @default(uuid())
+  question   String
+  type       InterviewQuestionType
+  category   InterviewQuestionCategory
   discipline Discipline?
-  isEnabled Boolean
-  details   InterviewQuestionDetails? @relation("QuestionDetails")
-  answers   InterviewQuestionAnswer[]
-  createdAt DateTime                  @default(now())
-  updatedAt DateTime                  @updatedAt
+  isEnabled  Boolean
+  details    InterviewQuestionDetails? @relation("QuestionDetails")
+  answers    InterviewQuestionAnswer[]
+  createdAt  DateTime                  @default(now())
+  updatedAt  DateTime                  @updatedAt
 }
 
 model InterviewQuestionDetails {
@@ -143,16 +143,15 @@ model InterviewQuestionDetails {
 }
 
 model InterviewQuestionAnswer {
-  id                         String            @id @default(uuid())
-  question                   InterviewQuestion @relation(fields: [questionId], references: [id])
-  questionId                 String
-  internDiscipline           InternDiscipline  @relation(fields: [internDisciplineInternId, internDisciplineDiscipline], references: [internId, discipline])
-  internDisciplineInternId   String
-  internDisciplineDiscipline Discipline
-  answer                     String
-  flag                       Boolean
-  createdAt                  DateTime          @default(now())
-  updatedAt                  DateTime          @updatedAt
+  id         String            @id @default(uuid())
+  question   InterviewQuestion @relation(fields: [questionId], references: [id])
+  questionId String
+  intern     Intern            @relation(fields: [internId], references: [id])
+  internId   String
+  answer     String
+  flag       Boolean
+  createdAt  DateTime          @default(now())
+  updatedAt  DateTime          @updatedAt
 }
 
 model InterviewMemberParticipation {

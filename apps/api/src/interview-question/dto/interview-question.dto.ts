@@ -1,7 +1,6 @@
-import { InternDiscipline } from '@internship-app/types';
+import { Intern, InternDiscipline } from '@internship-app/types';
 import {
   Discipline,
-  InterviewQuestionAnswer,
   InterviewQuestionCategory,
   InterviewQuestionType,
 } from '@prisma/client';
@@ -71,13 +70,14 @@ export class InterviewQuestionAnswerDto {
   @IsString()
   questionId: string;
 
-  internDiscipline: InternDiscipline;
+  intern: Intern;
 
   @IsString()
-  internDisciplineId: string;
-
-  internDisciplineDiscipline: Discipline;
+  internId: string;
 
   @IsString()
   answer: string;
+
+  @IsBoolean()
+  flag: boolean;
 }

@@ -579,16 +579,14 @@ async function main() {
       {
         id: 'a1',
         questionId: 'g1',
-        internDisciplineDiscipline: 'Development',
-        internDisciplineInternId: 'ante-roca',
+        internId: 'ante-roca',
         answer: 'Video games',
         flag: false,
       },
       {
         id: 'a2',
         questionId: 'g1',
-        internDisciplineDiscipline: 'Development',
-        internDisciplineInternId: 'ante-roca',
+        internId: 'ante-roca',
         answer: 'Movies',
         flag: false,
       },
