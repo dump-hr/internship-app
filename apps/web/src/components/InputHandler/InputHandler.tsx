@@ -76,8 +76,6 @@ const getInputComponent = (
         />
       );
     case QuestionType.Checkbox:
-      console.log(question.options);
-      console.log(question);
       if (question.options && question.options.length > 0) {
         return (
           <FormGroup>
