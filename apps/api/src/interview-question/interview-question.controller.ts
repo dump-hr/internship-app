@@ -29,6 +29,11 @@ export class InterviewQuestionController {
     return await this.InterviewQuestionService.getAll();
   }
 
+  @Get(':questionId')
+  async get(@Param('questionId') questionId: string) {
+    return await this.InterviewQuestionService.get(questionId);
+  }
+
   @Get('answers/:questionId')
   async getAnswersByQuestionId(@Param('questionId') questionId: string) {
     return await this.InterviewQuestionService.getAnswersByQuestionId(

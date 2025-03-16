@@ -1,5 +1,7 @@
+import { InternDiscipline } from '@internship-app/types';
 import {
   Discipline,
+  InterviewQuestionAnswer,
   InterviewQuestionCategory,
   InterviewQuestionType,
 } from '@prisma/client';
@@ -57,4 +59,25 @@ export class InterviewQuestionDto {
 
   @IsOptional()
   details?: InterviewQuestionDetailsDto;
+}
+
+export class InterviewQuestionAnswerDto {
+  @IsOptional()
+  @IsUUID()
+  id?: string;
+
+  question: InterviewQuestionDto;
+
+  @IsString()
+  questionId: string;
+
+  internDiscipline: InternDiscipline;
+
+  @IsString()
+  internDisciplineId: string;
+
+  internDisciplineDiscipline: Discipline;
+
+  @IsString()
+  answer: string;
 }

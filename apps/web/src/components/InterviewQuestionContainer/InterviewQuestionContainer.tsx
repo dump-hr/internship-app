@@ -5,6 +5,8 @@ import {
 import { Button } from '@mui/material';
 import InterviewQuestionEditor from '../InterviewQuestionEditor/InterviewQuestionEditor';
 import { useEffect, useState } from 'react';
+import { Link } from 'wouter';
+import { Path } from '../../constants/paths';
 
 interface InterviewQuestionContainerProps {
   question: InterviewQuestion;
@@ -17,6 +19,7 @@ const InterviewQuestionContainer: React.FC<InterviewQuestionContainerProps> = ({
 }) => {
   const [interviewQuestion, setInterviewQuestion] = useState(question);
   const [isQuestionEditorOpen, setIsQuestionEditorOpen] = useState(false);
+  const statsPath = Path.InterviewQuestionStats.split(':')[0] + question.id;
 
   useEffect(() => {
     updateQuestions();
@@ -52,7 +55,9 @@ const InterviewQuestionContainer: React.FC<InterviewQuestionContainerProps> = ({
           {interviewQuestion.isEnabled ? 'Disable' : 'Enable'}
         </Button>
         <Button onClick={toggleQuestionEditor}>Edit</Button>
-        <Button>Stats</Button>
+        <Button component={Link} to={statsPath}>
+          Stats
+        </Button>
       </div>
       {isQuestionEditorOpen && (
         <InterviewQuestionEditor

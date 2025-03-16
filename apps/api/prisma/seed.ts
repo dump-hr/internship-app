@@ -294,6 +294,13 @@ async function main() {
         internDisciplineInternId: 'ante-roca',
         answer: 'Video games',
       },
+      {
+        id: 'a2',
+        questionId: 'q1',
+        internDisciplineDiscipline: 'Development',
+        internDisciplineInternId: 'ante-roca',
+        answer: 'Movies',
+      },
     ],
   });
 

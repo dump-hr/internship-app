@@ -72,11 +72,26 @@ export class InterviewQuestionService {
     return interviewQuestionDtos;
   }
 
+  async get(questionId: string) {
+    const interviewQuestion = await this.prisma.interviewQuestion.findUnique({
+      where: { id: questionId },
+      include: {
+        details: true,
+      },
+    });
+    if (!interviewQuestion) return null;
+    const interviewQuestionDto =
+      this.getDtoFromInterviewQuestion(interviewQuestion);
+    return interviewQuestionDto;
+  }
+
   async getAnswersByQuestionId(questionId: string) {
     const answers = await this.prisma.interviewQuestionAnswer.findMany({
       where: { questionId },
       include: {
-        internDiscipline: true,
+        internDiscipline: {
+          include: { intern: true },
+        },
       },
     });
     return answers;
@@ -87,22 +102,28 @@ export class InterviewQuestionService {
   ) {
     const interviewQuestionDtos: InterviewQuestionDto[] =
       interviewQuestions.map((q) => {
-        return {
-          id: q.id,
-          category: q.category,
-          type: q.type,
-          question: q.question,
-          isEnabled: q.isEnabled,
-          discipline: q.discipline,
-          details: {
-            options: q.details?.options ? JSON.parse(q.details?.options) : null,
-            min: q.details?.min,
-            max: q.details?.max,
-            step: q.details?.step,
-          },
-        };
+        return this.getDtoFromInterviewQuestion(q);
       });
 
     return interviewQuestionDtos;
+  }
+
+  private getDtoFromInterviewQuestion(interviewQuestion: InterviewQuestionDto) {
+    return {
+      id: interviewQuestion.id,
+      category: interviewQuestion.category,
+      type: interviewQuestion.type,
+      question: interviewQuestion.question,
+      isEnabled: interviewQuestion.isEnabled,
+      discipline: interviewQuestion.discipline,
+      details: {
+        options: interviewQuestion.details?.options
+          ? JSON.parse(interviewQuestion.details?.options)
+          : null,
+        min: interviewQuestion.details?.min,
+        max: interviewQuestion.details?.max,
+        step: interviewQuestion.details?.step,
+      },
+    };
   }
 }
