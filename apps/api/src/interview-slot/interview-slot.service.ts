@@ -9,6 +9,7 @@ import { Discipline, InterviewStatus, Prisma } from '@prisma/client';
 import { PrismaService } from 'src/prisma.service';
 
 import { CreateInterviewSlotDto } from './dto/createInterviewSlot.dto';
+import { Answer } from '@internship-app/types';
 
 @Injectable()
 export class InterviewSlotService {
@@ -170,16 +171,15 @@ export class InterviewSlotService {
       { disciplines: Discipline[]; needed: number }[]
     >(
       Prisma.sql`
-        select disciplines, count(*)::integer as needed from 
-        (
-          select DISTINCT array_agg("InternDiscipline".discipline ORDER BY "priority" ASC) as "disciplines", "Intern".id 
-          from "Intern" 
-		      left join "InternDiscipline" on "InternDiscipline"."internId" = "Intern".id 
-          where "Intern"."interviewStatus" = 'PickTerm'
-		      group by "Intern".id
-        ) as disciplineCombinations
-        group by disciplines
-        order by needed desc
+          select disciplines, count(*) ::integer as needed
+          from (select DISTINCT array_agg("InternDiscipline".discipline ORDER BY "priority" ASC) as "disciplines",
+                                "Intern".id
+                from "Intern"
+                         left join "InternDiscipline" on "InternDiscipline"."internId" = "Intern".id
+                where "Intern"."interviewStatus" = 'PickTerm'
+                group by "Intern".id) as disciplineCombinations
+          group by disciplines
+          order by needed desc
       `,
     );
 
@@ -290,5 +290,38 @@ export class InterviewSlotService {
         },
       },
     });
+  }
+
+  async updateQuestionInAnswers(
+    slotId: string,
+    question: string,
+    answerId: string,
+  ) {
+    try {
+      const slot = await this.prisma.interviewSlot.findUnique({
+        where: { id: slotId },
+        select: { answers: true },
+      });
+
+      if (!slot || !Array.isArray(slot.answers)) {
+        throw new Error('Slot not found or answers are not in expected format');
+      }
+
+      const updatedAnswers = slot.answers.map((answer: Answer) =>
+        answer.id === answerId ? { ...answer, question } : answer,
+      );
+
+      await this.prisma.interviewSlot.update({
+        where: { id: slotId },
+        data: { answers: updatedAnswers },
+      });
+
+      return { success: true };
+    } catch (error) {
+      console.error(`Error updating question in answer: ${error.message}`);
+      throw new InternalServerErrorException(
+        `Error updating question: ${error.message}`,
+      );
+    }
   }
 }

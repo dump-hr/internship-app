@@ -1,7 +1,14 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  InternalServerErrorException,
+  Param,
+  Patch,
+  Post,
+} from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { QuestionCategory, QuestionType } from '@prisma/client';
-
 import { QuestionService } from './question.service';
 
 @Controller('interview-questions')
@@ -27,5 +34,26 @@ export class QuestionController {
     },
   ) {
     return await this.questionService.createInterviewQuestion(data);
+  }
+
+  @Patch('/question/:id')
+  async updateInterviewQuestion(
+    @Param('id') id: string,
+    @Body() body: { question: string; disabled: boolean },
+  ) {
+    try {
+      const updated = await this.questionService.updateInterviewQuestion(
+        id,
+        body,
+      );
+
+      return updated;
+    } catch (error) {
+      console.error('Failed to update DB:', error.message);
+      throw new InternalServerErrorException(
+        'Failed to update interview question',
+        error.message,
+      );
+    }
   }
 }

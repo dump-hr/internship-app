@@ -1,4 +1,5 @@
-import { QuestionType } from '@internship-app/types/';
+import { InterviewSlot } from '@internship-app/types';
+import { Question } from '@internship-app/types/';
 import { Box, Button, MenuItem, Select } from '@mui/material';
 import {
   DataGrid,
@@ -9,9 +10,13 @@ import {
   GridRowModesModel,
 } from '@mui/x-data-grid';
 import { useState } from 'react';
+import toast from 'react-hot-toast';
 
+import { useAnswerIdForQuestion } from '../../api/useAnswerIdByQuestion.ts';
 import { useFetchAllInterviewQuestions } from '../../api/usefetchAllInterviewQuestions.tsx';
-import { QuestionCategory } from '../../constants/interviewConstants.ts';
+import { useFetchAllInterviewSlots } from '../../api/useFetchAllInterviewSlots.tsx';
+import { useUpdateInterviewQuestion } from '../../api/useUpdateInterviewQuestion.ts';
+import { useUpdateQuestionInAnswers } from '../../api/useUpdateQuestionInAnswers.ts';
 import { InterviewQuestionForm } from '../InterviewQuestionForm/InterviewQuestionForm.tsx';
 
 interface SelectEditProps extends GridRenderEditCellParams {
@@ -20,23 +25,78 @@ interface SelectEditProps extends GridRenderEditCellParams {
 
 export const InterviewQuestions = () => {
   const { data: allQuestions } = useFetchAllInterviewQuestions();
+  const { mutateAsync } = useUpdateInterviewQuestion();
+  const { mutateAsync: mutateQuestionInAnswers } = useUpdateQuestionInAnswers();
+  const slots = useFetchAllInterviewSlots().data as InterviewSlot[] | undefined;
   const [rowModesModel, setRowModesModel] = useState<GridRowModesModel>({});
   const [showForm, setShowForm] = useState(false);
   const handleAddQuestionClick = () => {
     setShowForm((prev) => !prev);
   };
+  const [updatedRow, setUpdatedRow] = useState<Question>();
+
+  const answerId = useAnswerIdForQuestion(
+    updatedRow?.question ?? '',
+    slots ?? [],
+  );
 
   const handleEditClick = (id: string) => {
     setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.Edit } });
   };
 
-  const handleSaveClick = (id: string) => {
-    setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } });
+  const handleSaveClick = async (id: string) => {
+    if (!allQuestions) return;
+    const updatedRow = allQuestions.find((question) => question.id === id);
+
+    if (!updatedRow) return;
+
+    if (!updatedRow.question?.trim()) {
+      toast.error(`Question cant be empty`);
+      return;
+    }
+    setUpdatedRow(updatedRow);
+    try {
+      await mutateAsync({
+        id: updatedRow.id,
+        question: updatedRow.question,
+        disabled: updatedRow.disabled,
+      });
+
+      setRowModesModel((prev) => ({
+        ...prev,
+        [id]: { mode: GridRowModes.View },
+      }));
+    } catch (error) {
+      console.error('Error updating question:', error);
+      toast.error('Error updating question.');
+    }
   };
 
-  const processRowUpdate = (newRow: any) => {
-    console.log('Updated row:', newRow);
-    return newRow;
+  const processRowUpdate = async (newRow: any) => {
+    if (!slots) return;
+
+    slots.map((slot) => {
+      if (!slot || !answerId) return;
+      return mutateQuestionInAnswers({
+        id: slot.id,
+        question: newRow.question,
+        answerId: answerId,
+      });
+    });
+
+    try {
+      await mutateAsync({
+        id: newRow.id,
+        question: newRow.question,
+        disabled: Boolean(newRow.disabled),
+      });
+
+      return newRow;
+    } catch (error) {
+      toast.error('Failed to update question.');
+      console.error(' Mutation failed:', error);
+      return newRow;
+    }
   };
 
   const SelectEdit = ({ id, value, field, options, api }: SelectEditProps) => {
@@ -44,7 +104,11 @@ export const InterviewQuestions = () => {
       <Select
         value={value}
         onChange={(event) => {
-          api.setEditCellValue({ id, field, value: event.target.value });
+          api.setEditCellValue({
+            id,
+            field,
+            value: event.target.value === 'true',
+          });
         }}
         fullWidth
       >
@@ -68,18 +132,21 @@ export const InterviewQuestions = () => {
       field: 'category',
       headerName: 'Category',
       flex: 1,
-      editable: true,
-      renderEditCell: (params) => (
-        <SelectEdit {...params} options={Object.values(QuestionCategory)} />
-      ),
+      editable: false,
     },
     {
       field: 'type',
       headerName: 'Type',
       flex: 1,
+      editable: false,
+    },
+    {
+      field: 'disabled',
+      headerName: 'Disabled?',
+      flex: 1,
       editable: true,
       renderEditCell: (params) => (
-        <SelectEdit {...params} options={Object.values(QuestionType)} />
+        <SelectEdit {...params} options={['true', 'false']} />
       ),
     },
     {
@@ -88,6 +155,7 @@ export const InterviewQuestions = () => {
       flex: 1,
       renderCell: (params: GridCellParams) => {
         const isEditing = rowModesModel[params.id]?.mode === GridRowModes.Edit;
+        // const isDisabled = params.row.disabled;
         return (
           <Box sx={{ display: 'flex', gap: 1 }}>
             {isEditing ? (
@@ -107,13 +175,13 @@ export const InterviewQuestions = () => {
                 Edit
               </Button>
             )}
-            <Button
-              variant="contained"
-              size="small"
-              onClick={() => console.log(params.id)}
-            >
-              Disable
-            </Button>
+            {/*<Button*/}
+            {/*  variant="contained"*/}
+            {/*  size="small"*/}
+            {/*  onClick={() => console.log(params.id)}*/}
+            {/*>*/}
+            {/*  {isDisabled ? 'Enable' : 'Disable'}*/}
+            {/*</Button>*/}
           </Box>
         );
       },
@@ -161,6 +229,7 @@ export const InterviewQuestions = () => {
               paginationModel: { pageSize: 10 },
             },
           }}
+          pageSizeOptions={[10, 20, 25, 30, 40, 50, 100]}
         />
       </Box>
     </>

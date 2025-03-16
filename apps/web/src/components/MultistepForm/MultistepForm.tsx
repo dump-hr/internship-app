@@ -44,7 +44,7 @@ const MultistepForm = <T, FH>({
       <Box display="flex" flexDirection="column" gap="20px">
         {interviewQuestions.data &&
           interviewQuestions.data
-            .filter((q) => q.category === currentCategory)
+            .filter((q) => q.category === currentCategory && !q.disabled)
             .map((q) => <InputHandler form={form} question={q} key={q.id} />)}
       </Box>
 

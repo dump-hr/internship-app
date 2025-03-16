@@ -149,6 +149,7 @@ model InterviewQuestion {
   maxValue  Int?
   stepValue Int?
   options   String[]
+  disabled  Boolean          @default(false)
   required  Boolean          @default(false)
 }
 

@@ -4,6 +4,7 @@ import {
   Controller,
   Delete,
   Get,
+  InternalServerErrorException,
   Param,
   Patch,
   Post,
@@ -76,5 +77,26 @@ export class InterviewSlotController {
     @Body() { internId }: ScheduleInterviewRequest,
   ) {
     return await this.interviewSlotService.scheduleInterview(slotId, internId);
+  }
+
+  @Patch('/answers/:slotId')
+  async answerInterview(
+    @Param('slotId') slotId: string,
+    @Body() body: { question: string; answerId: string },
+  ) {
+    try {
+      const updated = await this.interviewSlotService.updateQuestionInAnswers(
+        slotId,
+        body.question,
+        body.answerId,
+      );
+
+      return updated;
+    } catch (error) {
+      console.error('Failed to update question in answers');
+      throw new InternalServerErrorException(
+        `Failed to update question in answers: ${error.message}`,
+      );
+    }
   }
 }
