@@ -1,4 +1,9 @@
-import { Intern, InterviewStatus, QuestionType } from '@internship-app/types';
+import {
+  Intern,
+  InterviewStatus,
+  QuestionType,
+  QuestionCategory,
+} from '@internship-app/types';
 import { Json } from '@internship-app/types/src/json';
 import { useEffect, useState } from 'react';
 import { FieldValues, useForm } from 'react-hook-form';
@@ -14,21 +19,26 @@ import AdminPage from '../../components/AdminPage';
 import { ConfirmDialog } from '../../components/ConfirmDialog';
 import IntervieweeInfo from '../../components/IntervieweeInfo';
 import MultistepForm from '../../components/MultistepForm';
-import {
-  filterInterviewSteps as getFilteredInterviewSteps,
-  QuestionCategory,
-} from '../../constants/interviewConstants';
+import { filterInterviewSteps as getFilteredInterviewSteps } from '../../constants/interviewConstants';
 import { Path } from '../../constants/paths';
-import { defaultInterviewValues, interviewQuestions } from './data';
+import { getDefaultValues } from '../../helpers/setDefaultInterviewValues';
 import InterviewQuestionHandler from './InterviewQuestionHandler';
-
-const mapAnswersToQuestions = (
-  answers: FieldValues,
-): { [key: number]: Json } => {
-  return interviewQuestions.map((q) => ({ ...q, ...answers[q.id] }));
-};
+import { useFetchAllInterviewQuestions } from '../../api/useFetchAllInterviewQuestions';
 
 const InterviewPage = () => {
+  const { data: interviewQuestions = [] } = useFetchAllInterviewQuestions();
+  const defaultInterviewValues = getDefaultValues(interviewQuestions);
+
+  const mapAnswersToQuestions = (
+    answers: FieldValues,
+  ): { [key: number]: Json } => {
+    return interviewQuestions.map((q) => ({
+      ...q,
+      ...answers[q.id],
+      isFlaged: false,
+    }));
+  };
+
   const [, params] = useRoute(Path.Interview);
   const internId = params?.internId;
 
@@ -144,7 +154,7 @@ const InterviewPage = () => {
         intern={intern}
       />
       <MultistepForm
-        questions={interviewQuestions}
+        questions={interviewQuestions.filter((q) => q.isEnabled)}
         form={form}
         steps={getFilteredInterviewSteps(
           intern.internDisciplines.map((ind) => ind.discipline),

@@ -19,7 +19,11 @@ interface InternInfoProps {
   intern: Intern;
 }
 
-type Answer = Question & { tick: boolean; value: string | number | boolean };
+type Answer = Question & {
+  tick: boolean;
+  value: string | number | boolean;
+  isFlaged: boolean;
+};
 
 const logColumns: GridColDef[] = [
   { field: 'action', headerName: 'Akcija', width: 110 },
@@ -155,7 +159,10 @@ const InternInfo = ({ intern }: InternInfoProps) => {
                   <h3 className={styles.itemTitle}>
                     {item.title} {!item.tick || '⚠️'}
                   </h3>
-                  <span>{item.value}</span>
+
+                  <span className={item.isFlaged ? styles.redBackground : ''}>
+                    {item.value}
+                  </span>
                 </div>
               );
             })}

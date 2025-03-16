@@ -26,6 +26,7 @@ const DecisionHandler: React.FC<DecisionHandlerProps> = ({ intern }) => {
     title: disciplineLabel[ind.discipline],
     options: Object.values(DisciplineStatus),
     registerValue: ind.status,
+    isEnabled: true,
   }));
 
   const submitHandler = (data: FieldValues) => {

@@ -1,14 +1,5 @@
 import { Discipline } from '@internship-app/types';
-
-export enum QuestionCategory {
-  General = 'General',
-  Personal = 'Personal',
-  Development = 'Development',
-  Design = 'Design',
-  Marketing = 'Marketing',
-  Multimedia = 'Multimedia',
-  Final = 'Final',
-}
+import { QuestionCategory } from '@internship-app/types';
 
 export const steps = [
   { label: 'Općenito', category: QuestionCategory.General },

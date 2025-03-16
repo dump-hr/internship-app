@@ -1,4 +1,4 @@
-type DialogState = {
+export type DialogState = {
   isOpen: boolean;
   name?: string;
 };

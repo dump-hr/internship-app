@@ -4,17 +4,28 @@ import {
   InternalServerErrorException,
   NotFoundException,
 } from '@nestjs/common';
-import { Discipline, InterviewStatus, Prisma } from '@prisma/client';
+import {
+  Discipline,
+  InterviewStatus,
+  Prisma,
+  QuestionCategory,
+} from '@prisma/client';
 import * as postmark from 'postmark';
 import { PrismaService } from 'src/prisma.service';
 
 import { CreateInterviewSlotDto } from './dto/createInterviewSlot.dto';
+import { JsonValue } from '@prisma/client/runtime/library';
+import {
+  MultistepQuestion,
+  Question,
+  QuestionAnswer,
+} from '@internship-app/types';
 
 @Injectable()
 export class InterviewSlotService {
   constructor(private readonly prisma: PrismaService) {}
 
-  private postmark = new postmark.ServerClient(process.env.POSTMARK_API_TOKEN);
+  // private postmark = new postmark.ServerClient(process.env.POSTMARK_API_TOKEN);
 
   async getAll() {
     const interviewSlots = await this.prisma.interviewSlot.findMany({
@@ -259,25 +270,25 @@ export class InterviewSlotService {
       where: { id: internId },
     });
 
-    this.postmark.sendEmail({
-      From: 'info@dump.hr',
-      To: intern.email,
-      Subject: 'Uspješno biranje termina za DUMP Internship intervju',
-      TextBody: `Pozdrav ${intern.firstName},
+    //     this.postmark.sendEmail({
+    //       From: 'info@dump.hr',
+    //       To: intern.email,
+    //       Subject: 'Uspješno biranje termina za DUMP Internship intervju',
+    //       TextBody: `Pozdrav ${intern.firstName},
 
-biranje termina intervjua je uspješno provedeno! Termin svog intervjua možeš vidjeti na status stranici: https://internship.dump.hr/status/${intern.id}
-U slučaju da ipak ne možeš doći na odabrani termin, javi nam se na vrijeme na info@dump.hr
+    // biranje termina intervjua je uspješno provedeno! Termin svog intervjua možeš vidjeti na status stranici: https://internship.dump.hr/status/${intern.id}
+    // U slučaju da ipak ne možeš doći na odabrani termin, javi nam se na vrijeme na info@dump.hr
 
-Podsjećamo, tvoj intervju će se održati u odabranom terminu u našem uredu (prostorija A223) na FESB-u (Ruđera Boškovića 32).
+    // Podsjećamo, tvoj intervju će se održati u odabranom terminu u našem uredu (prostorija A223) na FESB-u (Ruđera Boškovića 32).
 
-Naš ured ćeš pronaći tako da kad uđeš kroz glavna vrata FESB-a skreneš desno do kraja hodnika (put referade) dok ne dođeš do stepenica koje su s lijeve strane. Popneš se stepenicama na prvi kat i skreneš lijevo. Nastaviš hodnikom do kraja i s desne strane vidjet ćeš vrata našeg ureda (A223).
+    // Naš ured ćeš pronaći tako da kad uđeš kroz glavna vrata FESB-a skreneš desno do kraja hodnika (put referade) dok ne dođeš do stepenica koje su s lijeve strane. Popneš se stepenicama na prvi kat i skreneš lijevo. Nastaviš hodnikom do kraja i s desne strane vidjet ćeš vrata našeg ureda (A223).
 
-Vidimo se!
+    // Vidimo se!
 
-DUMP Udruga mladih programera
-dump.hr`,
-      MessageStream: 'outbound',
-    });
+    // DUMP Udruga mladih programera
+    // dump.hr`,
+    //       MessageStream: 'outbound',
+    //     });
 
     return await this.prisma.intern.update({
       where: { id: internId, interviewStatus: InterviewStatus.PickTerm },
@@ -290,5 +301,82 @@ dump.hr`,
         },
       },
     });
+  }
+
+  async getAnswersToQuestion(questionId: string) {
+    const interviewSlots = await this.prisma.interviewSlot.findMany({
+      select: {
+        id: true,
+        answers: true,
+        intern: {
+          select: {
+            id: true,
+            firstName: true,
+            lastName: true,
+          },
+        },
+      },
+      where: {
+        internId: {
+          not: null,
+        },
+      },
+    });
+
+    const answersToQuestion = interviewSlots
+      .map((slot) => {
+        const answers = Array.isArray(slot.answers) ? slot.answers : [];
+
+        const questionAnswers = answers
+          .filter((answer) => {
+            const typedAnswer = answer as QuestionAnswer;
+            return typedAnswer.id === questionId;
+          })
+          .map((answer) => {
+            const typedAnswer = answer as QuestionAnswer;
+            return {
+              id: typedAnswer.id,
+              isFlaged: typedAnswer.isFlaged,
+              title: typedAnswer.title,
+              value: typedAnswer.value,
+              type: typedAnswer.type,
+              category: typedAnswer.category,
+            };
+          });
+
+        return {
+          slotId: slot.id,
+          intern: slot.intern,
+          answer: questionAnswers.filter(
+            (answer: QuestionAnswer) => answer.value !== '',
+          ),
+        };
+      })
+      .filter((item) => item.answer.length > 0);
+
+    return answersToQuestion;
+  }
+
+  async flagAnswer(slotId: string, questionId: string) {
+    const currentSlot = await this.prisma.interviewSlot.findUnique({
+      where: { id: slotId },
+    });
+
+    const answers = currentSlot.answers as QuestionAnswer[];
+
+    console.log(answers);
+
+    const answerIndex = answers.findIndex((answer) => answer.id === questionId);
+
+    answers[answerIndex].isFlaged = !answers[answerIndex].isFlaged;
+
+    const flaggedAnswer = await this.prisma.interviewSlot.update({
+      where: { id: slotId },
+      data: {
+        answers: answers,
+      },
+    });
+
+    return flaggedAnswer;
   }
 }

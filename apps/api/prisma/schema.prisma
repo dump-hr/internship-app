@@ -116,6 +116,20 @@ model InterviewSlot {
   interviewers InterviewMemberParticipation[]
 }
 
+model InterviewQuestion {
+  id        String   @id @default(uuid())
+  title     String
+  type      QuestionType
+  category  QuestionCategory
+  min       Int?     
+  max       Int?
+  step      Int?
+  options   Json?
+  isEnabled Boolean         @default(true)  
+  createdAt DateTime        @default(now())
+  updatedAt    DateTime                       @updatedAt
+}
+
 model InterviewMemberParticipation {
   interviewSlotId String
   interviewSlot   InterviewSlot @relation(fields: [interviewSlotId], references: [id], onDelete: Cascade)
@@ -189,4 +203,26 @@ enum AdminLogAction {
   Update
   Delete
   Email
+}
+
+enum QuestionType {
+  Field
+  TextArea
+  Select
+  Checkbox
+  Date
+  DateTime
+  Radio
+  Number
+  Slider
+}
+
+enum QuestionCategory {
+  General
+  Personal
+  Development
+  Design
+  Marketing
+  Multimedia
+  Final
 }
