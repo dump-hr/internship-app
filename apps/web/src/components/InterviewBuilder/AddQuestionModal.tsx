@@ -119,6 +119,10 @@ export const AddQuestionModal = ({
       return 'Morate dodati opcije za ovaj tip';
     }
 
+    if (formData.options?.some((option) => option.trim() === '' || !option)) {
+      return 'Prvo popunite postojeću praznu opciju';
+    }
+
     const optionSet = new Set();
     for (const option of formData.options || []) {
       if (optionSet.has(option)) {
