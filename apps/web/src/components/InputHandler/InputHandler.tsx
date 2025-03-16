@@ -76,34 +76,46 @@ const getInputComponent = (
         />
       );
     case QuestionType.Checkbox:
-      return (
-        <FormGroup>
-          {question.options?.map((option, index) => (
-            <FormControlLabel
-              key={index}
-              control={
-                <Checkbox
-                  checked={
-                    Array.isArray(field.value)
-                      ? field.value.includes(option)
-                      : false
-                  }
-                  onChange={(e) => {
-                    const currentValue = Array.isArray(field.value)
-                      ? field.value
-                      : [];
-                    const newValue = e.target.checked
-                      ? [...currentValue, option]
-                      : currentValue.filter((item) => item !== option);
-                    field.onChange(newValue);
-                  }}
-                />
-              }
-              label={option}
-            />
-          ))}
-        </FormGroup>
-      );
+      console.log(question.options);
+      console.log(question);
+      if (question.options && question.options.length > 0) {
+        return (
+          <FormGroup>
+            {question.options?.map((option, index) => (
+              <FormControlLabel
+                key={index}
+                control={
+                  <Checkbox
+                    checked={
+                      Array.isArray(field.value)
+                        ? field.value.includes(option)
+                        : false
+                    }
+                    onChange={(e) => {
+                      const currentValue = Array.isArray(field.value)
+                        ? field.value
+                        : [];
+                      const newValue = e.target.checked
+                        ? [...currentValue, option]
+                        : currentValue.filter((item) => item !== option);
+                      field.onChange(newValue);
+                    }}
+                  />
+                }
+                label={option}
+              />
+            ))}
+          </FormGroup>
+        );
+      } else {
+        return (
+          <Checkbox
+            {...field}
+            checked={field.value === true}
+            onChange={(e) => field.onChange(e.target.checked)}
+          />
+        );
+      }
     case QuestionType.Date:
       return <TextField {...field} type="date" />;
     case QuestionType.DateTime:
