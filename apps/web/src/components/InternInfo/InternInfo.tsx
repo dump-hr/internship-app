@@ -1,7 +1,7 @@
 import {
   Intern,
   InternDiscipline,
-  Question,
+  InterviewQuestion,
   TestStatus,
 } from '@internship-app/types';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
@@ -19,7 +19,10 @@ interface InternInfoProps {
   intern: Intern;
 }
 
-type Answer = Question & { tick: boolean; value: string | number | boolean };
+type Answer = InterviewQuestion & {
+  tick: boolean;
+  value: string | number | boolean;
+};
 
 const logColumns: GridColDef[] = [
   { field: 'action', headerName: 'Akcija', width: 110 },
@@ -153,7 +156,7 @@ const InternInfo = ({ intern }: InternInfoProps) => {
                   key={item.id}
                 >
                   <h3 className={styles.itemTitle}>
-                    {item.title} {!item.tick || '⚠️'}
+                    {item.question} {!item.tick || '⚠️'}
                   </h3>
                   <span>{item.value}</span>
                 </div>

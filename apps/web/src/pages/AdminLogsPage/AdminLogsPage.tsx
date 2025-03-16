@@ -1,7 +1,7 @@
 import {
   AdminLogAction,
   GetAdminLogsRequest,
-  Question,
+  InterviewQuestion,
   QuestionType,
 } from '@internship-app/types';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
@@ -13,7 +13,7 @@ import { useFetchAdminLogs } from '../../api/useFetchAdminLogs';
 import AdminPage from '../../components/AdminPage';
 import InputHandler from '../../components/InputHandler';
 
-const formQuestions: Question[] = [
+const formQuestions: InterviewQuestion[] = [
   {
     id: 'action',
     title: 'Akcija',

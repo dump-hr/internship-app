@@ -559,6 +559,18 @@ async function main() {
         createdAt: new Date(),
         updatedAt: new Date(),
       },
+
+      // Final
+      {
+        id: 'fin1',
+        question: 'Zašto te zanima život?',
+        type: InterviewQuestionType.TextArea,
+        category: InterviewQuestionCategory.Final,
+        discipline: null,
+        isEnabled: true,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
     ],
   });
 
@@ -589,6 +601,7 @@ async function main() {
       start: new Date('2023-10-01T10:00:00.000Z'),
       end: new Date('2023-10-01T10:30:00.000Z'),
       answers: {},
+      internId: 'ana-kovac',
       interviewers: {
         createMany: {
           data: [{ interviewerId: 'frane' }, { interviewerId: 'duje' }],
@@ -603,6 +616,7 @@ async function main() {
       start: new Date('2023-10-01T10:30:00.000Z'),
       end: new Date('2023-10-01T11:00:00.000Z'),
       answers: {},
+      internId: 'mia-babic',
       interviewers: {
         createMany: {
           data: [{ interviewerId: 'frane' }],

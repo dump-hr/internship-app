@@ -30,6 +30,8 @@ const MultistepForm = <T, FH>({
   const [currentStep, setCurrentStep] = useState(0);
   const currentCategory = steps[currentStep].category;
 
+  console.log(steps);
+
   return (
     <Box>
       <Stepper activeStep={currentStep} nonLinear>
@@ -42,7 +44,11 @@ const MultistepForm = <T, FH>({
 
       <Box display="flex" flexDirection="column" gap="20px">
         {questions
-          .filter((q) => q.category === currentCategory)
+          .filter(
+            (q) =>
+              q.discipline === currentCategory ||
+              q.category === currentCategory,
+          )
           .map((q) => (
             <InputHandler form={form} question={q} key={q.id} />
           ))}

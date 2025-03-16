@@ -1,11 +1,14 @@
-import { Question, QuestionType } from '@internship-app/types';
+import {
+  InterviewQuestion,
+  InterviewQuestionType,
+} from '@internship-app/types';
 import { Box, Typography } from '@mui/material';
 import { FieldValues, UseFormReturn } from 'react-hook-form';
 
 import InputHandler from '../../../components/InputHandler';
 
 type InterviewQuestionHandlerProps = {
-  question: Question;
+  question: InterviewQuestion;
   form: UseFormReturn<FieldValues>;
 };
 
@@ -18,14 +21,14 @@ const InterviewQuestionHandler = ({
     id: `${question.id}.value`,
     title: undefined,
   };
-  const questionForTick: Question = {
+  const questionForTick = {
     id: `${question.id}.tick`,
-    type: QuestionType.Checkbox,
+    type: InterviewQuestionType.Checkbox,
   };
 
   return (
     <Box display="flex" flexDirection="column">
-      <Typography whiteSpace="pre-line">{question.title}</Typography>
+      <Typography whiteSpace="pre-line">{question.question}</Typography>
       <Box display="flex">
         <InputHandler question={questionForValue} form={form} />
         <InputHandler question={questionForTick} form={form} />

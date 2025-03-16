@@ -1,4 +1,8 @@
-import { Question, QuestionType, TestSlot } from '@internship-app/types';
+import {
+  InterviewQuestion,
+  QuestionType,
+  TestSlot,
+} from '@internship-app/types';
 import { Box, Button, Typography } from '@mui/material';
 import moment from 'moment';
 import { useEffect, useState } from 'react';
@@ -15,10 +19,10 @@ type TestSlotEditFormProps = {
 type TestQuestionBlock = {
   registerId: string;
   id?: string;
-  formQuestions: Question[];
+  formQuestions: InterviewQuestion[];
 };
 
-const getMainQuestions = (slot: TestSlot): Question[] => [
+const getMainQuestions = (slot: TestSlot): InterviewQuestion[] => [
   {
     id: 'start',
     title: 'Početak',
@@ -90,7 +94,7 @@ const getInitialTestQuestions = (slot: TestSlot) =>
           type: QuestionType.Number,
           registerValue: tq.points,
         },
-      ] as Question[],
+      ] as InterviewQuestion[],
     }));
 
 const getNewTestQuestion = () => {
@@ -123,7 +127,7 @@ const getNewTestQuestion = () => {
         type: QuestionType.Number,
         registerValue: 10,
       },
-    ] as Question[],
+    ] as InterviewQuestion[],
   };
 };
 

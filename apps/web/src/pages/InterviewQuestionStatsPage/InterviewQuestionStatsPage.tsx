@@ -39,7 +39,7 @@ const InterviewQuestionStatsPage = () => {
   }
 
   return (
-    <AdminPage headerText="Question stats">
+    <AdminPage headerText="InterviewQuestion stats">
       {isQuestionLoading || areAnswersLoading ? (
         <p>Loading...</p>
       ) : (

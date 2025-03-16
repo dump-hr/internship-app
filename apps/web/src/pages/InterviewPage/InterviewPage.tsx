@@ -75,14 +75,19 @@ const InterviewPage = () => {
   const mapAnswersToQuestions = (
     answers: FieldValues,
   ): { [key: number]: Json } => {
-    return interviewQuestions
+    const answersToQuestions = interviewQuestions
       ? interviewQuestions.map((q) => ({ ...q, ...answers[q.id] }))
       : {};
+
+    console.log(answersToQuestions);
+
+    return answersToQuestions;
   };
 
   const handleFormSubmit = (internId: string) =>
     form.handleSubmit((data) => {
       const answers = mapAnswersToQuestions(data);
+      console.log(data);
       const score = Object.values(answers)
         .filter(
           (a) =>
@@ -95,6 +100,8 @@ const InterviewPage = () => {
               )),
         )
         .reduce((acc, curr) => acc + +curr.value, 0);
+
+      console.log(score);
 
       setInterview.mutate({ internId, answers, score });
     })();
@@ -148,16 +155,20 @@ const InterviewPage = () => {
         setImage={handleSetImage}
         intern={intern}
       />
-      {interviewQuestions && (
-        <MultistepForm
-          questions={interviewQuestions}
-          form={form}
-          steps={getFilteredInterviewSteps(
-            intern.internDisciplines.map((ind) => ind.discipline),
-          )}
-          onSubmit={() => setDialogOpen(true)}
-          InputHandler={InterviewQuestionHandler}
-        />
+      {isLoading ? (
+        <p>Loading...</p>
+      ) : (
+        interviewQuestions && (
+          <MultistepForm
+            questions={interviewQuestions}
+            form={form}
+            steps={getFilteredInterviewSteps(
+              intern.internDisciplines.map((ind) => ind.discipline),
+            )}
+            onSubmit={() => setDialogOpen(true)}
+            InputHandler={InterviewQuestionHandler}
+          />
+        )
       )}
       <ConfirmDialog
         open={!!dialogOpen}

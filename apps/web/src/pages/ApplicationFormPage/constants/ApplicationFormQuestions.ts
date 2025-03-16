@@ -1,6 +1,6 @@
-import { Question, QuestionType } from '@internship-app/types/';
+import { InterviewQuestion, QuestionType } from '@internship-app/types/';
 
-export const applicationFormDataQuestions: Question[] = [
+export const applicationFormDataQuestions: InterviewQuestion[] = [
   {
     id: 'dq1',
     title: 'Datum rođenja:',

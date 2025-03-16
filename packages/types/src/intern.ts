@@ -76,10 +76,10 @@ export type Interviewer = {
 export type InterviewerWithStats = Interviewer & {
   _count: {
     interviews: number;
-  },
+  };
   _avg: {
     score: number;
-  }
+  };
 };
 
 export type Intern = {
@@ -213,7 +213,10 @@ export enum InternStatus {
   Rejected = 'Rejected',
 }
 
-export type InternForDashboard = Intern & { status: InternStatus, _count:  { logs: number }  };
+export type InternForDashboard = Intern & {
+  status: InternStatus;
+  _count: { logs: number };
+};
 
 export type InternDecisionRequest = {
   internId: string;

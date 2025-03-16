@@ -2,7 +2,7 @@ import {
   DisciplineStatus,
   Intern,
   InternDecisionRequest,
-  Question,
+  InterviewQuestion,
   QuestionType,
 } from '@internship-app/types';
 import { Box, Button, Typography } from '@mui/material';
@@ -20,13 +20,15 @@ const DecisionHandler: React.FC<DecisionHandlerProps> = ({ intern }) => {
   const form = useForm();
   const setInternDecision = useSetInternDecision();
 
-  const questions: Question[] = intern.internDisciplines.map((ind) => ({
-    id: ind.discipline,
-    type: QuestionType.Select,
-    title: disciplineLabel[ind.discipline],
-    options: Object.values(DisciplineStatus),
-    registerValue: ind.status,
-  }));
+  const questions: InterviewQuestion[] = intern.internDisciplines.map(
+    (ind) => ({
+      id: ind.discipline,
+      type: QuestionType.Select,
+      title: disciplineLabel[ind.discipline],
+      options: Object.values(DisciplineStatus),
+      registerValue: ind.status,
+    }),
+  );
 
   const submitHandler = (data: FieldValues) => {
     const request: InternDecisionRequest = {

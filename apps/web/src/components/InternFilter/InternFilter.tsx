@@ -3,7 +3,7 @@ import {
   DisciplineStatus,
   InternStatus,
   InterviewStatus,
-  Question,
+  InterviewQuestion,
   QuestionType,
   TestStatus,
 } from '@internship-app/types';
@@ -17,7 +17,7 @@ import InputHandler from '../InputHandler';
 
 type CriteriaSection = {
   id: string;
-  questions: Question[];
+  questions: InterviewQuestion[];
 };
 
 const initialCriteria: CriteriaSection[] = [

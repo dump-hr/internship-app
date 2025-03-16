@@ -1,4 +1,4 @@
-import { Question, QuestionType } from '@internship-app/types';
+import { InterviewQuestion, QuestionType } from '@internship-app/types';
 import { Input, Radio, RadioGroup } from '@mui/joy';
 import { FieldErrors, UseFormRegister, UseFormWatch } from 'react-hook-form';
 
@@ -6,7 +6,7 @@ import { FormValues } from '../../pages/ApplicationFormPage/ApplicationFormPage'
 import classes from '../../pages/ApplicationFormPage/index.module.css';
 
 type Props = {
-  question: Question;
+  question: InterviewQuestion;
   register: UseFormRegister<FormValues>;
   errors: FieldErrors<FormValues>;
   watch: UseFormWatch<FormValues>;

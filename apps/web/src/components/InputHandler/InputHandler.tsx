@@ -1,4 +1,4 @@
-import { Question, QuestionType } from '@internship-app/types';
+import { InterviewQuestion, QuestionType } from '@internship-app/types';
 import {
   Checkbox,
   InputLabel,
@@ -17,12 +17,12 @@ import {
 } from 'react-hook-form';
 
 type InputHandlerProps = {
-  question: Question;
+  question: InterviewQuestion;
   form: UseFormReturn<FieldValues>;
 };
 
 const getInputComponent = (
-  question: Question,
+  question: InterviewQuestion,
   field: ControllerRenderProps<FieldValues>,
 ) => {
   switch (question.type) {
