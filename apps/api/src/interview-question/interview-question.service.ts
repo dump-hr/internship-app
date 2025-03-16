@@ -97,6 +97,15 @@ export class InterviewQuestionService {
     return answers;
   }
 
+  async updateFlag(answerId: string, flag: boolean) {
+    return await this.prisma.interviewQuestionAnswer.update({
+      where: { id: answerId },
+      data: {
+        flag,
+      },
+    });
+  }
+
   private getDtosFromInterviewQuestionList(
     interviewQuestions: InterviewQuestionDto[],
   ) {

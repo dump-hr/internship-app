@@ -58,6 +58,5 @@ export type InterviewQuestionAnswer = {
   internDisciplineInternId: string;
   internDisciplineDiscipline: Discipline;
   answer: string;
-  createdAt: Date;
-  updatedAt: Date;
+  flag: boolean;
 };

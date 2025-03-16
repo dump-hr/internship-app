@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Param } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Patch } from '@nestjs/common';
 import { InterviewQuestionService } from './interview-question.service';
 import { InterviewQuestionDto } from './dto/interview-question.dto';
 import { AdminLogAction } from '@prisma/client';
@@ -39,5 +39,14 @@ export class InterviewQuestionController {
     return await this.InterviewQuestionService.getAnswersByQuestionId(
       questionId,
     );
+  }
+
+  @Patch('answers/:answerId')
+  async updateFlag(
+    @Param('answerId') answerId: string,
+    @Body() { flag }: { flag: boolean },
+  ) {
+    console.log(flag);
+    return await this.InterviewQuestionService.updateFlag(answerId, flag);
   }
 }

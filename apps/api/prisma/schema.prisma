@@ -150,6 +150,7 @@ model InterviewQuestionAnswer {
   internDisciplineInternId   String
   internDisciplineDiscipline Discipline
   answer                     String
+  flag                       Boolean
   createdAt                  DateTime          @default(now())
   updatedAt                  DateTime          @updatedAt
 }
