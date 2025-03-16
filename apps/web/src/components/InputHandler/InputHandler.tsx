@@ -5,8 +5,11 @@ import {
 } from '@internship-app/types';
 import {
   Checkbox,
+  FormControlLabel,
   InputLabel,
   MenuItem,
+  Radio,
+  RadioGroup,
   Select,
   Slider,
   TextareaAutosize,
@@ -49,6 +52,21 @@ const getInputComponent = (
               </MenuItem>
             ))}
         </Select>
+      );
+    case InterviewQuestionType.Radio:
+      return (
+        <RadioGroup {...field} row>
+          {!!question.details &&
+            !!question.details.options &&
+            question.details.options.map((option) => (
+              <FormControlLabel
+                key={option}
+                value={option}
+                control={<Radio />}
+                label={option || <Typography color="gray">empty</Typography>}
+              />
+            ))}
+        </RadioGroup>
       );
     case InterviewQuestionType.Slider:
       return (
