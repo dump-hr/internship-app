@@ -1,0 +1,27 @@
+.options {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  margin: 20px 0px;
+}
+
+.option {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: rgb(238, 238, 238);
+  border-radius: 30px;
+  padding: 10px;
+}
+
+.optionsLabel {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 10px 0px;
+}
+
+.addButton {
+  width: 300px;
+  align-self: center;
+}

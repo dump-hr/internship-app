@@ -1,0 +1,17 @@
+.interviewQuestionEditor {
+  background-color: rgb(245, 245, 245);
+  border-radius: 30px;
+  padding: 20px;
+}
+
+.interviewQuestionEditor label {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.interviewQuestionInfo {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+}

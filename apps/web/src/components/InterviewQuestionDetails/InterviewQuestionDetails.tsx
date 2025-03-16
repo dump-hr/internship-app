@@ -4,6 +4,8 @@ import {
 } from '@internship-app/types';
 import { ChangeEvent, useEffect, useState } from 'react';
 import OptionCreator from '../OptionCreator/OptionCreator';
+import styles from './InterviewQuestionDetails.module.css';
+import { Input } from '@mui/material';
 
 interface InterviewQuestionDetailsPros {
   interviewQuestion: InterviewQuestion;
@@ -25,7 +27,7 @@ const InterviewQuestionDetails: React.FC<InterviewQuestionDetailsPros> = ({
 
   useEffect(() => {
     loadDetails();
-  }, [interviewQuestion.type]);
+  }, [interviewQuestion.type, interviewQuestion.details]);
 
   useEffect(() => {
     setInterviewQuestion({
@@ -90,47 +92,50 @@ const InterviewQuestionDetails: React.FC<InterviewQuestionDetailsPros> = ({
 
   return (
     <>
-      {interviewQuestion.details && (
-        <div className="interview-question-details">
-          {interviewQuestion.details.options && (
+      {!!interviewQuestion.details && (
+        <div className={styles.interviewQuestionDetails}>
+          {!!interviewQuestion.details.options && (
             <OptionCreator
               options={interviewQuestion.details.options}
               setOptions={setOptions}
             />
           )}
-          {interviewQuestion.details.min && (
-            <label>
-              Min:
-              <input
-                name="min"
-                type="number"
-                value={interviewQuestion.details.min}
-                onChange={handleInputChange}
-              />
-            </label>
-          )}
-          {interviewQuestion.details.max && (
-            <label>
-              Max:
-              <input
-                name="max"
-                type="number"
-                value={interviewQuestion.details.max}
-                onChange={handleInputChange}
-              />
-            </label>
-          )}
-          {interviewQuestion.details.step && (
-            <label>
-              Step:
-              <input
-                name="step"
-                type="number"
-                value={interviewQuestion.details.step}
-                onChange={handleInputChange}
-              />
-            </label>
-          )}
+          {interviewQuestion.details.min !== undefined &&
+            interviewQuestion.details.min !== null && (
+              <label>
+                Min:
+                <Input
+                  name="min"
+                  type="number"
+                  value={interviewQuestion.details.min}
+                  onChange={handleInputChange}
+                />
+              </label>
+            )}
+          {interviewQuestion.details.max !== undefined &&
+            interviewQuestion.details.max !== null && (
+              <label>
+                Max:
+                <Input
+                  name="max"
+                  type="number"
+                  value={interviewQuestion.details.max}
+                  onChange={handleInputChange}
+                />
+              </label>
+            )}
+          {interviewQuestion.details.step !== undefined &&
+            interviewQuestion.details.step !== null && (
+              <label>
+                Step:
+                <Input
+                  name="step"
+                  type="number"
+                  value={interviewQuestion.details.step}
+                  onChange={handleInputChange}
+                />
+              </label>
+            )}
         </div>
       )}
     </>

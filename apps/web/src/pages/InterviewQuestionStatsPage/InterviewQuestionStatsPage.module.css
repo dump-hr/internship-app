@@ -1,0 +1,6 @@
+.questionAnswer {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  margin: 20px 0px;
+  gap: 20px;
+}

@@ -6,6 +6,9 @@ import {
 } from '@internship-app/types';
 import InterviewQuestionDetails from '../InterviewQuestionDetails/InterviewQuestionDetails';
 import { ChangeEvent, useEffect, useState } from 'react';
+import styles from './InterviewQuestionEditor.module.css';
+import { Textarea } from '@mui/joy';
+import { MenuItem, Select, SelectChangeEvent } from '@mui/material';
 
 interface InterviewQuestionEditorProps {
   interviewQuestion: InterviewQuestion;
@@ -46,62 +49,73 @@ const InterviewQuestionEditor: React.FC<InterviewQuestionEditorProps> = ({
   }, [formData]);
 
   function handleInputChange(
-    e: ChangeEvent<HTMLSelectElement> | ChangeEvent<HTMLInputElement>,
+    e:
+      | ChangeEvent<HTMLSelectElement>
+      | ChangeEvent<HTMLInputElement>
+      | ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+      | SelectChangeEvent<InterviewQuestionCategory>
+      | SelectChangeEvent<InterviewQuestionType>
+      | SelectChangeEvent<Discipline>,
   ) {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   }
 
   return (
-    <form className="interview-question-editor">
-      <label>
-        Tip:
-        <select name="type" value={formData.type} onChange={handleInputChange}>
-          {interviewQuestionTypes.map((t) => (
-            <option value={t} key={t}>
-              {t}
-            </option>
-          ))}
-        </select>
-      </label>
-      <label>
-        Kategorija:
-        <select
-          name="category"
-          value={formData.category}
-          onChange={handleInputChange}
-        >
-          {interviewQuestionCategories.map((c) => (
-            <option value={c} key={c}>
-              {c}
-            </option>
-          ))}
-        </select>
-      </label>
-      {interviewQuestion.category ===
-        InterviewQuestionCategory.DisciplineSpecific && (
+    <form className={styles.interviewQuestionEditor}>
+      <div className={styles.interviewQuestionInfo}>
         <label>
-          Područje:
-          <select
-            name="discipline"
-            value={formData.discipline ?? ''}
-            onChange={handleInputChange}
+          Tip:
+          <Select
+            name="type"
+            value={formData.type}
+            onChange={(e) => handleInputChange(e)}
           >
-            <option value="">Odaberi područje</option>
-            {disciplines.map((d) => (
-              <option value={d} key={d}>
-                {d}
-              </option>
+            {interviewQuestionTypes.map((t) => (
+              <MenuItem value={t} key={t}>
+                {t}
+              </MenuItem>
             ))}
-          </select>
+          </Select>
         </label>
-      )}
+        <label>
+          Kategorija:
+          <Select
+            name="category"
+            value={formData.category}
+            onChange={(e) => handleInputChange(e)}
+          >
+            {interviewQuestionCategories.map((c) => (
+              <MenuItem value={c} key={c}>
+                {c}
+              </MenuItem>
+            ))}
+          </Select>
+        </label>
+        {interviewQuestion.category ===
+          InterviewQuestionCategory.DisciplineSpecific && (
+          <label>
+            Područje:
+            <Select
+              name="discipline"
+              value={formData.discipline ?? ''}
+              onChange={(e) => handleInputChange(e)}
+            >
+              <MenuItem value="">Odaberi područje</MenuItem>
+              {disciplines.map((d) => (
+                <MenuItem value={d} key={d}>
+                  {d}
+                </MenuItem>
+              ))}
+            </Select>
+          </label>
+        )}
+      </div>
       <label>
         Pitanje:
-        <input
-          type="text"
+        <Textarea
           name="question"
           value={formData.question}
-          onChange={handleInputChange}
+          onChange={(e) => handleInputChange(e)}
         />
       </label>
       <InterviewQuestionDetails

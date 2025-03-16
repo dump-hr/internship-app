@@ -7,6 +7,7 @@ import { Button } from '@mui/material';
 import { InterviewQuestionAnswer } from '@internship-app/types';
 import { useEffect, useState } from 'react';
 import { useUpdateInterviewQuestionAnswerFlag } from '../../api/useUpdateInterviewQuestionAnswerFlag';
+import styles from './InterviewQuestionStatsPage.module.css';
 
 const InterviewQuestionStatsPage = () => {
   const [, params] = useRoute(Path.InterviewQuestionStats);
@@ -50,7 +51,7 @@ const InterviewQuestionStatsPage = () => {
               {interviewQuestionAnswers &&
               interviewQuestionAnswers?.length > 0 ? (
                 interviewQuestionAnswers.map((a) => (
-                  <div key={a.id} className="question-answer">
+                  <div key={a.id} className={styles.questionAnswer}>
                     <p>
                       {a.intern.firstName} {a.intern.lastName}: {a.answer}
                     </p>
@@ -61,8 +62,13 @@ const InterviewQuestionStatsPage = () => {
                     >
                       Flag
                     </Button>
-                    <Button component={Link} to={internPath + a.intern.id}>
-                      Uđu u pripravnika
+                    <Button
+                      component={Link}
+                      to={internPath + a.intern.id}
+                      variant="contained"
+                      color="warning"
+                    >
+                      Uđi u pripravnika
                     </Button>
                   </div>
                 ))

@@ -46,7 +46,7 @@ export const InterviewBuilderPage = () => {
         <Button
           onClick={() => postInterviewQuestions.mutate(interviewQuestions)}
           variant="contained"
-          color="info"
+          color="success"
         >
           Spremi promjene
         </Button>

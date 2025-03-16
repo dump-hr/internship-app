@@ -8,7 +8,6 @@ import { useEffect, useState } from 'react';
 import { Link } from 'wouter';
 import { Path } from '../../constants/paths';
 import styles from './InterviewQuestionContainer.module.css';
-import { shortDisciplineLabels } from '../InternList/consts';
 
 interface InterviewQuestionContainerProps {
   question: InterviewQuestion;

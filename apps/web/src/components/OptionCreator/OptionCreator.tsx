@@ -1,5 +1,7 @@
 import { Button } from '@mui/material';
 import { useState } from 'react';
+import styles from './OptionCreator.module.css';
+import { Textarea } from '@mui/joy';
 
 interface OptionCreatorProps {
   options: string[];
@@ -24,21 +26,34 @@ const OptionCreator: React.FC<OptionCreatorProps> = ({
   return (
     <>
       <p>Opcije:</p>
-      <div className="options">
+      <div className={styles.options}>
         {options.map((o) => (
-          <div className="option" key={o}>
+          <div className={styles.option} key={o}>
             <p>{o}</p>
-            <Button onClick={() => deleteOption(o)}>Delete</Button>
+            <Button
+              onClick={() => deleteOption(o)}
+              variant="contained"
+              color="error"
+            >
+              Delete
+            </Button>
           </div>
         ))}
       </div>
-      <label>
-        <input
+      <label className={styles.optionsLabel}>
+        <Textarea
           value={newOption}
           onChange={(e) => setNewOption(e.target.value)}
-          type="text"
+          placeholder="Enter new option"
         />
-        <Button onClick={addNewOption}>Add</Button>
+        <Button
+          className={styles.addButton}
+          onClick={addNewOption}
+          variant="contained"
+          color="success"
+        >
+          Add
+        </Button>
       </label>
     </>
   );
