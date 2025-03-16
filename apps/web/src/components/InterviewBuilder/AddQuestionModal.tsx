@@ -44,12 +44,17 @@ export const AddQuestionModal = ({
     e: React.ChangeEvent<{ name: string; value: string }>,
   ) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+
+    if (name === 'minValue' || name === 'maxValue' || name === 'stepValue') {
+      const numValue = parseInt(value as string);
+      setFormData((prev) => ({ ...prev, [name]: numValue }));
+    } else {
+      setFormData((prev) => ({ ...prev, [name]: value }));
+    }
   };
 
   const handleTypeChange = (e: SelectChangeEvent<QuestionType>) => {
     const newType = e.target.value as QuestionType;
-    console.log(newType);
     setFormData((prev) => {
       switch (newType) {
         case QuestionType.Select:
