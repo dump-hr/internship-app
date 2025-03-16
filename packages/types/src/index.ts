@@ -6,3 +6,4 @@ export * from './auth';
 export * from './test';
 export * from './log';
 export * from './interviewQuestion';
+export * from './interviewQuestionAnswer';

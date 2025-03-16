@@ -21,6 +21,7 @@ import { AddInterviewQuestionForm } from '../../components/AddInterviewQuestionF
 import { InterviewQuestion } from '@internship-app/types';
 import { EditInterviewQuestionForm } from '../../components/EditInterviewQuestionForm';
 import { useToggleInterviewQuestion } from '../../api/useToggleInterviewQuestion';
+import { Link } from 'wouter';
 
 export const InterviewBuilderPage = () => {
   const { data, isLoading, error } = useFetchInterviewQuestions();
@@ -128,10 +129,8 @@ export const InterviewBuilderPage = () => {
                     </Button>
                     <Button
                       variant="outlined"
-                      onClick={() => {
-                        console.log('Stats question', q.id);
-                        // Implement navigate to stats page
-                      }}
+                      component={Link}
+                      href={`/admin/interview-builder/${q.id}/stats`}
                     >
                       Stats
                     </Button>
