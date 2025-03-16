@@ -164,7 +164,12 @@ const InternInfo = ({ intern }: InternInfoProps) => {
                   <h3 className={styles.itemTitle}>
                     {item.question} {!item.tick || '⚠️'}
                   </h3>
-                  <span>{item.value}</span>
+
+                  {Array.isArray(item.value) ? (
+                    <span>{item.value.join(', ')}</span>
+                  ) : (
+                    <span>{item.value}</span>
+                  )}
                 </div>
               );
             })}
