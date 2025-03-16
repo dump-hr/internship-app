@@ -28,7 +28,9 @@ export const EditQuestionModal = ({
   );
   const [newOption, setNewOption] = useState<string>('');
   const [options, setOptions] = useState<string[] | []>(question.options ?? []);
-  const [isEnabled, setIsEnabled] = useState<boolean>(true);
+  const [isEnabled, setIsEnabled] = useState<boolean>(
+    question.isEnabled || true,
+  );
 
   const handleSave = () => {
     const updatedQuestion = {

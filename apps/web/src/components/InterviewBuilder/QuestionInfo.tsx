@@ -11,6 +11,8 @@ import {
 } from '@mui/material';
 import { useState } from 'react';
 import { EditQuestionModal } from './EditQuestionModal';
+import { navigate } from 'wouter/use-location';
+import { Path } from '../../constants/paths';
 
 type QuestionInfoProps = {
   question: Question;
@@ -42,6 +44,10 @@ export const QuestionInfo = ({
     const updatedQuestion = { ...question, isEnabled: !isEnabled };
     setIsEnabled(!isEnabled);
     handleEditQuestion(updatedQuestion);
+  };
+
+  const handleShowStatistic = () => {
+    navigate(Path.QuestionStatistic.replace(':id', question.id));
   };
 
   return (
@@ -85,7 +91,11 @@ export const QuestionInfo = ({
           Edit
         </Button>
 
-        <Button variant="contained" color="primary">
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={handleShowStatistic}
+        >
           Stats
         </Button>
 
