@@ -6,7 +6,6 @@ import {
 } from '@nestjs/common';
 import { Discipline, InterviewStatus, Prisma } from '@prisma/client';
 import { PrismaService } from 'src/prisma.service';
-
 import { CreateInterviewSlotDto } from './dto/createInterviewSlot.dto';
 
 @Injectable()
@@ -267,5 +266,46 @@ export class InterviewSlotService {
         },
       },
     });
+  }
+
+  async updateQuestionTextInAnswers(
+    questionId: string,
+    newQuestionText: string,
+  ) {
+    const interviewSlots = await this.prisma.interviewSlot.findMany({
+      where: {
+        answers: {
+          not: null,
+        },
+      },
+    });
+
+    for (const slot of interviewSlots) {
+      const answers = slot.answers as any[];
+
+      if (Array.isArray(answers)) {
+        let updated = false;
+
+        const updatedAnswers = answers.map((answer) => {
+          if (answer.id === questionId) {
+            updated = true;
+            return {
+              ...answer,
+              question: newQuestionText,
+            };
+          }
+          return answer;
+        });
+
+        if (updated) {
+          await this.prisma.interviewSlot.update({
+            where: { id: slot.id },
+            data: {
+              answers: updatedAnswers,
+            },
+          });
+        }
+      }
+    }
   }
 }

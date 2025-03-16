@@ -9,7 +9,7 @@ import LogoHeader from '../../components/LogoHeader';
 import { useEffect, useState } from 'react';
 import { Question } from '@internship-app/types';
 import { useCreateInterviewQuestion } from '../../api/useCreateInterviewQuestion';
-import toast, { Toaster } from 'react-hot-toast';
+import toast, { LoaderIcon, Toaster } from 'react-hot-toast';
 import { useUpdateInterviewQuestion } from '../../api/useUpdateInterviewQuestion';
 
 export const InterviewQuestionBuilder = () => {
@@ -23,8 +23,7 @@ export const InterviewQuestionBuilder = () => {
 
   useEffect(() => {
     if (allQuestions) {
-      const sortedQuestions = allQuestions.reverse();
-      setQuestions(sortedQuestions);
+      setQuestions([...allQuestions].reverse());
     }
   }, [allQuestions]);
 
@@ -47,7 +46,7 @@ export const InterviewQuestionBuilder = () => {
   };
 
   if (isFetching) {
-    return <p>Loading...</p>;
+    return <LoaderIcon />;
   }
 
   if (!questions || questions.length === 0) {

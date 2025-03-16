@@ -24,4 +24,9 @@ export class QuestionController {
   async update(@Body() question: EditQuestionDto) {
     return await this.questionService.editInterviewQuestion(question);
   }
+
+  @Get('/statistic/:id')
+  async getAnswersByQuestionId(@Param('id') id: string) {
+    return this.questionService.getAnswersByQuestionId(id);
+  }
 }

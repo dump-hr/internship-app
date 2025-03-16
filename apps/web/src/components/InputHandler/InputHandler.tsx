@@ -4,8 +4,6 @@ import {
   FormControl,
   FormControlLabel,
   FormGroup,
-  FormLabel,
-  InputLabel,
   MenuItem,
   Radio,
   RadioGroup,
@@ -115,7 +113,9 @@ const getInputComponent = (
         <TextField
           {...field}
           type="number"
-          InputProps={{ inputProps: { min: question.min, max: question.max } }}
+          InputProps={{
+            inputProps: { min: question.minValue, max: question.maxValue },
+          }}
           onChange={(e) => field.onChange(+e.target.value)}
         />
       );
@@ -129,7 +129,6 @@ const InputHandler = ({ question, form }: InputHandlerProps) => {
 
   return (
     <>
-      {question.title && <InputLabel>{question.title}</InputLabel>}
       <Controller
         control={control}
         name={question.id}
