@@ -9,6 +9,7 @@ import {
   Switch,
 } from '@mui/material';
 import { Question, QuestionType } from '@internship-app/types';
+import toast from 'react-hot-toast';
 
 type EditQuestionModalProps = {
   question: Question;
@@ -45,10 +46,23 @@ export const EditQuestionModal = ({
   };
 
   const handleAddOption = () => {
-    if (newOption.trim()) {
-      setOptions([...options, newOption.trim()]);
-      setNewOption('');
+    const trimmedOption = newOption.trim();
+
+    if (!trimmedOption) {
+      return;
     }
+
+    const optionExists = options.some(
+      (opt) => opt.toLowerCase() === trimmedOption.toLowerCase(),
+    );
+
+    if (optionExists) {
+      toast.error(`Opcija već postoji`);
+      return;
+    }
+
+    setOptions([...options, trimmedOption]);
+    setNewOption('');
   };
 
   return (
@@ -90,7 +104,11 @@ export const EditQuestionModal = ({
               value={newOption}
               onChange={(e) => setNewOption(e.target.value)}
             />
-            <Button onClick={handleAddOption} variant="outlined" sx={{ mt: 1 }}>
+            <Button
+              onClick={handleAddOption}
+              variant="outlined"
+              sx={{ mt: 1, mr: 4 }}
+            >
               Dodaj Opciju
             </Button>
           </>

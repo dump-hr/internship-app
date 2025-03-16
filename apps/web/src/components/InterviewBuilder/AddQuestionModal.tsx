@@ -70,8 +70,8 @@ export const AddQuestionModal = ({
             ...prev,
             type: newType,
             minValue: prev.minValue ?? 0,
-            maxValue: prev.maxValue ?? 5,
-            stepValue: prev.stepValue ?? 1,
+            maxValue: prev.maxValue ?? 0,
+            stepValue: prev.stepValue ?? 0,
           };
 
         default:
@@ -119,17 +119,33 @@ export const AddQuestionModal = ({
       return 'Morate dodati opcije za ovaj tip';
     }
 
+    const optionSet = new Set();
+    for (const option of formData.options || []) {
+      if (optionSet.has(option)) {
+        return `Duplikat opcije: "${option}"`;
+      }
+      optionSet.add(option);
+    }
+
     if (formData.type === QuestionType.Slider) {
-      if (
-        formData.minValue === undefined ||
-        formData.maxValue === undefined ||
-        formData.stepValue === undefined
-      ) {
+      if (!formData.minValue || !formData.maxValue || !formData.stepValue) {
         return 'Morate unijeti Min, Max i Step vrijednosti za slider.';
+      }
+
+      if (
+        formData.minValue <= 0 ||
+        formData.maxValue <= 0 ||
+        formData.stepValue <= 0
+      ) {
+        return 'Vrijednosti  ne smiju biti manje od nula.';
       }
 
       if (formData.maxValue <= formData.minValue) {
         return 'Max vrijednost mora biti veća od Min vrijednosti.';
+      }
+
+      if (formData.maxValue <= formData.stepValue) {
+        return 'Max vrijednost mora biti veća od Step vrijednostio';
       }
     }
 
