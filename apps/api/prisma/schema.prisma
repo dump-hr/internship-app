@@ -29,19 +29,20 @@ model Interviewer {
 }
 
 model Intern {
-  id                String             @id @default(uuid())
-  firstName         String
-  lastName          String
-  email             String             @unique
-  image             String?
-  data              Json
-  notes             String             @default("")
-  interviewStatus   InterviewStatus    @default(NoRight)
-  interviewSlot     InterviewSlot?
-  internDisciplines InternDiscipline[]
-  createdAt         DateTime           @default(now())
-  updatedAt         DateTime           @updatedAt
-  logs              InternLog[]
+  id                      String                    @id @default(uuid())
+  firstName               String
+  lastName                String
+  email                   String                    @unique
+  image                   String?
+  data                    Json
+  notes                   String                    @default("")
+  interviewStatus         InterviewStatus           @default(NoRight)
+  interviewSlot           InterviewSlot?
+  internDisciplines       InternDiscipline[]
+  createdAt               DateTime                  @default(now())
+  updatedAt               DateTime                  @updatedAt
+  logs                    InternLog[]
+  InterviewQuestionAnswer InterviewQuestionAnswer[]
 }
 
 model InternDiscipline {
@@ -116,6 +117,43 @@ model InterviewSlot {
   interviewers InterviewMemberParticipation[]
 }
 
+model InterviewQuestion {
+  id         String                    @id @default(uuid())
+  question   String
+  type       InterviewQuestionType
+  category   InterviewQuestionCategory
+  discipline Discipline?
+  isEnabled  Boolean
+  details    InterviewQuestionDetails? @relation("QuestionDetails")
+  answers    InterviewQuestionAnswer[]
+  createdAt  DateTime                  @default(now())
+  updatedAt  DateTime                  @updatedAt
+}
+
+model InterviewQuestionDetails {
+  id         String            @id @default(uuid())
+  questionId String            @unique
+  options    Json?
+  min        Int?
+  max        Int?
+  step       Int?
+  createdAt  DateTime          @default(now())
+  updatedAt  DateTime          @updatedAt
+  question   InterviewQuestion @relation("QuestionDetails", fields: [questionId], references: [id])
+}
+
+model InterviewQuestionAnswer {
+  id         String            @id @default(uuid())
+  question   InterviewQuestion @relation(fields: [questionId], references: [id])
+  questionId String
+  intern     Intern            @relation(fields: [internId], references: [id])
+  internId   String
+  answer     String
+  flag       Boolean
+  createdAt  DateTime          @default(now())
+  updatedAt  DateTime          @updatedAt
+}
+
 model InterviewMemberParticipation {
   interviewSlotId String
   interviewSlot   InterviewSlot @relation(fields: [interviewSlotId], references: [id], onDelete: Cascade)
@@ -159,6 +197,24 @@ enum InterviewStatus {
   Pending
   Done
   Missed
+}
+
+enum InterviewQuestionType {
+  Field
+  TextArea
+  Select
+  Slider
+  Date
+  DateTime
+  Radio
+  Number
+}
+
+enum InterviewQuestionCategory {
+  General
+  Personal
+  DisciplineSpecific
+  Final
 }
 
 enum TestStatus {

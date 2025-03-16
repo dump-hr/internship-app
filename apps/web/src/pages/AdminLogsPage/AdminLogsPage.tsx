@@ -16,14 +16,14 @@ import InputHandler from '../../components/InputHandler';
 const formQuestions: Question[] = [
   {
     id: 'action',
-    title: 'Akcija',
+    question: 'Akcija',
     type: QuestionType.Select,
     options: ['', ...Object.values(AdminLogAction)],
     registerValue: '',
   },
   {
     id: 'description',
-    title: 'Opis',
+    question: 'Opis',
     type: QuestionType.Field,
     registerValue: '',
   },

@@ -1,4 +1,9 @@
-import { Intern, InterviewStatus, QuestionType } from '@internship-app/types';
+import {
+  Intern,
+  InterviewQuestionAnswer,
+  InterviewStatus,
+  QuestionType,
+} from '@internship-app/types';
 import { Json } from '@internship-app/types/src/json';
 import { useEffect, useState } from 'react';
 import { FieldValues, useForm } from 'react-hook-form';
@@ -19,23 +24,22 @@ import {
   QuestionCategory,
 } from '../../constants/interviewConstants';
 import { Path } from '../../constants/paths';
-import { defaultInterviewValues, interviewQuestions } from './data';
+import { defaultInterviewValues } from './data';
 import InterviewQuestionHandler from './InterviewQuestionHandler';
-
-const mapAnswersToQuestions = (
-  answers: FieldValues,
-): { [key: number]: Json } => {
-  return interviewQuestions.map((q) => ({ ...q, ...answers[q.id] }));
-};
+import { usePostInterviewQuestionAnswers } from '../../api/usePostInterviewQuestionAnswers';
+import { useFetchEnabledInterviewQuestions } from '../../api/useFetchEnabledInterviewQuestions';
 
 const InterviewPage = () => {
   const [, params] = useRoute(Path.Interview);
   const internId = params?.internId;
 
   const { data: intern, isFetching } = useFetchIntern(internId);
+  const { data: interviewQuestions, isLoading } =
+    useFetchEnabledInterviewQuestions();
   const setInterview = useSetInterview(() => {
     navigate(Path.Intern.replace(':internId', params?.internId || ''));
   });
+  const addAnswers = usePostInterviewQuestionAnswers();
   const setImage = useSetImage();
   const queryClient = useQueryClient();
 
@@ -75,6 +79,36 @@ const InterviewPage = () => {
     form.reset({ ...defaultInterviewValues, ...answersValues });
   }, [form, intern]);
 
+  const mapAnswersToQuestions = (
+    answers: FieldValues,
+  ): { [key: number]: Json } => {
+    const answersToQuestions = interviewQuestions
+      ? interviewQuestions.map((q) => ({ ...q, ...answers[q.id] }))
+      : {};
+
+    return answersToQuestions;
+  };
+
+  function formatInterviewQuestionAnswers(
+    answers: FieldValues,
+  ): InterviewQuestionAnswer[] {
+    const formattedAnswers: InterviewQuestionAnswer[] = interviewQuestions
+      ? interviewQuestions
+          .filter((q) => !!answers[q.id] && !!answers[q.id].value)
+          .map((q) => ({
+            id: '',
+            questionId: q.id,
+            question: q,
+            flag: false,
+            answer: answers[q.id].value.toString(),
+            intern: intern ?? ({} as Intern),
+            internId: intern?.id ?? '',
+          }))
+      : [];
+
+    return formattedAnswers;
+  }
+
   const handleFormSubmit = (internId: string) =>
     form.handleSubmit((data) => {
       const answers = mapAnswersToQuestions(data);
@@ -92,6 +126,8 @@ const InterviewPage = () => {
         .reduce((acc, curr) => acc + +curr.value, 0);
 
       setInterview.mutate({ internId, answers, score });
+      const formattedAnswers = formatInterviewQuestionAnswers(data);
+      addAnswers.mutate(formattedAnswers);
     })();
 
   const handleSetImage = async (base64: string) => {
@@ -143,15 +179,21 @@ const InterviewPage = () => {
         setImage={handleSetImage}
         intern={intern}
       />
-      <MultistepForm
-        questions={interviewQuestions}
-        form={form}
-        steps={getFilteredInterviewSteps(
-          intern.internDisciplines.map((ind) => ind.discipline),
-        )}
-        onSubmit={() => setDialogOpen(true)}
-        InputHandler={InterviewQuestionHandler}
-      />
+      {isLoading ? (
+        <p>Loading...</p>
+      ) : (
+        interviewQuestions && (
+          <MultistepForm
+            questions={interviewQuestions}
+            form={form}
+            steps={getFilteredInterviewSteps(
+              intern.internDisciplines.map((ind) => ind.discipline),
+            )}
+            onSubmit={() => setDialogOpen(true)}
+            InputHandler={InterviewQuestionHandler}
+          />
+        )
+      )}
       <ConfirmDialog
         open={!!dialogOpen}
         handleClose={(confirmed) => {

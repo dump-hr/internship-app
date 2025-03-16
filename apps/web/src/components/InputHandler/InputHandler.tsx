@@ -1,8 +1,16 @@
-import { Question, QuestionType } from '@internship-app/types';
+import {
+  InterviewQuestion,
+  InterviewQuestionType,
+  Question,
+  QuestionType,
+} from '@internship-app/types';
 import {
   Checkbox,
+  FormControlLabel,
   InputLabel,
   MenuItem,
+  Radio,
+  RadioGroup,
   Select,
   Slider,
   TextareaAutosize,
@@ -17,41 +25,47 @@ import {
 } from 'react-hook-form';
 
 type InputHandlerProps = {
-  question: Question;
+  question: InterviewQuestion | Question;
   form: UseFormReturn<FieldValues>;
 };
 
 const getInputComponent = (
-  question: Question,
+  question: InterviewQuestion | Question,
   field: ControllerRenderProps<FieldValues>,
 ) => {
   switch (question.type) {
-    case QuestionType.Field:
+    case InterviewQuestionType.Field:
       return <TextField {...field} fullWidth />;
-    case QuestionType.TextArea:
+    case InterviewQuestionType.TextArea:
       return (
         <TextareaAutosize style={{ width: '100%' }} minRows={3} {...field} />
       );
-    case QuestionType.Select:
+    case InterviewQuestionType.Select:
       return (
         <Select {...field} fullWidth>
-          {question.options.map((option) => (
-            <MenuItem key={option} value={option}>
-              {option || <Typography color="gray">empty</Typography>}
-            </MenuItem>
-          ))}
+          {!!question.details &&
+            !!question.details.options &&
+            question.details.options.map((option) => (
+              <MenuItem key={option} value={option}>
+                {option || <Typography color="gray">empty</Typography>}
+              </MenuItem>
+            ))}
         </Select>
       );
-    case QuestionType.Slider:
+    case InterviewQuestionType.Radio:
       return (
-        <Slider
-          {...field}
-          marks
-          valueLabelDisplay="auto"
-          step={question.step}
-          min={question.min}
-          max={question.max}
-        />
+        <RadioGroup {...field} row>
+          {!!question.details &&
+            !!question.details.options &&
+            question.details.options.map((option) => (
+              <FormControlLabel
+                key={option}
+                value={option}
+                control={<Radio />}
+                label={option || <Typography color="gray">empty</Typography>}
+              />
+            ))}
+        </RadioGroup>
       );
     case QuestionType.Checkbox:
       return (
@@ -61,18 +75,42 @@ const getInputComponent = (
           onChange={(e) => field.onChange(e.target.checked)}
         />
       );
-    case QuestionType.Date:
-      return <TextField {...field} type="date" />;
-    case QuestionType.DateTime:
-      return <TextField {...field} type="datetime-local" />;
-    case QuestionType.Number:
+    case InterviewQuestionType.Slider:
       return (
-        <TextField
-          {...field}
-          type="number"
-          InputProps={{ inputProps: { min: question.min, max: question.max } }}
-          onChange={(e) => field.onChange(+e.target.value)}
-        />
+        <>
+          {!!question.details && (
+            <Slider
+              {...field}
+              marks
+              valueLabelDisplay="auto"
+              step={question.details.step ?? 1}
+              min={question.details.min ?? 1}
+              max={question.details.max ?? 100}
+            />
+          )}
+        </>
+      );
+    case InterviewQuestionType.Date:
+      return <TextField {...field} type="date" />;
+    case InterviewQuestionType.DateTime:
+      return <TextField {...field} type="datetime-local" />;
+    case InterviewQuestionType.Number:
+      return (
+        <>
+          {!!question.details && (
+            <TextField
+              {...field}
+              type="number"
+              InputProps={{
+                inputProps: {
+                  min: question.details.min,
+                  max: question.details.max,
+                },
+              }}
+              onChange={(e) => field.onChange(+e.target.value)}
+            />
+          )}
+        </>
       );
     default:
       return <></>;
@@ -84,11 +122,10 @@ const InputHandler = ({ question, form }: InputHandlerProps) => {
 
   return (
     <>
-      {question.title && <InputLabel>{question.title}</InputLabel>}
+      {question.question && <InputLabel>{question.question}</InputLabel>}
       <Controller
         control={control}
         name={question.id}
-        defaultValue={question.registerValue}
         render={({ field }) => getInputComponent(question, field)}
       />
     </>

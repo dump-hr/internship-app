@@ -23,7 +23,7 @@ const Actions = <T extends PropertyKey, R>({
 
   const actionQuestion: Question = {
     id: 'actionType',
-    title: 'Akcija',
+    question: 'Akcija',
     type: QuestionType.Select,
     options: ['', ...Object.keys(options)],
     registerValue: '',

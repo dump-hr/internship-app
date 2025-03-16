@@ -36,6 +36,9 @@ const LogoHeader: React.FC<Props> = ({ text }) => {
           <Button component={Link} to={Path.InterviewPicker}>
             Interview scheduler
           </Button>
+          <Button component={Link} to={Path.InterviewBuilder}>
+            Interview builder
+          </Button>
           <Button component={Link} to={Path.TestScheduler}>
             Test Scheduler
           </Button>

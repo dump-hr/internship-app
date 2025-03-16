@@ -26,7 +26,6 @@ export class EmailController {
 
     return await this.emailService.sendEmail(emails, text, subject);
   }
-
   @UseGuards(JwtAuthGuard)
   @Post()
   async makeEmails(@Body() { emails, text }: EmailsDto) {

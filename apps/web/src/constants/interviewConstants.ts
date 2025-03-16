@@ -1,13 +1,13 @@
-import { Discipline } from '@internship-app/types';
+import { Discipline, InterviewQuestionCategory } from '@internship-app/types';
 
 export enum QuestionCategory {
-  General = 'General',
-  Personal = 'Personal',
-  Development = 'Development',
-  Design = 'Design',
-  Marketing = 'Marketing',
-  Multimedia = 'Multimedia',
-  Final = 'Final',
+  General = InterviewQuestionCategory.General,
+  Personal = InterviewQuestionCategory.Personal,
+  Development = Discipline.Development,
+  Design = Discipline.Design,
+  Marketing = Discipline.Marketing,
+  Multimedia = Discipline.Multimedia,
+  Final = InterviewQuestionCategory.Final,
 }
 
 export const steps = [

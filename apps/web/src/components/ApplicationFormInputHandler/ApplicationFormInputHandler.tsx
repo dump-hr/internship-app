@@ -32,7 +32,7 @@ export const ApplicationFormInputHandler: React.FC<Props> = ({
         return (
           <div className={classes.formQuestionWrapper}>
             <label className={classes.marginBottom30px} htmlFor={question.id}>
-              {question.title}
+              {question.question}
             </label>
             <Input
               id={question.id}
@@ -54,7 +54,7 @@ export const ApplicationFormInputHandler: React.FC<Props> = ({
         return (
           <div className={classes.formQuestionWrapper}>
             <label className={classes.marginBottom30px} htmlFor={question.id}>
-              {question.title}
+              {question.question}
             </label>
             <Input
               id={question.id}
@@ -76,7 +76,7 @@ export const ApplicationFormInputHandler: React.FC<Props> = ({
         return (
           <div className={classes.formQuestionWrapper}>
             <label className={classes.marginBottom30px} htmlFor={question.id}>
-              {question.title}
+              {question.question}
             </label>
             <Input
               id={question.id}
@@ -100,7 +100,7 @@ export const ApplicationFormInputHandler: React.FC<Props> = ({
         return (
           <div className={classes.formQuestionWrapper}>
             <label className={classes.marginBottom30px} htmlFor={question.id}>
-              {question.title}
+              {question.question}
             </label>
             <RadioGroup defaultValue="Other" name="radio-buttons-group">
               {question.options.map((option) => (
