@@ -324,4 +324,33 @@ export class InterviewSlotService {
       );
     }
   }
+
+  async updateFlagInAnswers(slotId: string, tick: boolean, answerId: string) {
+    try {
+      const slot = await this.prisma.interviewSlot.findUnique({
+        where: { id: slotId },
+        select: { answers: true },
+      });
+
+      if (!slot || !Array.isArray(slot.answers)) {
+        throw new Error('Slot not found or answers are not in expected format');
+      }
+
+      const updatedAnswers = slot.answers.map((answer: Answer) =>
+        answer.id === answerId ? { ...answer, tick } : answer,
+      );
+
+      await this.prisma.interviewSlot.update({
+        where: { id: slotId },
+        data: { answers: updatedAnswers },
+      });
+
+      return { success: true };
+    } catch (error) {
+      console.error(`Error updating question in answer: ${error.message}`);
+      throw new InternalServerErrorException(
+        `Error updating question: ${error.message}`,
+      );
+    }
+  }
 }

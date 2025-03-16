@@ -1,12 +1,12 @@
-import type { InterviewSlot } from '@prisma/client';
+import { InterviewSlot } from '@internship-app/types';
 import { useQuery } from 'react-query';
 
 import { api } from '.';
 
-const fetchALllInterviewSlots = async () => {
+const fetchAllInterviewSlots = async () => {
   return api.get<never, InterviewSlot[]>('/interview-slot');
 };
 
 export const useFetchAllInterviewSlots = () => {
-  return useQuery(['interview-slot'], fetchALllInterviewSlots);
+  return useQuery(['interview-slot'], fetchAllInterviewSlots);
 };

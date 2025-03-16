@@ -99,4 +99,25 @@ export class InterviewSlotController {
       );
     }
   }
+
+  @Patch('/tick/:slotId')
+  async answerInterviewTick(
+    @Param('slotId') slotId: string,
+    @Body() body: { tick: boolean; answerId: string },
+  ) {
+    try {
+      const updated = await this.interviewSlotService.updateFlagInAnswers(
+        slotId,
+        body.tick,
+        body.answerId,
+      );
+
+      return updated;
+    } catch (error) {
+      console.error('Failed to update question in answers');
+      throw new InternalServerErrorException(
+        `Failed to update question in answers: ${error.message}`,
+      );
+    }
+  }
 }

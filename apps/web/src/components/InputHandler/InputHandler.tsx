@@ -1,4 +1,5 @@
 import { Question, QuestionType } from '@internship-app/types';
+import { Radio } from '@mui/joy';
 import {
   Checkbox,
   FormControlLabel,
@@ -16,7 +17,6 @@ import {
   FieldValues,
   UseFormReturn,
 } from 'react-hook-form';
-import { Radio } from '@mui/joy';
 
 type InputHandlerProps = {
   question: Question;

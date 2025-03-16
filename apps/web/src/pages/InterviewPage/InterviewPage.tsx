@@ -159,7 +159,7 @@ const InterviewPage = () => {
         InputHandler={InterviewQuestionHandler}
       />
       <ConfirmDialog
-        open={!!dialogOpen}
+        open={dialogOpen}
         handleClose={(confirmed) => {
           if (confirmed) handleFormSubmit(internId);
           setDialogOpen(false);
