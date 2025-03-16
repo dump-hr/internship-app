@@ -31,7 +31,7 @@ export const InterviewBuilderPage = () => {
       isEnabled: true,
     };
 
-    setInterviewQuestions((prev) => [...prev, newQuestion]);
+    setInterviewQuestions((prev) => [newQuestion, ...prev]);
     newId.current++;
   }
 

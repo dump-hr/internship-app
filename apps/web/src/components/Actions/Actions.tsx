@@ -1,8 +1,4 @@
-import {
-  ActionOptions,
-  InterviewQuestion,
-  QuestionType,
-} from '@internship-app/types';
+import { ActionOptions, Question, QuestionType } from '@internship-app/types';
 import { Box, Button, Typography } from '@mui/material';
 import { useState } from 'react';
 import { useForm, useWatch } from 'react-hook-form';
@@ -25,9 +21,9 @@ const Actions = <T extends PropertyKey, R>({
     name: 'actionType',
   });
 
-  const actionQuestion: InterviewQuestion = {
+  const actionQuestion: Question = {
     id: 'actionType',
-    title: 'Akcija',
+    question: 'Akcija',
     type: QuestionType.Select,
     options: ['', ...Object.keys(options)],
     registerValue: '',

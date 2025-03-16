@@ -1,6 +1,7 @@
 import {
   InterviewQuestion,
-  InterviewQuestionType,
+  Question,
+  QuestionType,
 } from '@internship-app/types';
 import { Box, Typography } from '@mui/material';
 import { FieldValues, UseFormReturn } from 'react-hook-form';
@@ -21,9 +22,9 @@ const InterviewQuestionHandler = ({
     id: `${question.id}.value`,
     title: undefined,
   };
-  const questionForTick = {
+  const questionForTick: Question = {
     id: `${question.id}.tick`,
-    type: InterviewQuestionType.Checkbox,
+    type: QuestionType.Checkbox,
   };
 
   return (

@@ -3,7 +3,7 @@ import {
   DisciplineStatus,
   InternStatus,
   InterviewStatus,
-  InterviewQuestion,
+  Question,
   QuestionType,
   TestStatus,
 } from '@internship-app/types';
@@ -17,7 +17,7 @@ import InputHandler from '../InputHandler';
 
 type CriteriaSection = {
   id: string;
-  questions: InterviewQuestion[];
+  questions: Question[];
 };
 
 const initialCriteria: CriteriaSection[] = [
@@ -28,21 +28,21 @@ const initialCriteria: CriteriaSection[] = [
         id: 'main.name',
         type: QuestionType.Field,
         registerValue: '',
-        title: 'Ime/mail/testid',
+        question: 'Ime/mail/testid',
       },
       {
         id: 'main.status',
         type: QuestionType.Select,
         registerValue: '',
         options: ['', ...Object.keys(InternStatus)],
-        title: 'Status',
+        question: 'Status',
       },
       {
         id: 'main.interviewStatus',
         type: QuestionType.Select,
         registerValue: '',
         options: ['', ...Object.keys(InterviewStatus)],
-        title: 'Intervju',
+        question: 'Intervju',
       },
     ],
   },
@@ -56,33 +56,33 @@ const getNewCriteria = (id: string): CriteriaSection => ({
       type: QuestionType.Select,
       registerValue: Discipline.Development,
       options: Object.keys(Discipline),
-      title: 'Područje',
+      question: 'Područje',
     },
     {
       id: `${id}.status`,
       type: QuestionType.Select,
       registerValue: '',
       options: ['', ...Object.keys(DisciplineStatus)],
-      title: 'Status',
+      question: 'Status',
     },
     {
       id: `${id}.testStatus`,
       type: QuestionType.Select,
       registerValue: '',
       options: ['', ...Object.keys(TestStatus)],
-      title: 'Test',
+      question: 'Test',
     },
     {
       id: `${id}.score`,
       type: QuestionType.Field,
       registerValue: '',
-      title: 'Bodovi (eg >15)',
+      question: 'Bodovi (eg >15)',
     },
     {
       id: `${id}.not`,
       type: QuestionType.Checkbox,
       registerValue: false,
-      title: 'Not',
+      question: 'Not',
     },
   ],
 });

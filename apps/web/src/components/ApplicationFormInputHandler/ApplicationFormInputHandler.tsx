@@ -1,4 +1,4 @@
-import { InterviewQuestion, QuestionType } from '@internship-app/types';
+import { Question, QuestionType } from '@internship-app/types';
 import { Input, Radio, RadioGroup } from '@mui/joy';
 import { FieldErrors, UseFormRegister, UseFormWatch } from 'react-hook-form';
 
@@ -6,7 +6,7 @@ import { FormValues } from '../../pages/ApplicationFormPage/ApplicationFormPage'
 import classes from '../../pages/ApplicationFormPage/index.module.css';
 
 type Props = {
-  question: InterviewQuestion;
+  question: Question;
   register: UseFormRegister<FormValues>;
   errors: FieldErrors<FormValues>;
   watch: UseFormWatch<FormValues>;
@@ -32,7 +32,7 @@ export const ApplicationFormInputHandler: React.FC<Props> = ({
         return (
           <div className={classes.formQuestionWrapper}>
             <label className={classes.marginBottom30px} htmlFor={question.id}>
-              {question.title}
+              {question.question}
             </label>
             <Input
               id={question.id}
@@ -54,7 +54,7 @@ export const ApplicationFormInputHandler: React.FC<Props> = ({
         return (
           <div className={classes.formQuestionWrapper}>
             <label className={classes.marginBottom30px} htmlFor={question.id}>
-              {question.title}
+              {question.question}
             </label>
             <Input
               id={question.id}
@@ -76,7 +76,7 @@ export const ApplicationFormInputHandler: React.FC<Props> = ({
         return (
           <div className={classes.formQuestionWrapper}>
             <label className={classes.marginBottom30px} htmlFor={question.id}>
-              {question.title}
+              {question.question}
             </label>
             <Input
               id={question.id}
@@ -100,7 +100,7 @@ export const ApplicationFormInputHandler: React.FC<Props> = ({
         return (
           <div className={classes.formQuestionWrapper}>
             <label className={classes.marginBottom30px} htmlFor={question.id}>
-              {question.title}
+              {question.question}
             </label>
             <RadioGroup defaultValue="Other" name="radio-buttons-group">
               {question.options.map((option) => (

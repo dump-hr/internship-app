@@ -1,4 +1,4 @@
-import { Discipline, Intern, InternDiscipline } from './intern';
+import { Discipline, Intern } from './intern';
 import { Json } from './json';
 
 export type ScheduleInterviewRequest = {

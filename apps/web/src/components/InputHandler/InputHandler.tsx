@@ -1,4 +1,8 @@
-import { InterviewQuestion, QuestionType } from '@internship-app/types';
+import {
+  InterviewQuestion,
+  InterviewQuestionType,
+  Question,
+} from '@internship-app/types';
 import {
   Checkbox,
   InputLabel,
@@ -17,43 +21,51 @@ import {
 } from 'react-hook-form';
 
 type InputHandlerProps = {
-  question: InterviewQuestion;
+  question: InterviewQuestion | Question;
   form: UseFormReturn<FieldValues>;
 };
 
 const getInputComponent = (
-  question: InterviewQuestion,
+  question: InterviewQuestion | Question,
   field: ControllerRenderProps<FieldValues>,
 ) => {
+  console.log(question);
+
   switch (question.type) {
-    case QuestionType.Field:
+    case InterviewQuestionType.Field:
       return <TextField {...field} fullWidth />;
-    case QuestionType.TextArea:
+    case InterviewQuestionType.TextArea:
       return (
         <TextareaAutosize style={{ width: '100%' }} minRows={3} {...field} />
       );
-    case QuestionType.Select:
+    case InterviewQuestionType.Select:
       return (
         <Select {...field} fullWidth>
-          {question.options.map((option) => (
-            <MenuItem key={option} value={option}>
-              {option || <Typography color="gray">empty</Typography>}
-            </MenuItem>
-          ))}
+          {!!question.details &&
+            !!question.details.options &&
+            question.details.options.map((option) => (
+              <MenuItem key={option} value={option}>
+                {option || <Typography color="gray">empty</Typography>}
+              </MenuItem>
+            ))}
         </Select>
       );
-    case QuestionType.Slider:
+    case InterviewQuestionType.Slider:
       return (
-        <Slider
-          {...field}
-          marks
-          valueLabelDisplay="auto"
-          step={question.step}
-          min={question.min}
-          max={question.max}
-        />
+        <>
+          {!!question.details && (
+            <Slider
+              {...field}
+              marks
+              valueLabelDisplay="auto"
+              step={question.details.step}
+              min={question.details.min}
+              max={question.details.max}
+            />
+          )}
+        </>
       );
-    case QuestionType.Checkbox:
+    case InterviewQuestionType.Checkbox:
       return (
         <Checkbox
           {...field}
@@ -61,18 +73,27 @@ const getInputComponent = (
           onChange={(e) => field.onChange(e.target.checked)}
         />
       );
-    case QuestionType.Date:
+    case InterviewQuestionType.Date:
       return <TextField {...field} type="date" />;
-    case QuestionType.DateTime:
+    case InterviewQuestionType.DateTime:
       return <TextField {...field} type="datetime-local" />;
-    case QuestionType.Number:
+    case InterviewQuestionType.Number:
       return (
-        <TextField
-          {...field}
-          type="number"
-          InputProps={{ inputProps: { min: question.min, max: question.max } }}
-          onChange={(e) => field.onChange(+e.target.value)}
-        />
+        <>
+          {!!question.details && (
+            <TextField
+              {...field}
+              type="number"
+              InputProps={{
+                inputProps: {
+                  min: question.details.min,
+                  max: question.details.max,
+                },
+              }}
+              onChange={(e) => field.onChange(+e.target.value)}
+            />
+          )}
+        </>
       );
     default:
       return <></>;
@@ -84,11 +105,10 @@ const InputHandler = ({ question, form }: InputHandlerProps) => {
 
   return (
     <>
-      {question.title && <InputLabel>{question.title}</InputLabel>}
+      {question.question && <InputLabel>{question.question}</InputLabel>}
       <Controller
         control={control}
         name={question.id}
-        defaultValue={question.registerValue}
         render={({ field }) => getInputComponent(question, field)}
       />
     </>
