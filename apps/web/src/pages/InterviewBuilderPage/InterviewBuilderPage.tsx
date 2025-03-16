@@ -1,0 +1,155 @@
+import { LoaderIcon } from 'react-hot-toast';
+import { useFetchInterviewQuestions } from '../../api/useFetchInterviewQuestions';
+import AdminPage from '../../components/AdminPage';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+  Button,
+  Box,
+  Typography,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+} from '@mui/material';
+import { useState } from 'react';
+import { AddInterviewQuestionForm } from '../../components/AddInterviewQuestionForm';
+import { InterviewQuestion } from '@internship-app/types';
+import { EditInterviewQuestionForm } from '../../components/EditInterviewQuestionForm';
+import { useToggleInterviewQuestion } from '../../api/useToggleInterviewQuestion';
+import { Link } from 'wouter';
+
+export const InterviewBuilderPage = () => {
+  const { data, isLoading, error } = useFetchInterviewQuestions();
+
+  const [openAddForm, setOpenAddForm] = useState(false);
+
+  const [openEditForm, setOpenEditForm] = useState(false);
+  const [questionToEdit, setQuestionToEdit] =
+    useState<InterviewQuestion | null>(null);
+
+  const { mutate: toggleQuestion } = useToggleInterviewQuestion();
+
+  if (isLoading)
+    return (
+      <AdminPage headerText="Interview Builder">
+        <LoaderIcon />
+      </AdminPage>
+    );
+  if (error)
+    return (
+      <AdminPage headerText="Interview Builder">
+        <p>Error loading questions.</p>
+      </AdminPage>
+    );
+
+  const handleEditClick = (q: InterviewQuestion) => {
+    setQuestionToEdit(q);
+    setOpenEditForm(true);
+  };
+
+  return (
+    <AdminPage headerText="Interview Builder">
+      <Box sx={{ p: 2 }}>
+        <Typography variant="h4" gutterBottom>
+          Trenutna pitanja
+        </Typography>
+
+        <Button
+          variant="contained"
+          color="primary"
+          sx={{ mb: 2 }}
+          onClick={() => setOpenAddForm(true)}
+        >
+          Add Question
+        </Button>
+
+        <Dialog
+          open={openAddForm}
+          onClose={() => setOpenAddForm(false)}
+          fullWidth
+          maxWidth="sm"
+          disableEnforceFocus
+        >
+          <DialogTitle>Add Interview Question</DialogTitle>
+          <DialogContent>
+            <AddInterviewQuestionForm
+              onSuccess={() => setOpenAddForm(false)}
+              onCancel={() => setOpenAddForm(false)}
+            />
+          </DialogContent>
+        </Dialog>
+
+        <Dialog
+          open={openEditForm}
+          onClose={() => setOpenEditForm(false)}
+          fullWidth
+          maxWidth="sm"
+          disableEnforceFocus
+        >
+          <DialogTitle>Edit Interview Question</DialogTitle>
+          <DialogContent>
+            {questionToEdit && (
+              <EditInterviewQuestionForm
+                question={questionToEdit}
+                onSuccess={() => setOpenEditForm(false)}
+                onCancel={() => setOpenEditForm(false)}
+              />
+            )}
+          </DialogContent>
+        </Dialog>
+
+        <TableContainer component={Paper}>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell>Title</TableCell>
+                <TableCell>Type</TableCell>
+                <TableCell>Category</TableCell>
+                <TableCell>Actions</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {data?.map((q) => (
+                <TableRow key={q.id}>
+                  <TableCell>{q.title}</TableCell>
+                  <TableCell>{q.type}</TableCell>
+                  <TableCell>{q.category}</TableCell>
+                  <TableCell>
+                    <Button
+                      variant="outlined"
+                      sx={{ mr: 1 }}
+                      onClick={() => handleEditClick(q)}
+                    >
+                      Edit
+                    </Button>
+                    <Button
+                      variant="outlined"
+                      component={Link}
+                      href={`/admin/interview-builder/${q.id}/stats`}
+                    >
+                      Stats
+                    </Button>
+                    <Button
+                      variant="outlined"
+                      color={q.isActive ? 'secondary' : 'primary'}
+                      onClick={() => {
+                        toggleQuestion(q.id!);
+                      }}
+                    >
+                      {q.isActive ? 'Disable' : 'Enable'}
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </Box>
+    </AdminPage>
+  );
+};
