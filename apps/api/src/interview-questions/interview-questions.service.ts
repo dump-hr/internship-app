@@ -34,9 +34,6 @@ export class InterviewQuestionsService {
         where,
         skip,
         take: limit,
-        orderBy: {
-          createdAt: 'desc',
-        },
       }),
       this.prisma.interviewQuestion.count({ where }),
     ]);

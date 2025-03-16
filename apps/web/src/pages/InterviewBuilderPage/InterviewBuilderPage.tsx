@@ -1,28 +1,12 @@
 import { useState } from 'react';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
-import { useQuery, useQueryClient } from 'react-query';
+import { useQueryClient } from 'react-query';
 import { QuestionCategory, QuestionType } from '@prisma/client';
 import LayoutSpacing from '../../components/LayoutSpacing/LayoutSpacing';
 import LogoHeader from '../../components/LogoHeader';
 import { Button, Link } from '@mui/material';
 import { QuestionDialog } from '../../components/InterviewQuestions/QuestionDialog';
-
-const fetchQuestions = async (
-  page: number,
-  limit: number,
-  type?: QuestionType,
-  category?: QuestionCategory,
-) => {
-  const params = new URLSearchParams({
-    page: page.toString(),
-    limit: limit.toString(),
-    ...(type && { type }),
-    ...(category && { category }),
-  });
-
-  const response = await fetch(`/api/interview-questions?${params}`);
-  return response.json();
-};
+import { useFetchInterviewQuestions } from '../../api/useFetchInterviewQuestions';
 
 const InterviewBuilderPage = () => {
   const queryClient = useQueryClient();
@@ -34,10 +18,11 @@ const InterviewBuilderPage = () => {
   const [typeFilter, setTypeFilter] = useState<QuestionType>();
   const [categoryFilter, setCategoryFilter] = useState<QuestionCategory>();
 
-  const { data, isLoading } = useQuery(
-    ['questions', page, limit, typeFilter, categoryFilter],
-    () => fetchQuestions(page + 1, limit, typeFilter, categoryFilter),
-    { keepPreviousData: true },
+  const { data, isLoading } = useFetchInterviewQuestions(
+    page + 1,
+    limit,
+    typeFilter,
+    categoryFilter,
   );
 
   const columns: GridColDef[] = [
