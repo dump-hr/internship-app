@@ -19,20 +19,17 @@ import {
   QuestionCategory,
 } from '../../constants/interviewConstants';
 import { Path } from '../../constants/paths';
-import { defaultInterviewValues, interviewQuestions } from './data';
+import { defaultInterviewValues } from './data';
 import InterviewQuestionHandler from './InterviewQuestionHandler';
-
-const mapAnswersToQuestions = (
-  answers: FieldValues,
-): { [key: number]: Json } => {
-  return interviewQuestions.map((q) => ({ ...q, ...answers[q.id] }));
-};
+import { useFetchAllInterviewQuestions } from '../../api/useFetchAllInterviewQuestions';
 
 const InterviewPage = () => {
   const [, params] = useRoute(Path.Interview);
   const internId = params?.internId;
 
   const { data: intern, isFetching } = useFetchIntern(internId);
+  const { data: interviewQuestions, isLoading } =
+    useFetchAllInterviewQuestions();
   const setInterview = useSetInterview(() => {
     navigate(Path.Intern.replace(':internId', params?.internId || ''));
   });
@@ -74,6 +71,14 @@ const InterviewPage = () => {
     );
     form.reset({ ...defaultInterviewValues, ...answersValues });
   }, [form, intern]);
+
+  const mapAnswersToQuestions = (
+    answers: FieldValues,
+  ): { [key: number]: Json } => {
+    return interviewQuestions
+      ? interviewQuestions.map((q) => ({ ...q, ...answers[q.id] }))
+      : {};
+  };
 
   const handleFormSubmit = (internId: string) =>
     form.handleSubmit((data) => {
@@ -143,15 +148,17 @@ const InterviewPage = () => {
         setImage={handleSetImage}
         intern={intern}
       />
-      <MultistepForm
-        questions={interviewQuestions}
-        form={form}
-        steps={getFilteredInterviewSteps(
-          intern.internDisciplines.map((ind) => ind.discipline),
-        )}
-        onSubmit={() => setDialogOpen(true)}
-        InputHandler={InterviewQuestionHandler}
-      />
+      {interviewQuestions && (
+        <MultistepForm
+          questions={interviewQuestions}
+          form={form}
+          steps={getFilteredInterviewSteps(
+            intern.internDisciplines.map((ind) => ind.discipline),
+          )}
+          onSubmit={() => setDialogOpen(true)}
+          InputHandler={InterviewQuestionHandler}
+        />
+      )}
       <ConfirmDialog
         open={!!dialogOpen}
         handleClose={(confirmed) => {

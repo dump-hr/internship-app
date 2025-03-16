@@ -1,3 +1,5 @@
+import { InterviewQuestion } from './interview';
+
 export enum QuestionType {
   Field = 'Field',
   TextArea = 'TextArea',
@@ -10,18 +12,6 @@ export enum QuestionType {
   Number = 'Number',
 }
 
-export type Question = { id: string; title?: string, required?: boolean, registerValue? : any } & (
-  | { type: QuestionType.Field }
-  | { type: QuestionType.TextArea }
-  | { type: QuestionType.Checkbox; options?: string[] }
-  | { type: QuestionType.Slider; min: number; max: number; step: number }
-  | { type: QuestionType.Select; options: string[] }
-  | { type: QuestionType.Date }
-  | { type: QuestionType.DateTime}
-  | { type: QuestionType.Radio; options: string[] }
-  | { type: QuestionType.Number, min?: number, max?: number }
-);
-
-export type MultistepQuestion<T> = Question & {
+export type MultistepQuestion<T> = InterviewQuestion & {
   category: T;
 };

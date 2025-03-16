@@ -4,11 +4,11 @@ import {
   InterviewStatus,
   TestStatus,
 } from './intern';
-import { Question } from './question';
+import { InterviewQuestion } from './interview';
 
 export type ActionOption = {
   description: string;
-  questions: Question[];
+  questions: InterviewQuestion[];
 };
 
 export type ActionOptions<T extends PropertyKey> = { [key in T]: ActionOption };
