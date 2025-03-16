@@ -16,6 +16,7 @@ const InterviewQuestionContainer: React.FC<InterviewQuestionContainerProps> = ({
   setInterviewQuestions,
 }) => {
   const [interviewQuestion, setInterviewQuestion] = useState(question);
+  const [isQuestionEditorOpen, setIsQuestionEditorOpen] = useState(false);
 
   useEffect(() => {
     updateQuestions();
@@ -29,6 +30,14 @@ const InterviewQuestionContainer: React.FC<InterviewQuestionContainerProps> = ({
     );
   }
 
+  function toggleEnableQuestion() {
+    setInterviewQuestion((prev) => ({ ...prev, isEnabled: !prev.isEnabled }));
+  }
+
+  function toggleQuestionEditor() {
+    setIsQuestionEditorOpen((prev) => !prev);
+  }
+
   return (
     <>
       <div className="interview-question-container">
@@ -39,14 +48,18 @@ const InterviewQuestionContainer: React.FC<InterviewQuestionContainerProps> = ({
             ? interviewQuestion.discipline
             : interviewQuestion.category}
         </p>
-        <Button>{interviewQuestion.isEnabled ? 'Disable' : 'Enable'}</Button>
-        <Button>Edit</Button>
+        <Button onClick={toggleEnableQuestion}>
+          {interviewQuestion.isEnabled ? 'Disable' : 'Enable'}
+        </Button>
+        <Button onClick={toggleQuestionEditor}>Edit</Button>
         <Button>Stats</Button>
       </div>
-      <InterviewQuestionEditor
-        interviewQuestion={interviewQuestion}
-        setInterviewQuestion={setInterviewQuestion}
-      />
+      {isQuestionEditorOpen && (
+        <InterviewQuestionEditor
+          interviewQuestion={interviewQuestion}
+          setInterviewQuestion={setInterviewQuestion}
+        />
+      )}
     </>
   );
 };
