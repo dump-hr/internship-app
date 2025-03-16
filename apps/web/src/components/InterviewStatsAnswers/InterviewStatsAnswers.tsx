@@ -23,21 +23,42 @@ export const InterviewStatsAnswers = ({
       if (slot.intern) {
         const internName = `${slot.intern.firstName} ${slot.intern.lastName}`;
         const internId = `${slot.intern.id}`;
+
         if (Array.isArray(slot.answers)) {
           return slot.answers
-            .filter(
-              (answer) =>
-                typeof answer.value === 'string' && answer.value.trim() !== '',
-            )
-            .map((answer) => ({
-              id: slot.id,
-              internName,
-              internId,
-              question: answer.question,
-              answer: answer.value,
-              tick: answer.tick,
-              answerId: answer.id,
-            }));
+            .filter((answer) => {
+              if (
+                answer === null ||
+                answer.value === null ||
+                answer.value === undefined
+              ) {
+                return false;
+              }
+
+              if (
+                typeof answer.value === 'number' ||
+                Array.isArray(answer.value)
+              ) {
+                return true;
+              }
+
+              return !(
+                typeof answer.value === 'string' && answer.value.trim() === ''
+              );
+            })
+            .map((answer) => {
+              return {
+                id: slot.id,
+                internName,
+                internId,
+                question: answer.question,
+                answer: Array.isArray(answer.value)
+                  ? answer.value.join(', ')
+                  : answer.value,
+                tick: answer.tick,
+                answerId: answer.id,
+              };
+            });
         }
       }
 

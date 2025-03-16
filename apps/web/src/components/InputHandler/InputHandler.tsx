@@ -58,10 +58,10 @@ const getInputComponent = (
     case QuestionType.Checkbox:
       return (
         <>
-          {question.options &&
-            question.options.map((option) => (
+          {question.options && question.options.length > 0 ? (
+            question.options.map((option, index) => (
               <FormControlLabel
-                key={option}
+                key={`${option}-${index}`}
                 control={
                   <Checkbox
                     checked={field.value?.includes(option)}
@@ -76,7 +76,14 @@ const getInputComponent = (
                 }
                 label={option}
               />
-            ))}
+            ))
+          ) : (
+            <Checkbox
+              {...field}
+              checked={field.value}
+              onChange={(e) => field.onChange(e.target.checked)}
+            />
+          )}
         </>
       );
     case QuestionType.Radio:

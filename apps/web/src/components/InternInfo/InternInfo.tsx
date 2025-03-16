@@ -146,6 +146,9 @@ const InternInfo = ({ intern }: InternInfoProps) => {
                 item.id.includes('mark')
               )
                 return null;
+              const formattedValue = Array.isArray(item.value)
+                ? item.value.join(', ')
+                : item.value;
 
               return (
                 <div
@@ -155,7 +158,7 @@ const InternInfo = ({ intern }: InternInfoProps) => {
                   <h3 className={styles.itemTitle}>
                     {item.question} {!item.tick || '⚠️'}
                   </h3>
-                  <span>{item.value}</span>
+                  <span>{formattedValue}</span>
                 </div>
               );
             })}
