@@ -49,6 +49,8 @@ export const EditQuestionModal = ({
     const trimmedOption = newOption.trim();
 
     if (!trimmedOption) {
+      toast.error(`Opcija ne može biti prazna.`);
+
       return;
     }
 
