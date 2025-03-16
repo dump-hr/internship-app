@@ -18,11 +18,17 @@ import {
 } from '@mui/material';
 import { useState } from 'react';
 import { AddInterviewQuestionForm } from '../../components/AddInterviewQuestionForm';
+import { InterviewQuestion } from '@internship-app/types';
+import { EditInterviewQuestionForm } from '../../components/EditInterviewQuestionForm';
 
 export const InterviewBuilderPage = () => {
   const { data, isLoading, error } = useFetchInterviewQuestions();
 
   const [openAddForm, setOpenAddForm] = useState(false);
+
+  const [openEditForm, setOpenEditForm] = useState(false);
+  const [questionToEdit, setQuestionToEdit] =
+    useState<InterviewQuestion | null>(null);
 
   if (isLoading)
     return (
@@ -36,6 +42,11 @@ export const InterviewBuilderPage = () => {
         <p>Error loading questions.</p>
       </AdminPage>
     );
+
+  const handleEditClick = (q: InterviewQuestion) => {
+    setQuestionToEdit(q);
+    setOpenEditForm(true);
+  };
 
   return (
     <AdminPage headerText="Interview Builder">
@@ -69,6 +80,25 @@ export const InterviewBuilderPage = () => {
           </DialogContent>
         </Dialog>
 
+        <Dialog
+          open={openEditForm}
+          onClose={() => setOpenEditForm(false)}
+          fullWidth
+          maxWidth="sm"
+          disableEnforceFocus
+        >
+          <DialogTitle>Edit Interview Question</DialogTitle>
+          <DialogContent>
+            {questionToEdit && (
+              <EditInterviewQuestionForm
+                question={questionToEdit}
+                onSuccess={() => setOpenEditForm(false)}
+                onCancel={() => setOpenEditForm(false)}
+              />
+            )}
+          </DialogContent>
+        </Dialog>
+
         <TableContainer component={Paper}>
           <Table>
             <TableHead>
@@ -89,10 +119,7 @@ export const InterviewBuilderPage = () => {
                     <Button
                       variant="outlined"
                       sx={{ mr: 1 }}
-                      onClick={() => {
-                        console.log('Edit question', q.id);
-                        // Implement open Edit form
-                      }}
+                      onClick={() => handleEditClick(q)}
                     >
                       Edit
                     </Button>
