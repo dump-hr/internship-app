@@ -8,8 +8,8 @@ import {
   Post,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { QuestionCategory, QuestionType } from '@prisma/client';
-import { QuestionService } from './question.service';
+import { QuestionService } from './interview-question.service';
+import { CreateInterviewQuestionDto } from './dto/createInterviewQuestion.dto';
 
 @Controller('interview-questions')
 @ApiTags('interview-questions')
@@ -24,14 +24,7 @@ export class QuestionController {
   @Post()
   async createInterviewQuestion(
     @Body()
-    data: {
-      question: string;
-      type: QuestionType;
-      category: QuestionCategory;
-      minValue?: number | null;
-      maxValue?: number;
-      stepValue?: number;
-    },
+    data: CreateInterviewQuestionDto,
   ) {
     return await this.questionService.createInterviewQuestion(data);
   }

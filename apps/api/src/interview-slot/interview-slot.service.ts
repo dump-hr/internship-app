@@ -297,60 +297,48 @@ export class InterviewSlotService {
     question: string,
     answerId: string,
   ) {
-    try {
-      const slot = await this.prisma.interviewSlot.findUnique({
-        where: { id: slotId },
-        select: { answers: true },
-      });
+    const slot = await this.prisma.interviewSlot.findUnique({
+      where: { id: slotId },
+      select: { answers: true },
+    });
 
-      if (!slot || !Array.isArray(slot.answers)) {
-        throw new Error('Slot not found or answers are not in expected format');
-      }
-
-      const updatedAnswers = slot.answers.map((answer: Answer) =>
-        answer.id === answerId ? { ...answer, question } : answer,
+    if (!slot || !Array.isArray(slot.answers))
+      throw new BadRequestException(
+        'Slot not found or answers are not in expected format',
       );
 
-      await this.prisma.interviewSlot.update({
-        where: { id: slotId },
-        data: { answers: updatedAnswers },
-      });
+    const updatedAnswers = slot.answers.map((answer: Answer) =>
+      answer.id === answerId ? { ...answer, question } : answer,
+    );
 
-      return { success: true };
-    } catch (error) {
-      console.error(`Error updating question in answer: ${error.message}`);
-      throw new InternalServerErrorException(
-        `Error updating question: ${error.message}`,
-      );
-    }
+    await this.prisma.interviewSlot.update({
+      where: { id: slotId },
+      data: { answers: updatedAnswers },
+    });
+
+    return { success: true };
   }
 
   async updateFlagInAnswers(slotId: string, tick: boolean, answerId: string) {
-    try {
-      const slot = await this.prisma.interviewSlot.findUnique({
-        where: { id: slotId },
-        select: { answers: true },
-      });
+    const slot = await this.prisma.interviewSlot.findUnique({
+      where: { id: slotId },
+      select: { answers: true },
+    });
 
-      if (!slot || !Array.isArray(slot.answers)) {
-        throw new Error('Slot not found or answers are not in expected format');
-      }
-
-      const updatedAnswers = slot.answers.map((answer: Answer) =>
-        answer.id === answerId ? { ...answer, tick } : answer,
+    if (!slot || !Array.isArray(slot.answers))
+      throw new BadRequestException(
+        'Slot not found or answers are not in expected format',
       );
 
-      await this.prisma.interviewSlot.update({
-        where: { id: slotId },
-        data: { answers: updatedAnswers },
-      });
+    const updatedAnswers = slot.answers.map((answer: Answer) =>
+      answer.id === answerId ? { ...answer, tick } : answer,
+    );
 
-      return { success: true };
-    } catch (error) {
-      console.error(`Error updating question in answer: ${error.message}`);
-      throw new InternalServerErrorException(
-        `Error updating question: ${error.message}`,
-      );
-    }
+    await this.prisma.interviewSlot.update({
+      where: { id: slotId },
+      data: { answers: updatedAnswers },
+    });
+
+    return { success: true };
   }
 }

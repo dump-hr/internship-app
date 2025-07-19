@@ -273,17 +273,13 @@ export class TestSlotService {
 
     const slot = internDiscipline.testSlot;
 
-    if (!slot) {
-      throw new NotFoundException('Slot not found');
-    }
+    if (!slot) throw new NotFoundException('Slot not found');
 
-    if (password !== slot.password) {
+    if (password !== slot.password)
       throw new BadRequestException('Wrong password');
-    }
 
-    if (new Date() < slot.start) {
+    if (new Date() < slot.start)
       throw new BadRequestException('Test not started yet');
-    }
 
     return slot;
   }
@@ -307,15 +303,13 @@ export class TestSlotService {
       },
     });
 
-    if (!internDiscipline) {
+    if (!internDiscipline)
       throw new BadRequestException(
         'Test does not exist or intern does not have permission to submit',
       );
-    }
 
-    if (internDiscipline.testSlot.password !== test.password) {
+    if (internDiscipline.testSlot.password !== test.password)
       throw new BadRequestException('Wrong password!');
-    }
 
     await this.prisma.internDiscipline.update({
       where: {
@@ -350,9 +344,8 @@ export class TestSlotService {
       },
     });
 
-    if (!internDiscipline) {
+    if (!internDiscipline)
       throw new BadRequestException('Test does not exist or is not done');
-    }
 
     return await this.prisma.internQuestionAnswer.findMany({
       where: {

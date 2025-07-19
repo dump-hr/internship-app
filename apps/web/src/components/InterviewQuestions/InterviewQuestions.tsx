@@ -100,11 +100,6 @@ export const InterviewQuestions = () => {
     }
   };
 
-  // const handleStatsNavigation = (question: string) => {
-  //   console.log(question);
-  //   window.location.href = Path.InterviewStats.replace(':question', question);
-  // };
-
   const SelectEdit = ({ id, value, field, options, api }: SelectEditProps) => {
     return (
       <Select
@@ -181,13 +176,6 @@ export const InterviewQuestions = () => {
                 Edit
               </Button>
             )}
-            {/*<Button*/}
-            {/*  variant="contained"*/}
-            {/*  size="small"*/}
-            {/*  onClick={() => console.log(params.id)}*/}
-            {/*>*/}
-            {/*  {isDisabled ? 'Enable' : 'Disable'}*/}
-            {/*</Button>*/}
           </Box>
         );
       },

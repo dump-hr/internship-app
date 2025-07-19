@@ -13,7 +13,7 @@ import { InterviewerModule } from './interviewer/interviewer.module';
 import { LoggerModule } from './logger/logger.module';
 import { PrismaService } from './prisma.service';
 import { TestSlotModule } from './test-slot/test-slot.module';
-import { QuestionModule } from './interview-questions/question.module';
+import { QuestionModule } from './interview-question/interview-question.module';
 
 @Module({
   imports: [

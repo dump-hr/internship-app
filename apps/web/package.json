@@ -39,7 +39,6 @@
     "react-hook-form": "^7.45.4",
     "react-hot-toast": "^2.4.1",
     "react-query": "^3.39.3",
-    "react-router-dom": "^7.3.0",
     "react-webcam": "^7.1.1",
     "swagger-ui-express": "^5.0.0",
     "wouter": "^2.11.0",

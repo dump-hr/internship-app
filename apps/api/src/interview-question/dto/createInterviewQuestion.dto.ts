@@ -9,7 +9,7 @@ import {
   Validate,
 } from 'class-validator';
 
-import { IsMinLessThanMax } from '../../utility/sliderValidator';
+import { IsMinLessThanMax } from '../../utility/isMinLessThanMax.decorator';
 
 export class CreateInterviewQuestionDto {
   @IsString()

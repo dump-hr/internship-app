@@ -61,7 +61,10 @@ export const App = () => {
             <Route path={Path.Interviewers} component={InterviewersPage} />
             <Route path={Path.AdminLogs} component={AdminLogsPage} />
             <Route path={Path.Counter} component={CounterPage} />
-            <Route path={Path.Builder} component={InterviewBuilderPage} />
+            <Route
+              path={Path.InterviewBuilder}
+              component={InterviewBuilderPage}
+            />
             <Route path={Path.InterviewStats} component={InterviewStatsPage} />
             <Route path={Path.CatchAll} component={NotFoundPage} />
           </Switch>

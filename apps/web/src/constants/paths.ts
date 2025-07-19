@@ -18,7 +18,7 @@ export enum Path {
   TestReview = '/admin/test-review/:testSlotId/:group/:groupId',
   AdminLogs = '/admin/admin-logs',
   Counter = '/admin/counter',
-  Builder = '/admin/interview-builder',
+  InterviewBuilder = '/admin/interview-builder',
   InterviewStats = '/admin/interview-stats/:question',
 
   CatchAll = '/:path*',

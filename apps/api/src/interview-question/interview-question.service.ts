@@ -11,7 +11,9 @@ export class QuestionService {
     try {
       return this.prisma.interviewQuestion.findMany();
     } catch (error) {
-      throw new Error(`Error in getAllInterviewQuestions: ${error.message}`);
+      throw new InternalServerErrorException(
+        `Error in getAllInterviewQuestions: ${error.message}`,
+      );
     }
   }
 
