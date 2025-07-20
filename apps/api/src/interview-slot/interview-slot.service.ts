@@ -46,7 +46,7 @@ export class InterviewSlotService {
       );
     }
 
-    return await this.prisma.interviewSlot.delete({
+    return this.prisma.interviewSlot.delete({
       where: { id: interviewToDelete.id },
     });
   }
@@ -279,7 +279,7 @@ export class InterviewSlotService {
     //       MessageStream: 'outbound',
     //     });
 
-    return await this.prisma.intern.update({
+    return this.prisma.intern.update({
       where: { id: internId, interviewStatus: InterviewStatus.PickTerm },
       data: {
         interviewStatus: InterviewStatus.Pending,

@@ -85,13 +85,11 @@ export class InterviewSlotController {
     @Body() body: { question: string; answerId: string },
   ) {
     try {
-      const updated = await this.interviewSlotService.updateQuestionInAnswers(
+      return await this.interviewSlotService.updateQuestionInAnswers(
         slotId,
         body.question,
         body.answerId,
       );
-
-      return updated;
     } catch (error) {
       console.error('Failed to update question in answers');
       throw new InternalServerErrorException(

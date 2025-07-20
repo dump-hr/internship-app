@@ -26,11 +26,14 @@ export const InterviewQuestionForm = () => {
 
   const { mutate, error } = useCreateInterviewQuestion();
 
+  const multipleOptionQuestions = ['Select', 'Radio', 'Checkbox'];
+
   const handleAddOption = () => {
     if (newOption.trim() === '') {
       toast.error("Option can't be empty");
       return;
     }
+
     setOptions([...options, newOption]);
     setNewOption('');
   };
@@ -61,6 +64,11 @@ export const InterviewQuestionForm = () => {
     try {
       if (type === 'Slider' && minValue >= maxValue) {
         toast.error('Maximum value is less or equal to the maximum value.');
+        return;
+      }
+
+      if (multipleOptionQuestions.includes(type) && !options.length) {
+        toast.error('At least one option is required');
         return;
       }
 
@@ -148,7 +156,7 @@ export const InterviewQuestionForm = () => {
             ))}
           </Select>
 
-          {(type === 'Select' || type === 'Radio' || type === 'Checkbox') && (
+          {multipleOptionQuestions.includes(type) && (
             <>
               <TextField
                 label="Options"

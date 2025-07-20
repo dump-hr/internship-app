@@ -76,14 +76,14 @@ export const InterviewQuestions = () => {
   const processRowUpdate = async (newRow: any) => {
     if (!slots) return;
 
-    slots.map((slot) => {
-      if (!slot || !answerId) return;
-      return mutateQuestionInAnswers({
-        id: slot.id,
-        question: newRow.question,
-        answerId: answerId,
-      });
-    });
+    // slots.map((slot) => {
+    //   if (!slot || !answerId) return;
+    //   return mutateQuestionInAnswers({
+    //     id: slot.id,
+    //     question: newRow.question,
+    //     answerId: answerId,
+    //   });
+    // });
 
     try {
       await mutateAsync({

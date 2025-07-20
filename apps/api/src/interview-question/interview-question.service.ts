@@ -38,17 +38,12 @@ export class QuestionService {
     }
   }
 
-  async updateInterviewQuestion(
-    id: string,
-    data: { question: string; disabled: boolean },
-  ) {
+  async updateInterviewQuestion(id: string, disabled: boolean) {
     try {
-      const updated = await this.prisma.interviewQuestion.update({
+      return await this.prisma.interviewQuestion.update({
         where: { id: id },
-        data: { question: data.question, disabled: data.disabled },
+        data: { disabled: disabled },
       });
-
-      return updated;
     } catch (error) {
       console.error(' Interview question update failed:', error.message);
       throw new InternalServerErrorException(

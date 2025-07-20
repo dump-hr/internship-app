@@ -1,4 +1,5 @@
 import { QuestionCategory, QuestionType } from '@prisma/client';
+import { Transform } from 'class-transformer';
 import {
   IsArray,
   IsEnum,
@@ -15,9 +16,11 @@ export class CreateInterviewQuestionDto {
   @IsString()
   question: string;
 
-  @IsEnum(QuestionType)
+  @Transform(({ value }) => value?.toString())
+  @IsEnum(QuestionCategory)
   category: QuestionCategory;
 
+  @Transform(({ value }) => value?.toString())
   @IsEnum(QuestionType)
   type: QuestionType;
 

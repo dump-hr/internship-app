@@ -1,10 +1,41 @@
-import { CreateInterviewQuestionDto } from 'api/dist/src/interview-questions/dto/createInterviewQuestion.dto.ts';
 import { useMutation, useQueryClient } from 'react-query';
 
 import { api } from './index.ts';
 
-const createInterviewQuestion = (data: CreateInterviewQuestionDto) =>
-  api.post<CreateInterviewQuestionDto, never>('/interview-questions', data);
+enum QuestionCategory {
+  General = 'General',
+  Personal = 'Personal',
+  Development = 'Development',
+  Marketing = 'Marketing',
+  Design = 'Design',
+  Multimedia = 'Multimedia',
+  Final = 'Final',
+}
+
+enum QuestionType {
+  Slider = 'Slider',
+  Field = 'Field',
+  Radio = 'Radio',
+  Select = 'Select',
+  Checkbox = 'Checkbox',
+  TextArea = 'TextArea',
+  Date = 'Date',
+  DateTime = 'DateTime',
+  Number = 'Number',
+}
+
+interface QuestionForm {
+  question: string;
+  category: QuestionCategory;
+  type: QuestionType;
+  minValue?: number | null;
+  maxValue?: number | null;
+  stepValue?: number | null;
+  options?: string[] | null;
+}
+
+const createInterviewQuestion = (data: QuestionForm) =>
+  api.post<QuestionForm, never>('/interview-questions', data);
 
 export const useCreateInterviewQuestion = () => {
   const queryClient = useQueryClient();

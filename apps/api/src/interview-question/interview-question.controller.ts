@@ -8,8 +8,9 @@ import {
   Post,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { QuestionService } from './interview-question.service';
+
 import { CreateInterviewQuestionDto } from './dto/createInterviewQuestion.dto';
+import { QuestionService } from './interview-question.service';
 
 @Controller('interview-questions')
 @ApiTags('interview-questions')
@@ -32,15 +33,13 @@ export class QuestionController {
   @Patch('/question/:id')
   async updateInterviewQuestion(
     @Param('id') id: string,
-    @Body() body: { question: string; disabled: boolean },
+    @Body() body: { disabled: boolean },
   ) {
     try {
-      const updated = await this.questionService.updateInterviewQuestion(
+      return await this.questionService.updateInterviewQuestion(
         id,
-        body,
+        body.disabled,
       );
-
-      return updated;
     } catch (error) {
       console.error('Failed to update DB:', error.message);
       throw new InternalServerErrorException(
