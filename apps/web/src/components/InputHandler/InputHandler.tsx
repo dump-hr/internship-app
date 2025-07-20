@@ -30,10 +30,12 @@ const getInputComponent = (
   switch (question.type) {
     case QuestionType.Field:
       return <TextField {...field} fullWidth />;
+
     case QuestionType.TextArea:
       return (
         <TextareaAutosize style={{ width: '100%' }} minRows={3} {...field} />
       );
+
     case QuestionType.Select:
       return (
         <Select {...field} fullWidth>
@@ -44,6 +46,7 @@ const getInputComponent = (
           ))}
         </Select>
       );
+
     case QuestionType.Slider:
       return (
         <Slider
@@ -55,6 +58,7 @@ const getInputComponent = (
           max={question.maxValue}
         />
       );
+
     case QuestionType.Checkbox:
       return (
         <>
@@ -86,6 +90,7 @@ const getInputComponent = (
           )}
         </>
       );
+
     case QuestionType.Radio:
       return (
         <>
@@ -105,10 +110,13 @@ const getInputComponent = (
           ))}
         </>
       );
+
     case QuestionType.Date:
       return <TextField {...field} type="date" />;
+
     case QuestionType.DateTime:
       return <TextField {...field} type="datetime-local" />;
+
     case QuestionType.Number:
       return (
         <TextField
@@ -120,6 +128,7 @@ const getInputComponent = (
           onChange={(e) => field.onChange(+e.target.value)}
         />
       );
+
     default:
       return <></>;
   }

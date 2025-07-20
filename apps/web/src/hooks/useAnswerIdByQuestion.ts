@@ -30,11 +30,7 @@ export const useAnswerIdForQuestion = (
       (item) => item.question.toLowerCase() === question.toLowerCase(),
     );
 
-    if (foundAnswer) {
-      setAnswerId(foundAnswer.id);
-    } else {
-      setAnswerId(null);
-    }
+    foundAnswer ? setAnswerId(foundAnswer.id) : setAnswerId(null);
   }, [question, slots]);
 
   return answerId;
