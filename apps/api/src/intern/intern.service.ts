@@ -17,7 +17,7 @@ import {
   InterviewStatus,
   TestStatus,
 } from '@prisma/client';
-// import * as postmark from 'postmark';
+import * as postmark from 'postmark';
 import { PrismaService } from 'src/prisma.service';
 
 import * as disposableEmailBlocklist from './disposable-email-blocklist.json';
@@ -35,7 +35,7 @@ export class InternService {
     region: 'eu-central-1',
   });
 
-  // private postmark = new postmark.ServerClient(process.env.POSTMARK_API_TOKEN);
+  private postmark = new postmark.ServerClient(process.env.POSTMARK_API_TOKEN);
 
   async get(id: string) {
     return await this.prisma.intern.findUnique({
@@ -238,13 +238,13 @@ export class InternService {
     if (internToCreate.disciplines.includes(Discipline.Development))
       fullGeneralText += `\n\n${devFormAdditionalText}`;
 
-    // this.postmark.sendEmail({
-    //   From: 'info@dump.hr',
-    //   To: internToCreate.email,
-    //   Subject: 'Prijava na DUMP Internship',
-    //   TextBody: `${fullGeneralText}\n\n${generalTextEnding}`,
-    //   MessageStream: 'outbound',
-    // });
+    this.postmark.sendEmail({
+      From: 'info@dump.hr',
+      To: internToCreate.email,
+      Subject: 'Prijava na DUMP Internship',
+      TextBody: `${fullGeneralText}\n\n${generalTextEnding}`,
+      MessageStream: 'outbound',
+    });
 
     return newIntern;
   }
