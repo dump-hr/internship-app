@@ -1,5 +1,4 @@
 import { InterviewSlot } from '@internship-app/types';
-import { Question } from '@internship-app/types/';
 import { Box, Button, MenuItem, Select } from '@mui/material';
 import {
   DataGrid,
@@ -13,10 +12,8 @@ import { useState } from 'react';
 import toast from 'react-hot-toast';
 import { Link } from 'wouter';
 
-import { useAnswerIdForQuestion } from '../../hooks/useAnswerIdByQuestion.ts';
 import { useFetchAllInterviewSlots } from '../../api/useFetchAllInterviewSlots.tsx';
 import { useUpdateInterviewQuestion } from '../../api/useUpdateInterviewQuestion.ts';
-import { useUpdateQuestionInAnswers } from '../../api/useUpdateQuestionInAnswers.ts';
 import { InterviewQuestionForm } from '../InterviewQuestionForm/InterviewQuestionForm.tsx';
 import { useFetchAllInterviewQuestions } from '../../api/useFetchAllInterviewQuestions.tsx';
 
@@ -27,19 +24,12 @@ interface SelectEditProps extends GridRenderEditCellParams {
 export const InterviewQuestions = () => {
   const { data: allQuestions } = useFetchAllInterviewQuestions();
   const { mutateAsync } = useUpdateInterviewQuestion();
-  const { mutateAsync: mutateQuestionInAnswers } = useUpdateQuestionInAnswers();
   const slots = useFetchAllInterviewSlots().data as InterviewSlot[] | undefined;
   const [rowModesModel, setRowModesModel] = useState<GridRowModesModel>({});
   const [showForm, setShowForm] = useState(false);
   const handleAddQuestionClick = () => {
     setShowForm((prev) => !prev);
   };
-  const [updatedRow, setUpdatedRow] = useState<Question>();
-
-  const answerId = useAnswerIdForQuestion(
-    updatedRow?.question ?? '',
-    slots ?? [],
-  );
 
   const handleEditClick = (id: string) => {
     setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.Edit } });
@@ -55,12 +45,11 @@ export const InterviewQuestions = () => {
       toast.error(`Question cant be empty`);
       return;
     }
-    setUpdatedRow(updatedRow);
     try {
       await mutateAsync({
         id: updatedRow.id,
         question: updatedRow.question,
-        disabled: updatedRow.disabled,
+        disabled: updatedRow.disabled ?? false,
       });
 
       setRowModesModel((prev) => ({

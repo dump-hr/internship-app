@@ -14,7 +14,7 @@ export const options: ActionOptions<BoardActionType> = {
     questions: [
       {
         id: 'interviewStatus',
-        title: 'Status intervjua',
+        question: 'Status intervjua',
         type: QuestionType.Select,
         options: Object.values(InterviewStatus),
         registerValue: InterviewStatus.PickTerm,
@@ -27,14 +27,14 @@ export const options: ActionOptions<BoardActionType> = {
     questions: [
       {
         id: 'discipline',
-        title: 'Područje',
+        question: 'Područje',
         type: QuestionType.Select,
         options: Object.values(Discipline),
         registerValue: Discipline.Development,
       },
       {
         id: 'testStatus',
-        title: 'Status testa',
+        question: 'Status testa',
         type: QuestionType.Select,
         options: ['', ...Object.values(TestStatus)],
         registerValue: '',
@@ -47,21 +47,21 @@ export const options: ActionOptions<BoardActionType> = {
     questions: [
       {
         id: 'discipline',
-        title: 'Područje',
+        question: 'Područje',
         type: QuestionType.Select,
         options: Object.values(Discipline),
         registerValue: Discipline.Development,
       },
       {
         id: 'status',
-        title: 'Status područja',
+        question: 'Status područja',
         type: QuestionType.Select,
         options: ['', ...Object.values(DisciplineStatus)],
         registerValue: '',
       },
       {
         id: 'testStatus',
-        title: 'Status testa',
+        question: 'Status testa',
         type: QuestionType.Select,
         options: ['', ...Object.values(TestStatus)],
         registerValue: '',
@@ -84,7 +84,7 @@ export const options: ActionOptions<BoardActionType> = {
     questions: [
       {
         id: 'discipline',
-        title: 'Područje',
+        question: 'Područje',
         type: QuestionType.Select,
         options: [Discipline.Development, Discipline.Design],
         registerValue: Discipline.Development,
@@ -96,7 +96,7 @@ export const options: ActionOptions<BoardActionType> = {
     questions: [
       {
         id: 'discipline',
-        title: 'Područje',
+        question: 'Područje',
         type: QuestionType.Select,
         options: [Discipline.Development],
         registerValue: Discipline.Development,
