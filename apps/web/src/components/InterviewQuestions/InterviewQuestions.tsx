@@ -65,15 +65,6 @@ export const InterviewQuestions = () => {
   const processRowUpdate = async (newRow: any) => {
     if (!slots) return;
 
-    // slots.map((slot) => {
-    //   if (!slot || !answerId) return;
-    //   return mutateQuestionInAnswers({
-    //     id: slot.id,
-    //     question: newRow.question,
-    //     answerId: answerId,
-    //   });
-    // });
-
     try {
       await mutateAsync({
         id: newRow.id,
@@ -145,7 +136,6 @@ export const InterviewQuestions = () => {
       flex: 1,
       renderCell: (params: GridCellParams) => {
         const isEditing = rowModesModel[params.id]?.mode === GridRowModes.Edit;
-        // const isDisabled = params.row.disabled;
         return (
           <Box sx={{ display: 'flex', gap: 1 }}>
             {isEditing ? (

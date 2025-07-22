@@ -24,14 +24,3 @@ export type Answer = {
   required: boolean;
   stepValue: number | null;
 };
-
-// export type InterviewSlot = {
-//   id: string;
-//   internId: string | null;
-//   start: Date;
-//   end: Date;
-//   answers: Answer[] | Record<string, Answer> | null;
-//   score: number | null;
-//   createdAt: Date;
-//   updatedAt: Date;
-// };
