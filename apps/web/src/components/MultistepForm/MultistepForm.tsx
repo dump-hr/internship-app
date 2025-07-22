@@ -2,7 +2,7 @@ import { Question } from '@internship-app/types';
 import { Box, Button, Step, StepLabel, Stepper } from '@mui/material';
 import { useState } from 'react';
 
-import { useFetchAllInterviewQuestions } from '../../api/usefetchAllInterviewQuestions.tsx';
+import { useFetchAllInterviewQuestions } from '../../api/useFetchAllInterviewQuestions.tsx';
 
 interface Step<T> {
   label: string;

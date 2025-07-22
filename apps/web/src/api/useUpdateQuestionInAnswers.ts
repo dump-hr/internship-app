@@ -12,18 +12,10 @@ const updateQuestionInAnswers = async ({
   question: string;
   answerId: string;
 }) => {
-  try {
-    const response = await api.patch(`/interview-slot/answers/${id}`, {
-      question,
-      answerId,
-    });
-
-    return response.data;
-  } catch (error) {
-    console.error('Error updating question in answers');
-    toast.error('Error updating question in answers');
-    throw error;
-  }
+  return api.patch(`/interview-slot/answers/${id}`, {
+    question,
+    answerId,
+  });
 };
 
 export const useUpdateQuestionInAnswers = () => {

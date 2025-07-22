@@ -84,18 +84,11 @@ export class InterviewSlotController {
     @Param('slotId') slotId: string,
     @Body() body: { question: string; answerId: string },
   ) {
-    try {
-      return await this.interviewSlotService.updateQuestionInAnswers(
-        slotId,
-        body.question,
-        body.answerId,
-      );
-    } catch (error) {
-      console.error('Failed to update question in answers');
-      throw new InternalServerErrorException(
-        `Failed to update question in answers: ${error.message}`,
-      );
-    }
+    return await this.interviewSlotService.updateQuestionInAnswers(
+      slotId,
+      body.question,
+      body.answerId,
+    );
   }
 
   @Patch('/tick/:slotId')
@@ -103,19 +96,10 @@ export class InterviewSlotController {
     @Param('slotId') slotId: string,
     @Body() body: { tick: boolean; answerId: string },
   ) {
-    try {
-      const updated = await this.interviewSlotService.updateFlagInAnswers(
-        slotId,
-        body.tick,
-        body.answerId,
-      );
-
-      return updated;
-    } catch (error) {
-      console.error('Failed to update question in answers');
-      throw new InternalServerErrorException(
-        `Failed to update question in answers: ${error.message}`,
-      );
-    }
+    return await this.interviewSlotService.updateFlagInAnswers(
+      slotId,
+      body.tick,
+      body.answerId,
+    );
   }
 }

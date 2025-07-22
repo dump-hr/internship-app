@@ -8,7 +8,7 @@ import { useQueryClient } from 'react-query';
 import { Link, useRoute } from 'wouter';
 import { navigate } from 'wouter/use-location';
 
-import { useFetchAllInterviewQuestions } from '../../api/usefetchAllInterviewQuestions.tsx';
+import { useFetchAllInterviewQuestions } from '../../api/useFetchAllInterviewQuestions.tsx';
 import { useFetchIntern } from '../../api/useFetchIntern';
 import { useSetImage } from '../../api/useSetImage';
 import { useSetInterview } from '../../api/useSetInterview';

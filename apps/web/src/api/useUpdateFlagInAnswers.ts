@@ -12,16 +12,10 @@ const updateFlagInAnswers = async ({
   tick: boolean;
   answerId: string;
 }) => {
-  try {
-    const response = await api.patch(`interview-slot/tick/${slotId}`, {
-      tick,
-      answerId,
-    });
-    return response.data;
-  } catch (error) {
-    console.error('Error updating flag');
-    throw error;
-  }
+  return api.patch(`interview-slot/tick/${slotId}`, {
+    tick,
+    answerId,
+  });
 };
 
 export const useUpdateFlagInAnswers = () => {

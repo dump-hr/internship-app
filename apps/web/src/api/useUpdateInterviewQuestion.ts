@@ -12,20 +12,10 @@ const updateInterviewQuestion = async ({
   question: string;
   disabled: boolean;
 }) => {
-  try {
-    const response = await api.patch(`/interview-questions/question/${id}`, {
-      question,
-      disabled,
-    });
-
-    return response.data;
-  } catch (error: any) {
-    console.error(
-      'Error Updateing interview question:',
-      error.response?.data || error.message,
-    );
-    throw error;
-  }
+  return api.patch(`/interview-questions/question/${id}`, {
+    question,
+    disabled,
+  });
 };
 
 export const useUpdateInterviewQuestion = () => {

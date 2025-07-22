@@ -28,20 +28,20 @@ export class CreateInterviewQuestionDto {
   @IsOptional()
   @IsNumber()
   @IsPositive()
-  minValue?: number | null;
+  minValue?: number;
 
   @IsOptional()
   @IsNumber()
   @IsPositive()
-  maxValue?: number | null;
+  maxValue?: number;
 
   @IsOptional()
   @IsNumber()
   @IsPositive()
-  stepValue?: number | null;
+  stepValue?: number;
 
   @IsOptional()
   @IsArray()
   @IsString({ each: true })
-  options?: string[] | null;
+  options?: string[];
 }

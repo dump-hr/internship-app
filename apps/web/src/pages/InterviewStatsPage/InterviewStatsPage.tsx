@@ -2,7 +2,7 @@ import { useRoute } from 'wouter';
 
 import { InterviewStatsAnswers } from '../../components/InterviewStatsAnswers';
 import { Path } from '../../constants/paths.ts';
-import { useFetchAllInterviewQuestions } from '../../api/usefetchAllInterviewQuestions.tsx';
+import { useFetchAllInterviewQuestions } from '../../api/useFetchAllInterviewQuestions.tsx';
 import { Question } from '@internship-app/types/';
 import classes from './index.module.css';
 import LogoHeader from '../../components/LogoHeader';

@@ -35,17 +35,9 @@ export class QuestionController {
     @Param('id') id: string,
     @Body() body: { disabled: boolean },
   ) {
-    try {
-      return await this.questionService.updateInterviewQuestion(
-        id,
-        body.disabled,
-      );
-    } catch (error) {
-      console.error('Failed to update DB:', error.message);
-      throw new InternalServerErrorException(
-        'Failed to update interview question',
-        error.message,
-      );
-    }
+    return await this.questionService.updateInterviewQuestion(
+      id,
+      body.disabled,
+    );
   }
 }

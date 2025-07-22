@@ -8,9 +8,5 @@ const fetchAllInterviewQuestions = async () => {
 };
 
 export const useFetchAllInterviewQuestions = () => {
-  return useQuery(['interview-questions'], fetchAllInterviewQuestions, {
-    staleTime: 1000 * 60 * 5,
-    cacheTime: 1000 * 60 * 10,
-    refetchOnWindowFocus: false,
-  });
+  return useQuery(['interview-questions'], fetchAllInterviewQuestions);
 };
