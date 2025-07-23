@@ -141,11 +141,16 @@ const InternInfo = ({ intern }: InternInfoProps) => {
 
               if (
                 !intern?.internDisciplines?.some(
-                  (discipline) => discipline.discipline === 'Marketing',
+                  (discipline) =>
+                    discipline.discipline.toLowerCase() === 'marketing',
                 ) &&
-                item.id.includes('mark')
+                item.category === 'Marketing'
               )
                 return null;
+
+              const formattedValue = Array.isArray(item.value)
+                ? item.value.join(', ')
+                : item.value;
 
               return (
                 <div
@@ -153,9 +158,9 @@ const InternInfo = ({ intern }: InternInfoProps) => {
                   key={item.id}
                 >
                   <h3 className={styles.itemTitle}>
-                    {item.title} {!item.tick || '⚠️'}
+                    {item.question} {!item.tick || '⚠️'}
                   </h3>
-                  <span>{item.value}</span>
+                  <span>{formattedValue}</span>
                 </div>
               );
             })}

@@ -197,18 +197,18 @@ export class TestSlotService {
       To: intern.email,
       Subject: 'Uspješno biranje termina za DUMP Internship inicijalni ispit',
       TextBody: `Pozdrav ${intern.firstName},
-biranje termina inicijalnog dev testa je uspješno provedeno! Termin svog ispita možeš vidjeti na status stranici: https://internship.dump.hr/status/${intern.id}
-U slučaju da ne možeš doći na odabrani termin, javi nam se na vrijeme na info@dump.hr
-
-Također, podsjećamo da će se ispit održati u jednom od računalnih laboratorija FESB-a. Potrebno je doći 10 minuta prije odabranog termina u atrij fakulteta, nakon čega ćemo te uputiti u učionicu u kojoj tipkaš ispit. Ispit rješavaš na našem računalu u jednom od ponuđenih jezika (JavaScript, Python, C#, C++, C, Java, Go). Sastoji se od četiri zadatka za koje imaš 100 minuta.
-
-Primjer ispita možeš vidjeti na sljedećem linku: https://bit.ly/inicijalni-primjer
-
-Tvoj rezultat testa poslat ćemo ti najkasnije tri dana nakon odabranog termina. U slučaju položenog ispita, dobit ćeš link za biranje termina intervjua.
-
-Sretno i vidimo se!
-
-DUMP Udruga mladih programera`,
+    biranje termina inicijalnog dev testa je uspješno provedeno! Termin svog ispita možeš vidjeti na status stranici: https://internship.dump.hr/status/${intern.id}
+    U slučaju da ne možeš doći na odabrani termin, javi nam se na vrijeme na info@dump.hr
+    
+    Također, podsjećamo da će se ispit održati u jednom od računalnih laboratorija FESB-a. Potrebno je doći 10 minuta prije odabranog termina u atrij fakulteta, nakon čega ćemo te uputiti u učionicu u kojoj tipkaš ispit. Ispit rješavaš na našem računalu u jednom od ponuđenih jezika (JavaScript, Python, C#, C++, C, Java, Go). Sastoji se od četiri zadatka za koje imaš 100 minuta.
+    
+    Primjer ispita možeš vidjeti na sljedećem linku: https://bit.ly/inicijalni-primjer
+    
+    Tvoj rezultat testa poslat ćemo ti najkasnije tri dana nakon odabranog termina. U slučaju položenog ispita, dobit ćeš link za biranje termina intervjua.
+    
+    Sretno i vidimo se!
+    
+    DUMP Udruga mladih programera`,
       MessageStream: 'outbound',
     });
 
@@ -273,17 +273,13 @@ DUMP Udruga mladih programera`,
 
     const slot = internDiscipline.testSlot;
 
-    if (!slot) {
-      throw new NotFoundException('Slot not found');
-    }
+    if (!slot) throw new NotFoundException('Slot not found');
 
-    if (password !== slot.password) {
+    if (password !== slot.password)
       throw new BadRequestException('Wrong password');
-    }
 
-    if (new Date() < slot.start) {
+    if (new Date() < slot.start)
       throw new BadRequestException('Test not started yet');
-    }
 
     return slot;
   }
@@ -307,15 +303,13 @@ DUMP Udruga mladih programera`,
       },
     });
 
-    if (!internDiscipline) {
+    if (!internDiscipline)
       throw new BadRequestException(
         'Test does not exist or intern does not have permission to submit',
       );
-    }
 
-    if (internDiscipline.testSlot.password !== test.password) {
+    if (internDiscipline.testSlot.password !== test.password)
       throw new BadRequestException('Wrong password!');
-    }
 
     await this.prisma.internDiscipline.update({
       where: {
@@ -350,9 +344,8 @@ DUMP Udruga mladih programera`,
       },
     });
 
-    if (!internDiscipline) {
+    if (!internDiscipline)
       throw new BadRequestException('Test does not exist or is not done');
-    }
 
     return await this.prisma.internQuestionAnswer.findMany({
       where: {

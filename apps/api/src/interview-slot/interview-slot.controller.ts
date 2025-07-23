@@ -4,6 +4,7 @@ import {
   Controller,
   Delete,
   Get,
+  InternalServerErrorException,
   Param,
   Patch,
   Post,
@@ -76,5 +77,29 @@ export class InterviewSlotController {
     @Body() { internId }: ScheduleInterviewRequest,
   ) {
     return await this.interviewSlotService.scheduleInterview(slotId, internId);
+  }
+
+  @Patch('/answers/:slotId')
+  async answerInterview(
+    @Param('slotId') slotId: string,
+    @Body() body: { question: string; answerId: string },
+  ) {
+    return await this.interviewSlotService.updateQuestionInAnswers(
+      slotId,
+      body.question,
+      body.answerId,
+    );
+  }
+
+  @Patch('/tick/:slotId')
+  async answerInterviewTick(
+    @Param('slotId') slotId: string,
+    @Body() body: { tick: boolean; answerId: string },
+  ) {
+    return await this.interviewSlotService.updateFlagInAnswers(
+      slotId,
+      body.tick,
+      body.answerId,
+    );
   }
 }

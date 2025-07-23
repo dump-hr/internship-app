@@ -14,8 +14,10 @@ import CounterPage from './pages/CounterPage';
 import DashboardPage from './pages/DashboardPage';
 import { HomePage } from './pages/HomePage';
 import InternInfoPage from './pages/InternInfoPage';
+import { InterviewBuilderPage } from './pages/InterviewBuilderPage/InterviewBuilderPage.tsx';
 import InterviewersPage from './pages/InterviewersPage';
 import InterviewPage from './pages/InterviewPage';
+import { InterviewStatsPage } from './pages/InterviewStatsPage';
 import LoginPage from './pages/LoginPage';
 import { NotFoundPage } from './pages/NotFoundPage';
 import ScheduleInterviewPage from './pages/ScheduleInterviewPage';
@@ -59,6 +61,11 @@ export const App = () => {
             <Route path={Path.Interviewers} component={InterviewersPage} />
             <Route path={Path.AdminLogs} component={AdminLogsPage} />
             <Route path={Path.Counter} component={CounterPage} />
+            <Route
+              path={Path.InterviewBuilder}
+              component={InterviewBuilderPage}
+            />
+            <Route path={Path.InterviewStats} component={InterviewStatsPage} />
             <Route path={Path.CatchAll} component={NotFoundPage} />
           </Switch>
           <Toaster />

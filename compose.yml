@@ -8,4 +8,4 @@ services:
       POSTGRES_USER: dumpovac
       POSTGRES_PASSWORD: dump123
     ports:
-      - 3001:5432
+      - '3001:5432'

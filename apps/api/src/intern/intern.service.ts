@@ -232,11 +232,11 @@ export class InternService {
 
     let fullGeneralText = generalTextBody;
 
-    if(internToCreate.disciplines.includes(Discipline.Marketing))
-      fullGeneralText+=`\n\n${marketingFormAdditionalText}`
+    if (internToCreate.disciplines.includes(Discipline.Marketing))
+      fullGeneralText += `\n\n${marketingFormAdditionalText}`;
 
-    if(internToCreate.disciplines.includes(Discipline.Development))
-      fullGeneralText+=`\n\n${devFormAdditionalText}`
+    if (internToCreate.disciplines.includes(Discipline.Development))
+      fullGeneralText += `\n\n${devFormAdditionalText}`;
 
     this.postmark.sendEmail({
       From: 'info@dump.hr',

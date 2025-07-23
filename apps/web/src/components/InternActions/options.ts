@@ -23,7 +23,7 @@ export const getInternOptions = (
       questions: [
         {
           id: 'discipline',
-          title: 'Područje',
+          question: 'Područje',
           type: QuestionType.Select,
           options: nonInternDisciplines,
           registerValue: nonInternDisciplines[0],
@@ -36,7 +36,7 @@ export const getInternOptions = (
       questions: [
         {
           id: 'discipline',
-          title: 'Područje',
+          question: 'Područje',
           type: QuestionType.Select,
           options: internDisciplines,
           registerValue: internDisciplines[0],

@@ -9,6 +9,7 @@ import * as postmark from 'postmark';
 import { PrismaService } from 'src/prisma.service';
 
 import { CreateInterviewSlotDto } from './dto/createInterviewSlot.dto';
+import { Answer } from '@internship-app/types';
 
 @Injectable()
 export class InterviewSlotService {
@@ -45,7 +46,7 @@ export class InterviewSlotService {
       );
     }
 
-    return await this.prisma.interviewSlot.delete({
+    return this.prisma.interviewSlot.delete({
       where: { id: interviewToDelete.id },
     });
   }
@@ -170,16 +171,15 @@ export class InterviewSlotService {
       { disciplines: Discipline[]; needed: number }[]
     >(
       Prisma.sql`
-        select disciplines, count(*)::integer as needed from 
-        (
-          select DISTINCT array_agg("InternDiscipline".discipline ORDER BY "priority" ASC) as "disciplines", "Intern".id 
-          from "Intern" 
-		      left join "InternDiscipline" on "InternDiscipline"."internId" = "Intern".id 
-          where "Intern"."interviewStatus" = 'PickTerm'
-		      group by "Intern".id
-        ) as disciplineCombinations
-        group by disciplines
-        order by needed desc
+          select disciplines, count(*) ::integer as needed
+          from (select DISTINCT array_agg("InternDiscipline".discipline ORDER BY "priority" ASC) as "disciplines",
+                                "Intern".id
+                from "Intern"
+                         left join "InternDiscipline" on "InternDiscipline"."internId" = "Intern".id
+                where "Intern"."interviewStatus" = 'PickTerm'
+                group by "Intern".id) as disciplineCombinations
+          group by disciplines
+          order by needed desc
       `,
     );
 
@@ -264,22 +264,22 @@ export class InterviewSlotService {
       To: intern.email,
       Subject: 'Uspješno biranje termina za DUMP Internship intervju',
       TextBody: `Pozdrav ${intern.firstName},
-
-biranje termina intervjua je uspješno provedeno! Termin svog intervjua možeš vidjeti na status stranici: https://internship.dump.hr/status/${intern.id}
-U slučaju da ipak ne možeš doći na odabrani termin, javi nam se na vrijeme na info@dump.hr
-
-Podsjećamo, tvoj intervju će se održati u odabranom terminu u našem uredu (prostorija A223) na FESB-u (Ruđera Boškovića 32).
-
-Naš ured ćeš pronaći tako da kad uđeš kroz glavna vrata FESB-a skreneš desno do kraja hodnika (put referade) dok ne dođeš do stepenica koje su s lijeve strane. Popneš se stepenicama na prvi kat i skreneš lijevo. Nastaviš hodnikom do kraja i s desne strane vidjet ćeš vrata našeg ureda (A223).
-
-Vidimo se!
-
-DUMP Udruga mladih programera
-dump.hr`,
+    
+    biranje termina intervjua je uspješno provedeno! Termin svog intervjua možeš vidjeti na status stranici: https://internship.dump.hr/status/${intern.id}
+    U slučaju da ipak ne možeš doći na odabrani termin, javi nam se na vrijeme na info@dump.hr
+    
+    Podsjećamo, tvoj intervju će se održati u odabranom terminu u našem uredu (prostorija A223) na FESB-u (Ruđera Boškovića 32).
+    
+    Naš ured ćeš pronaći tako da kad uđeš kroz glavna vrata FESB-a skreneš desno do kraja hodnika (put referade) dok ne dođeš do stepenica koje su s lijeve strane. Popneš se stepenicama na prvi kat i skreneš lijevo. Nastaviš hodnikom do kraja i s desne strane vidjet ćeš vrata našeg ureda (A223).
+    
+    Vidimo se!
+    
+    DUMP Udruga mladih programera
+    dump.hr`,
       MessageStream: 'outbound',
     });
 
-    return await this.prisma.intern.update({
+    return this.prisma.intern.update({
       where: { id: internId, interviewStatus: InterviewStatus.PickTerm },
       data: {
         interviewStatus: InterviewStatus.Pending,
@@ -290,5 +290,55 @@ dump.hr`,
         },
       },
     });
+  }
+
+  async updateQuestionInAnswers(
+    slotId: string,
+    question: string,
+    answerId: string,
+  ) {
+    const slot = await this.prisma.interviewSlot.findUnique({
+      where: { id: slotId },
+      select: { answers: true },
+    });
+
+    if (!slot || !Array.isArray(slot.answers))
+      throw new BadRequestException(
+        'Slot not found or answers are not in expected format',
+      );
+
+    const updatedAnswers = slot.answers.map((answer: Answer) =>
+      answer.id === answerId ? { ...answer, question } : answer,
+    );
+
+    await this.prisma.interviewSlot.update({
+      where: { id: slotId },
+      data: { answers: updatedAnswers },
+    });
+
+    return { success: true };
+  }
+
+  async updateFlagInAnswers(slotId: string, tick: boolean, answerId: string) {
+    const slot = await this.prisma.interviewSlot.findUnique({
+      where: { id: slotId },
+      select: { answers: true },
+    });
+
+    if (!slot || !Array.isArray(slot.answers))
+      throw new BadRequestException(
+        'Slot not found or answers are not in expected format',
+      );
+
+    const updatedAnswers = slot.answers.map((answer: Answer) =>
+      answer.id === answerId ? { ...answer, tick } : answer,
+    );
+
+    await this.prisma.interviewSlot.update({
+      where: { id: slotId },
+      data: { answers: updatedAnswers },
+    });
+
+    return { success: true };
   }
 }
