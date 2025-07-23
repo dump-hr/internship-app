@@ -1,4 +1,4 @@
-import { QuestionCategory } from 'web/src/constants/interviewConstants';
+import { QuestionCategory } from '../../../apps/web/src/constants/interviewConstants';
 
 export enum QuestionType {
   Field = 'Field',
