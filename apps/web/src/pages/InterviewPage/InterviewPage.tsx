@@ -80,7 +80,7 @@ const InterviewPage = () => {
       {},
     );
     form.reset({ ...defaultInterviewValues, ...answersValues });
-  }, [form, intern]);
+  }, [form, intern, defaultInterviewValues]);
 
   const handleFormSubmit = (internId: string) =>
     form.handleSubmit((data) => {

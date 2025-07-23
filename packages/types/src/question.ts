@@ -1,5 +1,3 @@
-import { QuestionCategory } from 'web/src/constants/interviewConstants';
-
 export enum QuestionType {
   Field = 'Field',
   TextArea = 'TextArea',
@@ -10,6 +8,16 @@ export enum QuestionType {
   DateTime = 'DateTime',
   Radio = 'Radio',
   Number = 'Number',
+}
+
+export enum QuestionCategory {
+  General = 'General',
+  Personal = 'Personal',
+  Development = 'Development',
+  Design = 'Design',
+  Marketing = 'Marketing',
+  Multimedia = 'Multimedia',
+  Final = 'Final',
 }
 
 export type Question = {
