@@ -5,6 +5,7 @@ import {
   GridCellParams,
   GridColDef,
   GridRenderEditCellParams,
+  GridRowModel,
   GridRowModes,
   GridRowModesModel,
 } from '@mui/x-data-grid';
@@ -12,13 +13,21 @@ import { useState } from 'react';
 import toast from 'react-hot-toast';
 import { Link } from 'wouter';
 
+import { useFetchAllInterviewQuestions } from '../../api/useFetchAllInterviewQuestions.tsx';
 import { useFetchAllInterviewSlots } from '../../api/useFetchAllInterviewSlots.tsx';
 import { useUpdateInterviewQuestion } from '../../api/useUpdateInterviewQuestion.ts';
 import { InterviewQuestionForm } from '../InterviewQuestionForm/InterviewQuestionForm.tsx';
-import { useFetchAllInterviewQuestions } from '../../api/useFetchAllInterviewQuestions.tsx';
 
 interface SelectEditProps extends GridRenderEditCellParams {
   options: string[];
+}
+
+interface InterviewQuestion extends GridRowModel {
+  id: string;
+  question: string;
+  disabled: boolean;
+  category?: string;
+  type?: string;
 }
 
 export const InterviewQuestions = () => {
@@ -62,8 +71,11 @@ export const InterviewQuestions = () => {
     }
   };
 
-  const processRowUpdate = async (newRow: any) => {
-    if (!slots) return;
+  const processRowUpdate = async (
+    newRow: InterviewQuestion,
+    oldRow: InterviewQuestion,
+  ) => {
+    if (!slots) return oldRow;
 
     try {
       await mutateAsync({
@@ -76,7 +88,7 @@ export const InterviewQuestions = () => {
     } catch (error) {
       toast.error('Failed to update question.');
       console.error(' Mutation failed:', error);
-      return newRow;
+      return oldRow;
     }
   };
 
@@ -195,7 +207,13 @@ export const InterviewQuestions = () => {
         {showForm && <InterviewQuestionForm />}
         <DataGrid
           columns={columns}
-          rows={allQuestions}
+          rows={allQuestions.map((q) => ({
+            id: q.id,
+            question: q.question || '',
+            disabled: q.disabled ?? false,
+            category: q.category?.toString(),
+            type: q.type?.toString(),
+          }))}
           editMode="row"
           rowModesModel={rowModesModel}
           onRowModesModelChange={setRowModesModel}

@@ -9,6 +9,7 @@
   "scripts": {
     "dev": "turbo run dev",
     "build": "turbo run build",
+    "lint": "turbo run lint",
     "start": "yarn workspace api run start",
     "prisma": "yarn workspace api run prisma"
   },

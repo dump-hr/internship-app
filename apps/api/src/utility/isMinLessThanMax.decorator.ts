@@ -16,7 +16,7 @@ export class IsMinLessThanMax implements ValidatorConstraintInterface {
     return true;
   }
 
-  defaultMessage(args: ValidationArguments) {
+  defaultMessage() {
     return `minValue must be less than maxValue`;
   }
 }

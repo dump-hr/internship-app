@@ -1,3 +1,4 @@
+import { Answer } from '@internship-app/types';
 import {
   BadRequestException,
   Injectable,
@@ -9,7 +10,6 @@ import * as postmark from 'postmark';
 import { PrismaService } from 'src/prisma.service';
 
 import { CreateInterviewSlotDto } from './dto/createInterviewSlot.dto';
-import { Answer } from '@internship-app/types';
 
 @Injectable()
 export class InterviewSlotService {

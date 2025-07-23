@@ -1,11 +1,11 @@
+import { Question } from '@internship-app/types/';
 import { useRoute } from 'wouter';
 
-import { InterviewStatsAnswers } from '../../components/InterviewStatsAnswers';
-import { Path } from '../../constants/paths.ts';
 import { useFetchAllInterviewQuestions } from '../../api/useFetchAllInterviewQuestions.tsx';
-import { Question } from '@internship-app/types/';
-import classes from './index.module.css';
+import { InterviewStatsAnswers } from '../../components/InterviewStatsAnswers';
 import LogoHeader from '../../components/LogoHeader';
+import { Path } from '../../constants/paths.ts';
+import classes from './index.module.css';
 
 export const InterviewStatsPage = () => {
   const [, params] = useRoute(Path.InterviewStats);
