@@ -28,11 +28,16 @@ FROM base AS runner
 WORKDIR /app
 EXPOSE 3003
 HEALTHCHECK CMD curl -f http://localhost:3003/run/healthz || exit 1
-RUN apk add --no-cache curl \
+
+RUN apk add --no-cache \
+      curl \
       build-base \
       python3 \
-      dotnet6-sdk \
-      go musl-dev
+      openjdk17 \
+      go \
+      musl-dev
+RUN apk add --no-cache --repository=http://dl-cdn.alpinelinux.org/alpine/edge/testing/ \
+      dotnet6-sdk
 
 # Don't run production as root
 RUN addgroup --system --gid 1001 nestjs
