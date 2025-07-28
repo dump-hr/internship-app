@@ -32,7 +32,6 @@ RUN apk add --no-cache curl \
       build-base \
       python3 \
       dotnet6-sdk \
-      openjdk17 \
       go musl-dev
 
 # Don't run production as root
