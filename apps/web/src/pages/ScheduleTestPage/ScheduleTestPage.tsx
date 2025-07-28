@@ -9,7 +9,7 @@ import { Path } from '../../constants/paths';
 
 type Params = { internId: string; discipline: Discipline };
 
-const ScheduleTestPage = () => {
+export const ScheduleTestPage = () => {
   const [, params] = useRoute<Params>(Path.ScheduleTest);
 
   const {
@@ -50,5 +50,3 @@ const ScheduleTestPage = () => {
     />
   );
 };
-
-export default ScheduleTestPage;

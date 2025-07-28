@@ -25,7 +25,7 @@ import LogoHeader from '../../components/LogoHeader';
 import c from './InterviewersPage.module.css';
 import { DialogsState } from './types';
 
-const InterviewersPage = () => {
+export const InterviewersPage = () => {
   const deleteInterviewer = useDeleteInterviewer();
   const postInterviewer = usePostInterviewer();
 
@@ -424,5 +424,3 @@ const InterviewersPage = () => {
     </>
   );
 };
-
-export default InterviewersPage;

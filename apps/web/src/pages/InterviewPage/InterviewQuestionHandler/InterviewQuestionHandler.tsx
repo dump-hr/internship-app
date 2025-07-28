@@ -9,7 +9,7 @@ type InterviewQuestionHandlerProps = {
   form: UseFormReturn<FieldValues>;
 };
 
-const InterviewQuestionHandler = ({
+export const InterviewQuestionHandler = ({
   question,
   form,
 }: InterviewQuestionHandlerProps) => {
@@ -33,5 +33,3 @@ const InterviewQuestionHandler = ({
     </Box>
   );
 };
-
-export default InterviewQuestionHandler;

@@ -6,7 +6,7 @@ import { useChooseTest } from '../../api/useChooseTest';
 import AdminPage from '../../components/AdminPage';
 import { Path } from '../../constants/paths';
 
-const TestChoosePage = () => {
+export const TestChoosePage = () => {
   const [password, setPassword] = useState('');
   const chooseTest = useChooseTest();
 
@@ -40,5 +40,3 @@ const TestChoosePage = () => {
     </AdminPage>
   );
 };
-
-export default TestChoosePage;

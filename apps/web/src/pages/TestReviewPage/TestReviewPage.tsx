@@ -11,7 +11,7 @@ import { CodeEditor } from '../../components/CodeEditor/CodeEditor';
 import { Path } from '../../constants/paths';
 import c from './TestReviewPage.module.css';
 
-const TestReviewPage = () => {
+export const TestReviewPage = () => {
   const [, params] = useRoute(Path.TestReview);
 
   const {
@@ -108,5 +108,3 @@ const TestReviewPage = () => {
     </AdminPage>
   );
 };
-
-export default TestReviewPage;

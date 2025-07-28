@@ -6,7 +6,7 @@ import { useScheduleInterview } from '../../api/useScheduleInterview';
 import SlotPicker, { SlotPickerLayout } from '../../components/SlotPicker';
 import { Path } from '../../constants/paths';
 
-const ScheduleInterviewPage = () => {
+export const ScheduleInterviewPage = () => {
   const [, params] = useRoute(Path.ScheduleInterview);
 
   const {
@@ -50,5 +50,3 @@ const ScheduleInterviewPage = () => {
     />
   );
 };
-
-export default ScheduleInterviewPage;

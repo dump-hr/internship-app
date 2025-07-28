@@ -22,7 +22,7 @@ import {
 } from '../../constants/interviewConstants';
 import { Path } from '../../constants/paths';
 import { getDefaultValues } from './data';
-import InterviewQuestionHandler from './InterviewQuestionHandler';
+import { InterviewQuestionHandler } from '@pages/index.ts';
 
 const mapAnswersToQuestions = (
   answers: FieldValues,
@@ -33,7 +33,7 @@ const mapAnswersToQuestions = (
   );
 };
 
-const InterviewPage = () => {
+export const InterviewPage = () => {
   const [, params] = useRoute(Path.Interview);
   const internId = params?.internId;
 

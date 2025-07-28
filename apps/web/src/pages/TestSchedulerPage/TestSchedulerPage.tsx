@@ -30,7 +30,7 @@ const localizer = dateFnsLocalizer({
   locales,
 });
 
-const TestSchedulerPage = () => {
+export const TestSchedulerPage = () => {
   const [slotsToAdd, setSlotsToAdd] = useState<TestSlotCard[]>([]);
   const [selectedEventStart, setSelectedEventStart] = useState<Date>();
 
@@ -116,5 +116,3 @@ const TestSchedulerPage = () => {
     </AdminPage>
   );
 };
-
-export default TestSchedulerPage;

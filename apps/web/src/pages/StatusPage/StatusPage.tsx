@@ -15,7 +15,7 @@ import { Path } from '../../constants/paths';
 import { DisciplineCard } from './DisciplineCard';
 import * as styled from './styled';
 
-const StatusPage = () => {
+export const StatusPage = () => {
   const [, params] = useRoute(Path.Status);
   const internId = params?.internId || '';
   const { data: intern, isFetching } = useFetchStatus(internId);
@@ -117,5 +117,3 @@ const StatusPage = () => {
     </PublicLayout>
   );
 };
-
-export default StatusPage;

@@ -7,7 +7,7 @@ import InternActions from '../../components/InternActions/InternActions';
 import InternInfo from '../../components/InternInfo';
 import { Path } from '../../constants/paths';
 
-const InternInfoPage = () => {
+export const InternInfoPage = () => {
   const [, params] = useRoute(Path.Intern);
   const internId = params?.internId;
   const { data: intern, isLoading, isError } = useFetchIntern(internId);
@@ -28,5 +28,3 @@ const InternInfoPage = () => {
     </AdminPage>
   );
 };
-
-export default InternInfoPage;

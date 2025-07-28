@@ -30,7 +30,7 @@ type Answer = {
   };
 };
 
-const TestPage = () => {
+export const TestPage = () => {
   const [, params] = useRoute(Path.Test);
   const [answers, setAnswers] = useState<Answer[]>([]);
   const [selectedQuestion, setSelectedQuestion] = useState(0);
@@ -245,5 +245,3 @@ const TestPage = () => {
     </>
   );
 };
-
-export default TestPage;

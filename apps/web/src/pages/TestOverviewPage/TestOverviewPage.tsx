@@ -11,7 +11,7 @@ import TestSlotInfo from '../../components/TestSlotInfo';
 import { Path } from '../../constants/paths';
 import { TestSlotEditForm } from './TestSlotEditForm';
 
-const TestOverviewPage = () => {
+export const TestOverviewPage = () => {
   const [, params] = useRoute(Path.TestOverview);
   const [isEditOpened, setIsEditOpened] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);

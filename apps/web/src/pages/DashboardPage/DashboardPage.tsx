@@ -20,7 +20,7 @@ import {
 } from '../../components/InternFilter/filter';
 import { shortDisciplineLabels } from '../../components/InternList/consts';
 import InternList from '../../components/InternList/InternList';
-import EmailPage from '../EmailPage';
+import { EmailPage } from '@pages/index';
 import c from './DashboardPage.module.css';
 
 const getInternStatus = (intern: Intern) => {
@@ -48,7 +48,7 @@ const initialState: { filterCriteria: FilterCriteria } = {
   },
 };
 
-const DashboardPage = () => {
+export const DashboardPage = () => {
   const { data: interns } = useFetchAllInterns();
 
   const [selection, setSelection] = useState<string[]>([]);
@@ -206,5 +206,3 @@ const DashboardPage = () => {
     </AdminPage>
   );
 };
-
-export default DashboardPage;

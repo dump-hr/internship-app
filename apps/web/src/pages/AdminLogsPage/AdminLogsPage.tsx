@@ -35,7 +35,7 @@ const logColumns: GridColDef[] = [
   { field: 'date', headerName: 'Datum', width: 200 },
 ];
 
-const AdminLogsPage = () => {
+export const AdminLogsPage = () => {
   const form = useForm();
   const formValues = form.watch();
   const [paginationModel, setPaginationModel] = useState({
@@ -73,5 +73,3 @@ const AdminLogsPage = () => {
     </AdminPage>
   );
 };
-
-export default AdminLogsPage;

@@ -1,6 +1,6 @@
 import { useFetchCount } from '../../api/useFetchCount';
 
-const CounterPage = () => {
+export const CounterPage = () => {
   const { data } = useFetchCount();
 
   return (
@@ -33,5 +33,3 @@ const CounterPage = () => {
     </div>
   );
 };
-
-export default CounterPage;
