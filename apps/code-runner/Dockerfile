@@ -17,7 +17,6 @@ WORKDIR /app
 COPY .gitignore .gitignore
 COPY --from=builder /app/out/json/ .
 COPY --from=builder /app/out/yarn.lock ./yarn.lock
-COPY --from=builder /app/out/full/apps/api/prisma ./apps/api/prisma
 RUN yarn install --immutable && yarn cache clean
 
 COPY --from=builder /app/out/full/ .
@@ -32,7 +31,6 @@ HEALTHCHECK CMD curl -f http://localhost:3003/run/healthz || exit 1
 
 RUN apk add --no-cache \
       curl \
-      openssl \
       build-base \
       python3 \
       openjdk17 \

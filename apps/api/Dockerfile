@@ -29,7 +29,7 @@ FROM base AS runner
 WORKDIR /app
 EXPOSE 3000
 HEALTHCHECK CMD curl -f http://localhost:3000/api/healthz || exit 1
-RUN apk add --no-cache curl
+RUN apk add --no-cache curl openssl
 
 # Don't run production as root
 RUN addgroup --system --gid 1001 nestjs
