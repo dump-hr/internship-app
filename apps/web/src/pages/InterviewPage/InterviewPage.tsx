@@ -12,10 +12,8 @@ import { useFetchAllInterviewQuestions } from '../../api/useFetchAllInterviewQue
 import { useFetchIntern } from '../../api/useFetchIntern';
 import { useSetImage } from '../../api/useSetImage';
 import { useSetInterview } from '../../api/useSetInterview';
-import AdminPage from '../../components/AdminPage';
-import { ConfirmDialog } from '../../components/ConfirmDialog';
-import IntervieweeInfo from '../../components/IntervieweeInfo';
-import MultistepForm from '../../components/MultistepForm';
+import { ConfirmDialog, AdminPage, IntervieweeInfo } from '@components/index';
+
 import {
   filterInterviewSteps as getFilteredInterviewSteps,
   QuestionCategory,
@@ -23,6 +21,7 @@ import {
 import { Path } from '../../constants/paths';
 import { getDefaultValues } from './data';
 import { InterviewQuestionHandler } from '@pages/index.ts';
+import MultistepForm from '@components/MultistepForm/MultistepForm.tsx';
 
 const mapAnswersToQuestions = (
   answers: FieldValues,
