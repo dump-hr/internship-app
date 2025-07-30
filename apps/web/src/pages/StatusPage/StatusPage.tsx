@@ -4,16 +4,16 @@ import moment from 'moment';
 import { Link, useRoute } from 'wouter';
 
 import { useFetchStatus } from '../../api/useFetchStatus';
-
-import * as styled from './styled';
 import { PublicLayout } from '@components/index';
 import {
-  interviewStatusLabel,
+  disciplineLabel,
   disciplineStatusLabel,
+  interviewStatusLabel,
   testStatusLabel,
-} from '@constants/internConstants';
-import { Path } from '@constants/paths';
+  Path,
+} from '@constants/index';
 import { DisciplineCard } from './DisciplineCard';
+import * as styled from './styled';
 
 export const StatusPage = () => {
   const [, params] = useRoute(Path.Status);
@@ -70,7 +70,7 @@ export const StatusPage = () => {
               {intern.internDisciplines.map((ind) => (
                 <styled.disciplineItem key={ind.discipline}>
                   <styled.disciplineLabel>
-                    {styled.disciplineLabel[ind.discipline]}
+                    {disciplineLabel[ind.discipline]}
                   </styled.disciplineLabel>
                   <styled.spacedBetween>
                     <styled.infoText>Status</styled.infoText>

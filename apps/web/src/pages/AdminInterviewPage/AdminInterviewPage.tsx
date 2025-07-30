@@ -11,8 +11,12 @@ import { useFetchInterviewSlots } from '../../api/useFetchInterviewSlots';
 import { useFetchSlotsAvailability } from '../../api/useFetchSlotsAvailability';
 
 import styles from './index.module.css';
-import { AdminPage, CalendarSidebar, SlotsList } from '@components/index';
-import { Calendar } from 'react-big-calendar';
+import {
+  AdminPage,
+  CalendarSidebar,
+  SlotsList,
+  Calendar,
+} from '@components/index';
 import { calendarHelper } from 'src/helpers';
 
 type MappedEvent = {

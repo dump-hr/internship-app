@@ -3,8 +3,7 @@ import { useRoute } from 'wouter';
 
 import { useFetchAvailableInterviewSlots } from '../../api/useFetchAvailableInterviewSlots';
 import { useScheduleInterview } from '../../api/useScheduleInterview';
-import { SlotPicker } from '@components/SlotPicker/SlotPicker';
-import SlotPickerLayout from '@components/SlotPicker/Layout';
+import { SlotPicker, Layout as SlotPickerLayout } from '@components/index';
 import { Path } from '../../constants/paths';
 
 export const ScheduleInterviewPage = () => {

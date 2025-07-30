@@ -3,9 +3,9 @@ import { useRoute } from 'wouter';
 
 import { useFetchAvailableTestSlots } from '../../api/useFetchAvailableTestSlots';
 import { useScheduleTest } from '../../api/useScheduleTest';
-import SlotPicker, { SlotPickerLayout } from '../../components/SlotPicker';
-import { disciplineLabel } from '../../constants/internConstants';
-import { Path } from '../../constants/paths';
+import { SlotPicker, Layout as SlotPickerLayout } from '@components/index';
+import { disciplineLabel } from '@constants/index';
+import { Path } from '@constants/index';
 
 type Params = { internId: string; discipline: Discipline };
 

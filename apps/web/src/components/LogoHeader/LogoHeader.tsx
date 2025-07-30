@@ -3,7 +3,7 @@ import toast from 'react-hot-toast';
 import { Link } from 'wouter';
 import { navigate } from 'wouter/use-location';
 
-import DUMPLogo from '@assets/dump-logo.png';
+import DUMPLogo from '../../assets/dump-logo.png';
 import { Path } from '@constants/index';
 import { LayoutSpacing } from '@components/index';
 import c from './LogoHeader.module.css';
