@@ -14,7 +14,7 @@ type SlotPickerProps = {
   handleSubmit: (slot: Slot) => void;
 };
 
-const SlotPicker: React.FC<SlotPickerProps> = ({
+export const SlotPicker: React.FC<SlotPickerProps> = ({
   title,
   slots,
   handleSubmit,
@@ -79,5 +79,3 @@ const SlotPicker: React.FC<SlotPickerProps> = ({
     </Layout>
   );
 };
-
-export default SlotPicker;

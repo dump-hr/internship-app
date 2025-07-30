@@ -92,7 +92,10 @@ type InternFilterProps = {
   disabled?: boolean;
 };
 
-const InternFilter = ({ submitHandler, disabled }: InternFilterProps) => {
+export const InternFilter = ({
+  submitHandler,
+  disabled,
+}: InternFilterProps) => {
   const form = useForm();
   const { unregister, handleSubmit } = form;
   const [criteria, setCriteria] = useState(initialCriteria);
@@ -146,5 +149,3 @@ const InternFilter = ({ submitHandler, disabled }: InternFilterProps) => {
     </div>
   );
 };
-
-export default InternFilter;

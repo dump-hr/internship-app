@@ -16,7 +16,7 @@ type DecisionHandlerProps = {
   intern: Intern;
 };
 
-const DecisionHandler: React.FC<DecisionHandlerProps> = ({ intern }) => {
+export const DecisionHandler: React.FC<DecisionHandlerProps> = ({ intern }) => {
   const form = useForm();
   const setInternDecision = useSetInternDecision();
 
@@ -61,5 +61,3 @@ const DecisionHandler: React.FC<DecisionHandlerProps> = ({ intern }) => {
     </>
   );
 };
-
-export default DecisionHandler;

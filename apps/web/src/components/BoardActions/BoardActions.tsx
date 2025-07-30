@@ -9,7 +9,7 @@ type BoardActionProps = {
   internIds: string[];
 };
 
-const BoardActions: React.FC<BoardActionProps> = ({ internIds }) => {
+export const BoardActions: React.FC<BoardActionProps> = ({ internIds }) => {
   const applyBoardAction = useApplyBoardAction();
 
   const actionHandler = (action: BoardAction) => {
@@ -21,5 +21,3 @@ const BoardActions: React.FC<BoardActionProps> = ({ internIds }) => {
 
   return <Actions handleSubmit={actionHandler} options={options} />;
 };
-
-export default BoardActions;

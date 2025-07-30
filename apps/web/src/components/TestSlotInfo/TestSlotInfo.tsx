@@ -10,7 +10,7 @@ type TestSlotInfoProps = {
   simple?: boolean;
 };
 
-const TestSlotInfo: React.FC<TestSlotInfoProps> = ({ slot, simple }) => {
+export const TestSlotInfo: React.FC<TestSlotInfoProps> = ({ slot, simple }) => {
   return (
     <Box display="flex" flexDirection="column">
       <Box>
@@ -30,5 +30,3 @@ const TestSlotInfo: React.FC<TestSlotInfoProps> = ({ slot, simple }) => {
     </Box>
   );
 };
-
-export default TestSlotInfo;

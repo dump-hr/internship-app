@@ -12,7 +12,7 @@ type Props = {
   text: string;
 };
 
-const LogoHeader: React.FC<Props> = ({ text }) => {
+export const LogoHeader: React.FC<Props> = ({ text }) => {
   const handleLogout = () => {
     toast.success('Logged out');
     localStorage.removeItem('access_token');
@@ -50,5 +50,3 @@ const LogoHeader: React.FC<Props> = ({ text }) => {
     </header>
   );
 };
-
-export default LogoHeader;

@@ -10,7 +10,7 @@ type Props = {
   data: InternForDashboard[] | undefined;
 };
 
-const CsvFile = ({ data }: Props) => {
+export const CsvFile = ({ data }: Props) => {
   const headers = [
     { label: 'Id', key: 'id' },
     { label: 'Ime', key: 'firstName' },
@@ -70,4 +70,3 @@ const CsvFile = ({ data }: Props) => {
     </Button>
   );
 };
-export default CsvFile;

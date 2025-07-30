@@ -13,7 +13,7 @@ type InternActionsProps = {
   intern: Intern;
 };
 
-const InternActions: React.FC<InternActionsProps> = ({ intern }) => {
+export const InternActions: React.FC<InternActionsProps> = ({ intern }) => {
   const options = getInternOptions(intern);
   const applyInternAction = useApplyInternAction();
 
@@ -29,5 +29,3 @@ const InternActions: React.FC<InternActionsProps> = ({ intern }) => {
     </>
   );
 };
-
-export default InternActions;

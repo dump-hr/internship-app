@@ -7,7 +7,7 @@ type Props = {
   children: React.ReactNode;
 } & React.HTMLAttributes<HTMLDivElement>;
 
-const PublicLayout: React.FC<Props> = ({ children, ...handlers }) => {
+export const PublicLayout: React.FC<Props> = ({ children, ...handlers }) => {
   return (
     <>
       <Global styles={styled.globalStyle} />
@@ -18,5 +18,3 @@ const PublicLayout: React.FC<Props> = ({ children, ...handlers }) => {
     </>
   );
 };
-
-export default PublicLayout;

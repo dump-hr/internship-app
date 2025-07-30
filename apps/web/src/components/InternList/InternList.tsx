@@ -66,7 +66,7 @@ const getInterviewChip = (intern: InternForDashboard) => {
   );
 };
 
-const InternList: React.FC<Props> = ({ data = [], setSelection }) => {
+export const InternList: React.FC<Props> = ({ data = [], setSelection }) => {
   const columns: GridColDef[] = [
     { field: 'id', headerName: 'ID', width: 0 },
     {
@@ -214,5 +214,3 @@ const InternList: React.FC<Props> = ({ data = [], setSelection }) => {
     </div>
   );
 };
-
-export default InternList;

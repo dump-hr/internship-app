@@ -11,7 +11,7 @@ type WebcameraProps = {
   setImage: (image: string) => void;
 };
 
-const Webcamera = ({ image, setImage }: WebcameraProps) => {
+export const Webcamera = ({ image, setImage }: WebcameraProps) => {
   const videoConstraints = {
     width: 650,
     height: 365,
@@ -61,5 +61,3 @@ const Webcamera = ({ image, setImage }: WebcameraProps) => {
     </div>
   );
 };
-
-export default Webcamera;

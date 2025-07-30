@@ -6,7 +6,7 @@ type Props = {
   children?: React.ReactNode;
 };
 
-const AdminPage: React.FC<Props> = ({ headerText, children }) => {
+export const AdminPage: React.FC<Props> = ({ headerText, children }) => {
   return (
     <>
       <LogoHeader text={headerText || ''} />
@@ -14,5 +14,3 @@ const AdminPage: React.FC<Props> = ({ headerText, children }) => {
     </>
   );
 };
-
-export default AdminPage;

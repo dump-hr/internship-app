@@ -12,7 +12,7 @@ const getDisciplinesChips = (disciplines: Discipline[]) => {
   ));
 };
 
-const SlotsList: React.FC<Props> = ({ data = [] }) => {
+export const SlotsList: React.FC<Props> = ({ data = [] }) => {
   const columns: GridColDef[] = [
     {
       field: 'disciplines',
@@ -36,5 +36,3 @@ const SlotsList: React.FC<Props> = ({ data = [] }) => {
 
   return <DataGrid rows={rows} columns={columns} />;
 };
-
-export default SlotsList;

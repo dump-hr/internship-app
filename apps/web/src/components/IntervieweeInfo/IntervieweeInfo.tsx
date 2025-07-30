@@ -10,7 +10,11 @@ type IntervieweeInfoProps = {
   intern: Intern;
 };
 
-const IntervieweeInfo = ({ image, setImage, intern }: IntervieweeInfoProps) => {
+export const IntervieweeInfo = ({
+  image,
+  setImage,
+  intern,
+}: IntervieweeInfoProps) => {
   return (
     <div className={styles.container}>
       <div className={styles.interviewInfo}>
@@ -60,5 +64,3 @@ const IntervieweeInfo = ({ image, setImage, intern }: IntervieweeInfoProps) => {
     </div>
   );
 };
-
-export default IntervieweeInfo;
