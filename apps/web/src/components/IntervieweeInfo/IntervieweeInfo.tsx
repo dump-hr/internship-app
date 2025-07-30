@@ -1,7 +1,7 @@
 import { Intern, InternDiscipline } from '@internship-app/types';
 
-import { Path } from '../../constants/paths';
-import Webcamera from '../Webcamera';
+import { Path } from '@constants/index';
+import { Webcamera } from '@components/index';
 import styles from './index.module.css';
 
 type IntervieweeInfoProps = {

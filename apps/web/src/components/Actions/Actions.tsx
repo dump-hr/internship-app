@@ -1,10 +1,9 @@
+import { ConfirmDialog } from '@components/ConfirmDialog/ConfirmDialog';
+import { InputHandler } from '@components/InputHandler/InputHandler';
 import { ActionOptions, Question, QuestionType } from '@internship-app/types';
 import { Box, Button, Typography } from '@mui/material';
 import { useState } from 'react';
 import { useForm, useWatch } from 'react-hook-form';
-
-import { ConfirmDialog } from '../ConfirmDialog';
-import InputHandler from '../InputHandler';
 
 type ActionProps<T extends PropertyKey, R> = {
   options: ActionOptions<T>;

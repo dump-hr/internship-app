@@ -6,16 +6,13 @@ import { format, getDay, parse, startOfWeek } from 'date-fns';
 import hrLocale from 'date-fns/locale/hr';
 import moment from 'moment';
 import { useState } from 'react';
-import { Calendar, SlotInfo } from 'react-big-calendar';
-import { dateFnsLocalizer } from 'react-big-calendar';
+import { Calendar, SlotInfo, dateFnsLocalizer } from 'react-big-calendar';
 import toast, { LoaderIcon } from 'react-hot-toast';
 
 import { useCreateTestSlots } from '../../api/useCreateTestSlots';
 import { useFetchAllTestSlots } from '../../api/useFetchAllTestSlots';
-import AdminPage from '../../components/AdminPage';
-import { ExistingSlotInfo } from './ExistingSlotInfo';
-import { NewSlotEdit } from './NewSlotEdit';
-import { SlotCard } from './SlotCard';
+import { AdminPage } from '@components/index';
+import { SlotCard, NewSlotEdit, ExistingSlotInfo } from '@pages/index';
 import { SlotCardType, TestSlotCard } from './types';
 
 moment.locale('hr');

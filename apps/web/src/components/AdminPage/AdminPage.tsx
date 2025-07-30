@@ -1,5 +1,5 @@
-import LayoutSpacing from '../LayoutSpacing/LayoutSpacing';
-import LogoHeader from '../LogoHeader';
+import { LayoutSpacing } from '@components/LayoutSpacing/LayoutSpacing';
+import { LogoHeader } from '@components/LogoHeader/LogoHeader';
 
 type Props = {
   headerText?: string;

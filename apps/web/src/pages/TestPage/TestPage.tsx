@@ -13,14 +13,12 @@ import { useRoute } from 'wouter';
 
 import { useStartTestSlot } from '../../api/useStartTestSlot';
 import { useSubmitTestSlot } from '../../api/useSubmitTestSlot';
-import DUMPLogo from '../../assets/dump-logo.png';
-import { CodeEditor } from '../../components/CodeEditor/CodeEditor';
-import { ConfirmDialog } from '../../components/ConfirmDialog';
-import { Countdown } from '../../components/Countdown/Countdown';
-import { Path } from '../../constants/paths';
-import { startingPrograms } from '../../constants/startingPrograms';
-import { useLocalSave } from '../../hooks/useLocalSave';
 import c from './TestPage.module.css';
+import { Countdown, CodeEditor, ConfirmDialog } from '@components/index';
+import { Path } from '@constants/paths';
+import { startingPrograms } from '@constants/startingPrograms';
+import DUMPLogo from '../../assets/dump-logo.png';
+import { useLocalSave } from '../../hooks/index';
 
 type Answer = {
   isDirty: boolean;

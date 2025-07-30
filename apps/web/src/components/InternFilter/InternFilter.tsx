@@ -13,7 +13,7 @@ import { Box, Button, IconButton } from '@mui/material';
 import { useState } from 'react';
 import { FieldValues, useForm } from 'react-hook-form';
 
-import InputHandler from '../InputHandler';
+import { InputHandler } from '@components/index';
 
 type CriteriaSection = {
   id: string;

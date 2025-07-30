@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { useUpdateTestSlot } from '../../api/useUpdateTestSlot';
-import InputHandler from '../../components/InputHandler';
+import { InputHandler } from '@components/index';
 
 type TestSlotEditFormProps = {
   slot: TestSlot;

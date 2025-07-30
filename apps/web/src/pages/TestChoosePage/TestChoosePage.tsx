@@ -3,8 +3,8 @@ import { useState } from 'react';
 import { navigate } from 'wouter/use-location';
 
 import { useChooseTest } from '../../api/useChooseTest';
-import AdminPage from '../../components/AdminPage';
-import { Path } from '../../constants/paths';
+import { AdminPage } from '@components/index';
+import { Path } from '@constants/index';
 
 export const TestChoosePage = () => {
   const [password, setPassword] = useState('');

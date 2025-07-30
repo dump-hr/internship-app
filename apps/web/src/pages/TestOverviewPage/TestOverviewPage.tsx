@@ -5,11 +5,9 @@ import { useRoute } from 'wouter';
 
 import { useDeleteTestSlot } from '../../api/useDeleteTestSlot';
 import { useFetchTestSlot } from '../../api/useFetchTestSlot';
-import AdminPage from '../../components/AdminPage';
-import { ConfirmDialog } from '../../components/ConfirmDialog';
-import TestSlotInfo from '../../components/TestSlotInfo';
-import { Path } from '../../constants/paths';
 import { TestSlotEditForm } from './TestSlotEditForm';
+import { AdminPage, ConfirmDialog, TestSlotInfo } from '@components/index';
+import { Path } from '@constants/index';
 
 export const TestOverviewPage = () => {
   const [, params] = useRoute(Path.TestOverview);

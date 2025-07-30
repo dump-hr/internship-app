@@ -4,10 +4,12 @@ import { useState } from 'react';
 import { useMakeEmails } from '../../api/useCreateEmails';
 import { useSendEmails } from '../../api/useSendEmails';
 import xSymbol from '../../assets/x-symbol.svg';
-import EmailBox from '../../components/EmailBox';
-import EmailGuide from '../../components/EmailGuide';
-import EmailList from '../../components/EmailList';
-import EmailPreviewList from '../../components/EmailPreviewList';
+import {
+  EmailBox,
+  EmailPreviewList,
+  EmailList,
+  EmailGuide,
+} from '@components/index';
 
 type Props = {
   emails: string[];

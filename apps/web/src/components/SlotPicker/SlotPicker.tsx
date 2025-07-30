@@ -1,12 +1,14 @@
+import {
+  ConfirmDialog,
+  MuiDate,
+  Layout,
+  TimeSlotPicker,
+} from '@components/index';
 import { Slot } from '@internship-app/types';
 import { Box, useMediaQuery } from '@mui/material';
+import { DatePicker } from '@mui/x-date-pickers';
 import moment from 'moment';
 import { useState } from 'react';
-
-import { ConfirmDialog } from '../ConfirmDialog';
-import { DatePicker, MuiDate } from './DatePicker';
-import { Layout } from './Layout';
-import { TimeSlotPicker } from './TimeSlotPicker';
 
 type SlotPickerProps = {
   title: string;

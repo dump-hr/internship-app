@@ -10,8 +10,7 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { useFetchAdminLogs } from '../../api/useFetchAdminLogs';
-import AdminPage from '../../components/AdminPage';
-import InputHandler from '../../components/InputHandler';
+import { AdminPage, InputHandler } from '@components/index';
 
 const formQuestions: Question[] = [
   {

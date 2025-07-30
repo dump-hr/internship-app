@@ -20,10 +20,9 @@ import { useDeleteInterviewer } from '../../api/useDeleteInterviewer';
 import { useFetchAllInterviewers } from '../../api/useFetchAllInterviewers';
 import { useFetchInterviewMemberParticipations } from '../../api/useFetchInterviewMemberParticipations';
 import { usePostInterviewer } from '../../api/usePostInterviewer';
-import LayoutSpacing from '../../components/LayoutSpacing/LayoutSpacing';
-import LogoHeader from '../../components/LogoHeader';
 import c from './InterviewersPage.module.css';
 import { DialogsState } from './types';
+import { LogoHeader, LayoutSpacing } from '@components/index';
 
 export const InterviewersPage = () => {
   const deleteInterviewer = useDeleteInterviewer();

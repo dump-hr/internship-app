@@ -10,18 +10,19 @@ import { useState } from 'react';
 import { FieldValues } from 'react-hook-form';
 
 import { useFetchAllInterns } from '../../api/useFetchAllInterns';
-import AdminPage from '../../components/AdminPage';
-import BoardActions from '../../components/BoardActions';
-import CsvFile from '../../components/CsvFile';
-import InternFilter from '../../components/InternFilter';
+
+import c from './DashboardPage.module.css';
 import {
   FilterCriteria,
+  shortDisciplineLabels,
+  AdminPage,
+  BoardActions,
+  InternFilter,
+  CsvFile,
   getInternFilter,
-} from '../../components/InternFilter/filter';
-import { shortDisciplineLabels } from '../../components/InternList/consts';
-import InternList from '../../components/InternList/InternList';
+  InternList,
+} from '@components/index';
 import { EmailPage } from '@pages/index';
-import c from './DashboardPage.module.css';
 
 const getInternStatus = (intern: Intern) => {
   if (
