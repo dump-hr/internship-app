@@ -2,7 +2,7 @@ import { Discipline } from '@internship-app/types';
 import toast from 'react-hot-toast';
 import { useMutation, useQueryClient } from 'react-query';
 
-import { api } from './base';
+import { api } from '@api/index';
 
 type InterviewerToCreate = {
   name: string;

@@ -2,7 +2,7 @@ import { BoardActionRequest } from '@internship-app/types';
 import toast from 'react-hot-toast';
 import { useMutation, useQueryClient } from 'react-query';
 
-import { api } from '../base';
+import { api } from '@api/index';
 
 const applyBoardAction = async (req: BoardActionRequest) => {
   return await api.put<BoardActionRequest, never>(`/intern/boardAction`, req);

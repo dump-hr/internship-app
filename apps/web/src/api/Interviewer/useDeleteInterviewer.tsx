@@ -1,7 +1,7 @@
 import toast from 'react-hot-toast';
 import { useMutation, useQueryClient } from 'react-query';
 
-import { api } from './base';
+import { api } from '@api/index';
 
 const deleteInterviewer = async (id: string) => {
   return api.delete(`/interviewer/${id}`);

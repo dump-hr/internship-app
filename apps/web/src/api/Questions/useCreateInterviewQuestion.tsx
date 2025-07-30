@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from 'react-query';
 
-import { api } from './base.ts';
+import { api } from '@api/index';
 
 enum QuestionCategory {
   General = 'General',

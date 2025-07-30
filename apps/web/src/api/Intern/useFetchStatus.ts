@@ -1,7 +1,7 @@
 import { Intern } from '@internship-app/types';
 import { useQuery } from 'react-query';
 
-import { api } from '../base';
+import { api } from '@api/index';
 
 const fetchStatus = (id: string) =>
   api.get<never, Intern>(`/intern/status/${id}`);

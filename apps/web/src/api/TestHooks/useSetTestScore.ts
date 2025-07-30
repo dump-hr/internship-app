@@ -2,7 +2,7 @@ import { SetScoreRequest } from '@internship-app/types';
 import toast from 'react-hot-toast';
 import { useMutation } from 'react-query';
 
-import { api } from './base';
+import { api } from '@api/index';
 
 const setTestScore = async (req: SetScoreRequest) => {
   return await api.put<SetScoreRequest, never>(

@@ -1,7 +1,7 @@
 import { InterviewerWithStats } from '@internship-app/types';
 import { useQuery } from 'react-query';
 
-import { api } from './base';
+import { api } from '@api/index';
 
 const fetchAllInterviewers = async () => {
   return api.get<never, InterviewerWithStats[]>('/interviewer');

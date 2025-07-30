@@ -1,7 +1,7 @@
 import { TestSlotPreviewDto } from '@internship-app/types';
 import { useQuery } from 'react-query';
 
-import { api } from './base';
+import { api } from '@api/index';
 
 const fetchAllTestSlots = async () => {
   const slots = await api.get<never, TestSlotPreviewDto[]>('/test-slot');

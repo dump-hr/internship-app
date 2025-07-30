@@ -2,7 +2,7 @@ import { InternActionRequest } from '@internship-app/types';
 import toast from 'react-hot-toast';
 import { useMutation, useQueryClient } from 'react-query';
 
-import { api } from './base';
+import { api } from '@api/index';
 
 const applyInternAction = async (req: InternActionRequest) => {
   return await api.put<InternActionRequest, never>(

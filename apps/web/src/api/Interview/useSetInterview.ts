@@ -2,7 +2,7 @@ import { SetInterviewRequest } from '@internship-app/types';
 import toast from 'react-hot-toast';
 import { useMutation, useQueryClient } from 'react-query';
 
-import { api } from './base';
+import { api } from '@api/index';
 
 const setInterview = async (req: SetInterviewRequest) => {
   return await api.put<SetInterviewRequest, never>(

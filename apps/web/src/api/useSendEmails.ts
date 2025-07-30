@@ -1,7 +1,7 @@
 import toast from 'react-hot-toast';
 import { useMutation } from 'react-query';
 
-import { api } from './base';
+import { api } from '@api/index';
 
 type EmailToSend = {
   emails: string[];

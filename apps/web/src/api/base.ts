@@ -1,7 +1,7 @@
 import axios, { AxiosError, AxiosResponse } from 'axios';
 import { toast } from 'react-hot-toast';
 
-import { Path } from '../constants/paths';
+import { Path } from '@constants/index';
 
 export const api = axios.create({
   baseURL: '/api',

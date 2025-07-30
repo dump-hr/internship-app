@@ -2,7 +2,7 @@ import { TestSlot, UpdateTestSlotRequest } from '@internship-app/types';
 import toast from 'react-hot-toast';
 import { useMutation, useQueryClient } from 'react-query';
 
-import { api } from './base';
+import { api } from '@api/index';
 
 const updateTestSlot = async (req: UpdateTestSlotRequest) => {
   return await api.put<TestSlot, never>(`/test-slot/${req.testSlotId}`, req);

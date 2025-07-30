@@ -1,7 +1,7 @@
 import { CreateInterviewSlotDto } from '@internship-app/types';
 import { useMutation, useQueryClient } from 'react-query';
 
-import { api } from './base';
+import { api } from '@api/index';
 
 const createInterviewSlot = (data: CreateInterviewSlotDto) =>
   api.post<CreateInterviewSlotDto, never>('/interview-slot', data);

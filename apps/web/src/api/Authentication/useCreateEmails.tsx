@@ -1,6 +1,6 @@
 import { useMutation } from 'react-query';
 
-import { api } from './base';
+import { api } from '@api/index';
 
 type EmailToCreate = {
   emails: string[];
