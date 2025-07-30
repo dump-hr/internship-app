@@ -2,7 +2,7 @@ import { Intern } from '@internship-app/types';
 import { Button, TextField } from '@mui/material';
 import { useState } from 'react';
 
-import { useCreateNote } from '@api/index/Intern/useCreateNote';
+import { useCreateNote } from '@api/index';
 import styles from './index.module.css';
 
 type InternNotesProps = {

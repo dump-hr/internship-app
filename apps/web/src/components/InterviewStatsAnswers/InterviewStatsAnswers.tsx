@@ -3,8 +3,7 @@ import { Box, Button } from '@mui/material';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { Link } from 'wouter';
 
-import { useFetchAllInterviewSlots } from '@api/index/useFetchAllInterviewSlots.tsx';
-import { useUpdateFlagInAnswers } from '@api/index/useUpdateFlagInAnswers.ts';
+import { useFetchAllInterviewSlots, useUpdateFlagInAnswers } from '@api/index';
 
 interface InterviewStatsAnswersProps {
   questionToFind: string;

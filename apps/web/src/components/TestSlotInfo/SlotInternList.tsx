@@ -2,7 +2,7 @@ import { BoardActionType, TestSlot, TestStatus } from '@internship-app/types';
 import { Box, Button, Typography } from '@mui/material';
 import { Link } from 'wouter';
 
-import { useApplyBoardAction } from '@api/index/Intern/useApplyBoardAction';
+import { useApplyBoardAction } from '@api/index';
 import { Path } from '../../constants/paths';
 
 type SlotInternListProps = {
