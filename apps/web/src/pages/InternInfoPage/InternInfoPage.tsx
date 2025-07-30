@@ -1,6 +1,6 @@
 import { useRoute } from 'wouter';
 
-import { useFetchIntern } from '@api/index/useFetchIntern';
+import { useFetchIntern } from '@api/index';
 import {
   AdminPage,
   InternInfo,

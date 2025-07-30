@@ -9,7 +9,7 @@ import { Button, Grid, Switch } from '@mui/material';
 import { useState } from 'react';
 import { FieldValues } from 'react-hook-form';
 
-import { useFetchAllInterns } from '@api/index/useFetchAllInterns';
+import { useFetchAllInterns } from '@api/index';
 
 import c from './DashboardPage.module.css';
 import {

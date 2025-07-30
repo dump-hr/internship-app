@@ -5,7 +5,7 @@ import {
 } from '@internship-app/types';
 import { Typography } from '@mui/material';
 
-import { useApplyInternAction } from '@api/index/useApplyInternAction';
+import { useApplyInternAction } from '@api/index';
 import Actions from '../Actions/Actions';
 import { getInternOptions } from './options';
 

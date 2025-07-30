@@ -1,8 +1,8 @@
 import { Box, Button, Input, Modal } from '@mui/joy';
 import { useState } from 'react';
 
-import { useMakeEmails } from '@api/index/useCreateEmails';
-import { useSendEmails } from '@api/index/useSendEmails';
+import { useMakeEmails } from '@api/index';
+import { useSendEmails } from '@api/index';
 import xSymbol from '../../assets/x-symbol.svg';
 import {
   EmailBox,

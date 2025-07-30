@@ -10,7 +10,7 @@ import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { initDataLayer, pushToDataLayer } from '../../../analytics.ts';
-import { usePostIntern } from '@api/index/usePostIntern';
+import { usePostIntern } from '@api/index';
 import formWelcomeImage from '../../assets/form-welcome-image.png';
 
 import classes from './index.module.css';

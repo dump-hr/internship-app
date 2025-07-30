@@ -8,10 +8,12 @@ import { useQueryClient } from 'react-query';
 import { Link, useRoute } from 'wouter';
 import { navigate } from 'wouter/use-location';
 
-import { useFetchAllInterviewQuestions } from '@api/index/useFetchAllInterviewQuestions.tsx';
-import { useFetchIntern } from '@api/index/useFetchIntern';
-import { useSetImage } from '@api/index/Intern/useSetImage.ts';
-import { useSetInterview } from '@api/index/useSetInterview';
+import {
+  useFetchAllInterviewQuestions,
+  useFetchIntern,
+  useSetImage,
+  useSetInterview,
+} from '@api/index';
 import { ConfirmDialog, AdminPage, IntervieweeInfo } from '@components/index';
 
 import {

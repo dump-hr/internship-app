@@ -1,7 +1,7 @@
 import { Question } from '@internship-app/types/';
 import { useRoute } from 'wouter';
 
-import { useFetchAllInterviewQuestions } from '@api/index/useFetchAllInterviewQuestions.tsx';
+import { useFetchAllInterviewQuestions } from '@api/index';
 
 import classes from './index.module.css';
 import { LogoHeader, InterviewStatsAnswers } from '@components/index.ts';
