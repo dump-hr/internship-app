@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { toast } from 'react-hot-toast';
 import { useLocation } from 'wouter';
 
-import { useLogin } from '../../api/useLogin';
+import { useLogin } from '@api/index/Authentication/useLogin';
 import { Path } from '../../constants/paths';
 
 export const LoginForm = () => {

@@ -3,7 +3,7 @@ import { Typography } from '@mui/material';
 import moment from 'moment';
 import { Link, useRoute } from 'wouter';
 
-import { useFetchStatus } from '../../api/useFetchStatus';
+import { useFetchStatus } from '@api/index/Intern/useFetchStatus';
 import { PublicLayout } from '@components/index';
 import {
   disciplineLabel,

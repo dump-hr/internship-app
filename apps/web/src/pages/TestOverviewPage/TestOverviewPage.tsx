@@ -3,8 +3,8 @@ import { useState } from 'react';
 import { LoaderIcon } from 'react-hot-toast';
 import { useRoute } from 'wouter';
 
-import { useDeleteTestSlot } from '../../api/useDeleteTestSlot';
-import { useFetchTestSlot } from '../../api/useFetchTestSlot';
+import { useDeleteTestSlot } from '@api/index/useDeleteTestSlot';
+import { useFetchTestSlot } from '@api/index/TestSlot/useFetchTestSlot';
 import { TestSlotEditForm } from './TestSlotEditForm';
 import { AdminPage, ConfirmDialog, TestSlotInfo } from '@components/index';
 import { Path } from '@constants/index';

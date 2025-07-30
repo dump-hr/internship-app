@@ -1,4 +1,4 @@
-import { useFetchCount } from '../../api/useFetchCount';
+import { useFetchCount } from '@api/index/Intern/useFetchCount';
 
 export const CounterPage = () => {
   const { data } = useFetchCount();

@@ -16,10 +16,10 @@ import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { useState } from 'react';
 import toast from 'react-hot-toast';
 
-import { useDeleteInterviewer } from '../../api/useDeleteInterviewer';
-import { useFetchAllInterviewers } from '../../api/useFetchAllInterviewers';
-import { useFetchInterviewMemberParticipations } from '../../api/useFetchInterviewMemberParticipations';
-import { usePostInterviewer } from '../../api/usePostInterviewer';
+import { useDeleteInterviewer } from '@api/index/useDeleteInterviewer';
+import { useFetchAllInterviewers } from '@api/index/useFetchAllInterviewers';
+import { useFetchInterviewMemberParticipations } from '@api/index/Interviewer/useFetchInterviewMemberParticipations';
+import { usePostInterviewer } from '@api/index/usePostInterviewer';
 import c from './InterviewersPage.module.css';
 import { DialogsState } from './types';
 import { LogoHeader, LayoutSpacing } from '@components/index';

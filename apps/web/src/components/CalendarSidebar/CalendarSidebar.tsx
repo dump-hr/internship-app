@@ -1,6 +1,6 @@
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 
-import { useFetchAllInterviewers } from '../../api/useFetchAllInterviewers';
+import { useFetchAllInterviewers } from '@api/index/useFetchAllInterviewers';
 import { CustomSelectInput } from '../common/SelectInput/CustomSelectInput';
 import styles from './index.module.css';
 

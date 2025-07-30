@@ -1,8 +1,8 @@
 import { Slot } from '@internship-app/types';
 import { useRoute } from 'wouter';
 
-import { useFetchAvailableInterviewSlots } from '../../api/useFetchAvailableInterviewSlots';
-import { useScheduleInterview } from '../../api/useScheduleInterview';
+import { useFetchAvailableInterviewSlots } from '@api/index/useFetchAvailableInterviewSlots';
+import { useScheduleInterview } from '@api/index/useScheduleInterview';
 import { SlotPicker, Layout as SlotPickerLayout } from '@components/index';
 import { Path } from '../../constants/paths';
 

@@ -2,7 +2,7 @@ import { Button, TextField } from '@mui/material';
 import { useState } from 'react';
 import { navigate } from 'wouter/use-location';
 
-import { useChooseTest } from '../../api/useChooseTest';
+import { useChooseTest } from '@api/index/TestHooks/useChooseTest';
 import { AdminPage } from '@components/index';
 import { Path } from '@constants/index';
 

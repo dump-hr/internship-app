@@ -9,8 +9,8 @@ import { useState } from 'react';
 import { Calendar, SlotInfo, dateFnsLocalizer } from 'react-big-calendar';
 import toast, { LoaderIcon } from 'react-hot-toast';
 
-import { useCreateTestSlots } from '../../api/useCreateTestSlots';
-import { useFetchAllTestSlots } from '../../api/useFetchAllTestSlots';
+import { useCreateTestSlots } from '@api/index/useCreateTestSlots';
+import { useFetchAllTestSlots } from '@api/index/useFetchAllTestSlots';
 import { AdminPage } from '@components/index';
 import { SlotCard, NewSlotEdit, ExistingSlotInfo } from '@pages/index';
 import { SlotCardType, TestSlotCard } from './types';

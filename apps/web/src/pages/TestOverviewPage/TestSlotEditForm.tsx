@@ -4,7 +4,7 @@ import moment from 'moment';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
-import { useUpdateTestSlot } from '../../api/useUpdateTestSlot';
+import { useUpdateTestSlot } from '@api/index/useUpdateTestSlot';
 import { InputHandler } from '@components/index';
 
 type TestSlotEditFormProps = {

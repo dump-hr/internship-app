@@ -9,7 +9,7 @@ import moment from 'moment';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
-import { useFetchAdminLogs } from '../../api/useFetchAdminLogs';
+import { useFetchAdminLogs } from '@api/index/useFetchAdminLogs';
 import { AdminPage, InputHandler } from '@components/index';
 
 const formQuestions: Question[] = [

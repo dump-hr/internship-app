@@ -1,8 +1,8 @@
 import { Discipline, Slot } from '@internship-app/types';
 import { useRoute } from 'wouter';
 
-import { useFetchAvailableTestSlots } from '../../api/useFetchAvailableTestSlots';
-import { useScheduleTest } from '../../api/useScheduleTest';
+import { useFetchAvailableTestSlots } from '@api/index/useFetchAvailableTestSlots';
+import { useScheduleTest } from '@api/index/useScheduleTest';
 import { SlotPicker, Layout as SlotPickerLayout } from '@components/index';
 import { disciplineLabel } from '@constants/index';
 import { Path } from '@constants/index';

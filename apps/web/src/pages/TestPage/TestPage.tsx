@@ -11,8 +11,8 @@ import { useEffect, useState } from 'react';
 import { toast } from 'react-hot-toast';
 import { useRoute } from 'wouter';
 
-import { useStartTestSlot } from '../../api/useStartTestSlot';
-import { useSubmitTestSlot } from '../../api/useSubmitTestSlot';
+import { useStartTestSlot } from '@api/index/useStartTestSlot';
+import { useSubmitTestSlot } from '@api/index/useSubmitTestSlot';
 import c from './TestPage.module.css';
 import { Countdown, CodeEditor, ConfirmDialog } from '@components/index';
 import { Path } from '@constants/paths';

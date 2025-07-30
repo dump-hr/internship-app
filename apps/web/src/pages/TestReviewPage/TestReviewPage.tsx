@@ -4,8 +4,8 @@ import { useEffect, useState } from 'react';
 import { useQueryClient } from 'react-query';
 import { useRoute } from 'wouter';
 
-import { useFetchTestAnswers } from '../../api/useFetchTestAnswers';
-import { useSetTestScore } from '../../api/useSetTestScore';
+import { useFetchTestAnswers } from '@api/index/Answers/useFetchTestAnswers';
+import { useSetTestScore } from '@api/index/useSetTestScore';
 import { AdminPage, CodeEditor } from '@components/index';
 import { Path } from '@constants/index';
 import c from './TestReviewPage.module.css';

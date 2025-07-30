@@ -13,9 +13,9 @@ import { useState } from 'react';
 import toast from 'react-hot-toast';
 import { Link } from 'wouter';
 
-import { useFetchAllInterviewQuestions } from '../../api/useFetchAllInterviewQuestions.tsx';
-import { useFetchAllInterviewSlots } from '../../api/useFetchAllInterviewSlots.tsx';
-import { useUpdateInterviewQuestion } from '../../api/useUpdateInterviewQuestion.ts';
+import { useFetchAllInterviewQuestions } from '@api/index/useFetchAllInterviewQuestions.tsx';
+import { useFetchAllInterviewSlots } from '@api/index/useFetchAllInterviewSlots.tsx';
+import { useUpdateInterviewQuestion } from '@api/index/useUpdateInterviewQuestion.ts';
 import { InterviewQuestionForm } from '../InterviewQuestionForm/InterviewQuestionForm.tsx';
 
 interface SelectEditProps extends GridRenderEditCellParams {

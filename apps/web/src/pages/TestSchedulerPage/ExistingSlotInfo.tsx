@@ -2,7 +2,7 @@ import { Box, Button } from '@mui/material';
 import { LoaderIcon } from 'react-hot-toast';
 import { navigate } from 'wouter/use-location';
 
-import { useFetchTestSlot } from '../../api/useFetchTestSlot';
+import { useFetchTestSlot } from '@api/index/TestSlot/useFetchTestSlot';
 import { TestSlotInfo } from '@components/index';
 import { Path } from '@constants/index';
 

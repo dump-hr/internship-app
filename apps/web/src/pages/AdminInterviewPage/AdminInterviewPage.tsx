@@ -5,10 +5,12 @@ import {
 import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 
-import { useCreateInterviewSlot } from '../../api/useCreateInterviewSlot';
-import { useDeleteInterviewSlot } from '../../api/useDeleteInterviewSlot';
-import { useFetchInterviewSlots } from '../../api/useFetchInterviewSlots';
-import { useFetchSlotsAvailability } from '../../api/useFetchSlotsAvailability';
+import {
+  useFetchSlotsAvailability,
+  useFetchInterviewSlots,
+  useDeleteInterviewSlot,
+  useCreateInterviewSlot,
+} from '@api/index';
 
 import styles from './index.module.css';
 import {
