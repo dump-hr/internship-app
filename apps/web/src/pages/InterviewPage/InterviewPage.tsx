@@ -8,21 +8,22 @@ import { useQueryClient } from 'react-query';
 import { Link, useRoute } from 'wouter';
 import { navigate } from 'wouter/use-location';
 
-import { useFetchAllInterviewQuestions } from '../../api/useFetchAllInterviewQuestions.tsx';
-import { useFetchIntern } from '../../api/useFetchIntern';
-import { useSetImage } from '../../api/useSetImage';
-import { useSetInterview } from '../../api/useSetInterview';
-import AdminPage from '../../components/AdminPage';
-import { ConfirmDialog } from '../../components/ConfirmDialog';
-import IntervieweeInfo from '../../components/IntervieweeInfo';
-import MultistepForm from '../../components/MultistepForm';
+import {
+  useFetchAllInterviewQuestions,
+  useFetchIntern,
+  useSetImage,
+  useSetInterview,
+} from '@api/index';
+import { ConfirmDialog, AdminPage, IntervieweeInfo } from '@components/index';
+
 import {
   filterInterviewSteps as getFilteredInterviewSteps,
   QuestionCategory,
 } from '../../constants/interviewConstants';
 import { Path } from '../../constants/paths';
 import { getDefaultValues } from './data';
-import InterviewQuestionHandler from './InterviewQuestionHandler';
+import { InterviewQuestionHandler } from '@pages/index.ts';
+import MultistepForm from '@components/MultistepForm/MultistepForm.tsx';
 
 const mapAnswersToQuestions = (
   answers: FieldValues,
@@ -33,7 +34,7 @@ const mapAnswersToQuestions = (
   );
 };
 
-const InterviewPage = () => {
+export const InterviewPage = () => {
   const [, params] = useRoute(Path.Interview);
   const internId = params?.internId;
 

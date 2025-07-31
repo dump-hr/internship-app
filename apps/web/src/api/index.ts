@@ -1,48 +1,44 @@
-import axios, { AxiosError, AxiosResponse } from 'axios';
-import { toast } from 'react-hot-toast';
-
-import { Path } from '../constants/paths';
-
-export const api = axios.create({
-  baseURL: '/api',
-  timeout: 5000,
-  headers: {
-    'Content-Type': 'application/json',
-  },
-});
-
-api.interceptors.request.use((config) => {
-  const token = localStorage.getItem('access_token');
-
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
-  }
-
-  return config;
-});
-
-type ErrorResponse = AxiosError & {
-  response: AxiosResponse<{ message: string }>;
-};
-
-api.interceptors.response.use(
-  (response) => response.data,
-
-  (error: ErrorResponse) => {
-    if (error.response.status === 401) {
-      history.pushState(null, '', Path.Login);
-      toast.error(
-        error.response.data.message || error.message || 'Forbidden access',
-      );
-    }
-    return Promise.reject(error.response.data.message || error.message);
-  },
-);
-
-export const runApi = axios.create({
-  baseURL: 'https://code-runner.bdeak.net/run',
-  timeout: 5000,
-  headers: {
-    'Content-Type': 'application/json',
-  },
-});
+export * from './base';
+export * from './Answers/useFetchTestAnswers';
+export * from './Answers/useUpdateFlagInAnswers';
+export * from './Authentication/useCreateEmails';
+export * from './Authentication/useLogin';
+export * from './Intern/useApplyBoardAction';
+export * from './Intern/useApplyInternAction';
+export * from './Intern/useCreateNote';
+export * from './Intern/useFetchAllInterns';
+export * from './Intern/useFetchCount';
+export * from './Intern/useFetchIntern';
+export * from './Intern/useFetchStatus';
+export * from './Intern/usePostIntern';
+export * from './Intern/useSetImage';
+export * from './Intern/useSetInternDecision';
+export * from './Interview/useScheduleInterview';
+export * from './Interview/useSetInterview';
+export * from './Interviewer/useDeleteInterviewer';
+export * from './Interviewer/useFetchAllInterviewers';
+export * from './Interviewer/useFetchInterviewMemberParticipations';
+export * from './Interviewer/usePostInterviewer';
+export * from './InteviewSlot/useCreateInterviewSlot';
+export * from './InteviewSlot/useDeleteInterviewSlot';
+export * from './InteviewSlot/useFetchAllInterviewSlots';
+export * from './InteviewSlot/useFetchAvailableInterviewSlots';
+export * from './InteviewSlot/useFetchInterviewSlots';
+export * from './InteviewSlot/useFetchSlotsAvailability';
+export * from './Questions/useCreateInterviewQuestion';
+export * from './Questions/useFetchAllInterviewQuestions';
+export * from './Questions/useUpdateInterviewQuestion';
+export * from './Questions/useUpdateQuestionInAnswers';
+export * from './TestHooks/useChooseTest';
+export * from './TestHooks/useScheduleTest';
+export * from './TestHooks/useSetTestScore';
+export * from './TestSlot/useCreateTestSlots';
+export * from './TestSlot/useDeleteTestSlot';
+export * from './TestSlot/useFetchAllTestSlots';
+export * from './TestSlot/useFetchAvailableTestSlots';
+export * from './TestSlot/useFetchTestSlot';
+export * from './TestSlot/useStartTestSlot';
+export * from './TestSlot/useSubmitTestSlot';
+export * from './TestSlot/useUpdateTestSlot';
+export * from './useFetchAdminLogs';
+export * from './useSendEmails';

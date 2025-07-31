@@ -13,7 +13,7 @@ import { Box, Button, IconButton } from '@mui/material';
 import { useState } from 'react';
 import { FieldValues, useForm } from 'react-hook-form';
 
-import InputHandler from '../InputHandler';
+import { InputHandler } from '@components/index';
 
 type CriteriaSection = {
   id: string;
@@ -92,7 +92,10 @@ type InternFilterProps = {
   disabled?: boolean;
 };
 
-const InternFilter = ({ submitHandler, disabled }: InternFilterProps) => {
+export const InternFilter = ({
+  submitHandler,
+  disabled,
+}: InternFilterProps) => {
   const form = useForm();
   const { unregister, handleSubmit } = form;
   const [criteria, setCriteria] = useState(initialCriteria);
@@ -146,5 +149,3 @@ const InternFilter = ({ submitHandler, disabled }: InternFilterProps) => {
     </div>
   );
 };
-
-export default InternFilter;

@@ -3,10 +3,10 @@ import { useState } from 'react';
 import { toast } from 'react-hot-toast';
 import { useLocation } from 'wouter';
 
-import { useLogin } from '../../api/useLogin';
+import { useLogin } from '@api/index';
 import { Path } from '../../constants/paths';
 
-const LoginForm = () => {
+export const LoginForm = () => {
   const [, navigate] = useLocation();
 
   const [email, setEmail] = useState('');
@@ -70,5 +70,3 @@ const LoginForm = () => {
     </form>
   );
 };
-
-export default LoginForm;

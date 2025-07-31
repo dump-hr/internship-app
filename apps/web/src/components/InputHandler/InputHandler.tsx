@@ -134,7 +134,7 @@ const getInputComponent = (
   }
 };
 
-const InputHandler = ({ question, form }: InputHandlerProps) => {
+export const InputHandler = ({ question, form }: InputHandlerProps) => {
   const { control } = form;
 
   return (
@@ -149,5 +149,3 @@ const InputHandler = ({ question, form }: InputHandlerProps) => {
     </>
   );
 };
-
-export default InputHandler;

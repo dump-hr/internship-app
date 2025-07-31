@@ -1,12 +1,12 @@
-import LayoutSpacing from '../LayoutSpacing/LayoutSpacing';
-import LogoHeader from '../LogoHeader';
+import { LayoutSpacing } from '@components/LayoutSpacing/LayoutSpacing';
+import { LogoHeader } from '@components/LogoHeader/LogoHeader';
 
 type Props = {
   headerText?: string;
   children?: React.ReactNode;
 };
 
-const AdminPage: React.FC<Props> = ({ headerText, children }) => {
+export const AdminPage: React.FC<Props> = ({ headerText, children }) => {
   return (
     <>
       <LogoHeader text={headerText || ''} />
@@ -14,5 +14,3 @@ const AdminPage: React.FC<Props> = ({ headerText, children }) => {
     </>
   );
 };
-
-export default AdminPage;

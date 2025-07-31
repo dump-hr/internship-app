@@ -11,7 +11,7 @@ import {
 import { useState } from 'react';
 import toast from 'react-hot-toast';
 
-import { useCreateInterviewQuestion } from '../../api/useCreateInterviewQuestion.tsx';
+import { useCreateInterviewQuestion } from '@api/index';
 import { QuestionCategory } from '../../constants/interviewConstants.ts';
 
 export const InterviewQuestionForm = () => {

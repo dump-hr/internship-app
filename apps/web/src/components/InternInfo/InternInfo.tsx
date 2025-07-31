@@ -7,13 +7,9 @@ import {
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import moment from 'moment';
 
-import {
-  disciplineLabel,
-  internActionLabel,
-} from '../../constants/internConstants';
-import { Path } from '../../constants/paths';
+import { Path, disciplineLabel, internActionLabel } from '@constants/index';
 import styles from './index.module.css';
-import InternNotes from './InternNotes';
+import { InternNotes } from '@components/index';
 
 interface InternInfoProps {
   intern: Intern;
@@ -26,7 +22,7 @@ const logColumns: GridColDef[] = [
   { field: 'date', headerName: 'Datum', width: 100 },
 ];
 
-const InternInfo = ({ intern }: InternInfoProps) => {
+export const InternInfo = ({ intern }: InternInfoProps) => {
   const logRows = intern.logs.map((il) => ({
     id: il.id,
     action: internActionLabel[il.action],
@@ -169,5 +165,3 @@ const InternInfo = ({ intern }: InternInfoProps) => {
     </div>
   );
 };
-
-export default InternInfo;

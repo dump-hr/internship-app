@@ -5,16 +5,21 @@ import {
 import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 
-import { useCreateInterviewSlot } from '../../api/useCreateInterviewSlot';
-import { useDeleteInterviewSlot } from '../../api/useDeleteInterviewSlot';
-import { useFetchInterviewSlots } from '../../api/useFetchInterviewSlots';
-import { useFetchSlotsAvailability } from '../../api/useFetchSlotsAvailability';
-import AdminPage from '../../components/AdminPage';
-import { Calendar } from '../../components/Calendar/Calendar';
-import { CalendarSidebar } from '../../components/CalendarSidebar/CalendarSidebar';
-import SlotsList from '../../components/SlotsList/SlotsList';
-import { calendarHelper } from '../../helpers/calendarHelper';
+import {
+  useFetchSlotsAvailability,
+  useFetchInterviewSlots,
+  useDeleteInterviewSlot,
+  useCreateInterviewSlot,
+} from '@api/index';
+
 import styles from './index.module.css';
+import {
+  AdminPage,
+  CalendarSidebar,
+  SlotsList,
+  Calendar,
+} from '@components/index';
+import { calendarHelper } from 'src/helpers';
 
 type MappedEvent = {
   id: string;

@@ -1,5 +1,4 @@
-import { InterviewQuestions } from '../../components/InterviewQuestions';
-import LogoHeader from '../../components/LogoHeader';
+import { LogoHeader, InterviewQuestions } from '@components/index';
 import classes from './index.module.css';
 
 export const InterviewBuilderPage = () => {

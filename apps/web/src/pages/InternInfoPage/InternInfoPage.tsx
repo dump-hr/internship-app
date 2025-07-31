@@ -1,13 +1,15 @@
 import { useRoute } from 'wouter';
 
-import { useFetchIntern } from '../../api/useFetchIntern';
-import AdminPage from '../../components/AdminPage';
-import DecisionHandler from '../../components/DecisionHandler/DecisionHandler';
-import InternActions from '../../components/InternActions/InternActions';
-import InternInfo from '../../components/InternInfo';
-import { Path } from '../../constants/paths';
+import { useFetchIntern } from '@api/index';
+import {
+  AdminPage,
+  InternInfo,
+  InternActions,
+  DecisionHandler,
+} from '@components/index';
+import { Path } from '@constants/index';
 
-const InternInfoPage = () => {
+export const InternInfoPage = () => {
   const [, params] = useRoute(Path.Intern);
   const internId = params?.internId;
   const { data: intern, isLoading, isError } = useFetchIntern(internId);
@@ -28,5 +30,3 @@ const InternInfoPage = () => {
     </AdminPage>
   );
 };
-
-export default InternInfoPage;

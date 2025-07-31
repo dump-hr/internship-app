@@ -6,7 +6,7 @@ import { nanoid } from 'nanoid';
 import { useEffect, useRef, useState } from 'react';
 import { Terminal } from 'xterm';
 
-import { runApi } from '../../api';
+import { runApi } from '@api/index';
 import c from './CodeRunner.module.css';
 import { COLORS, keyMapper, messages } from './constants';
 import { ProcessState } from './types';

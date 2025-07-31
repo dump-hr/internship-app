@@ -2,9 +2,9 @@ import { Box, Button } from '@mui/material';
 import { LoaderIcon } from 'react-hot-toast';
 import { navigate } from 'wouter/use-location';
 
-import { useFetchTestSlot } from '../../api/useFetchTestSlot';
-import TestSlotInfo from '../../components/TestSlotInfo';
-import { Path } from '../../constants/paths';
+import { useFetchTestSlot } from '@api/index';
+import { TestSlotInfo } from '@components/index';
+import { Path } from '@constants/index';
 
 type ExistingSlotInfoProps = {
   slotId: string;

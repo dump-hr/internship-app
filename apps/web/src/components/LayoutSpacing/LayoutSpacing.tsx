@@ -2,7 +2,7 @@ type Props = {
   children: React.ReactNode;
 } & React.HTMLAttributes<HTMLDivElement>;
 
-const LayoutSpacing: React.FC<Props> = ({ children, ...handlers }) => {
+export const LayoutSpacing: React.FC<Props> = ({ children, ...handlers }) => {
   const style = {
     maxWidth: '1300px',
     marginLeft: 'auto',
@@ -15,5 +15,3 @@ const LayoutSpacing: React.FC<Props> = ({ children, ...handlers }) => {
     </div>
   );
 };
-
-export default LayoutSpacing;

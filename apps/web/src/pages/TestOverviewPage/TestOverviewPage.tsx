@@ -3,15 +3,12 @@ import { useState } from 'react';
 import { LoaderIcon } from 'react-hot-toast';
 import { useRoute } from 'wouter';
 
-import { useDeleteTestSlot } from '../../api/useDeleteTestSlot';
-import { useFetchTestSlot } from '../../api/useFetchTestSlot';
-import AdminPage from '../../components/AdminPage';
-import { ConfirmDialog } from '../../components/ConfirmDialog';
-import TestSlotInfo from '../../components/TestSlotInfo';
-import { Path } from '../../constants/paths';
+import { useDeleteTestSlot, useFetchTestSlot } from '@api/index';
 import { TestSlotEditForm } from './TestSlotEditForm';
+import { AdminPage, ConfirmDialog, TestSlotInfo } from '@components/index';
+import { Path } from '@constants/index';
 
-const TestOverviewPage = () => {
+export const TestOverviewPage = () => {
   const [, params] = useRoute(Path.TestOverview);
   const [isEditOpened, setIsEditOpened] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);

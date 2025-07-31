@@ -1,7 +1,7 @@
 import { Intern, InternDiscipline } from '@internship-app/types';
 
-import { Path } from '../../constants/paths';
-import Webcamera from '../Webcamera';
+import { Path } from '@constants/index';
+import { Webcamera } from '@components/index';
 import styles from './index.module.css';
 
 type IntervieweeInfoProps = {
@@ -10,7 +10,11 @@ type IntervieweeInfoProps = {
   intern: Intern;
 };
 
-const IntervieweeInfo = ({ image, setImage, intern }: IntervieweeInfoProps) => {
+export const IntervieweeInfo = ({
+  image,
+  setImage,
+  intern,
+}: IntervieweeInfoProps) => {
   return (
     <div className={styles.container}>
       <div className={styles.interviewInfo}>
@@ -60,5 +64,3 @@ const IntervieweeInfo = ({ image, setImage, intern }: IntervieweeInfoProps) => {
     </div>
   );
 };
-
-export default IntervieweeInfo;

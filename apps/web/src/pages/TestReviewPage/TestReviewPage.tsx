@@ -4,14 +4,12 @@ import { useEffect, useState } from 'react';
 import { useQueryClient } from 'react-query';
 import { useRoute } from 'wouter';
 
-import { useFetchTestAnswers } from '../../api/useFetchTestAnswers';
-import { useSetTestScore } from '../../api/useSetTestScore';
-import AdminPage from '../../components/AdminPage';
-import { CodeEditor } from '../../components/CodeEditor/CodeEditor';
-import { Path } from '../../constants/paths';
+import { useFetchTestAnswers, useSetTestScore } from '@api/index';
+import { AdminPage, CodeEditor } from '@components/index';
+import { Path } from '@constants/index';
 import c from './TestReviewPage.module.css';
 
-const TestReviewPage = () => {
+export const TestReviewPage = () => {
   const [, params] = useRoute(Path.TestReview);
 
   const {
@@ -108,5 +106,3 @@ const TestReviewPage = () => {
     </AdminPage>
   );
 };
-
-export default TestReviewPage;

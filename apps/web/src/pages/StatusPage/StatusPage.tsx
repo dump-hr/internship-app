@@ -3,19 +3,19 @@ import { Typography } from '@mui/material';
 import moment from 'moment';
 import { Link, useRoute } from 'wouter';
 
-import { useFetchStatus } from '../../api/useFetchStatus';
-import PublicLayout from '../../components/PublicLayout';
+import { useFetchStatus } from '@api/index';
+import { PublicLayout } from '@components/index';
 import {
   disciplineLabel,
   disciplineStatusLabel,
   interviewStatusLabel,
   testStatusLabel,
-} from '../../constants/internConstants';
-import { Path } from '../../constants/paths';
+  Path,
+} from '@constants/index';
 import { DisciplineCard } from './DisciplineCard';
 import * as styled from './styled';
 
-const StatusPage = () => {
+export const StatusPage = () => {
   const [, params] = useRoute(Path.Status);
   const internId = params?.internId || '';
   const { data: intern, isFetching } = useFetchStatus(internId);
@@ -117,5 +117,3 @@ const StatusPage = () => {
     </PublicLayout>
   );
 };
-
-export default StatusPage;

@@ -16,16 +16,17 @@ import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { useState } from 'react';
 import toast from 'react-hot-toast';
 
-import { useDeleteInterviewer } from '../../api/useDeleteInterviewer';
-import { useFetchAllInterviewers } from '../../api/useFetchAllInterviewers';
-import { useFetchInterviewMemberParticipations } from '../../api/useFetchInterviewMemberParticipations';
-import { usePostInterviewer } from '../../api/usePostInterviewer';
-import LayoutSpacing from '../../components/LayoutSpacing/LayoutSpacing';
-import LogoHeader from '../../components/LogoHeader';
+import {
+  useDeleteInterviewer,
+  useFetchAllInterviewers,
+  useFetchInterviewMemberParticipations,
+  usePostInterviewer,
+} from '@api/index';
 import c from './InterviewersPage.module.css';
 import { DialogsState } from './types';
+import { LogoHeader, LayoutSpacing } from '@components/index';
 
-const InterviewersPage = () => {
+export const InterviewersPage = () => {
   const deleteInterviewer = useDeleteInterviewer();
   const postInterviewer = usePostInterviewer();
 
@@ -424,5 +425,3 @@ const InterviewersPage = () => {
     </>
   );
 };
-
-export default InterviewersPage;

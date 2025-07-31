@@ -1,12 +1,14 @@
 import { Slot } from '@internship-app/types';
 import { useRoute } from 'wouter';
 
-import { useFetchAvailableInterviewSlots } from '../../api/useFetchAvailableInterviewSlots';
-import { useScheduleInterview } from '../../api/useScheduleInterview';
-import SlotPicker, { SlotPickerLayout } from '../../components/SlotPicker';
+import {
+  useFetchAvailableInterviewSlots,
+  useScheduleInterview,
+} from '@api/index';
+import { SlotPicker, Layout as SlotPickerLayout } from '@components/index';
 import { Path } from '../../constants/paths';
 
-const ScheduleInterviewPage = () => {
+export const ScheduleInterviewPage = () => {
   const [, params] = useRoute(Path.ScheduleInterview);
 
   const {
@@ -50,5 +52,3 @@ const ScheduleInterviewPage = () => {
     />
   );
 };
-
-export default ScheduleInterviewPage;

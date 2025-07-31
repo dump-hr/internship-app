@@ -9,9 +9,8 @@ import moment from 'moment';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
-import { useFetchAdminLogs } from '../../api/useFetchAdminLogs';
-import AdminPage from '../../components/AdminPage';
-import InputHandler from '../../components/InputHandler';
+import { useFetchAdminLogs } from '@api/index';
+import { AdminPage, InputHandler } from '@components/index';
 
 const formQuestions: Question[] = [
   {
@@ -35,7 +34,7 @@ const logColumns: GridColDef[] = [
   { field: 'date', headerName: 'Datum', width: 200 },
 ];
 
-const AdminLogsPage = () => {
+export const AdminLogsPage = () => {
   const form = useForm();
   const formValues = form.watch();
   const [paginationModel, setPaginationModel] = useState({
@@ -73,5 +72,3 @@ const AdminLogsPage = () => {
     </AdminPage>
   );
 };
-
-export default AdminLogsPage;

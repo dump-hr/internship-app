@@ -2,14 +2,14 @@ import { Intern } from '@internship-app/types';
 import { Button, TextField } from '@mui/material';
 import { useState } from 'react';
 
-import { useCreateNote } from '../../api/useCreateNote';
+import { useCreateNote } from '@api/index';
 import styles from './index.module.css';
 
 type InternNotesProps = {
   intern: Intern;
 };
 
-const InternNotes: React.FC<InternNotesProps> = ({ intern }) => {
+export const InternNotes: React.FC<InternNotesProps> = ({ intern }) => {
   const [newNote, setNewNote] = useState('');
   const createNote = useCreateNote();
 
@@ -53,5 +53,3 @@ const InternNotes: React.FC<InternNotesProps> = ({ intern }) => {
     </div>
   );
 };
-
-export default InternNotes;

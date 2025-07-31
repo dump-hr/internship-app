@@ -8,15 +8,15 @@ import {
 import { Box, Button, Typography } from '@mui/material';
 import { FieldValues, useForm } from 'react-hook-form';
 
-import { useSetInternDecision } from '../../api/useSetInternDecision';
-import { disciplineLabel } from '../../constants/internConstants';
-import InputHandler from '../InputHandler';
+import { useSetInternDecision } from '@api/index';
+import { InputHandler } from '@components/InputHandler/InputHandler';
+import { disciplineLabel } from '@constants/internConstants';
 
 type DecisionHandlerProps = {
   intern: Intern;
 };
 
-const DecisionHandler: React.FC<DecisionHandlerProps> = ({ intern }) => {
+export const DecisionHandler: React.FC<DecisionHandlerProps> = ({ intern }) => {
   const form = useForm();
   const setInternDecision = useSetInternDecision();
 
@@ -61,5 +61,3 @@ const DecisionHandler: React.FC<DecisionHandlerProps> = ({ intern }) => {
     </>
   );
 };
-
-export default DecisionHandler;

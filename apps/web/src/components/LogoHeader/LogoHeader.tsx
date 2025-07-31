@@ -4,15 +4,15 @@ import { Link } from 'wouter';
 import { navigate } from 'wouter/use-location';
 
 import DUMPLogo from '../../assets/dump-logo.png';
-import { Path } from '../../constants/paths';
-import LayoutSpacing from '../LayoutSpacing/LayoutSpacing';
+import { Path } from '@constants/index';
+import { LayoutSpacing } from '@components/index';
 import c from './LogoHeader.module.css';
 
 type Props = {
   text: string;
 };
 
-const LogoHeader: React.FC<Props> = ({ text }) => {
+export const LogoHeader: React.FC<Props> = ({ text }) => {
   const handleLogout = () => {
     toast.success('Logged out');
     localStorage.removeItem('access_token');
@@ -50,5 +50,3 @@ const LogoHeader: React.FC<Props> = ({ text }) => {
     </header>
   );
 };
-
-export default LogoHeader;
