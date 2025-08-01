@@ -6,6 +6,7 @@ import { PrismaService } from 'src/prisma.service';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { JwtStrategy } from './jwt.strategy';
+import { AzureADStrategy } from './azure.strategy';
 
 @Module({
   imports: [
@@ -15,7 +16,7 @@ import { JwtStrategy } from './jwt.strategy';
       signOptions: { expiresIn: '14d' },
     }),
   ],
-  providers: [JwtStrategy, PrismaService, AuthService],
+  providers: [JwtStrategy, PrismaService, AuthService, AzureADStrategy],
   exports: [AuthService],
   controllers: [AuthController],
 })

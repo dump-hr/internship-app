@@ -5,3 +5,4 @@ export * from './action';
 export * from './auth';
 export * from './test';
 export * from './log';
+export * from './apiError';

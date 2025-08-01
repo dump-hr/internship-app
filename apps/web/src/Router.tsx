@@ -24,8 +24,12 @@ import {
   TestReviewPage,
   TestSchedulerPage,
 } from '@pages/index';
+import { InteractionType } from '@azure/msal-browser';
+import { useMsalAuthentication } from '@azure/msal-react';
 
 export const Router = () => {
+  useMsalAuthentication(InteractionType.Redirect);
+
   return (
     <Switch>
       <Route path={Path.Home} component={HomePage} />
