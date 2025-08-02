@@ -28,6 +28,7 @@ import { LoggerService } from 'src/logger/logger.service';
 
 import { CreateInternDto } from './dto/createIntern.dto';
 import { InternService } from './intern.service';
+import { AdminGuard, MemberGuard } from 'src/auth/azure.guard';
 
 @Controller('intern')
 @ApiTags('intern')
@@ -38,7 +39,7 @@ export class InternController {
   ) {}
 
   @Get()
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(MemberGuard)
   async getAll() {
     const interns = await this.internService.getAll();
 
@@ -51,7 +52,7 @@ export class InternController {
   }
 
   @Get(':id')
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(AdminGuard)
   async get(@Param('id') id: string) {
     const intern = await this.internService.get(id);
 

@@ -1,6 +1,5 @@
-import { PublicClientApplication } from '@azure/msal-browser';
 import axios, { AxiosError } from 'axios';
-import { msalConfig } from 'src/configs/azure.config';
+import { msalInstance } from 'src/configs/msalInstance';
 
 export const api = axios.create({
   baseURL: '/api',
@@ -9,23 +8,25 @@ export const api = axios.create({
   },
 });
 
-const msalInstance = new PublicClientApplication(msalConfig);
+const msal = msalInstance;
 
 const acquireToken = async () => {
   const silentRequest = {
     scopes: ['openid', 'profile'],
-    account: msalInstance.getAllAccounts()[0],
+    account: msal.getAllAccounts()[0],
   };
+
   try {
-    const response = await msalInstance.acquireTokenSilent(silentRequest);
+    const response = await msal.acquireTokenSilent(silentRequest);
     return response.idToken;
   } catch (error) {
-    await msalInstance.acquireTokenRedirect(silentRequest);
+    console.log(msal.getAllAccounts());
+    console.log(error);
   }
 };
 
 api.interceptors.request.use(async (config) => {
-  await msalInstance.initialize();
+  await msal.initialize();
 
   const token = await acquireToken();
   config.headers.Authorization = `Bearer ${token}`;
@@ -50,11 +51,11 @@ api.interceptors.response.use(
       if (error.response?.status === 401) {
         const silentRequest = {
           scopes: ['openid', 'profile'],
-          account: msalInstance.getAllAccounts()[0],
+          account: msal.getAllAccounts()[0],
           forceRefresh: true,
         };
 
-        await msalInstance.acquireTokenRedirect(silentRequest);
+        await msal.acquireTokenRedirect(silentRequest);
       }
 
       return Promise.reject(error.response.data.message);

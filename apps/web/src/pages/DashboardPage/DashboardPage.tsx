@@ -50,8 +50,6 @@ const initialState: { filterCriteria: FilterCriteria } = {
 };
 
 export const DashboardPage = () => {
-  const { data: interns } = useFetchAllInterns();
-
   const [selection, setSelection] = useState<string[]>([]);
   const [emailDialogOpen, setEmailDialogOpen] = useState(false);
   const [actionsOpen, setActionsOpen] = useState(false);
@@ -61,6 +59,8 @@ export const DashboardPage = () => {
   const [filterCriteria, setFilterCriteria] = useState<FilterCriteria>(
     initialState.filterCriteria,
   );
+
+  const { data: interns } = useFetchAllInterns();
 
   const internsWithStatus = interns?.map((intern) => ({
     ...intern,
