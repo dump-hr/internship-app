@@ -38,6 +38,7 @@ export const App = () => {
   }, []);
 
   if (!isReady) return <div>error</div>;
+  if (!account) return <div>can't get account</div>;
 
   return (
     <>

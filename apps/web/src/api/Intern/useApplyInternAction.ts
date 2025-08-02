@@ -1,8 +1,9 @@
-import { InternActionRequest } from '@internship-app/types';
+import { ErrorResponse, InternActionRequest } from '@internship-app/types';
 import toast from 'react-hot-toast';
 import { useMutation, useQueryClient } from 'react-query';
 
 import { api } from '@api/index';
+import { checkError } from 'src/helpers/checkError';
 
 const applyInternAction = async (req: InternActionRequest) => {
   return await api.put<InternActionRequest, never>(
@@ -19,8 +20,8 @@ export const useApplyInternAction = () => {
       toast.success('Akcija uspješno izvedena!');
       queryClient.invalidateQueries(['intern', variables.internId]);
     },
-    onError: (error: string) => {
-      toast.error(`Greška pri izvođenju akcije: ${error}`);
+    onError: (error: ErrorResponse) => {
+      checkError(error);
     },
   });
 };

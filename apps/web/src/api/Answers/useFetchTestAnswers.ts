@@ -1,7 +1,8 @@
-import { InternQuestionAnswer } from '@internship-app/types';
+import { ErrorResponse, InternQuestionAnswer } from '@internship-app/types';
 import { useQuery } from 'react-query';
 
 import { api } from '@api/base';
+import { checkError } from 'src/helpers/checkError';
 
 const fetchTestAnswers = async (
   testSlotId: string,
@@ -25,6 +26,9 @@ export const useFetchTestAnswers = (
       enabled: !!group && !!groupdId && !!testSlotId,
       staleTime: Infinity,
       retry: false,
+      onError: (error: ErrorResponse) => {
+        checkError(error);
+      },
     },
   );
 };

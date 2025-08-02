@@ -2,6 +2,8 @@ import toast from 'react-hot-toast';
 import { useMutation, useQueryClient } from 'react-query';
 
 import { api } from '@api/index';
+import { ErrorResponse } from '@internship-app/types';
+import { checkError } from 'src/helpers/checkError';
 
 const updateFlagInAnswers = async ({
   slotId,
@@ -26,8 +28,8 @@ export const useUpdateFlagInAnswers = () => {
       toast.success('Successfully updated flag in answers');
       queryClient.invalidateQueries(['interview-slot']);
     },
-    onError: (error: string) => {
-      toast.error(`Error updating flag: ${error}`);
+    onError: (error: ErrorResponse) => {
+      checkError(error);
     },
   });
 };

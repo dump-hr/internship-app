@@ -1,4 +1,5 @@
-import axios, { AxiosError } from 'axios';
+import { ErrorResponse } from '@internship-app/types';
+import axios from 'axios';
 import { msalInstance } from 'src/configs/msalInstance';
 
 export const api = axios.create({
@@ -33,16 +34,6 @@ api.interceptors.request.use(async (config) => {
 
   return config;
 });
-
-type ErrorResponse = AxiosError & {
-  response: {
-    data: {
-      statusCode: number;
-      message: string;
-      error: string;
-    };
-  };
-};
 
 api.interceptors.response.use(
   (response) => response.data,
