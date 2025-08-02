@@ -14,6 +14,7 @@ import { LoggerService } from 'src/logger/logger.service';
 
 import { CreateInterviewerDto } from './dto/createInterviewer.dto';
 import { InterviewerService } from './interviewer.service';
+import { AdminGuard, MemberGuard } from 'src/auth/azure.guard';
 
 @Controller('interviewer')
 @ApiTags('interviewer')
@@ -24,14 +25,14 @@ export class InterviewerController {
   ) {}
 
   @Get()
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(MemberGuard)
   async getAll() {
     const interviewers = await this.interviewerService.getAll();
     return interviewers;
   }
 
   @Post()
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(AdminGuard)
   async create(@Body() interviewer: CreateInterviewerDto) {
     await this.loggerService.createAdminLog(
       AdminLogAction.Create,
@@ -43,7 +44,7 @@ export class InterviewerController {
   }
 
   @Delete(':id')
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(AdminGuard)
   async delete(@Param('id') id: string) {
     await this.loggerService.createAdminLog(
       AdminLogAction.Delete,
@@ -55,7 +56,7 @@ export class InterviewerController {
   }
 
   @Get('participations')
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(MemberGuard)
   async getInterviewersParticipations() {
     return await this.interviewerService.getInterviewersParticipations();
   }

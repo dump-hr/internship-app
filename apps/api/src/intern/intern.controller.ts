@@ -52,7 +52,7 @@ export class InternController {
   }
 
   @Get(':id')
-  @UseGuards(AdminGuard)
+  @UseGuards(MemberGuard)
   async get(@Param('id') id: string) {
     const intern = await this.internService.get(id);
 
@@ -86,7 +86,7 @@ export class InternController {
   }
 
   @Put('setInterview/:internId')
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(MemberGuard)
   async setInterview(
     @Param('internId') internId: string,
     @Body() data: SetInterviewRequest,
@@ -100,7 +100,7 @@ export class InternController {
   }
 
   @Put('setImage/:internId')
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(MemberGuard)
   @UseInterceptors(FileInterceptor('image'))
   async setImage(
     @Param('internId') internId: string,
@@ -123,7 +123,7 @@ export class InternController {
   }
 
   @Put('action/:internId')
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(MemberGuard)
   async applyAction(
     @Param('internId') internId: string,
     @Body() { action }: InternActionRequest,
@@ -137,7 +137,7 @@ export class InternController {
   }
 
   @Put('boardAction')
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(AdminGuard)
   async applyBoardAction(@Body() { action, internIds }: BoardActionRequest) {
     await this.loggerService.createAdminLog(
       AdminLogAction.Update,
@@ -150,7 +150,7 @@ export class InternController {
   }
 
   @Put('setDecision/:internId')
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(AdminGuard)
   async setDecision(
     @Param('internId') internId: string,
     @Body() data: InternDecisionRequest,
@@ -164,7 +164,7 @@ export class InternController {
   }
 
   @Post('note/:internId')
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(MemberGuard)
   async setNote(
     @Param('internId') internId: string,
     @Body() data: CreateNoteRequest,

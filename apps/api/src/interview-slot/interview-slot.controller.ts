@@ -16,6 +16,7 @@ import { LoggerService } from 'src/logger/logger.service';
 
 import { CreateInterviewSlotDto } from './dto/createInterviewSlot.dto';
 import { InterviewSlotService } from './interview-slot.service';
+import { AdminGuard, MemberGuard } from 'src/auth/azure.guard';
 
 @Controller('interview-slot')
 @ApiTags('interview-slot')
@@ -26,13 +27,13 @@ export class InterviewSlotController {
   ) {}
 
   @Get()
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(MemberGuard)
   async getAll() {
     return await this.interviewSlotService.getAll();
   }
 
   @Delete('/:id')
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(AdminGuard)
   async deleteInterviewSlot(@Param('id') id: string) {
     await this.loggerService.createAdminLog(
       AdminLogAction.Delete,
@@ -43,7 +44,7 @@ export class InterviewSlotController {
   }
 
   @Post()
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(AdminGuard)
   async createInterviewSlot(@Body() interviewSlotDto: CreateInterviewSlotDto) {
     await this.loggerService.createAdminLog(
       AdminLogAction.Create,
@@ -79,6 +80,7 @@ export class InterviewSlotController {
   }
 
   @Patch('/answers/:slotId')
+  @UseGuards(AdminGuard)
   async answerInterview(
     @Param('slotId') slotId: string,
     @Body() body: { question: string; answerId: string },
@@ -91,6 +93,7 @@ export class InterviewSlotController {
   }
 
   @Patch('/tick/:slotId')
+  @UseGuards(MemberGuard)
   async answerInterviewTick(
     @Param('slotId') slotId: string,
     @Body() body: { tick: boolean; answerId: string },
