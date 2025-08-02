@@ -2,6 +2,8 @@ import toast from 'react-hot-toast';
 import { useMutation, useQueryClient } from 'react-query';
 
 import { api } from '@api/index';
+import { checkError } from 'src/helpers/checkError';
+import { ErrorResponse } from '@internship-app/types';
 
 const deleteInterviewer = async (id: string) => {
   return api.delete(`/interviewer/${id}`);
@@ -15,8 +17,8 @@ export const useDeleteInterviewer = () => {
       queryClient.invalidateQueries('interviewer');
       toast.success('Intervjuer uspješno obrisan!');
     },
-    onError: () => {
-      toast.error('Greška prilikom brisanja intervjuera!');
+    onError: (error: ErrorResponse) => {
+      checkError(error, 'Greška prilikom brisanja intervjuera!');
     },
   });
 };

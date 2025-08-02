@@ -1,8 +1,9 @@
-import { SetInterviewRequest } from '@internship-app/types';
+import { ErrorResponse, SetInterviewRequest } from '@internship-app/types';
 import toast from 'react-hot-toast';
 import { useMutation, useQueryClient } from 'react-query';
 
 import { api } from '@api/index';
+import { checkError } from 'src/helpers/checkError';
 
 const setInterview = async (req: SetInterviewRequest) => {
   return await api.put<SetInterviewRequest, never>(
@@ -20,8 +21,8 @@ export const useSetInterview = (navigate: () => void) => {
       queryClient.invalidateQueries(['intern', variables.internId]);
       navigate();
     },
-    onError: (error: string) => {
-      toast.error(`Greška pri pohranjivanju intervjua: ${error}`);
+    onError: (error: ErrorResponse) => {
+      checkError(error, 'Greška pri pohranjivanju intervjua');
     },
   });
 };
