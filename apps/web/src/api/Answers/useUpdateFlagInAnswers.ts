@@ -29,7 +29,7 @@ export const useUpdateFlagInAnswers = () => {
       queryClient.invalidateQueries(['interview-slot']);
     },
     onError: (error: ErrorResponse) => {
-      checkError(error);
+      checkError(error, 'Greska pri ažuriranju oznake u odgovorima');
     },
   });
 };
