@@ -21,7 +21,7 @@ export const useApplyInternAction = () => {
       queryClient.invalidateQueries(['intern', variables.internId]);
     },
     onError: (error: ErrorResponse) => {
-      checkError(error);
+      checkError(error, 'Greška pri primjeni akcije na internu');
     },
   });
 };

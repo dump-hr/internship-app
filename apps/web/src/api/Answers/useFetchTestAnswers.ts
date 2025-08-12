@@ -27,7 +27,7 @@ export const useFetchTestAnswers = (
       staleTime: Infinity,
       retry: false,
       onError: (error: ErrorResponse) => {
-        checkError(error);
+        checkError(error, "Greska pri dohvaćanju odgovora na test");
       },
     },
   );

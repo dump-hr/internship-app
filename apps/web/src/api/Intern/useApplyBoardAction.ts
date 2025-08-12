@@ -18,7 +18,7 @@ export const useApplyBoardAction = () => {
       queryClient.invalidateQueries('intern');
     },
     onError: (error: ErrorResponse) => {
-      checkError(error);
+      checkError(error, "Greška pri primjeni akcije");
     },
   });
 };
