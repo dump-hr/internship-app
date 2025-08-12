@@ -1,9 +1,8 @@
+import { useFetchAllInterviewSlots, useUpdateFlagInAnswers } from '@api/index';
 import { InterviewSlot } from '@internship-app/types';
 import { Box, Button } from '@mui/material';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { Link } from 'wouter';
-
-import { useFetchAllInterviewSlots, useUpdateFlagInAnswers } from '@api/index';
 
 interface InterviewStatsAnswersProps {
   questionToFind: string;

@@ -1,3 +1,8 @@
+import {
+  useFetchAllInterviewQuestions,
+  useFetchAllInterviewSlots,
+  useUpdateInterviewQuestion,
+} from '@api/index';
 import { InterviewSlot } from '@internship-app/types';
 import { Box, Button, MenuItem, Select } from '@mui/material';
 import {
@@ -13,11 +18,6 @@ import { useState } from 'react';
 import toast from 'react-hot-toast';
 import { Link } from 'wouter';
 
-import {
-  useFetchAllInterviewQuestions,
-  useFetchAllInterviewSlots,
-  useUpdateInterviewQuestion,
-} from '@api/index';
 import { InterviewQuestionForm } from '../InterviewQuestionForm/InterviewQuestionForm.tsx';
 
 interface SelectEditProps extends GridRenderEditCellParams {

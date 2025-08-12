@@ -1,29 +1,29 @@
-import { Route } from 'wouter';
+import { AccountInfo, PublicClientApplication } from '@azure/msal-browser';
+import { Path } from '@constants/paths';
 import {
-  InterviewPage,
   AdminInterviewPage,
-  InternInfoPage,
-  TestSchedulerPage,
-  TestOverviewPage,
-  TestReviewPage,
-  DashboardPage,
-  InterviewersPage,
   AdminLogsPage,
   CounterPage,
+  DashboardPage,
+  InternInfoPage,
   InterviewBuilderPage,
+  InterviewersPage,
+  InterviewPage,
   InterviewStatsPage,
+  TestOverviewPage,
+  TestReviewPage,
+  TestSchedulerPage,
 } from '@pages/index';
+import { useEffect, useState } from 'react';
 import { msalConfig } from 'src/configs/azure.config';
-import { PublicClientApplication, AccountInfo } from '@azure/msal-browser';
-import { useState, useEffect } from 'react';
-import { Path } from '@constants/paths';
+import { Route } from 'wouter';
 
 export const ProtectedRoutes = () => {
   const [isReady, setIsReady] = useState(false);
   const [account, setAccount] = useState<AccountInfo>();
-  const msalInstance = new PublicClientApplication(msalConfig);
 
   useEffect(() => {
+    const msalInstance = new PublicClientApplication(msalConfig);
     const initializeMsal = async () => {
       try {
         await msalInstance.initialize();

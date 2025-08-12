@@ -1,3 +1,4 @@
+import { useCreateInterviewQuestion } from '@api/index';
 import { QuestionType } from '@internship-app/types/';
 import {
   Button,
@@ -11,7 +12,6 @@ import {
 import { SetStateAction, useState } from 'react';
 import toast from 'react-hot-toast';
 
-import { useCreateInterviewQuestion } from '@api/index';
 import { QuestionCategory } from '../../constants/interviewConstants.ts';
 
 export const InterviewQuestionForm = ({

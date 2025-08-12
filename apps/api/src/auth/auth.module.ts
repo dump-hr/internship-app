@@ -5,8 +5,8 @@ import { PrismaService } from 'src/prisma.service';
 
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
-import { JwtStrategy } from './jwt.strategy';
 import { AzureADStrategy } from './azure.strategy';
+import { JwtStrategy } from './jwt.strategy';
 
 @Module({
   imports: [

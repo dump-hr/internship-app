@@ -1,17 +1,18 @@
 import { Path } from '@constants/paths';
 import { HomePage } from '@pages/HomePage';
-import { Switch, Route } from 'wouter';
-import { ProtectedRoutes } from './ProtectedRoutes';
+import { Route, Switch } from 'wouter';
+
 import {
   ApplicationFormPage,
-  ScheduleInterviewPage,
-  StatusPage,
-  TestPage,
-  TestChoosePage,
-  ScheduleTestPage,
-  NotFoundPage,
   LoginPage,
+  NotFoundPage,
+  ScheduleInterviewPage,
+  ScheduleTestPage,
+  StatusPage,
+  TestChoosePage,
+  TestPage,
 } from './pages';
+import { ProtectedRoutes } from './ProtectedRoutes';
 
 export const Router = () => {
   return (

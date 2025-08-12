@@ -1,8 +1,7 @@
+import { InputHandler } from '@components/index';
 import { Question, QuestionType } from '@internship-app/types';
 import { Box, Typography } from '@mui/material';
 import { FieldValues, UseFormReturn } from 'react-hook-form';
-
-import { InputHandler } from '@components/index';
 
 type InterviewQuestionHandlerProps = {
   question: Question;

@@ -1,3 +1,10 @@
+import {
+  useDeleteInterviewer,
+  useFetchAllInterviewers,
+  useFetchInterviewMemberParticipations,
+  usePostInterviewer,
+} from '@api/index';
+import { LayoutSpacing, LogoHeader } from '@components/index';
 import { Discipline } from '@internship-app/types';
 import { Tooltip } from '@mui/joy';
 import {
@@ -16,15 +23,8 @@ import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { useState } from 'react';
 import toast from 'react-hot-toast';
 
-import {
-  useDeleteInterviewer,
-  useFetchAllInterviewers,
-  useFetchInterviewMemberParticipations,
-  usePostInterviewer,
-} from '@api/index';
 import c from './InterviewersPage.module.css';
 import { DialogsState } from './types';
-import { LogoHeader, LayoutSpacing } from '@components/index';
 
 export const InterviewersPage = () => {
   const deleteInterviewer = useDeleteInterviewer();

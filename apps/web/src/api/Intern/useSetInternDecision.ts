@@ -1,8 +1,7 @@
+import { api } from '@api/base';
 import { InternDecisionRequest } from '@internship-app/types';
 import toast from 'react-hot-toast';
 import { useMutation } from 'react-query';
-
-import { api } from '@api/base';
 
 const setInternDecision = async (req: InternDecisionRequest) => {
   return await api.put<InternDecisionRequest, never>(

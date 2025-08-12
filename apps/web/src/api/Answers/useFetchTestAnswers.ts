@@ -1,7 +1,6 @@
+import { api } from '@api/base';
 import { ErrorResponse, InternQuestionAnswer } from '@internship-app/types';
 import { useQuery } from 'react-query';
-
-import { api } from '@api/base';
 import { checkError } from 'src/helpers/checkError';
 
 const fetchTestAnswers = async (
@@ -27,7 +26,7 @@ export const useFetchTestAnswers = (
       staleTime: Infinity,
       retry: false,
       onError: (error: ErrorResponse) => {
-        checkError(error, "Greska pri dohvaćanju odgovora na test");
+        checkError(error, 'Greska pri dohvaćanju odgovora na test');
       },
     },
   );

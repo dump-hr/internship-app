@@ -1,7 +1,7 @@
+import { useApplyBoardAction } from '@api/index';
 import { BoardAction, BoardActionRequest } from '@internship-app/types';
 import toast from 'react-hot-toast';
 
-import { useApplyBoardAction } from '@api/index';
 import Actions from '../Actions/Actions';
 import { options } from './options';
 

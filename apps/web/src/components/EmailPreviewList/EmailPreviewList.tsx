@@ -1,8 +1,8 @@
+import { EmailPreview } from '@components/index';
 import { Button } from '@mui/joy';
 import { Box, Modal, Typography } from '@mui/material';
 
 import xSymbol from '../../assets/x-symbol.svg';
-import { EmailPreview } from '@components/index';
 
 interface EmailListProps {
   subject: string;

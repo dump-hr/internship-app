@@ -1,11 +1,10 @@
+import { useFetchAllInterviewQuestions } from '@api/index';
+import { InterviewStatsAnswers, LogoHeader } from '@components/index.ts';
+import { Path } from '@constants/paths.ts';
 import { Question } from '@internship-app/types/';
 import { useRoute } from 'wouter';
 
-import { useFetchAllInterviewQuestions } from '@api/index';
-
 import classes from './index.module.css';
-import { LogoHeader, InterviewStatsAnswers } from '@components/index.ts';
-import { Path } from '@constants/paths.ts';
 
 export const InterviewStatsPage = () => {
   const [, params] = useRoute(Path.InterviewStats);

@@ -1,3 +1,10 @@
+import { usePostIntern } from '@api/index';
+import {
+  ApplicationFormInputHandler,
+  Logo,
+  SortableDisciplinesContainer,
+} from '@components/index';
+import { disciplineLabel } from '@constants/index';
 import {
   Discipline,
   EducationOrEmploymentStatus,
@@ -10,17 +17,9 @@ import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { initDataLayer, pushToDataLayer } from '../../../analytics.ts';
-import { usePostIntern } from '@api/index';
 import formWelcomeImage from '../../assets/form-welcome-image.png';
-
-import classes from './index.module.css';
-import {
-  Logo,
-  ApplicationFormInputHandler,
-  SortableDisciplinesContainer,
-} from '@components/index';
-import { disciplineLabel } from '@constants/index';
 import { applicationFormDataQuestions } from './constants/ApplicationFormQuestions.ts';
+import classes from './index.module.css';
 
 export type FormValues = {
   firstName: string;

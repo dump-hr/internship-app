@@ -23,12 +23,11 @@ import {
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiTags } from '@nestjs/swagger';
 import { AdminLogAction, InternLogAction } from '@prisma/client';
-import { JwtAuthGuard } from 'src/auth/jwt-auth-guard';
+import { AdminGuard, MemberGuard } from 'src/auth/azure.guard';
 import { LoggerService } from 'src/logger/logger.service';
 
 import { CreateInternDto } from './dto/createIntern.dto';
 import { InternService } from './intern.service';
-import { AdminGuard, MemberGuard } from 'src/auth/azure.guard';
 
 @Controller('intern')
 @ApiTags('intern')

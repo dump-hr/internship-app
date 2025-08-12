@@ -1,12 +1,12 @@
 import 'xterm/css/xterm.css';
 
+import { runApi } from '@api/index';
 import { CodingLanguage } from '@internship-app/types';
 import { Box, Button } from '@mui/material';
 import { nanoid } from 'nanoid';
 import { useEffect, useRef, useState } from 'react';
 import { Terminal } from 'xterm';
 
-import { runApi } from '@api/index';
 import c from './CodeRunner.module.css';
 import { COLORS, keyMapper, messages } from './constants';
 import { ProcessState } from './types';

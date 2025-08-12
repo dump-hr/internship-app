@@ -1,7 +1,6 @@
+import { api } from '@api/base';
 import type { InterviewSlot } from '@prisma/client';
 import { useQuery } from 'react-query';
-
-import { api } from '@api/base';
 
 const fetchAvailableInterviewSlots = async (internId: string) => {
   const slots = await api.get<never, InterviewSlot[]>(

@@ -1,9 +1,9 @@
 import {
   ConfirmDialog,
-  MuiDate,
-  Layout,
-  TimeSlotPicker,
   DatePicker,
+  Layout,
+  MuiDate,
+  TimeSlotPicker,
 } from '@components/index';
 import { Slot } from '@internship-app/types';
 import { Box, useMediaQuery } from '@mui/material';

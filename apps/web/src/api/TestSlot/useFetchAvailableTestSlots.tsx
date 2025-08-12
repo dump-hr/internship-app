@@ -1,7 +1,6 @@
+import { api } from '@api/index';
 import type { Discipline, TestSlot } from '@internship-app/types';
 import { useQuery } from 'react-query';
-
-import { api } from '@api/index';
 
 const fetchAvailableTestSlots = async (
   internId: string,

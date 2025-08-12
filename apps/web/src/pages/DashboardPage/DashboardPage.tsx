@@ -1,3 +1,14 @@
+import { useFetchAllInterns } from '@api/index';
+import {
+  AdminPage,
+  BoardActions,
+  CsvFile,
+  FilterCriteria,
+  getInternFilter,
+  InternFilter,
+  InternList,
+  shortDisciplineLabels,
+} from '@components/index';
 import {
   Discipline,
   DisciplineStatus,
@@ -6,23 +17,11 @@ import {
   InterviewStatus,
 } from '@internship-app/types';
 import { Button, Grid, Switch } from '@mui/material';
+import { EmailPage } from '@pages/index';
 import { useState } from 'react';
 import { FieldValues } from 'react-hook-form';
 
-import { useFetchAllInterns } from '@api/index';
-
 import c from './DashboardPage.module.css';
-import {
-  FilterCriteria,
-  shortDisciplineLabels,
-  AdminPage,
-  BoardActions,
-  InternFilter,
-  CsvFile,
-  getInternFilter,
-  InternList,
-} from '@components/index';
-import { EmailPage } from '@pages/index';
 
 const getInternStatus = (intern: Intern) => {
   if (
