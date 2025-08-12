@@ -33,11 +33,14 @@ interface InterviewQuestion extends GridRowModel {
 }
 
 export const InterviewQuestions = () => {
-  const { data: allQuestions } = useFetchAllInterviewQuestions();
-  const { mutateAsync } = useUpdateInterviewQuestion();
-  const slots = useFetchAllInterviewSlots().data as InterviewSlot[] | undefined;
   const [rowModesModel, setRowModesModel] = useState<GridRowModesModel>({});
   const [showForm, setShowForm] = useState(false);
+
+  const { data: allQuestions } = useFetchAllInterviewQuestions();
+  const { mutateAsync } = useUpdateInterviewQuestion();
+
+  const slots = useFetchAllInterviewSlots().data as InterviewSlot[] | undefined;
+
   const handleAddQuestionClick = () => {
     setShowForm((prev) => !prev);
   };
@@ -206,7 +209,7 @@ export const InterviewQuestions = () => {
         >
           {showForm ? 'Close form' : 'Add question'}
         </Button>
-        {showForm && <InterviewQuestionForm />}
+        {showForm && <InterviewQuestionForm setShowForm={setShowForm} />}
         <DataGrid
           columns={columns}
           rows={allQuestions.map((q) => ({

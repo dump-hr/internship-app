@@ -1,5 +1,6 @@
 import {
   ExecutionContext,
+  ForbiddenException,
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
@@ -15,6 +16,10 @@ const supportedRolesPerRole = {
   [Role.Member]: [Role.Admin, Role.Member],
 };
 
+const areArraysOverlapping = <T>(first: T[], second: T[]) => {
+  return first.some((f) => second.includes(f));
+};
+
 const AzureADGuard = (role: Role) =>
   class extends AuthGuard('AzureAD') {
     canActivate(context: ExecutionContext) {
@@ -24,8 +29,14 @@ const AzureADGuard = (role: Role) =>
     handleRequest(err, user) {
       const roles = supportedRolesPerRole[role];
 
-      if (err || !user?.roles) {
+      if (err || !user) {
         throw err || new UnauthorizedException();
+      }
+
+      if (!user.roles || !areArraysOverlapping(user.roles, roles)) {
+        throw new ForbiddenException(
+          'You do not have permission to perform this action.',
+        );
       }
 
       return user;

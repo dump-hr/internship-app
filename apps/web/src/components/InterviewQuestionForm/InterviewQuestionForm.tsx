@@ -8,13 +8,17 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import { useState } from 'react';
+import { SetStateAction, useState } from 'react';
 import toast from 'react-hot-toast';
 
 import { useCreateInterviewQuestion } from '@api/index';
 import { QuestionCategory } from '../../constants/interviewConstants.ts';
 
-export const InterviewQuestionForm = () => {
+export const InterviewQuestionForm = ({
+  setShowForm,
+}: {
+  setShowForm: React.Dispatch<SetStateAction<boolean>>;
+}) => {
   const [question, setQuestion] = useState('');
   const [category, setCategory] = useState('');
   const [type, setType] = useState('');
@@ -82,14 +86,12 @@ export const InterviewQuestionForm = () => {
       setMinValue('');
       setMaxValue('');
       setStepValue('');
-
-      toast.success('Question added successfully');
     } catch (err) {
       console.error('Error submitting question:', err);
     }
   };
 
-  if (error) return <div>Error: {error}</div>;
+  if (error) setShowForm(false);
 
   return (
     <Card

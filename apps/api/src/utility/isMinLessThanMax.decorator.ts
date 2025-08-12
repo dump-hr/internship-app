@@ -10,7 +10,6 @@ export class IsMinLessThanMax implements ValidatorConstraintInterface {
     const object = args.object as any;
     const maxValue = object.maxValue;
     if (minValue != null && maxValue != null) {
-      console.log('isMinLessThanMax', minValue, args);
       return minValue < maxValue;
     }
     return true;
