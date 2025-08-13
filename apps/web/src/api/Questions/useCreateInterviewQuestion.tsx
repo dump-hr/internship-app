@@ -43,7 +43,7 @@ export const useCreateInterviewQuestion = () => {
   return useMutation(createInterviewQuestion, {
     onMutate: () => {},
     onSuccess: () => {
-      void queryClient.invalidateQueries(['interview-question']);
+      void queryClient.invalidateQueries(['interview-questions']);
       toast.success('Pitanje uspješno dodano');
     },
     onError: (error: string) => {

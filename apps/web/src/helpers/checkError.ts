@@ -7,5 +7,5 @@ export const checkError = (error: ErrorResponse, message: string) => {
     return;
   }
 
-  toast.error('Nisi admin plebu');
+  toast.error('Nisi admin');
 };
