@@ -1,4 +1,5 @@
-import { AccountInfo, PublicClientApplication } from '@azure/msal-browser';
+import { InteractionType } from '@azure/msal-browser';
+import { MsalAuthenticationTemplate } from '@azure/msal-react';
 import { Path } from '@constants/paths';
 import {
   AdminInterviewPage,
@@ -14,41 +15,16 @@ import {
   TestReviewPage,
   TestSchedulerPage,
 } from '@pages/index';
-import { useEffect, useState } from 'react';
-import { msalConfig } from 'src/configs/azure.config';
 import { Route } from 'wouter';
 
 export const ProtectedRoutes = () => {
-  const [isReady, setIsReady] = useState(false);
-  const [account, setAccount] = useState<AccountInfo>();
-
-  useEffect(() => {
-    const msalInstance = new PublicClientApplication(msalConfig);
-    const initializeMsal = async () => {
-      try {
-        await msalInstance.initialize();
-        const response = await msalInstance.handleRedirectPromise();
-        const account = response?.account ?? msalInstance.getAllAccounts()[0];
-
-        if (!account) {
-          await msalInstance.loginRedirect({ scopes: ['openid', 'profile'] });
-        } else {
-          setAccount(account);
-          setIsReady(true);
-        }
-      } catch (error) {
-        console.error('MSAL initialization error:', error);
-      }
-    };
-
-    initializeMsal();
-  }, []);
-
-  if (!isReady) return <div>Loading...</div>;
-  if (!account) return <div>Authentication Failed</div>;
-
   return (
-    <>
+    <MsalAuthenticationTemplate
+      interactionType={InteractionType.Redirect}
+      authenticationRequest={{ scopes: ['openid', 'profile'] }}
+      loadingComponent={() => <div>Loading...</div>}
+      errorComponent={() => <div>Authentication Failed</div>}
+    >
       <Route path={Path.Interview} component={InterviewPage} />
       <Route path={Path.InterviewPicker} component={AdminInterviewPage} />
       <Route path={Path.Intern} component={InternInfoPage} />
@@ -61,6 +37,6 @@ export const ProtectedRoutes = () => {
       <Route path={Path.Counter} component={CounterPage} />
       <Route path={Path.InterviewBuilder} component={InterviewBuilderPage} />
       <Route path={Path.InterviewStats} component={InterviewStatsPage} />
-    </>
+    </MsalAuthenticationTemplate>
   );
 };
