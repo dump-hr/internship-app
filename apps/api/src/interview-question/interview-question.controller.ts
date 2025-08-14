@@ -8,10 +8,10 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
+import { AdminGuard, MemberGuard } from 'src/auth/azure.guard';
 
 import { CreateInterviewQuestionDto } from './dto/createInterviewQuestion.dto';
 import { QuestionService } from './interview-question.service';
-import { AdminGuard, MemberGuard } from 'src/auth/azure.guard';
 
 @Controller('interview-questions')
 @ApiTags('interview-questions')

@@ -1,11 +1,11 @@
-import { Slot } from '@internship-app/types';
-import { useRoute } from 'wouter';
-
 import {
   useFetchAvailableInterviewSlots,
   useScheduleInterview,
 } from '@api/index';
-import { SlotPicker, Layout as SlotPickerLayout } from '@components/index';
+import { Layout as SlotPickerLayout, SlotPicker } from '@components/index';
+import { Slot } from '@internship-app/types';
+import { useRoute } from 'wouter';
+
 import { Path } from '../../constants/paths';
 
 export const ScheduleInterviewPage = () => {

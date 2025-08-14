@@ -1,13 +1,12 @@
-import { useRoute } from 'wouter';
-
 import { useFetchIntern } from '@api/index';
 import {
   AdminPage,
-  InternInfo,
-  InternActions,
   DecisionHandler,
+  InternActions,
+  InternInfo,
 } from '@components/index';
 import { Path } from '@constants/index';
+import { useRoute } from 'wouter';
 
 export const InternInfoPage = () => {
   const [, params] = useRoute(Path.Intern);

@@ -1,5 +1,6 @@
 import { ErrorResponse } from '@internship-app/types';
 import axios from 'axios';
+import toast from 'react-hot-toast';
 import { msalInstance } from 'src/configs/msalInstance';
 
 export const api = axios.create({
@@ -47,6 +48,8 @@ api.interceptors.response.use(
         };
 
         await msal.acquireTokenRedirect(silentRequest);
+      } else if (error.response?.status === 403) {
+        toast.error('Nisi admin');
       }
 
       return Promise.reject(error.response.data.message);

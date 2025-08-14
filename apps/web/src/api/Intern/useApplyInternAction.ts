@@ -1,8 +1,7 @@
+import { api } from '@api/index';
 import { ErrorResponse, InternActionRequest } from '@internship-app/types';
 import toast from 'react-hot-toast';
 import { useMutation, useQueryClient } from 'react-query';
-
-import { api } from '@api/index';
 import { checkError } from 'src/helpers/checkError';
 
 const applyInternAction = async (req: InternActionRequest) => {

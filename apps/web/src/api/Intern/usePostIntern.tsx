@@ -1,10 +1,9 @@
+import { api } from '@api/index';
+import { Path } from '@constants/index';
 import { Intern, InternCreateRequest } from '@internship-app/types';
 import { toast } from 'react-hot-toast';
 import { useMutation } from 'react-query';
 import { navigate } from 'wouter/use-location';
-
-import { Path } from '@constants/index';
-import { api } from '@api/index';
 
 const addIntern = async (newIntern: InternCreateRequest) => {
   return await api.post<InternCreateRequest, Intern>('/intern', newIntern);

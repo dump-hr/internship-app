@@ -1,7 +1,6 @@
+import { api } from '@api/index';
 import { TestSlot } from '@internship-app/types';
 import { useQuery } from 'react-query';
-
-import { api } from '@api/index';
 
 const fetchTestSlot = async (id: string) => {
   const slot = await api.get<never, TestSlot>(`/test-slot/${id}`);

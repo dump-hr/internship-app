@@ -1,17 +1,17 @@
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 
+import { useCreateTestSlots, useFetchAllTestSlots } from '@api/index';
+import { AdminPage } from '@components/index';
 import { Discipline } from '@internship-app/types';
 import { Box, Button, Typography } from '@mui/material';
+import { ExistingSlotInfo, NewSlotEdit, SlotCard } from '@pages/index';
 import { format, getDay, parse, startOfWeek } from 'date-fns';
 import hrLocale from 'date-fns/locale/hr';
 import moment from 'moment';
 import { useState } from 'react';
-import { Calendar, SlotInfo, dateFnsLocalizer } from 'react-big-calendar';
+import { Calendar, dateFnsLocalizer, SlotInfo } from 'react-big-calendar';
 import toast, { LoaderIcon } from 'react-hot-toast';
 
-import { useCreateTestSlots, useFetchAllTestSlots } from '@api/index';
-import { AdminPage } from '@components/index';
-import { SlotCard, NewSlotEdit, ExistingSlotInfo } from '@pages/index';
 import { SlotCardType, TestSlotCard } from './types';
 
 moment.locale('hr');

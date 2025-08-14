@@ -1,10 +1,9 @@
+import { api } from '@api/index';
+import { Path } from '@constants/index';
 import { Intern, ScheduleInterviewRequest } from '@internship-app/types';
 import { toast } from 'react-hot-toast';
 import { useMutation, useQueryClient } from 'react-query';
 import { navigate } from 'wouter/use-location';
-
-import { Path } from '@constants/index';
-import { api } from '@api/index';
 
 const scheduleInterview = async ({
   interviewSlotId,

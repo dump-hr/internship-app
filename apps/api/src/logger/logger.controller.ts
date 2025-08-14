@@ -1,10 +1,9 @@
 import { GetAdminLogsRequest } from '@internship-app/types';
 import { Controller, Get, Query, UseGuards } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { JwtAuthGuard } from 'src/auth/jwt-auth-guard';
+import { AdminGuard } from 'src/auth/azure.guard';
 
 import { LoggerService } from './logger.service';
-import { AdminGuard } from 'src/auth/azure.guard';
 
 @Controller('logger')
 @ApiTags('logger')

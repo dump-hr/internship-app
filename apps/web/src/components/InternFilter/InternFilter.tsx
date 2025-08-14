@@ -1,3 +1,4 @@
+import { InputHandler } from '@components/index';
 import {
   Discipline,
   DisciplineStatus,
@@ -12,8 +13,6 @@ import CloseIcon from '@mui/icons-material/Close';
 import { Box, Button, IconButton } from '@mui/material';
 import { useState } from 'react';
 import { FieldValues, useForm } from 'react-hook-form';
-
-import { InputHandler } from '@components/index';
 
 type CriteriaSection = {
   id: string;

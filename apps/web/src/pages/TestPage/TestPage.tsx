@@ -1,3 +1,7 @@
+import { useStartTestSlot, useSubmitTestSlot } from '@api/index';
+import { CodeEditor, ConfirmDialog, Countdown } from '@components/index';
+import { Path } from '@constants/paths';
+import { startingPrograms } from '@constants/startingPrograms';
 import { CodingLanguage } from '@internship-app/types';
 import {
   Button,
@@ -11,13 +15,9 @@ import { useEffect, useState } from 'react';
 import { toast } from 'react-hot-toast';
 import { useRoute } from 'wouter';
 
-import { useStartTestSlot, useSubmitTestSlot } from '@api/index';
-import c from './TestPage.module.css';
-import { Countdown, CodeEditor, ConfirmDialog } from '@components/index';
-import { Path } from '@constants/paths';
-import { startingPrograms } from '@constants/startingPrograms';
 import DUMPLogo from '../../assets/dump-logo.png';
 import { useLocalSave } from '../../hooks/index';
+import c from './TestPage.module.css';
 
 type Answer = {
   isDirty: boolean;

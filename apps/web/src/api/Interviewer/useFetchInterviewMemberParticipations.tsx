@@ -1,7 +1,6 @@
+import { api } from '@api/index';
 import { InterviewMemberParticipation } from '@prisma/client';
 import { useQuery } from 'react-query';
-
-import { api } from '@api/index';
 
 const fetchAllInterviewMemberParticipations = async () => {
   return api.get<never, InterviewMemberParticipation[]>(

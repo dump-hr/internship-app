@@ -1,17 +1,17 @@
-import { InterviewStatus, TestStatus } from '@internship-app/types';
-import { Typography } from '@mui/material';
-import moment from 'moment';
-import { Link, useRoute } from 'wouter';
-
 import { useFetchStatus } from '@api/index';
 import { PublicLayout } from '@components/index';
 import {
   disciplineLabel,
   disciplineStatusLabel,
   interviewStatusLabel,
-  testStatusLabel,
   Path,
+  testStatusLabel,
 } from '@constants/index';
+import { InterviewStatus, TestStatus } from '@internship-app/types';
+import { Typography } from '@mui/material';
+import moment from 'moment';
+import { Link, useRoute } from 'wouter';
+
 import { DisciplineCard } from './DisciplineCard';
 import * as styled from './styled';
 

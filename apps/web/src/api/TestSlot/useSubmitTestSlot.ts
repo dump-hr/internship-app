@@ -1,10 +1,9 @@
+import { api } from '@api/index';
+import { Path } from '@constants/index';
 import { SubmitTestRequest } from '@internship-app/types';
 import toast from 'react-hot-toast';
 import { useMutation } from 'react-query';
 import { navigate } from 'wouter/use-location';
-
-import { Path } from '@constants/index';
-import { api } from '@api/index';
 
 const submitTestSlot = async (req: SubmitTestRequest) => {
   req = { ...req, password: localStorage.getItem('test_password') as string };

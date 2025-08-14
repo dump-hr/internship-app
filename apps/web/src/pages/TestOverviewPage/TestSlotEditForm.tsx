@@ -1,11 +1,10 @@
+import { useUpdateTestSlot } from '@api/index';
+import { InputHandler } from '@components/index';
 import { Question, QuestionType, TestSlot } from '@internship-app/types';
 import { Box, Button, Typography } from '@mui/material';
 import moment from 'moment';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-
-import { useUpdateTestSlot } from '@api/index';
-import { InputHandler } from '@components/index';
 
 type TestSlotEditFormProps = {
   slot: TestSlot;

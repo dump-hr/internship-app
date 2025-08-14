@@ -1,15 +1,15 @@
+import { useMakeEmails } from '@api/index';
+import { useSendEmails } from '@api/index';
+import {
+  EmailBox,
+  EmailGuide,
+  EmailList,
+  EmailPreviewList,
+} from '@components/index';
 import { Box, Button, Input, Modal } from '@mui/joy';
 import { useState } from 'react';
 
-import { useMakeEmails } from '@api/index';
-import { useSendEmails } from '@api/index';
 import xSymbol from '../../assets/x-symbol.svg';
-import {
-  EmailBox,
-  EmailPreviewList,
-  EmailList,
-  EmailGuide,
-} from '@components/index';
 
 type Props = {
   emails: string[];

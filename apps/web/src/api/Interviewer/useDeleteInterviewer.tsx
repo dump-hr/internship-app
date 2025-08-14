@@ -1,9 +1,8 @@
+import { api } from '@api/index';
+import { ErrorResponse } from '@internship-app/types';
 import toast from 'react-hot-toast';
 import { useMutation, useQueryClient } from 'react-query';
-
-import { api } from '@api/index';
 import { checkError } from 'src/helpers/checkError';
-import { ErrorResponse } from '@internship-app/types';
 
 const deleteInterviewer = async (id: string) => {
   return api.delete(`/interviewer/${id}`);

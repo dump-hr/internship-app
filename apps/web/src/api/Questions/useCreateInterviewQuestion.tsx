@@ -1,6 +1,6 @@
-import { useMutation, useQueryClient } from 'react-query';
-
 import { api } from '@api/index';
+import toast from 'react-hot-toast';
+import { useMutation, useQueryClient } from 'react-query';
 
 enum QuestionCategory {
   General = 'General',
@@ -43,10 +43,11 @@ export const useCreateInterviewQuestion = () => {
   return useMutation(createInterviewQuestion, {
     onMutate: () => {},
     onSuccess: () => {
-      void queryClient.invalidateQueries(['interview-question']);
+      void queryClient.invalidateQueries(['interview-questions']);
+      toast.success('Pitanje uspješno dodano');
     },
     onError: (error: string) => {
-      console.log('error creating interview question: ', error);
+      console.log('Pogreška prilikom kreiranja pitanja: ', error);
     },
   });
 };

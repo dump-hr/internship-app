@@ -9,12 +9,11 @@ import {
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { AdminLogAction } from '@prisma/client';
-import { JwtAuthGuard } from 'src/auth/jwt-auth-guard';
+import { AdminGuard, MemberGuard } from 'src/auth/azure.guard';
 import { LoggerService } from 'src/logger/logger.service';
 
 import { CreateInterviewerDto } from './dto/createInterviewer.dto';
 import { InterviewerService } from './interviewer.service';
-import { AdminGuard, MemberGuard } from 'src/auth/azure.guard';
 
 @Controller('interviewer')
 @ApiTags('interviewer')

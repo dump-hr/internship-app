@@ -1,11 +1,11 @@
+import { LayoutSpacing } from '@components/index';
+import { Path } from '@constants/index';
 import { Button } from '@mui/material';
 import { Link } from 'wouter';
 
 import DUMPLogo from '../../assets/dump-logo.png';
-import { Path } from '@constants/index';
-import { LayoutSpacing } from '@components/index';
-import c from './LogoHeader.module.css';
 import { useAccount } from '../../hooks/index';
+import c from './LogoHeader.module.css';
 
 type Props = {
   text: string;

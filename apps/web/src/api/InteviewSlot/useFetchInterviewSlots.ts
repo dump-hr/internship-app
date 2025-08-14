@@ -1,7 +1,6 @@
+import { api } from '@api/index';
 import { InterviewSlot } from '@internship-app/types';
 import { useQuery, useQueryClient } from 'react-query';
-
-import { api } from '@api/index';
 
 const fetchInterviewSlots = async () => {
   return api.get<never, InterviewSlot[]>('/interview-slot');

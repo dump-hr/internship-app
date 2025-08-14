@@ -1,3 +1,6 @@
+import { useSetInternDecision } from '@api/index';
+import { InputHandler } from '@components/InputHandler/InputHandler';
+import { disciplineLabel } from '@constants/internConstants';
 import {
   DisciplineStatus,
   Intern,
@@ -7,10 +10,6 @@ import {
 } from '@internship-app/types';
 import { Box, Button, Typography } from '@mui/material';
 import { FieldValues, useForm } from 'react-hook-form';
-
-import { useSetInternDecision } from '@api/index';
-import { InputHandler } from '@components/InputHandler/InputHandler';
-import { disciplineLabel } from '@constants/internConstants';
 
 type DecisionHandlerProps = {
   intern: Intern;
