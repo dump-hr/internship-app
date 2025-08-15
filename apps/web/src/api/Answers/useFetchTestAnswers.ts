@@ -1,7 +1,7 @@
 import { api } from '@api/base';
-import { ErrorResponse, InternQuestionAnswer } from '@internship-app/types';
+import { InternQuestionAnswer } from '@internship-app/types';
+import toast from 'react-hot-toast';
 import { useQuery } from 'react-query';
-import { checkError } from 'src/helpers/checkError';
 
 const fetchTestAnswers = async (
   testSlotId: string,
@@ -25,8 +25,8 @@ export const useFetchTestAnswers = (
       enabled: !!group && !!groupdId && !!testSlotId,
       staleTime: Infinity,
       retry: false,
-      onError: (error: ErrorResponse) => {
-        checkError(error, 'Greska pri dohvaćanju odgovora na test');
+      onError: () => {
+        toast.error('Greska pri dohvaćanju odgovora na test');
       },
     },
   );

@@ -1,8 +1,6 @@
 import { api } from '@api/index';
-import { ErrorResponse } from '@internship-app/types';
 import toast from 'react-hot-toast';
 import { useMutation, useQueryClient } from 'react-query';
-import { checkError } from 'src/helpers/checkError';
 
 const updateFlagInAnswers = async ({
   slotId,
@@ -27,8 +25,8 @@ export const useUpdateFlagInAnswers = () => {
       toast.success('Successfully updated flag in answers');
       queryClient.invalidateQueries(['interview-slot']);
     },
-    onError: (error: ErrorResponse) => {
-      checkError(error, 'Greska pri ažuriranju oznake u odgovorima');
+    onError: () => {
+      toast.error('Greska pri ažuriranju oznake u odgovorima');
     },
   });
 };
