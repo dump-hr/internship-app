@@ -31,7 +31,7 @@ import { TestSlotModule } from './test-slot/test-slot.module';
     InterviewerModule,
     QuestionModule,
   ],
-  controllers: [AppController, AuthController],
+  controllers: [AppController/* , AuthController */],
   providers: [AppService, PrismaService],
 })
 export class AppModule {}
