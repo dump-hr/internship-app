@@ -1,6 +1,7 @@
 import { Discipline, SlotAvailability } from '@internship-app/types';
 import { Chip } from '@mui/material';
 import { DataGrid, GridColDef, GridRenderCellParams } from '@mui/x-data-grid';
+import type { FC } from 'react';
 
 type Props = {
   data: SlotAvailability[] | undefined;
@@ -12,7 +13,7 @@ const getDisciplinesChips = (disciplines: Discipline[]) => {
   ));
 };
 
-export const SlotsList: React.FC<Props> = ({ data = [] }) => {
+export const SlotsList: FC<Props> = ({ data = [] }) => {
   const columns: GridColDef[] = [
     {
       field: 'disciplines',

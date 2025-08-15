@@ -1,6 +1,7 @@
 import { Box, Typography } from '@mui/material';
 import { StaticDatePicker } from '@mui/x-date-pickers/StaticDatePicker';
 import { useState } from 'react';
+import type { FC } from 'react';
 
 export interface MuiDate {
   $D: number;
@@ -13,7 +14,7 @@ type Props = {
   onChange: (date: MuiDate) => void;
 };
 
-export const DatePicker: React.FC<Props> = ({ availableDates, onChange }) => {
+export const DatePicker: FC<Props> = ({ availableDates, onChange }) => {
   const [currentMonth, setCurrentMonth] = useState<number>(
     new Date().getMonth(),
   );

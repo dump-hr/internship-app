@@ -3,6 +3,7 @@ import FilterAltIcon from '@mui/icons-material/FilterAlt';
 
 import { CustomSelectInput } from '../common/SelectInput/CustomSelectInput';
 import styles from './index.module.css';
+import type { FC } from 'react';
 
 interface Props {
   setInterviewers: React.Dispatch<
@@ -13,7 +14,7 @@ interface Props {
   >;
 }
 
-export const CalendarSidebar: React.FC<Props> = ({
+export const CalendarSidebar: FC<Props> = ({
   setInterviewers,
   setSelectedInterviewerFilter,
 }: Props) => {

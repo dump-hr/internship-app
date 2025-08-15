@@ -9,13 +9,14 @@ import clsx from 'clsx';
 
 import classes from '../pages/ApplicationFormPage/index.module.css';
 import { SortableDiscipline } from './SortableDiscipline';
+import type { FC } from 'react';
 
 type Props = {
   internDisciplines: Discipline[];
   setInternDisciplines: React.Dispatch<React.SetStateAction<Discipline[]>>;
 };
 
-export const SortableDisciplinesContainer: React.FC<Props> = ({
+export const SortableDisciplinesContainer: FC<Props> = ({
   internDisciplines,
   setInternDisciplines,
 }) => {

@@ -4,14 +4,13 @@ import { Path } from '@constants/index';
 import { Box, Button } from '@mui/material';
 import { LoaderIcon } from 'react-hot-toast';
 import { navigate } from 'wouter/use-location';
+import type { FC } from 'react';
 
 type ExistingSlotInfoProps = {
   slotId: string;
 };
 
-export const ExistingSlotInfo: React.FC<ExistingSlotInfoProps> = ({
-  slotId,
-}) => {
+export const ExistingSlotInfo: FC<ExistingSlotInfoProps> = ({ slotId }) => {
   const { data: slot, isLoading, error } = useFetchTestSlot(slotId);
 
   if (isLoading) return <LoaderIcon />;

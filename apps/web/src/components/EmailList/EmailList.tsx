@@ -1,10 +1,11 @@
 import { Box } from '@mui/joy';
+import type { FC } from 'react';
 
 interface Props {
   emails: string[];
 }
 
-export const EmailList: React.FC<Props> = ({ emails }: Props) => {
+export const EmailList: FC<Props> = ({ emails }: Props) => {
   return (
     <Box
       display="flex"

@@ -20,6 +20,7 @@ import { Path } from '../../constants/paths';
 import { calendarHelper } from '../../helpers/calendarHelper';
 import { EventContent } from './EventContent';
 import styles from './index.module.css';
+import type { FC } from 'react';
 
 moment.locale('hr');
 const locales = {
@@ -53,7 +54,7 @@ interface Props {
   addEvent: (event: InterviewEvent) => void;
 }
 
-export const Calendar: React.FC<Props> = ({
+export const Calendar: FC<Props> = ({
   filteredEvents,
   existingEvents,
   deleteEvent,

@@ -8,12 +8,13 @@ import { Typography } from '@mui/material';
 
 import Actions from '../Actions/Actions';
 import { getInternOptions } from './options';
+import type { FC } from 'react';
 
 type InternActionsProps = {
   intern: Intern;
 };
 
-export const InternActions: React.FC<InternActionsProps> = ({ intern }) => {
+export const InternActions: FC<InternActionsProps> = ({ intern }) => {
   const options = getInternOptions(intern);
   const applyInternAction = useApplyInternAction();
 

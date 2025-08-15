@@ -5,6 +5,7 @@ import { Box, Button, Typography } from '@mui/material';
 import moment from 'moment';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import type { FC } from 'react';
 
 type TestSlotEditFormProps = {
   slot: TestSlot;
@@ -126,7 +127,7 @@ const getNewTestQuestion = () => {
   };
 };
 
-export const TestSlotEditForm: React.FC<TestSlotEditFormProps> = ({
+export const TestSlotEditForm: FC<TestSlotEditFormProps> = ({
   slot,
   closeEdit: close,
 }) => {

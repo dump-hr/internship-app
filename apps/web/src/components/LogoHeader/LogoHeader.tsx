@@ -6,19 +6,14 @@ import { Link } from 'wouter';
 import DUMPLogo from '../../assets/dump-logo.png';
 import { useAccount } from '../../hooks/index';
 import c from './LogoHeader.module.css';
+import type { FC } from 'react';
 
 type Props = {
   text: string;
 };
 
-export const LogoHeader: React.FC<Props> = ({ text }) => {
+export const LogoHeader: FC<Props> = ({ text }) => {
   const { user, logout } = useAccount();
-
-  // const handleLogout = () => {
-  //   toast.success('Logged out');
-  //   localStorage.removeItem('access_token');
-  //   navigate(Path.Login);
-  // };
 
   return (
     <header className={c.header}>

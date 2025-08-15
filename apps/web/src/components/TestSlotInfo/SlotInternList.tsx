@@ -2,8 +2,8 @@ import { useApplyBoardAction } from '@api/index';
 import { BoardActionType, TestSlot, TestStatus } from '@internship-app/types';
 import { Box, Button, Typography } from '@mui/material';
 import { Link } from 'wouter';
-
-import { Path } from '../../constants/paths';
+import type { FC } from 'react';
+import { Path } from '@constants/index';
 
 type SlotInternListProps = {
   slot: TestSlot;
@@ -17,10 +17,7 @@ const borderStylePerStatus = {
   [TestStatus.PickTerm]: '3px dashed red',
 };
 
-export const SlotInternList: React.FC<SlotInternListProps> = ({
-  slot,
-  simple,
-}) => {
+export const SlotInternList: FC<SlotInternListProps> = ({ slot, simple }) => {
   const applyBoardAction = useApplyBoardAction();
 
   return (

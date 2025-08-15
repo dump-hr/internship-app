@@ -17,6 +17,7 @@ import {
   shortDisciplineLabels,
   testChipProps,
 } from './consts';
+import type { FC } from 'react';
 
 type Props = {
   data: InternForDashboard[] | undefined;
@@ -66,7 +67,7 @@ const getInterviewChip = (intern: InternForDashboard) => {
   );
 };
 
-export const InternList: React.FC<Props> = ({ data = [], setSelection }) => {
+export const InternList: FC<Props> = ({ data = [], setSelection }) => {
   const columns: GridColDef[] = [
     { field: 'id', headerName: 'ID', width: 0 },
     {

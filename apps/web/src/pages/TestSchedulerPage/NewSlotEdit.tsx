@@ -3,13 +3,14 @@ import moment from 'moment';
 import { ChangeEvent } from 'react';
 
 import { TestSlotCard } from './types';
+import type { FC } from 'react';
 
 type NewSlotEditProps = {
   slot: TestSlotCard;
   setSlots: React.Dispatch<React.SetStateAction<TestSlotCard[]>>;
 };
 
-export const NewSlotEdit: React.FC<NewSlotEditProps> = ({ slot, setSlots }) => {
+export const NewSlotEdit: FC<NewSlotEditProps> = ({ slot, setSlots }) => {
   const handleFieldChange =
     (getter: 'value' | 'valueAsNumber') =>
     (event: ChangeEvent<HTMLInputElement>) => {

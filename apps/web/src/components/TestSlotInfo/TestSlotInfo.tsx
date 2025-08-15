@@ -4,13 +4,14 @@ import moment from 'moment';
 
 import { SlotInternList } from './SlotInternList';
 import { SlotQuestionList } from './SlotQuestionList';
+import type { FC } from 'react';
 
 type TestSlotInfoProps = {
   slot: TestSlot;
   simple?: boolean;
 };
 
-export const TestSlotInfo: React.FC<TestSlotInfoProps> = ({ slot, simple }) => {
+export const TestSlotInfo: FC<TestSlotInfoProps> = ({ slot, simple }) => {
   return (
     <Box display="flex" flexDirection="column">
       <Box>

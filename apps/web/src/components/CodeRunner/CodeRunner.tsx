@@ -10,13 +10,14 @@ import { Terminal } from 'xterm';
 import c from './CodeRunner.module.css';
 import { COLORS, keyMapper, messages } from './constants';
 import { ProcessState } from './types';
+import type { FC } from 'react';
 
 type Props = {
   code: string;
   language: CodingLanguage;
 };
 
-export const CodeRunner: React.FC<Props> = ({ code, language }) => {
+export const CodeRunner: FC<Props> = ({ code, language }) => {
   const [process, setProcess] = useState<ProcessState | null>(null);
   const [pid, setPid] = useState<string | null>(null);
 

@@ -1,13 +1,14 @@
 import { Logo } from '@components/index';
 import { Box, Typography, useMediaQuery } from '@mui/material';
 import { ReactNode } from 'react';
+import type { FC } from 'react';
 
 type Props = {
   children?: ReactNode;
   title: string;
 };
 
-export const Layout: React.FC<Props> = ({ children, title }) => {
+export const Layout: FC<Props> = ({ children, title }) => {
   const isMobile = useMediaQuery('(max-width:400px)');
 
   return (

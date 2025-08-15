@@ -1,5 +1,5 @@
 import { Box, Typography } from '@mui/material';
-import React from 'react';
+import type { FC } from 'react';
 
 import { SlotCardType, TestSlotCard } from './types';
 
@@ -7,7 +7,7 @@ type SlotCardProps = {
   slot: TestSlotCard;
 };
 
-export const SlotCard: React.FC<SlotCardProps> = ({ slot }) => {
+export const SlotCard: FC<SlotCardProps> = ({ slot }) => {
   if (slot.type === SlotCardType.Existing)
     return (
       <Box>

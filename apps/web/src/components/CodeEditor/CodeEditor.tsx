@@ -1,10 +1,10 @@
 import { CodingLanguage } from '@internship-app/types';
 import Editor from '@monaco-editor/react';
 import { Button, ButtonGroup } from '@mui/material';
-import React from 'react';
 
 import { CodeRunner } from '../CodeRunner/CodeRunner';
 import c from './CodeEditor.module.css';
+import type { FC } from 'react';
 
 type Props = {
   language: CodingLanguage;
@@ -19,7 +19,7 @@ type Props = {
   headerHeight?: number;
 };
 
-export const CodeEditor: React.FC<Props> = ({
+export const CodeEditor: FC<Props> = ({
   language,
   code,
   setCode,

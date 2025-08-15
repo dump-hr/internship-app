@@ -1,6 +1,6 @@
 import { useMsal } from '@azure/msal-react';
 
-export enum Role { //postoji na be
+export enum Role {
   Member = 'Member',
   Admin = 'Admin',
 }

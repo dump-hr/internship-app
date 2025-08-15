@@ -4,6 +4,7 @@ import { FieldErrors, UseFormRegister, UseFormWatch } from 'react-hook-form';
 
 import { FormValues } from '../../pages/ApplicationFormPage/ApplicationFormPage';
 import classes from '../../pages/ApplicationFormPage/index.module.css';
+import type { FC } from 'react';
 
 type Props = {
   question: Question;
@@ -12,7 +13,7 @@ type Props = {
   watch: UseFormWatch<FormValues>;
 };
 
-export const ApplicationFormInputHandler: React.FC<Props> = ({
+export const ApplicationFormInputHandler: FC<Props> = ({
   question,
   register,
   errors,
