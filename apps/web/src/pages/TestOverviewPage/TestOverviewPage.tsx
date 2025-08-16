@@ -1,12 +1,12 @@
+import { useDeleteTestSlot, useFetchTestSlot } from '@api/index';
+import { AdminPage, ConfirmDialog, TestSlotInfo } from '@components/index';
+import { Path } from '@constants/index';
 import { Box, Button } from '@mui/material';
 import { useState } from 'react';
 import { LoaderIcon } from 'react-hot-toast';
 import { useRoute } from 'wouter';
 
-import { useDeleteTestSlot, useFetchTestSlot } from '@api/index';
 import { TestSlotEditForm } from './TestSlotEditForm';
-import { AdminPage, ConfirmDialog, TestSlotInfo } from '@components/index';
-import { Path } from '@constants/index';
 
 export const TestOverviewPage = () => {
   const [, params] = useRoute(Path.TestOverview);

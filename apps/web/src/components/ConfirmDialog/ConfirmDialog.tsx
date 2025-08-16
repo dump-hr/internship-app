@@ -6,6 +6,7 @@ import {
   DialogContentText,
   DialogTitle,
 } from '@mui/material';
+import type { FC } from 'react';
 
 type Props = {
   open: boolean;
@@ -14,7 +15,7 @@ type Props = {
   description?: string;
 };
 
-export const ConfirmDialog: React.FC<Props> = ({
+export const ConfirmDialog: FC<Props> = ({
   open,
   handleClose,
   title,

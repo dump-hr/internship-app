@@ -1,7 +1,6 @@
+import { api } from '@api/index';
 import toast from 'react-hot-toast';
 import { useMutation } from 'react-query';
-
-import { api } from '@api/index';
 
 type Request = {
   internId: string;

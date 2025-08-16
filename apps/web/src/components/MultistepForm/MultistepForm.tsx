@@ -1,8 +1,8 @@
+import { useFetchAllInterviewQuestions } from '@api/index';
 import { Question } from '@internship-app/types';
 import { Box, Button, Step, StepLabel, Stepper } from '@mui/material';
 import { useState } from 'react';
-
-import { useFetchAllInterviewQuestions } from '@api/index';
+import type { FC } from 'react';
 
 interface Step<T> {
   label: string;
@@ -18,7 +18,7 @@ type MultistepFormProps<T, FH> = {
   steps: Step<T>[];
   form: FH;
   onSubmit: () => void;
-  InputHandler: React.FC<HandlerProps<FH>>;
+  InputHandler: FC<HandlerProps<FH>>;
 };
 
 const MultistepForm = <T, FH>({

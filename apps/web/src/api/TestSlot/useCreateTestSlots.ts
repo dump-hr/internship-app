@@ -1,8 +1,7 @@
+import { api } from '@api/index';
 import { CreateTestSlotsRequest } from '@internship-app/types';
 import toast from 'react-hot-toast';
 import { useMutation, useQueryClient } from 'react-query';
-
-import { api } from '@api/index';
 
 const createTestSlots = async (req: CreateTestSlotsRequest) => {
   return await api.post<CreateTestSlotsRequest, never>(`/test-slot`, req);

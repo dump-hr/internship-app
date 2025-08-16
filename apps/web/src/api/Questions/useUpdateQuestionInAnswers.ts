@@ -1,7 +1,6 @@
+import { api } from '@api/index';
 import toast from 'react-hot-toast';
 import { useMutation, useQueryClient } from 'react-query';
-
-import { api } from '@api/index';
 
 const updateQuestionInAnswers = async ({
   id,

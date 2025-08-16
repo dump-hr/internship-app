@@ -1,23 +1,19 @@
+import { LayoutSpacing } from '@components/index';
+import { Path } from '@constants/index';
 import { Button } from '@mui/material';
-import toast from 'react-hot-toast';
 import { Link } from 'wouter';
-import { navigate } from 'wouter/use-location';
 
 import DUMPLogo from '../../assets/dump-logo.png';
-import { Path } from '@constants/index';
-import { LayoutSpacing } from '@components/index';
+import { useAccount } from '../../hooks/index';
 import c from './LogoHeader.module.css';
+import type { FC } from 'react';
 
 type Props = {
   text: string;
 };
 
-export const LogoHeader: React.FC<Props> = ({ text }) => {
-  const handleLogout = () => {
-    toast.success('Logged out');
-    localStorage.removeItem('access_token');
-    navigate(Path.Login);
-  };
+export const LogoHeader: FC<Props> = ({ text }) => {
+  const { user, logout } = useAccount();
 
   return (
     <header className={c.header}>
@@ -27,6 +23,7 @@ export const LogoHeader: React.FC<Props> = ({ text }) => {
           <h3 className={c.text}>{text}</h3>
         </div>
         <nav className={c.navigation}>
+          <p>Pozdrav {user.name}</p>
           <Button component={Link} to={Path.Dashboard}>
             Dashboard
           </Button>
@@ -42,7 +39,7 @@ export const LogoHeader: React.FC<Props> = ({ text }) => {
           <Button component={Link} to={Path.InterviewBuilder}>
             Interview Builder
           </Button>
-          <Button onClick={handleLogout} variant="outlined" color="error">
+          <Button onClick={() => logout()} variant="outlined" color="error">
             Logout
           </Button>
         </nav>

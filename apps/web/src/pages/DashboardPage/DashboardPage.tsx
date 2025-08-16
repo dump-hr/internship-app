@@ -1,3 +1,14 @@
+import { useFetchAllInterns } from '@api/index';
+import {
+  AdminPage,
+  BoardActions,
+  CsvFile,
+  FilterCriteria,
+  getInternFilter,
+  InternFilter,
+  InternList,
+  shortDisciplineLabels,
+} from '@components/index';
 import {
   Discipline,
   DisciplineStatus,
@@ -6,23 +17,11 @@ import {
   InterviewStatus,
 } from '@internship-app/types';
 import { Button, Grid, Switch } from '@mui/material';
+import { EmailPage } from '@pages/index';
 import { useState } from 'react';
 import { FieldValues } from 'react-hook-form';
 
-import { useFetchAllInterns } from '@api/index';
-
 import c from './DashboardPage.module.css';
-import {
-  FilterCriteria,
-  shortDisciplineLabels,
-  AdminPage,
-  BoardActions,
-  InternFilter,
-  CsvFile,
-  getInternFilter,
-  InternList,
-} from '@components/index';
-import { EmailPage } from '@pages/index';
 
 const getInternStatus = (intern: Intern) => {
   if (
@@ -50,8 +49,6 @@ const initialState: { filterCriteria: FilterCriteria } = {
 };
 
 export const DashboardPage = () => {
-  const { data: interns } = useFetchAllInterns();
-
   const [selection, setSelection] = useState<string[]>([]);
   const [emailDialogOpen, setEmailDialogOpen] = useState(false);
   const [actionsOpen, setActionsOpen] = useState(false);
@@ -61,6 +58,8 @@ export const DashboardPage = () => {
   const [filterCriteria, setFilterCriteria] = useState<FilterCriteria>(
     initialState.filterCriteria,
   );
+
+  const { data: interns } = useFetchAllInterns();
 
   const internsWithStatus = interns?.map((intern) => ({
     ...intern,

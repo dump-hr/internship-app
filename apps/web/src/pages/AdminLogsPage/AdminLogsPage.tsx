@@ -1,3 +1,5 @@
+import { useFetchAdminLogs } from '@api/index';
+import { AdminPage, InputHandler } from '@components/index';
 import {
   AdminLogAction,
   GetAdminLogsRequest,
@@ -8,9 +10,6 @@ import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import moment from 'moment';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-
-import { useFetchAdminLogs } from '@api/index';
-import { AdminPage, InputHandler } from '@components/index';
 
 const formQuestions: Question[] = [
   {

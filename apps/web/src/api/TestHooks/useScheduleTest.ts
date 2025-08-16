@@ -1,10 +1,9 @@
+import { api } from '@api/index';
+import { Path } from '@constants/index';
 import { Intern, ScheduleTestRequest } from '@internship-app/types';
 import { toast } from 'react-hot-toast';
 import { useMutation, useQueryClient } from 'react-query';
 import { navigate } from 'wouter/use-location';
-
-import { Path } from '@constants/index';
-import { api } from '@api/index';
 
 const scheduleTest = async ({ testSlotId, internId }: ScheduleTestRequest) => {
   return await api.patch<never, Intern>(`/test-slot/schedule/${testSlotId}`, {

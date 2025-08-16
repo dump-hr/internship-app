@@ -1,8 +1,7 @@
+import { api } from '@api/index';
 import { JwtResponse, LoginRequest } from '@internship-app/types';
 import { toast } from 'react-hot-toast';
 import { useMutation } from 'react-query';
-
-import { api } from '@api/index';
 
 const login = (data: LoginRequest) =>
   api.post<never, JwtResponse>('/auth/login', data);

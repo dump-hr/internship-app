@@ -1,6 +1,5 @@
-import { useQuery } from 'react-query';
-
 import { api } from '@api/index';
+import { useQuery } from 'react-query';
 
 const fetchCount = () => api.get<never, number>('/intern/count');
 

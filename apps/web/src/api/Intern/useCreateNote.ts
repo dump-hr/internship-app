@@ -1,8 +1,7 @@
+import { api } from '@api/index';
 import { CreateNoteRequest } from '@internship-app/types';
 import toast from 'react-hot-toast';
 import { useMutation, useQueryClient } from 'react-query';
-
-import { api } from '@api/index';
 
 const createNote = async (req: CreateNoteRequest) => {
   return await api.post<CreateNoteRequest, never>(

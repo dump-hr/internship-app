@@ -1,22 +1,23 @@
 import 'xterm/css/xterm.css';
 
+import { runApi } from '@api/index';
 import { CodingLanguage } from '@internship-app/types';
 import { Box, Button } from '@mui/material';
 import { nanoid } from 'nanoid';
 import { useEffect, useRef, useState } from 'react';
 import { Terminal } from 'xterm';
 
-import { runApi } from '@api/index';
 import c from './CodeRunner.module.css';
 import { COLORS, keyMapper, messages } from './constants';
 import { ProcessState } from './types';
+import type { FC } from 'react';
 
 type Props = {
   code: string;
   language: CodingLanguage;
 };
 
-export const CodeRunner: React.FC<Props> = ({ code, language }) => {
+export const CodeRunner: FC<Props> = ({ code, language }) => {
   const [process, setProcess] = useState<ProcessState | null>(null);
   const [pid, setPid] = useState<string | null>(null);
 

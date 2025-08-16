@@ -1,7 +1,7 @@
-import { InternQuestionAnswer } from '@internship-app/types';
-import { useQuery } from 'react-query';
-
 import { api } from '@api/base';
+import { InternQuestionAnswer } from '@internship-app/types';
+import toast from 'react-hot-toast';
+import { useQuery } from 'react-query';
 
 const fetchTestAnswers = async (
   testSlotId: string,
@@ -25,6 +25,9 @@ export const useFetchTestAnswers = (
       enabled: !!group && !!groupdId && !!testSlotId,
       staleTime: Infinity,
       retry: false,
+      onError: () => {
+        toast.error('Greska pri dohvaćanju odgovora na test');
+      },
     },
   );
 };

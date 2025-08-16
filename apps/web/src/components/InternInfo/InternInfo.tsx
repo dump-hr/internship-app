@@ -1,3 +1,5 @@
+import { InternNotes } from '@components/index';
+import { disciplineLabel, internActionLabel, Path } from '@constants/index';
 import {
   Intern,
   InternDiscipline,
@@ -7,9 +9,7 @@ import {
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import moment from 'moment';
 
-import { Path, disciplineLabel, internActionLabel } from '@constants/index';
 import styles from './index.module.css';
-import { InternNotes } from '@components/index';
 
 interface InternInfoProps {
   intern: Intern;

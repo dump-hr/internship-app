@@ -1,15 +1,16 @@
+import { useApplyBoardAction } from '@api/index';
 import { BoardAction, BoardActionRequest } from '@internship-app/types';
 import toast from 'react-hot-toast';
 
-import { useApplyBoardAction } from '@api/index';
 import Actions from '../Actions/Actions';
 import { options } from './options';
+import type { FC } from 'react';
 
 type BoardActionProps = {
   internIds: string[];
 };
 
-export const BoardActions: React.FC<BoardActionProps> = ({ internIds }) => {
+export const BoardActions: FC<BoardActionProps> = ({ internIds }) => {
   const applyBoardAction = useApplyBoardAction();
 
   const actionHandler = (action: BoardAction) => {

@@ -1,15 +1,16 @@
+import { useCreateNote } from '@api/index';
 import { Intern } from '@internship-app/types';
 import { Button, TextField } from '@mui/material';
 import { useState } from 'react';
+import type { FC } from 'react';
 
-import { useCreateNote } from '@api/index';
 import styles from './index.module.css';
 
 type InternNotesProps = {
   intern: Intern;
 };
 
-export const InternNotes: React.FC<InternNotesProps> = ({ intern }) => {
+export const InternNotes: FC<InternNotesProps> = ({ intern }) => {
   const [newNote, setNewNote] = useState('');
   const createNote = useCreateNote();
 

@@ -1,11 +1,11 @@
+import { useUpdateTestSlot } from '@api/index';
+import { InputHandler } from '@components/index';
 import { Question, QuestionType, TestSlot } from '@internship-app/types';
 import { Box, Button, Typography } from '@mui/material';
 import moment from 'moment';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-
-import { useUpdateTestSlot } from '@api/index';
-import { InputHandler } from '@components/index';
+import type { FC } from 'react';
 
 type TestSlotEditFormProps = {
   slot: TestSlot;
@@ -127,7 +127,7 @@ const getNewTestQuestion = () => {
   };
 };
 
-export const TestSlotEditForm: React.FC<TestSlotEditFormProps> = ({
+export const TestSlotEditForm: FC<TestSlotEditFormProps> = ({
   slot,
   closeEdit: close,
 }) => {

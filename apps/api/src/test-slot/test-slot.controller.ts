@@ -22,7 +22,7 @@ import {
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { AdminLogAction, Discipline, InternLogAction } from '@prisma/client';
-import { JwtAuthGuard } from 'src/auth/jwt-auth-guard';
+import { AdminGuard, MemberGuard } from 'src/auth/azure.guard';
 import { LoggerService } from 'src/logger/logger.service';
 
 import { TestSlotService } from './test-slot.service';
@@ -36,7 +36,7 @@ export class TestSlotController {
   ) {}
 
   @Get()
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(MemberGuard)
   async getAll() {
     const allSlots = await this.testSlotService.getAll();
     const testSlotsDto: TestSlotPreviewDto[] = allSlots.map((ts) => ({
@@ -50,13 +50,13 @@ export class TestSlotController {
   }
 
   @Get(':id')
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(MemberGuard)
   async get(@Param('id') id: string) {
     return await this.testSlotService.get(id);
   }
 
   @Post()
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(AdminGuard)
   async createTestSlot(@Body() testSlotDto: CreateTestSlotsRequest) {
     await this.loggerService.createAdminLog(
       AdminLogAction.Create,
@@ -67,7 +67,7 @@ export class TestSlotController {
   }
 
   @Put(':id')
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(AdminGuard)
   async updateTestSlot(
     @Param('id') testSlotId: string,
     @Body() { data }: UpdateTestSlotRequest,
@@ -81,7 +81,7 @@ export class TestSlotController {
   }
 
   @Delete(':id')
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(AdminGuard)
   async delete(@Param('id') id: string) {
     await this.loggerService.createAdminLog(
       AdminLogAction.Delete,
@@ -92,6 +92,7 @@ export class TestSlotController {
   }
 
   @Get('available/:discipline/:internId')
+  @UseGuards(MemberGuard)
   async getAvailableSlots(
     @Param('internId') internId: string,
     @Param('discipline') discipline: Discipline,
@@ -105,6 +106,7 @@ export class TestSlotController {
   }
 
   @Patch('schedule/:id')
+  @UseGuards(AdminGuard)
   async scheduleTest(
     @Param('id') slotId: string,
     @Body() { internId }: ScheduleTestRequest,
@@ -138,7 +140,7 @@ export class TestSlotController {
   }
 
   @Get('answers/:testSlotId/intern/:internId')
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(MemberGuard)
   async getTestAnswersByIntern(
     @Param('testSlotId') testSlotId: string,
     @Param('internId') internId: string,
@@ -150,13 +152,13 @@ export class TestSlotController {
   }
 
   @Get('answers/:testSlotId/question/:questionId')
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(MemberGuard)
   async getTestAnswersByQuestion(@Param('questionId') questionId: string) {
     return await this.testSlotService.getTestAnswersByQuestion(questionId);
   }
 
   @Put('score/:answerId')
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(MemberGuard)
   async setScore(
     @Param('answerId') answerId: string,
     @Body() { score }: SetScoreRequest,

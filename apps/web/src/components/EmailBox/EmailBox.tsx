@@ -1,5 +1,6 @@
 import { Box, Button, Textarea } from '@mui/joy';
 import React from 'react';
+import type { FC } from 'react';
 
 interface Props {
   sendEmail: () => void;
@@ -7,11 +8,7 @@ interface Props {
   setBody: (event: React.ChangeEvent<HTMLTextAreaElement>) => void;
 }
 
-export const EmailBox: React.FC<Props> = ({
-  sendEmail,
-  body,
-  setBody,
-}: Props) => {
+export const EmailBox: FC<Props> = ({ sendEmail, body, setBody }: Props) => {
   return (
     <Box
       display="flex"

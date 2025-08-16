@@ -1,41 +1,61 @@
-import axios, { AxiosError, AxiosResponse } from 'axios';
-import { toast } from 'react-hot-toast';
-
-import { Path } from '@constants/index';
+import { ErrorResponse } from '@internship-app/types';
+import axios from 'axios';
+import toast from 'react-hot-toast';
+import { msalInstance } from 'src/configs/msalInstance';
 
 export const api = axios.create({
   baseURL: '/api',
-  timeout: 5000,
   headers: {
     'Content-Type': 'application/json',
   },
 });
 
-api.interceptors.request.use((config) => {
-  const token = localStorage.getItem('access_token');
+const msal = msalInstance;
 
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
+const acquireToken = async () => {
+  const silentRequest = {
+    scopes: ['openid', 'profile'],
+    account: msal.getAllAccounts()[0],
+  };
+
+  try {
+    const response = await msal.acquireTokenSilent(silentRequest);
+    return response.idToken;
+  } catch (error) {
+    console.log(msal.getAllAccounts());
+    console.log(error);
   }
+};
+
+api.interceptors.request.use(async (config) => {
+  await msal.initialize();
+
+  const token = await acquireToken();
+  config.headers.Authorization = `Bearer ${token}`;
 
   return config;
 });
 
-type ErrorResponse = AxiosError & {
-  response: AxiosResponse<{ message: string }>;
-};
-
 api.interceptors.response.use(
   (response) => response.data,
+  async (error: ErrorResponse) => {
+    if (error.response) {
+      if (error.response?.status === 401) {
+        const silentRequest = {
+          scopes: ['openid', 'profile'],
+          account: msal.getAllAccounts()[0],
+          forceRefresh: true,
+        };
 
-  (error: ErrorResponse) => {
-    if (error.response.status === 401) {
-      history.pushState(null, '', Path.Login);
-      toast.error(
-        error.response.data.message || error.message || 'Forbidden access',
-      );
+        await msal.acquireTokenRedirect(silentRequest);
+      } else if (error.response?.status === 403) {
+        toast.error('Nisi admin');
+      }
+
+      return Promise.reject(error.response.data.message);
     }
-    return Promise.reject(error.response.data.message || error.message);
+
+    return Promise.reject(error.message);
   },
 );
 

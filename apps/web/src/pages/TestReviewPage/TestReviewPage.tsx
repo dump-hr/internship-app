@@ -1,12 +1,12 @@
+import { useFetchTestAnswers, useSetTestScore } from '@api/index';
+import { AdminPage, CodeEditor } from '@components/index';
+import { Path } from '@constants/index';
 import { InternQuestionAnswer } from '@internship-app/types';
 import { Box, Button, TextField } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useQueryClient } from 'react-query';
 import { useRoute } from 'wouter';
 
-import { useFetchTestAnswers, useSetTestScore } from '@api/index';
-import { AdminPage, CodeEditor } from '@components/index';
-import { Path } from '@constants/index';
 import c from './TestReviewPage.module.css';
 
 export const TestReviewPage = () => {

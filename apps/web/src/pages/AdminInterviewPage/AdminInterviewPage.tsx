@@ -1,25 +1,24 @@
 import {
+  useCreateInterviewSlot,
+  useDeleteInterviewSlot,
+  useFetchInterviewSlots,
+  useFetchSlotsAvailability,
+} from '@api/index';
+import {
+  AdminPage,
+  Calendar,
+  CalendarSidebar,
+  SlotsList,
+} from '@components/index';
+import {
   InterviewEvent,
   InterviewMemberParticipation,
 } from '@internship-app/types';
 import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
-
-import {
-  useFetchSlotsAvailability,
-  useFetchInterviewSlots,
-  useDeleteInterviewSlot,
-  useCreateInterviewSlot,
-} from '@api/index';
+import { calendarHelper } from 'src/helpers';
 
 import styles from './index.module.css';
-import {
-  AdminPage,
-  CalendarSidebar,
-  SlotsList,
-  Calendar,
-} from '@components/index';
-import { calendarHelper } from 'src/helpers';
 
 type MappedEvent = {
   id: string;

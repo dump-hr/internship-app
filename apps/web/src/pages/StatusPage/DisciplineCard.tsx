@@ -1,17 +1,19 @@
 import { InternDiscipline } from '@internship-app/types';
 
+import type { FC } from 'react';
+
+import * as styled from './styled';
 import {
   disciplineLabel,
   disciplineStatusLabel,
   testStatusLabel,
-} from '../../constants/internConstants';
-import * as styled from './styled';
+} from '@constants/index';
 
 type DisciplineCardProps = {
   internDiscipline: InternDiscipline;
 };
 
-export const DisciplineCard: React.FC<DisciplineCardProps> = ({
+export const DisciplineCard: FC<DisciplineCardProps> = ({
   internDiscipline: ind,
 }) => {
   return (

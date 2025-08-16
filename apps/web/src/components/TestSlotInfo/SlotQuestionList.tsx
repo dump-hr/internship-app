@@ -2,14 +2,15 @@ import { TestSlot } from '@internship-app/types';
 import { Box, Button, Typography } from '@mui/material';
 import { Link } from 'wouter';
 
-import { Path } from '../../constants/paths';
+import type { FC } from 'react';
+import { Path } from '@constants/index';
 
 type SlotQuestionListProps = {
   slot: TestSlot;
   simple?: boolean;
 };
 
-export const SlotQuestionList: React.FC<SlotQuestionListProps> = ({
+export const SlotQuestionList: FC<SlotQuestionListProps> = ({
   slot,
   simple,
 }) => {

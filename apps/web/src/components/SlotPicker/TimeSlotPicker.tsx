@@ -1,5 +1,6 @@
 import type { Slot } from '@internship-app/types';
 import { List, ListItem, ListItemButton, ListItemText } from '@mui/material';
+import type { FC } from 'react';
 
 type Props = {
   availableTimeSlots: Slot[];
@@ -7,7 +8,7 @@ type Props = {
   isMobile: boolean;
 };
 
-export const TimeSlotPicker: React.FC<Props> = ({
+export const TimeSlotPicker: FC<Props> = ({
   availableTimeSlots,
   onChange,
   isMobile,

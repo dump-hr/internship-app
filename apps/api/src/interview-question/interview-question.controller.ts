@@ -1,5 +1,14 @@
-import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Patch,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
+import { AdminGuard, MemberGuard } from 'src/auth/azure.guard';
 
 import { CreateInterviewQuestionDto } from './dto/createInterviewQuestion.dto';
 import { QuestionService } from './interview-question.service';
@@ -10,11 +19,13 @@ export class QuestionController {
   constructor(private readonly questionService: QuestionService) {}
 
   @Get()
+  @UseGuards(MemberGuard)
   async getAllInterviewQuestions() {
     return this.questionService.getAllInterviewQuestions();
   }
 
   @Post()
+  @UseGuards(AdminGuard)
   async createInterviewQuestion(
     @Body()
     data: CreateInterviewQuestionDto,
@@ -23,6 +34,7 @@ export class QuestionController {
   }
 
   @Patch('/question/:id')
+  @UseGuards(AdminGuard)
   async updateInterviewQuestion(
     @Param('id') id: string,
     @Body() body: { disabled: boolean },

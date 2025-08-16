@@ -1,9 +1,8 @@
+import { api } from '@api/index';
 import { ChooseTestRequest, TestSlot } from '@internship-app/types';
 import moment from 'moment';
 import toast from 'react-hot-toast';
 import { useMutation } from 'react-query';
-
-import { api } from '@api/index';
 
 const chooseTest = async (req: ChooseTestRequest) => {
   if (!req.password)

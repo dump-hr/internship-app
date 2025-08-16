@@ -6,6 +6,7 @@ import {
   Select,
 } from '@mui/material';
 import { useEffect, useState } from 'react';
+import type { FC } from 'react';
 
 import styles from './index.module.css';
 
@@ -16,7 +17,7 @@ interface Props {
   valueHandler?: (value: string[]) => void;
 }
 
-export const CustomSelectInput: React.FC<Props> = ({
+export const CustomSelectInput: FC<Props> = ({
   label,
   menuOptions,
   isMultiSelect,

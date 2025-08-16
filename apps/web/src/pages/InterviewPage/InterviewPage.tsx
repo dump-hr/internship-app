@@ -1,6 +1,15 @@
+import {
+  useFetchAllInterviewQuestions,
+  useFetchIntern,
+  useSetImage,
+  useSetInterview,
+} from '@api/index';
+import { AdminPage, ConfirmDialog, IntervieweeInfo } from '@components/index';
+import MultistepForm from '@components/MultistepForm/MultistepForm.tsx';
 import { Intern, InterviewStatus, QuestionType } from '@internship-app/types';
 import { Question } from '@internship-app/types/';
 import { Json } from '@internship-app/types/src/json';
+import { InterviewQuestionHandler } from '@pages/index.ts';
 import { useEffect, useState } from 'react';
 import { FieldValues, useForm } from 'react-hook-form';
 import { LoaderIcon } from 'react-hot-toast';
@@ -9,21 +18,11 @@ import { Link, useRoute } from 'wouter';
 import { navigate } from 'wouter/use-location';
 
 import {
-  useFetchAllInterviewQuestions,
-  useFetchIntern,
-  useSetImage,
-  useSetInterview,
-} from '@api/index';
-import { ConfirmDialog, AdminPage, IntervieweeInfo } from '@components/index';
-
-import {
   filterInterviewSteps as getFilteredInterviewSteps,
   QuestionCategory,
 } from '../../constants/interviewConstants';
 import { Path } from '../../constants/paths';
 import { getDefaultValues } from './data';
-import { InterviewQuestionHandler } from '@pages/index.ts';
-import MultistepForm from '@components/MultistepForm/MultistepForm.tsx';
 
 const mapAnswersToQuestions = (
   answers: FieldValues,

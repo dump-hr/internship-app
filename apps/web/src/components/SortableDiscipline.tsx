@@ -3,13 +3,14 @@ import { CSS } from '@dnd-kit/utilities';
 import { Discipline } from '@internship-app/types';
 
 import { disciplineLabel } from '../constants/internConstants';
+import type { FC } from 'react';
 
 type Props = {
   discipline: Discipline;
   index: number;
 };
 
-export const SortableDiscipline: React.FC<Props> = ({ discipline, index }) => {
+export const SortableDiscipline: FC<Props> = ({ discipline, index }) => {
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id: discipline });
 
