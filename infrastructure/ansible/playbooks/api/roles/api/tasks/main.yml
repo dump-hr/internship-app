@@ -32,8 +32,10 @@
       traefik.http.routers.api.middlewares: 'api-retry, api-cors'
       # Setting a service property ensures that the generated service name will be consistent between versions
       traefik.http.services.api.loadbalancer.server.scheme: 'http'
+    no_log: true
 
 - name: Swap docker containers if new one is healthy
+  no_log: true
   block:
     - name: Check if api docker container is healthy
       docker_container_info:
