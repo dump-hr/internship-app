@@ -12,6 +12,7 @@
     mode: 0600
 
 - name: Create new api docker container
+  no_log: true
   docker_container:
     name: '{{ container_name }}'
     image: '{{ docker_image }}'
@@ -32,7 +33,6 @@
       traefik.http.routers.api.middlewares: 'api-retry, api-cors'
       # Setting a service property ensures that the generated service name will be consistent between versions
       traefik.http.services.api.loadbalancer.server.scheme: 'http'
-    no_log: true
 
 - name: Swap docker containers if new one is healthy
   no_log: true
