@@ -1,6 +1,6 @@
 <h1 align="center">DUMP Internship App</h1>
 
-DUMP Internship companion app
+DUMP - Internship companion app
 
 ## Development
 
