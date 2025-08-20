@@ -11,7 +11,7 @@ import {
 import AddIcon from '@mui/icons-material/Add';
 import CloseIcon from '@mui/icons-material/Close';
 import { Box, Button, IconButton } from '@mui/material';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FieldValues, useForm } from 'react-hook-form';
 
 type CriteriaSection = {
@@ -89,15 +89,39 @@ const getNewCriteria = (id: string): CriteriaSection => ({
 type InternFilterProps = {
   submitHandler: (values: FieldValues) => void;
   disabled?: boolean;
+  initialValues?: FieldValues;
 };
 
 export const InternFilter = ({
   submitHandler,
   disabled,
+  initialValues,
 }: InternFilterProps) => {
   const form = useForm();
-  const { unregister, handleSubmit } = form;
+  const { unregister, handleSubmit, reset } = form;
   const [criteria, setCriteria] = useState(initialCriteria);
+
+  // Load initial values and criteria from URL params
+  useEffect(() => {
+    if (initialValues) {
+      // Reset form with initial values
+      reset(initialValues);
+
+      // Reconstruct criteria sections based on initial values
+      const disciplineKeys = Object.keys(initialValues).filter(
+        (key) => key.startsWith('disciplines.') && key.includes('.discipline'),
+      );
+
+      if (disciplineKeys.length > 0) {
+        const disciplineSections = disciplineKeys.map((key) => {
+          const id = key.replace('.discipline', '');
+          return getNewCriteria(id);
+        });
+
+        setCriteria([...initialCriteria, ...disciplineSections]);
+      }
+    }
+  }, [initialValues, reset]);
 
   const addDisciplineSection = () => {
     const id = `disciplines.${crypto.randomUUID()}`;

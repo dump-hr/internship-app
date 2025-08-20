@@ -12,34 +12,21 @@ import {
 import {
   Discipline,
   DisciplineStatus,
-  Intern,
   InternStatus,
   InterviewStatus,
 } from '@internship-app/types';
 import { Button, Grid, Switch } from '@mui/material';
 import { EmailPage } from '@pages/index';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FieldValues } from 'react-hook-form';
 
 import c from './DashboardPage.module.css';
-
-const getInternStatus = (intern: Intern) => {
-  if (
-    intern.internDisciplines.some(
-      (ind) => ind.status === DisciplineStatus.Pending,
-    )
-  )
-    return InternStatus.Pending;
-
-  if (
-    intern.internDisciplines.some(
-      (ind) => ind.status === DisciplineStatus.Approved,
-    )
-  )
-    return InternStatus.Approved;
-
-  return InternStatus.Rejected;
-};
+import {
+  deserializeFilters,
+  getFullName,
+  getInternStatus,
+  serializeFilters,
+} from './helpers';
 
 const initialState: { filterCriteria: FilterCriteria } = {
   filterCriteria: {
@@ -59,6 +46,11 @@ export const DashboardPage = () => {
     initialState.filterCriteria,
   );
 
+  useEffect(() => {
+    const urlFilters = deserializeFilters();
+    setFilterCriteria(urlFilters);
+  }, []);
+
   const { data: interns } = useFetchAllInterns();
 
   const internsWithStatus = interns?.map((intern) => ({
@@ -67,7 +59,16 @@ export const DashboardPage = () => {
   }));
 
   const filterHandler = (criteria: FieldValues) => {
-    setFilterCriteria(criteria as FilterCriteria);
+    const filterCriteria = criteria as FilterCriteria;
+    setFilterCriteria(filterCriteria);
+
+    // Update URL with filter parameters
+    const queryString = serializeFilters(filterCriteria);
+    const newUrl = queryString
+      ? `${window.location.pathname}?${queryString}`
+      : window.location.pathname;
+
+    window.history.replaceState({}, '', newUrl);
   };
 
   const stats = [
@@ -116,10 +117,6 @@ export const DashboardPage = () => {
     },
   ];
 
-  function getFullName(intern: Intern): string {
-    return `${intern.firstName.trim()} ${intern.lastName.trim()}`.toLowerCase();
-  }
-
   const duplicateInterns =
     internsWithStatus?.filter(
       (i1) =>
@@ -153,7 +150,11 @@ export const DashboardPage = () => {
 
       {actionsOpen && <BoardActions internIds={selection} />}
 
-      <InternFilter submitHandler={filterHandler} disabled={showDuplicates} />
+      <InternFilter
+        submitHandler={filterHandler}
+        disabled={showDuplicates}
+        initialValues={filterCriteria}
+      />
 
       <Grid item xs={12} md={5}>
         <div className={c.buttonsWrapper}>
