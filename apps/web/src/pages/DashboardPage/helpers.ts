@@ -10,12 +10,13 @@ import {
 
 export const serializeFilters = (filters: FilterCriteria): string => {
   const params = new URLSearchParams();
-  const main = (filters as any)?.main ?? {
+  const main = filters?.main ?? {
     name: '',
     status: '',
     interviewStatus: '',
   };
-  const disciplines = (filters as any)?.disciplines ?? {};
+
+  const disciplines = filters?.disciplines ?? {};
 
   // Serialize main filters
   if (main.name) params.set('name', main.name);
@@ -28,8 +29,7 @@ export const serializeFilters = (filters: FilterCriteria): string => {
       const innerId = rawKey.startsWith('disciplines.')
         ? rawKey.slice('disciplines.'.length)
         : rawKey;
-      // Guard against malformed keys like 'disciplines' or empty
-      if (!innerId || innerId === 'disciplines') return;
+
       const key = `disciplines.${innerId}`;
       const d = discipline as Partial<{
         discipline: Discipline;
