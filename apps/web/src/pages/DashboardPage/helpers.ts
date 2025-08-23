@@ -8,25 +8,40 @@ import {
   TestStatus,
 } from '@internship-app/types';
 
-// Helper functions for URL parameter handling
 export const serializeFilters = (filters: FilterCriteria): string => {
   const params = new URLSearchParams();
+  const main = (filters as any)?.main ?? {
+    name: '',
+    status: '',
+    interviewStatus: '',
+  };
+  const disciplines = (filters as any)?.disciplines ?? {};
 
   // Serialize main filters
-  if (filters.main.name) params.set('name', filters.main.name);
-  if (filters.main.status) params.set('status', filters.main.status);
-  if (filters.main.interviewStatus)
-    params.set('interviewStatus', filters.main.interviewStatus);
+  if (main.name) params.set('name', main.name);
+  if (main.status) params.set('status', main.status);
+  if (main.interviewStatus) params.set('interviewStatus', main.interviewStatus);
 
-  // Serialize discipline filters
-  Object.entries(filters.disciplines).forEach(([key, discipline]) => {
-    if (discipline.discipline)
-      params.set(`${key}.discipline`, discipline.discipline);
-    if (discipline.status) params.set(`${key}.status`, discipline.status);
-    if (discipline.testStatus)
-      params.set(`${key}.testStatus`, discipline.testStatus);
-    if (discipline.score) params.set(`${key}.score`, discipline.score);
-    if (discipline.not) params.set(`${key}.not`, 'true');
+  // Serialize discipline filters (accept inner ids; always emit 'disciplines.<id>.<field>')
+  Object.entries(disciplines as Record<string, unknown>).forEach(([rawKey, discipline]) => {
+    const innerId = rawKey.startsWith('disciplines.')
+      ? rawKey.slice('disciplines.'.length)
+      : rawKey;
+    // Guard against malformed keys like 'disciplines' or empty
+    if (!innerId || innerId === 'disciplines') return;
+    const key = `disciplines.${innerId}`;
+    const d = discipline as Partial<{
+      discipline: Discipline;
+      status: DisciplineStatus | '';
+      testStatus: TestStatus | '';
+      score: string | '';
+      not: boolean;
+    }>;
+    if (d.discipline) params.set(`${key}.discipline`, d.discipline);
+    if (d.status) params.set(`${key}.status`, d.status);
+    if (d.testStatus) params.set(`${key}.testStatus`, d.testStatus);
+    if (d.score) params.set(`${key}.score`, d.score);
+    if (d.not) params.set(`${key}.not`, 'true');
   });
 
   return params.toString();
@@ -57,29 +72,34 @@ export const deserializeFilters = (): FilterCriteria => {
   // Deserialize discipline filters
   for (const [key, value] of params.entries()) {
     if (key.includes('.')) {
-      const [disciplineKey, field] = key.split('.');
-      if (disciplineKey.startsWith('disciplines')) {
-        if (!filters.disciplines[disciplineKey]) {
-          filters.disciplines[disciplineKey] = {
-            discipline: Discipline.Development,
-            status: '',
-            testStatus: '',
-            score: '',
-            not: false,
-          };
-        }
+      const parts = key.split('.');
+      // Expecting keys like: disciplines.<uuid>.discipline | status | testStatus | score | not
+      if (parts.length >= 3 && parts[0] === 'disciplines') {
+        const disciplineKey = parts[1];
+        const field = parts[2];
+        if (!disciplineKey || disciplineKey === 'disciplines') continue;
+
+      if (!filters.disciplines[disciplineKey]) {
+        filters.disciplines[disciplineKey] = {
+          discipline: Discipline.Development,
+          status: '',
+          testStatus: '',
+          score: '',
+          not: false,
+        };
+      }
 
         if (
-          field === 'discipline' &&
-          Object.values(Discipline).includes(value as Discipline)
+        field === 'discipline' &&
+        Object.values(Discipline).includes(value as Discipline)
         ) {
           filters.disciplines[disciplineKey].discipline = value as Discipline;
         }
 
         if (
-          field === 'status' &&
-          (value === '' ||
-            Object.values(DisciplineStatus).includes(value as DisciplineStatus))
+        field === 'status' &&
+        (value === '' ||
+          Object.values(DisciplineStatus).includes(value as DisciplineStatus))
         ) {
           filters.disciplines[disciplineKey].status = value as
             | ''
@@ -87,9 +107,9 @@ export const deserializeFilters = (): FilterCriteria => {
         }
 
         if (
-          field === 'testStatus' &&
-          (value === '' ||
-            Object.values(TestStatus).includes(value as TestStatus))
+        field === 'testStatus' &&
+        (value === '' ||
+          Object.values(TestStatus).includes(value as TestStatus))
         ) {
           filters.disciplines[disciplineKey].testStatus = value as
             | ''

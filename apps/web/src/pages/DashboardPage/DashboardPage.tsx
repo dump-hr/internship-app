@@ -28,12 +28,12 @@ import {
   serializeFilters,
 } from './helpers';
 
-const initialState: { filterCriteria: FilterCriteria } = {
+/* const initialState: { filterCriteria: FilterCriteria } = {
   filterCriteria: {
     main: { name: '', status: '', interviewStatus: '' },
     disciplines: {},
   },
-};
+}; */
 
 export const DashboardPage = () => {
   const [selection, setSelection] = useState<string[]>([]);
@@ -43,7 +43,7 @@ export const DashboardPage = () => {
   const [showDuplicates, setShowDuplicates] = useState(false);
 
   const [filterCriteria, setFilterCriteria] = useState<FilterCriteria>(
-    initialState.filterCriteria,
+    deserializeFilters(),
   );
 
   useEffect(() => {
@@ -60,6 +60,8 @@ export const DashboardPage = () => {
 
   const filterHandler = (criteria: FieldValues) => {
     const filterCriteria = criteria as FilterCriteria;
+
+    console.log('filterCriteria: ', filterCriteria);
     setFilterCriteria(filterCriteria);
 
     // Update URL with filter parameters
