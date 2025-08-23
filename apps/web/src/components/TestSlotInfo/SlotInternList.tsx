@@ -1,9 +1,9 @@
 import { useApplyBoardAction } from '@api/index';
+import { Path } from '@constants/index';
 import { BoardActionType, TestSlot, TestStatus } from '@internship-app/types';
 import { Box, Button, Typography } from '@mui/material';
-import { Link } from 'wouter';
 import type { FC } from 'react';
-import { Path } from '@constants/index';
+import { Link } from 'wouter';
 
 type SlotInternListProps = {
   slot: TestSlot;

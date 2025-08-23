@@ -1,9 +1,9 @@
 import { useFetchAllInterviewers } from '@api/index';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
+import type { FC } from 'react';
 
 import { CustomSelectInput } from '../common/SelectInput/CustomSelectInput';
 import styles from './index.module.css';
-import type { FC } from 'react';
 
 interface Props {
   setInterviewers: React.Dispatch<

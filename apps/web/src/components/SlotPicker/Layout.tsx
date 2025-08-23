@@ -1,7 +1,7 @@
 import { Logo } from '@components/index';
 import { Box, Typography, useMediaQuery } from '@mui/material';
-import { ReactNode } from 'react';
 import type { FC } from 'react';
+import { ReactNode } from 'react';
 
 type Props = {
   children?: ReactNode;

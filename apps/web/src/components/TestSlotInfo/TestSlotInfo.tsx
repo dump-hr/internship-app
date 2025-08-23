@@ -1,10 +1,10 @@
 import { TestSlot } from '@internship-app/types';
 import { Box, Typography } from '@mui/material';
 import moment from 'moment';
+import type { FC } from 'react';
 
 import { SlotInternList } from './SlotInternList';
 import { SlotQuestionList } from './SlotQuestionList';
-import type { FC } from 'react';
 
 type TestSlotInfoProps = {
   slot: TestSlot;

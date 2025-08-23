@@ -1,8 +1,8 @@
 import { useFetchAllInterviewQuestions } from '@api/index';
 import { Question } from '@internship-app/types';
 import { Box, Button, Step, StepLabel, Stepper } from '@mui/material';
-import { useState } from 'react';
 import type { FC } from 'react';
+import { useState } from 'react';
 
 interface Step<T> {
   label: string;

@@ -1,9 +1,8 @@
+import { Path } from '@constants/index';
 import { TestSlot } from '@internship-app/types';
 import { Box, Button, Typography } from '@mui/material';
-import { Link } from 'wouter';
-
 import type { FC } from 'react';
-import { Path } from '@constants/index';
+import { Link } from 'wouter';
 
 type SlotQuestionListProps = {
   slot: TestSlot;

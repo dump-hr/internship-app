@@ -4,13 +4,13 @@ import { runApi } from '@api/index';
 import { CodingLanguage } from '@internship-app/types';
 import { Box, Button } from '@mui/material';
 import { nanoid } from 'nanoid';
+import type { FC } from 'react';
 import { useEffect, useRef, useState } from 'react';
 import { Terminal } from 'xterm';
 
 import c from './CodeRunner.module.css';
 import { COLORS, keyMapper, messages } from './constants';
 import { ProcessState } from './types';
-import type { FC } from 'react';
 
 type Props = {
   code: string;

@@ -5,10 +5,10 @@ import {
   InternActionRequest,
 } from '@internship-app/types';
 import { Typography } from '@mui/material';
+import type { FC } from 'react';
 
 import Actions from '../Actions/Actions';
 import { getInternOptions } from './options';
-import type { FC } from 'react';
 
 type InternActionsProps = {
   intern: Intern;

@@ -7,6 +7,7 @@ import {
 import { format, getDay, parse, startOfWeek } from 'date-fns';
 import hrLocale from 'date-fns/locale/hr';
 import moment from 'moment';
+import type { FC } from 'react';
 import { ReactNode } from 'react';
 import {
   Calendar as BigCalendar,
@@ -20,7 +21,6 @@ import { Path } from '../../constants/paths';
 import { calendarHelper } from '../../helpers/calendarHelper';
 import { EventContent } from './EventContent';
 import styles from './index.module.css';
-import type { FC } from 'react';
 
 moment.locale('hr');
 const locales = {

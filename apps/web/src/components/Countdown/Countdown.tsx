@@ -1,5 +1,6 @@
-import { useCountdown } from '../../hooks/useCountdown';
 import type { FC } from 'react';
+
+import { useCountdown } from '../../hooks/useCountdown';
 
 type Props = {
   toDate: Date;

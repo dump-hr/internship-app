@@ -1,8 +1,8 @@
 import { Global } from '@emotion/react';
+import type { FC } from 'react';
 
 import DUMPLogo from '../../assets/dump-logo.png';
 import * as styled from './styled';
-import type { FC } from 'react';
 
 type Props = {
   children: React.ReactNode;

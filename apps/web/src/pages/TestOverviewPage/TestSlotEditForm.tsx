@@ -3,9 +3,9 @@ import { InputHandler } from '@components/index';
 import { Question, QuestionType, TestSlot } from '@internship-app/types';
 import { Box, Button, Typography } from '@mui/material';
 import moment from 'moment';
+import type { FC } from 'react';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import type { FC } from 'react';
 
 type TestSlotEditFormProps = {
   slot: TestSlot;
