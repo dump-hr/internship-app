@@ -4,7 +4,6 @@ import { Route, Switch } from 'wouter';
 
 import {
   ApplicationFormPage,
-  LoginPage,
   NotFoundPage,
   ScheduleInterviewPage,
   ScheduleTestPage,
@@ -24,7 +23,6 @@ export const Router = () => {
       <Route path={Path.Status} component={StatusPage} />
       <Route path={Path.Test} component={TestPage} />
       <Route path={Path.TestChoose} component={TestChoosePage} />
-      <Route path={Path.Login} component={LoginPage} />
 
       <ProtectedRoutes />
 
