@@ -259,23 +259,28 @@ export class InterviewSlotService {
       where: { id: internId },
     });
 
+    const trackImage = `<img src="${process.env.APP_URL}/email/open?internId=${internId}" width="1" height="1" style="display:none" />`;
+
     this.postmark.sendEmail({
-      From: 'info@dump.hr',
+      From: 'nino.milas@dump.hr',
       To: intern.email,
       Subject: 'Uspješno biranje termina za DUMP Internship intervju',
-      TextBody: `Pozdrav ${intern.firstName},
+      HtmlBody: `<b> Pozdrav ${intern.firstName}, </b>
     
-    biranje termina intervjua je uspješno provedeno! Termin svog intervjua možeš vidjeti na status stranici: https://internship.dump.hr/status/${intern.id}
-    U slučaju da ipak ne možeš doći na odabrani termin, javi nam se na vrijeme na info@dump.hr
+    <p> 
+    biranje termina intervjua je uspješno provedeno! Termin svog intervjua možeš vidjeti na status stranici: https://internship.dump.hr/status/${intern.id} <br />
+    U slučaju da ipak ne možeš doći na odabrani termin, javi nam se na vrijeme na info@dump.hr <br />
     
-    Podsjećamo, tvoj intervju će se održati u odabranom terminu u našem uredu (prostorija A223) na FESB-u (Ruđera Boškovića 32).
+    Podsjećamo, tvoj intervju, za sva odabrana područja će se održati u odabranom terminu u našem uredu (prostorija A223) na FESB-u (Ruđera Boškovića 32). <br /> 
     
-    Naš ured ćeš pronaći tako da kad uđeš kroz glavna vrata FESB-a skreneš desno do kraja hodnika (put referade) dok ne dođeš do stepenica koje su s lijeve strane. Popneš se stepenicama na prvi kat i skreneš lijevo. Nastaviš hodnikom do kraja i s desne strane vidjet ćeš vrata našeg ureda (A223).
+    Naš ured ćeš pronaći tako da kad uđeš kroz glavna vrata FESB-a skreneš desno do kraja hodnika (put referade) dok ne dođeš do stepenica koje su s lijeve strane. <br /> Popneš se stepenicama na prvi kat i skreneš lijevo. Nastaviš hodnikom do kraja i s desne strane vidjet ćeš vrata našeg ureda (A223).
     
-    Vidimo se!
+    Vidimo se! <br />
     
-    DUMP Udruga mladih programera
-    dump.hr`,
+    DUMP Udruga mladih programera <br />
+    dump.hr <br />
+    </p>
+    ${trackImage}`,
       MessageStream: 'outbound',
     });
 
