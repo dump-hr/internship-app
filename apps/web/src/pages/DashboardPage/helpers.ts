@@ -23,26 +23,28 @@ export const serializeFilters = (filters: FilterCriteria): string => {
   if (main.interviewStatus) params.set('interviewStatus', main.interviewStatus);
 
   // Serialize discipline filters (accept inner ids; always emit 'disciplines.<id>.<field>')
-  Object.entries(disciplines as Record<string, unknown>).forEach(([rawKey, discipline]) => {
-    const innerId = rawKey.startsWith('disciplines.')
-      ? rawKey.slice('disciplines.'.length)
-      : rawKey;
-    // Guard against malformed keys like 'disciplines' or empty
-    if (!innerId || innerId === 'disciplines') return;
-    const key = `disciplines.${innerId}`;
-    const d = discipline as Partial<{
-      discipline: Discipline;
-      status: DisciplineStatus | '';
-      testStatus: TestStatus | '';
-      score: string | '';
-      not: boolean;
-    }>;
-    if (d.discipline) params.set(`${key}.discipline`, d.discipline);
-    if (d.status) params.set(`${key}.status`, d.status);
-    if (d.testStatus) params.set(`${key}.testStatus`, d.testStatus);
-    if (d.score) params.set(`${key}.score`, d.score);
-    if (d.not) params.set(`${key}.not`, 'true');
-  });
+  Object.entries(disciplines as Record<string, unknown>).forEach(
+    ([rawKey, discipline]) => {
+      const innerId = rawKey.startsWith('disciplines.')
+        ? rawKey.slice('disciplines.'.length)
+        : rawKey;
+      // Guard against malformed keys like 'disciplines' or empty
+      if (!innerId || innerId === 'disciplines') return;
+      const key = `disciplines.${innerId}`;
+      const d = discipline as Partial<{
+        discipline: Discipline;
+        status: DisciplineStatus | '';
+        testStatus: TestStatus | '';
+        score: string | '';
+        not: boolean;
+      }>;
+      if (d.discipline) params.set(`${key}.discipline`, d.discipline);
+      if (d.status) params.set(`${key}.status`, d.status);
+      if (d.testStatus) params.set(`${key}.testStatus`, d.testStatus);
+      if (d.score) params.set(`${key}.score`, d.score);
+      if (d.not) params.set(`${key}.not`, 'true');
+    },
+  );
 
   return params.toString();
 };
@@ -79,27 +81,27 @@ export const deserializeFilters = (): FilterCriteria => {
         const field = parts[2];
         if (!disciplineKey || disciplineKey === 'disciplines') continue;
 
-      if (!filters.disciplines[disciplineKey]) {
-        filters.disciplines[disciplineKey] = {
-          discipline: Discipline.Development,
-          status: '',
-          testStatus: '',
-          score: '',
-          not: false,
-        };
-      }
+        if (!filters.disciplines[disciplineKey]) {
+          filters.disciplines[disciplineKey] = {
+            discipline: Discipline.Development,
+            status: '',
+            testStatus: '',
+            score: '',
+            not: false,
+          };
+        }
 
         if (
-        field === 'discipline' &&
-        Object.values(Discipline).includes(value as Discipline)
+          field === 'discipline' &&
+          Object.values(Discipline).includes(value as Discipline)
         ) {
           filters.disciplines[disciplineKey].discipline = value as Discipline;
         }
 
         if (
-        field === 'status' &&
-        (value === '' ||
-          Object.values(DisciplineStatus).includes(value as DisciplineStatus))
+          field === 'status' &&
+          (value === '' ||
+            Object.values(DisciplineStatus).includes(value as DisciplineStatus))
         ) {
           filters.disciplines[disciplineKey].status = value as
             | ''
@@ -107,9 +109,9 @@ export const deserializeFilters = (): FilterCriteria => {
         }
 
         if (
-        field === 'testStatus' &&
-        (value === '' ||
-          Object.values(TestStatus).includes(value as TestStatus))
+          field === 'testStatus' &&
+          (value === '' ||
+            Object.values(TestStatus).includes(value as TestStatus))
         ) {
           filters.disciplines[disciplineKey].testStatus = value as
             | ''
