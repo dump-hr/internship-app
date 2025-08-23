@@ -16,8 +16,8 @@ const validateApplicantsAge = (value: unknown) => {
     age--;
   }
 
-  if (age < 16) return 'You must be at least 16 years old';
-  if (age > 25) return 'You must be under 26 years old';
+  if (age < 16) return 'Moraš imati bar 16 godina';
+  if (age > 25) return 'Moraš imati ispod 26 godina';
 
   return true;
 };
@@ -66,7 +66,7 @@ export const ApplicationFormInputHandler: FC<Props> = ({
             />
 
             {errorMessageExists(question.registerValue) ? (
-              <p className={classes.warningText}>This field is required</p>
+              <p className={classes.warningText}>Ovo polje je obvezno</p>
             ) : (
               <div className={classes.warningTextPlaceholder}></div>
             )}
@@ -88,7 +88,7 @@ export const ApplicationFormInputHandler: FC<Props> = ({
             />
 
             {errorMessageExists(question.registerValue) ? (
-              <p className={classes.warningText}>This field is required</p>
+              <p className={classes.warningText}>Ovo polje je obvezno</p>
             ) : (
               <div className={classes.warningTextPlaceholder}></div>
             )}
@@ -116,7 +116,7 @@ export const ApplicationFormInputHandler: FC<Props> = ({
 
             {dateError ? (
               <p className={classes.warningText}>
-                {dateError.message || 'This field is required'}
+                {dateError.message || 'Ovo polje je obvezno'}
               </p>
             ) : (
               <div className={classes.warningTextPlaceholder}></div>
@@ -148,7 +148,7 @@ export const ApplicationFormInputHandler: FC<Props> = ({
             </RadioGroup>
 
             {errorMessageExists(question.registerValue) ? (
-              <p className={classes.warningText}>This field is required</p>
+              <p className={classes.warningText}>Ovo polje je obvezno</p>
             ) : (
               <div className={classes.warningTextPlaceholder}></div>
             )}

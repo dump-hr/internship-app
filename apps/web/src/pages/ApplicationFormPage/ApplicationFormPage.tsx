@@ -47,21 +47,22 @@ export const ApplicationFormPage = () => {
 
   const createIntern = usePostIntern();
 
-  const { register, handleSubmit, formState, watch } = useForm<FormValues>({
-    defaultValues: {
-      firstName: '',
-      lastName: '',
-      email: '',
-      disciplines: [],
-      phoneNumber: '',
-      yearOfStudy: '',
-      dateOfBirth: '',
-      educationOrEmploymentStatus: EducationOrEmploymentStatus.Other,
-      highSchoolOrCollegeName: '',
-      foundOutAboutInternshipBy: FoundOutAboutInternshipBy.Other,
-      reasonForApplying: '',
-    } as FormValues,
-  });
+  const { register, handleSubmit, formState, setValue, watch } =
+    useForm<FormValues>({
+      defaultValues: {
+        firstName: '',
+        lastName: '',
+        email: '',
+        disciplines: [],
+        phoneNumber: '',
+        yearOfStudy: '',
+        dateOfBirth: '',
+        educationOrEmploymentStatus: EducationOrEmploymentStatus.Other,
+        highSchoolOrCollegeName: '',
+        foundOutAboutInternshipBy: FoundOutAboutInternshipBy.Other,
+        reasonForApplying: '',
+      } as FormValues,
+    });
 
   const { errors } = formState;
 
@@ -95,26 +96,26 @@ export const ApplicationFormPage = () => {
   };
 
   const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = event.target.value as Discipline;
+    let updatedDisciplines: Discipline[] = [...internDisciplines];
+
     if (event.target.checked) {
-      if (internDisciplines.includes(event.target.value as Discipline)) {
-        return;
-      }
+      if (internDisciplines.includes(value)) return;
 
       if (internDisciplines.length >= 2) {
         event.preventDefault();
         return;
       }
 
-      setInternDisciplines((prev) => {
-        return [...prev, event.target.value as Discipline];
-      });
+      updatedDisciplines.push(value);
     } else {
-      setInternDisciplines((prev) => {
-        return [
-          ...prev.filter((discipline) => discipline !== event.target.value),
-        ];
-      });
+      updatedDisciplines = updatedDisciplines.filter(
+        (discipline) => discipline !== value,
+      );
     }
+
+    setInternDisciplines(updatedDisciplines);
+    setValue('disciplines', updatedDisciplines, { shouldValidate: true });
   };
 
   if (applicationsClosed) {
@@ -165,7 +166,7 @@ export const ApplicationFormPage = () => {
               type="text"
               id="firstName"
               {...register('firstName', {
-                required: 'First name is required',
+                required: 'Ime je obvezno',
               })}
               inputProps={{
                 maxLength: 35,
@@ -187,7 +188,7 @@ export const ApplicationFormPage = () => {
               type="text"
               id="lastName"
               {...register('lastName', {
-                required: 'Last name is required',
+                required: 'Prezime je obvezno',
               })}
               inputProps={{
                 maxLength: 35,
@@ -209,7 +210,7 @@ export const ApplicationFormPage = () => {
               type="email"
               id="email"
               {...register('email', {
-                required: 'Email is required',
+                required: 'Email je obvezan',
                 pattern: {
                   value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
                   message: 'Invalid email address',
@@ -242,7 +243,7 @@ export const ApplicationFormPage = () => {
                   value={disciplineEnumValues[index]}
                   label={disciplineLabel[disciplineEnumValues[index]]}
                   {...register('disciplines', {
-                    required: 'This field is required',
+                    required: 'Ovo polje je obvezno',
                   })}
                   onChange={(e) => handleCheckboxChange(e)}
                   name="disciplines"
