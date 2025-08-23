@@ -38,7 +38,9 @@ export type FormValues = {
 const disciplineEnumKeys = Object.keys(Discipline);
 const disciplineEnumValues = Object.values(Discipline);
 
-const applicationsClosed = true;
+//
+const applicationsClosed = false; //PROMINIT PRIJE DEPLOYA!
+//
 
 export const ApplicationFormPage = () => {
   const [internDisciplines, setInternDisciplines] = useState<Discipline[]>([]);
@@ -97,6 +99,12 @@ export const ApplicationFormPage = () => {
       if (internDisciplines.includes(event.target.value as Discipline)) {
         return;
       }
+
+      if (internDisciplines.length >= 2) {
+        event.preventDefault();
+        return;
+      }
+
       setInternDisciplines((prev) => {
         return [...prev, event.target.value as Discipline];
       });
@@ -224,7 +232,7 @@ export const ApplicationFormPage = () => {
             <div className={classes.marginBottom30px}>
               <label>Prijavljuješ se na:</label>
               <p className={classes.formQuestionSubtitleText}>
-                Broj područja na koja se možeš prijaviti nije ograničen.
+                Možeš se prijaviti na maksimalno 2 područja.
               </p>
             </div>
 

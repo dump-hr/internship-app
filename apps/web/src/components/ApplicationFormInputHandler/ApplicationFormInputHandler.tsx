@@ -2,9 +2,26 @@ import { Question, QuestionType } from '@internship-app/types';
 import { Input, Radio, RadioGroup } from '@mui/joy';
 import { FieldErrors, UseFormRegister, UseFormWatch } from 'react-hook-form';
 
-import { FormValues } from '../../pages/ApplicationFormPage/ApplicationFormPage';
-import classes from '../../pages/ApplicationFormPage/index.module.css';
+import { FormValues } from '@pages/index';
+import classes from '@pages/ApplicationFormPage/index.module.css';
 import type { FC } from 'react';
+
+const validateApplicantsAge = (value: unknown) => {
+  const dob = new Date(value as string);
+  if (isNaN(dob.getTime())) return 'Invalid date';
+
+  const today = new Date();
+  let age = today.getFullYear() - dob.getFullYear();
+  const m = today.getMonth() - dob.getMonth();
+  if (m < 0 || (m === 0 && today.getDate() < dob.getDate())) {
+    age--;
+  }
+
+  if (age < 16) return 'You must be at least 16 years old';
+  if (age > 25) return 'You must be under 26 years old';
+
+  return true;
+};
 
 type Props = {
   question: Question;
@@ -25,6 +42,11 @@ export const ApplicationFormInputHandler: FC<Props> = ({
       return true;
     }
     return false;
+  };
+
+  const getFieldError = (keyString: string | undefined) => {
+    if (!keyString) return null;
+    return errors[keyString as keyof FormValues];
   };
 
   const getInputComponent = () => {
@@ -74,6 +96,8 @@ export const ApplicationFormInputHandler: FC<Props> = ({
           </div>
         );
       case QuestionType.Date:
+        const dateError = getFieldError(question.registerValue);
+
         return (
           <div className={classes.formQuestionWrapper}>
             <label className={classes.marginBottom30px} htmlFor={question.id}>
@@ -85,11 +109,16 @@ export const ApplicationFormInputHandler: FC<Props> = ({
               placeholder="Your answer"
               {...register(question.registerValue as keyof FormValues, {
                 required: question.required,
+                validate: (value: unknown) => {
+                  return validateApplicantsAge(value);
+                },
               })}
             />
 
-            {errorMessageExists(question.registerValue) ? (
-              <p className={classes.warningText}>This field is required</p>
+            {dateError ? (
+              <p className={classes.warningText}>
+                {dateError.message || 'This field is required'}
+              </p>
             ) : (
               <div className={classes.warningTextPlaceholder}></div>
             )}
