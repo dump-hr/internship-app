@@ -126,20 +126,19 @@ export const InternFilter = ({
   // Load initial values and criteria from URL params
   useEffect(() => {
     if (initialValues) {
-      // Reset form with initial values
       reset(initialValues);
-      const disciplines = (initialValues as { disciplines?: Record<string, DisciplineCriteria> }).disciplines ?? {};
-      const main = (initialValues as { main?: MainCriteria }).main ?? null;
+      const disciplines = initialValues.disciplines ?? {};
+      const main = initialValues.main ?? null;
 
       if (Object.keys(disciplines).length > 0) {
         let disciplineSections = [];
 
         for (const key in disciplines) {
-          if (!key || key === 'disciplines') continue;
           const discipline = disciplines[key];
           const sectionId = key.startsWith('disciplines.')
             ? key
             : `disciplines.${key}`;
+            
           const disciplineSection = getNewCriteria(sectionId, discipline);
           disciplineSections.push(disciplineSection);
         }
@@ -162,7 +161,7 @@ export const InternFilter = ({
   return (
     <div>
       <Button
-  onClick={handleSubmit(submitHandler)}
+        onClick={handleSubmit(submitHandler)}
         variant="contained"
         color="secondary"
         disabled={disabled}
