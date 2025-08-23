@@ -131,14 +131,14 @@ export const InternFilter = ({
       const main = initialValues.main ?? null;
 
       if (Object.keys(disciplines).length > 0) {
-        let disciplineSections = [];
+        const disciplineSections = [];
 
         for (const key in disciplines) {
           const discipline = disciplines[key];
           const sectionId = key.startsWith('disciplines.')
             ? key
             : `disciplines.${key}`;
-            
+
           const disciplineSection = getNewCriteria(sectionId, discipline);
           disciplineSections.push(disciplineSection);
         }
