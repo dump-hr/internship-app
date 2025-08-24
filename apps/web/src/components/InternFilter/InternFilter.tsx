@@ -21,9 +21,11 @@ export const InternFilter = ({
   disabled,
   initialValues,
 }: InternFilterProps) => {
-  const form = useForm({ shouldUnregister: true });
+  const form = useForm({ shouldUnregister: true, defaultValues: initialValues });
   const { handleSubmit, reset } = form;
-  const [criteria, setCriteria] = useState(getInitialCriteria());
+  const [criteria, setCriteria] = useState(() =>
+    getInitialCriteria(initialValues?.main ?? null),
+  );
 
   // Load initial values and criteria from URL params
   useEffect(() => {

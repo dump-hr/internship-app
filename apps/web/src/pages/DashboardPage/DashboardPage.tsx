@@ -17,7 +17,7 @@ import {
 } from '@internship-app/types';
 import { Button, Grid, Switch } from '@mui/material';
 import { EmailPage } from '@pages/index';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { FieldValues } from 'react-hook-form';
 
 import c from './DashboardPage.module.css';
@@ -28,28 +28,14 @@ import {
   serializeFilters,
 } from './helpers';
 
-const initialState: { filterCriteria: FilterCriteria } = {
-  filterCriteria: {
-    main: { name: '', status: '', interviewStatus: '' },
-    disciplines: {},
-  },
-};
-
 export const DashboardPage = () => {
   const [selection, setSelection] = useState<string[]>([]);
   const [emailDialogOpen, setEmailDialogOpen] = useState(false);
   const [actionsOpen, setActionsOpen] = useState(false);
-  const toggleActions = () => setActionsOpen((prev) => !prev);
   const [showDuplicates, setShowDuplicates] = useState(false);
-
-  const [filterCriteria, setFilterCriteria] = useState<FilterCriteria>(
-    initialState.filterCriteria,
+  const [filterCriteria, setFilterCriteria] = useState<FilterCriteria>(() =>
+    deserializeFilters(),
   );
-
-  useEffect(() => {
-    const urlFilters = deserializeFilters();
-    setFilterCriteria(urlFilters);
-  }, []);
 
   const { data: interns } = useFetchAllInterns();
 
@@ -58,9 +44,10 @@ export const DashboardPage = () => {
     status: getInternStatus(intern),
   }));
 
+  const toggleActions = () => setActionsOpen((prev) => !prev);
+
   const filterHandler = (criteria: FieldValues) => {
     const filterCriteria = criteria as FilterCriteria;
-
     setFilterCriteria(filterCriteria);
 
     const queryString = serializeFilters(filterCriteria);

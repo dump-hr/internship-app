@@ -59,6 +59,7 @@ export const deserializeFilters = (): FilterCriteria => {
     status && Object.values(InternStatus).includes(status as InternStatus)
       ? (status as InternStatus)
       : '';
+
   filters.main.interviewStatus =
     interviewStatus &&
     Object.values(InterviewStatus).includes(interviewStatus as InterviewStatus)
@@ -67,14 +68,14 @@ export const deserializeFilters = (): FilterCriteria => {
 
   // Deserialize discipline filters
   for (const [key, value] of params.entries()) {
-    if (!key.includes('.')) continue;
+    // Only accept keys shaped like: disciplines.<uuid>.discipline)
+    if (!key.startsWith('disciplines.')) continue;
+
     const parts = key.split('.');
-    // Expecting keys like: disciplines.<uuid>.discipline | status | testStatus | score | not
-    if (parts.length <= 3 && parts[0] !== 'disciplines') continue;
+    if (parts.length !== 3) continue;
 
     const disciplineId = parts[1];
-    const field = parts[2];
-    if (!disciplineId || disciplineId === 'disciplines') continue;
+    if (!disciplineId) continue;
 
     if (!filters.disciplines[disciplineId]) {
       filters.disciplines[disciplineId] = {
@@ -86,6 +87,7 @@ export const deserializeFilters = (): FilterCriteria => {
       };
     }
 
+    const field = parts[2];
     if (
       field === 'discipline' &&
       Object.values(Discipline).includes(value as Discipline)
