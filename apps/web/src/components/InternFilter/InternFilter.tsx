@@ -3,7 +3,7 @@ import {
   getNewCriteria,
   InputHandler,
 } from '@components/index';
-import { QuestionType } from '@internship-app/types';
+import { CriteriaSection, QuestionType } from '@internship-app/types';
 import AddIcon from '@mui/icons-material/Add';
 import CloseIcon from '@mui/icons-material/Close';
 import { Box, Button, IconButton } from '@mui/material';
@@ -21,9 +21,12 @@ export const InternFilter = ({
   disabled,
   initialValues,
 }: InternFilterProps) => {
-  const form = useForm({ shouldUnregister: true, defaultValues: initialValues });
+  const form = useForm({
+    shouldUnregister: true,
+    defaultValues: initialValues,
+  });
   const { handleSubmit, reset } = form;
-  const [criteria, setCriteria] = useState(() =>
+  const [criteria, setCriteria] = useState<CriteriaSection[]>(() =>
     getInitialCriteria(initialValues?.main ?? null),
   );
 
