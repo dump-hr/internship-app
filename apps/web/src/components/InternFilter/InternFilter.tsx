@@ -4,7 +4,9 @@ import {
   DisciplineStatus,
   InternStatus,
   InterviewStatus,
-  Question,
+  CriteriaSection,
+  DisciplineCriteria,
+  MainCriteria,
   QuestionType,
   TestStatus,
 } from '@internship-app/types';
@@ -13,25 +15,6 @@ import CloseIcon from '@mui/icons-material/Close';
 import { Box, Button, IconButton } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { FieldValues, useForm } from 'react-hook-form';
-
-type CriteriaSection = {
-  id: string;
-  questions: Question[];
-};
-
-type DisciplineCriteria = {
-  discipline?: Discipline;
-  status?: DisciplineStatus;
-  testStatus?: TestStatus;
-  score?: number;
-  not?: boolean;
-};
-
-type MainCriteria = {
-  name?: string;
-  status?: InternStatus;
-  interviewStatus?: InterviewStatus;
-};
 
 const getInitialCriteria = (
   main: MainCriteria | null = null,
