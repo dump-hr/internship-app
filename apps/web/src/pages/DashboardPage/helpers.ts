@@ -8,13 +8,27 @@ import {
   TestStatus,
 } from '@internship-app/types';
 
+const defaultDiscipline = () => {
+  return {
+    discipline: Discipline.Development,
+    status: '' as '' | DisciplineStatus,
+    testStatus: '' as '' | TestStatus,
+    score: '',
+    not: false,
+  };
+};
+
+const defaultMainCriteria = () => {
+  return {
+    name: '',
+    status: '' as '' | InternStatus,
+    interviewStatus: '' as '' | InterviewStatus,
+  };
+};
+
 export const serializeFilters = (filters: FilterCriteria): string => {
   const params = new URLSearchParams();
-  const main = filters?.main ?? {
-    name: '',
-    status: '',
-    interviewStatus: '',
-  };
+  const main = filters?.main ?? defaultMainCriteria();
 
   const disciplines = filters?.disciplines ?? {};
 
@@ -46,7 +60,7 @@ export const serializeFilters = (filters: FilterCriteria): string => {
 export const deserializeFilters = (): FilterCriteria => {
   const params = new URLSearchParams(window.location.search);
   const filters: FilterCriteria = {
-    main: { name: '', status: '', interviewStatus: '' },
+    main: defaultMainCriteria(),
     disciplines: {},
   };
 
@@ -66,9 +80,17 @@ export const deserializeFilters = (): FilterCriteria => {
       ? (interviewStatus as InterviewStatus)
       : '';
 
-  // Deserialize discipline filters
+  filters.disciplines = deserializeDisciplineFilters(params);
+  return filters;
+};
+
+export const deserializeDisciplineFilters = (
+  params: URLSearchParams,
+): FilterCriteria['disciplines'] => {
+  const disciplines: FilterCriteria['disciplines'] = {};
+
   for (const [key, value] of params.entries()) {
-    // Only accept keys shaped like: disciplines.<uuid>.discipline)
+    // Only accept keys shaped like: disciplines.<uuid>.discipline
     if (!key.startsWith('disciplines.')) continue;
 
     const parts = key.split('.');
@@ -77,22 +99,17 @@ export const deserializeFilters = (): FilterCriteria => {
     const disciplineId = parts[1];
     if (!disciplineId) continue;
 
-    if (!filters.disciplines[disciplineId]) {
-      filters.disciplines[disciplineId] = {
-        discipline: Discipline.Development,
-        status: '',
-        testStatus: '',
-        score: '',
-        not: false,
-      };
+    const field = parts[2];
+
+    if (!disciplines[disciplineId]) {
+      disciplines[disciplineId] = defaultDiscipline();
     }
 
-    const field = parts[2];
     if (
       field === 'discipline' &&
       Object.values(Discipline).includes(value as Discipline)
     ) {
-      filters.disciplines[disciplineId].discipline = value as Discipline;
+      disciplines[disciplineId].discipline = value as Discipline;
     }
 
     if (
@@ -100,26 +117,26 @@ export const deserializeFilters = (): FilterCriteria => {
       (value === '' ||
         Object.values(DisciplineStatus).includes(value as DisciplineStatus))
     ) {
-      filters.disciplines[disciplineId].status = value as '' | DisciplineStatus;
+      disciplines[disciplineId].status = value as '' | DisciplineStatus;
     }
 
     if (
       field === 'testStatus' &&
       (value === '' || Object.values(TestStatus).includes(value as TestStatus))
     ) {
-      filters.disciplines[disciplineId].testStatus = value as '' | TestStatus;
+      disciplines[disciplineId].testStatus = value as '' | TestStatus;
     }
 
     if (field === 'score') {
-      filters.disciplines[disciplineId].score = value;
+      disciplines[disciplineId].score = value;
     }
 
     if (field === 'not') {
-      filters.disciplines[disciplineId].not = value === 'true';
+      disciplines[disciplineId].not = value === 'true';
     }
   }
 
-  return filters;
+  return disciplines;
 };
 
 export const getInternStatus = (intern: Intern) => {
