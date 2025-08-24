@@ -37,7 +37,7 @@ export class EmailService {
 
     const template = nunjucks.compile(text);
 
-    return Promise.all(
+    return Promise.allSettled(
       interns.map((intern) => {
         return this.postmark.sendEmail({
           From: 'info@dump.hr',
