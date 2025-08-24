@@ -1,6 +1,5 @@
 import { Box, Button, Textarea } from '@mui/joy';
 import type { FC } from 'react';
-import React from 'react';
 
 interface Props {
   sendEmail: () => void;
