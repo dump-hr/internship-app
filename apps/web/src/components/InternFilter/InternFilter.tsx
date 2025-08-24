@@ -1,95 +1,14 @@
-import { InputHandler } from '@components/index';
 import {
-  Discipline,
-  DisciplineStatus,
-  InternStatus,
-  InterviewStatus,
-  CriteriaSection,
-  DisciplineCriteria,
-  MainCriteria,
-  QuestionType,
-  TestStatus,
-} from '@internship-app/types';
+  getInitialCriteria,
+  getNewCriteria,
+  InputHandler,
+} from '@components/index';
+import { QuestionType } from '@internship-app/types';
 import AddIcon from '@mui/icons-material/Add';
 import CloseIcon from '@mui/icons-material/Close';
 import { Box, Button, IconButton } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { FieldValues, useForm } from 'react-hook-form';
-
-const getInitialCriteria = (
-  main: MainCriteria | null = null,
-): CriteriaSection[] => [
-  {
-    id: 'main',
-    questions: [
-      {
-        id: 'main.name',
-        type: QuestionType.Field,
-        registerValue: main?.name || '',
-        question: 'Ime/mail/testid',
-      },
-      {
-        id: 'main.status',
-        type: QuestionType.Select,
-        registerValue: main?.status || '',
-        options: ['', ...Object.keys(InternStatus)],
-        question: 'Status',
-      },
-      {
-        id: 'main.interviewStatus',
-        type: QuestionType.Select,
-        registerValue: main?.interviewStatus || '',
-        options: ['', ...Object.keys(InterviewStatus)],
-        question: 'Intervju',
-      },
-    ],
-  },
-];
-
-const getNewCriteria = (
-  id: string,
-  criteria: DisciplineCriteria | null = null,
-): CriteriaSection => ({
-  id,
-  questions: [
-    {
-      id: `${id}.discipline`,
-      type: QuestionType.Select,
-      registerValue:
-        criteria && Object.prototype.hasOwnProperty.call(criteria, 'discipline')
-          ? criteria.discipline
-          : Discipline.Development,
-      options: Object.keys(Discipline),
-      question: 'Područje',
-    },
-    {
-      id: `${id}.status`,
-      type: QuestionType.Select,
-      registerValue: criteria?.status || '',
-      options: ['', ...Object.keys(DisciplineStatus)],
-      question: 'Status',
-    },
-    {
-      id: `${id}.testStatus`,
-      type: QuestionType.Select,
-      registerValue: criteria?.testStatus || '',
-      options: ['', ...Object.keys(TestStatus)],
-      question: 'Test',
-    },
-    {
-      id: `${id}.score`,
-      type: QuestionType.Field,
-      registerValue: criteria?.score || '',
-      question: 'Bodovi (eg >15)',
-    },
-    {
-      id: `${id}.not`,
-      type: QuestionType.Checkbox,
-      registerValue: criteria?.not || false,
-      question: 'Not',
-    },
-  ],
-});
 
 type InternFilterProps = {
   submitHandler: (values: FieldValues) => void;
@@ -108,28 +27,26 @@ export const InternFilter = ({
 
   // Load initial values and criteria from URL params
   useEffect(() => {
-    if (initialValues) {
-      reset(initialValues);
-      const disciplines = initialValues.disciplines ?? {};
-      const main = initialValues.main ?? null;
+    if (!initialValues) return;
 
-      if (Object.keys(disciplines).length > 0) {
-        const disciplineSections = [];
+    reset(initialValues);
+    const disciplines = initialValues.disciplines ?? {};
+    const main = initialValues.main ?? null;
+    const disciplineSections = [];
 
-        for (const key in disciplines) {
-          const discipline = disciplines[key];
-          const sectionId = key.startsWith('disciplines.')
-            ? key
-            : `disciplines.${key}`;
+    if (Object.keys(disciplines).length > 0) {
+      for (const key in disciplines) {
+        const discipline = disciplines[key];
+        const sectionId = key.startsWith('disciplines.')
+          ? key
+          : `disciplines.${key}`;
 
-          const disciplineSection = getNewCriteria(sectionId, discipline);
-          disciplineSections.push(disciplineSection);
-        }
-        setCriteria([...getInitialCriteria(main), ...disciplineSections]);
-      } else {
-        setCriteria(getInitialCriteria(main));
+        const disciplineSection = getNewCriteria(sectionId, discipline);
+        disciplineSections.push(disciplineSection);
       }
     }
+
+    setCriteria([...getInitialCriteria(main), ...disciplineSections]);
   }, [initialValues, reset]);
 
   const addDisciplineSection = () => {

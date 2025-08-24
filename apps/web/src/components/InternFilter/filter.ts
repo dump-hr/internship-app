@@ -1,15 +1,18 @@
 import {
+  CriteriaSection,
   Discipline,
   DisciplineStatus,
   InternForDashboard,
   InternStatus,
   InterviewStatus,
+  MainCriteria,
+  QuestionType,
   TestStatus,
 } from '@internship-app/types';
 import toast from 'react-hot-toast';
 
 type DisciplineCriteria = {
-  discipline: Discipline;
+  discipline: Discipline | '';
   status: DisciplineStatus | '';
   testStatus: TestStatus | '';
   score: string | '';
@@ -79,3 +82,78 @@ export const getInternFilter =
 
     return true;
   };
+
+export const getInitialCriteria = (
+  main: MainCriteria | null = null,
+): CriteriaSection[] => [
+  {
+    id: 'main',
+    questions: [
+      {
+        id: 'main.name',
+        type: QuestionType.Field,
+        registerValue: main?.name || '',
+        question: 'Ime/mail/testid',
+      },
+      {
+        id: 'main.status',
+        type: QuestionType.Select,
+        registerValue: main?.status || '',
+        options: ['', ...Object.keys(InternStatus)],
+        question: 'Status',
+      },
+      {
+        id: 'main.interviewStatus',
+        type: QuestionType.Select,
+        registerValue: main?.interviewStatus || '',
+        options: ['', ...Object.keys(InterviewStatus)],
+        question: 'Intervju',
+      },
+    ],
+  },
+];
+
+export const getNewCriteria = (
+  id: string,
+  criteria: DisciplineCriteria | null = null,
+): CriteriaSection => ({
+  id,
+  questions: [
+    {
+      id: `${id}.discipline`,
+      type: QuestionType.Select,
+      registerValue:
+        criteria && Object.prototype.hasOwnProperty.call(criteria, 'discipline')
+          ? criteria.discipline
+          : Discipline.Development,
+      options: Object.keys(Discipline),
+      question: 'Područje',
+    },
+    {
+      id: `${id}.status`,
+      type: QuestionType.Select,
+      registerValue: criteria?.status || '',
+      options: ['', ...Object.keys(DisciplineStatus)],
+      question: 'Status',
+    },
+    {
+      id: `${id}.testStatus`,
+      type: QuestionType.Select,
+      registerValue: criteria?.testStatus || '',
+      options: ['', ...Object.keys(TestStatus)],
+      question: 'Test',
+    },
+    {
+      id: `${id}.score`,
+      type: QuestionType.Field,
+      registerValue: criteria?.score || '',
+      question: 'Bodovi (eg >15)',
+    },
+    {
+      id: `${id}.not`,
+      type: QuestionType.Checkbox,
+      registerValue: criteria?.not || false,
+      question: 'Not',
+    },
+  ],
+});

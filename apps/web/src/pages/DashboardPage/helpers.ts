@@ -24,27 +24,21 @@ export const serializeFilters = (filters: FilterCriteria): string => {
   if (main.interviewStatus) params.set('interviewStatus', main.interviewStatus);
 
   // Serialize discipline filters (accept inner ids; always emit 'disciplines.<id>.<field>')
-  Object.entries(disciplines as Record<string, unknown>).forEach(
-    ([rawKey, discipline]) => {
-      const innerId = rawKey.startsWith('disciplines.')
-        ? rawKey.slice('disciplines.'.length)
-        : rawKey;
+  const disciplineEntries = Object.entries(disciplines);
 
-      const key = `disciplines.${innerId}`;
-      const d = discipline as Partial<{
-        discipline: Discipline;
-        status: DisciplineStatus | '';
-        testStatus: TestStatus | '';
-        score: string | '';
-        not: boolean;
-      }>;
-      if (d.discipline) params.set(`${key}.discipline`, d.discipline);
-      if (d.status) params.set(`${key}.status`, d.status);
-      if (d.testStatus) params.set(`${key}.testStatus`, d.testStatus);
-      if (d.score) params.set(`${key}.score`, d.score);
-      if (d.not) params.set(`${key}.not`, 'true');
-    },
-  );
+  disciplineEntries.forEach(([rawKey, d]) => {
+    const innerId = rawKey.startsWith('disciplines.')
+      ? rawKey.slice('disciplines.'.length)
+      : rawKey;
+
+    const key = `disciplines.${innerId}`;
+
+    if (d.discipline) params.set(`${key}.discipline`, d.discipline);
+    if (d.status) params.set(`${key}.status`, d.status);
+    if (d.testStatus) params.set(`${key}.testStatus`, d.testStatus);
+    if (d.score) params.set(`${key}.score`, String(d.score));
+    if (d.not) params.set(`${key}.not`, 'true');
+  });
 
   return params.toString();
 };
@@ -73,59 +67,53 @@ export const deserializeFilters = (): FilterCriteria => {
 
   // Deserialize discipline filters
   for (const [key, value] of params.entries()) {
-    if (key.includes('.')) {
-      const parts = key.split('.');
-      // Expecting keys like: disciplines.<uuid>.discipline | status | testStatus | score | not
-      if (parts.length >= 3 && parts[0] === 'disciplines') {
-        const disciplineKey = parts[1];
-        const field = parts[2];
-        if (!disciplineKey || disciplineKey === 'disciplines') continue;
+    if (!key.includes('.')) continue;
+    const parts = key.split('.');
+    // Expecting keys like: disciplines.<uuid>.discipline | status | testStatus | score | not
+    if (parts.length <= 3 && parts[0] !== 'disciplines') continue;
 
-        if (!filters.disciplines[disciplineKey]) {
-          filters.disciplines[disciplineKey] = {
-            discipline: Discipline.Development,
-            status: '',
-            testStatus: '',
-            score: '',
-            not: false,
-          };
-        }
+    const disciplineId = parts[1];
+    const field = parts[2];
+    if (!disciplineId || disciplineId === 'disciplines') continue;
 
-        if (
-          field === 'discipline' &&
-          Object.values(Discipline).includes(value as Discipline)
-        ) {
-          filters.disciplines[disciplineKey].discipline = value as Discipline;
-        }
+    if (!filters.disciplines[disciplineId]) {
+      filters.disciplines[disciplineId] = {
+        discipline: Discipline.Development,
+        status: '',
+        testStatus: '',
+        score: '',
+        not: false,
+      };
+    }
 
-        if (
-          field === 'status' &&
-          (value === '' ||
-            Object.values(DisciplineStatus).includes(value as DisciplineStatus))
-        ) {
-          filters.disciplines[disciplineKey].status = value as
-            | ''
-            | DisciplineStatus;
-        }
+    if (
+      field === 'discipline' &&
+      Object.values(Discipline).includes(value as Discipline)
+    ) {
+      filters.disciplines[disciplineId].discipline = value as Discipline;
+    }
 
-        if (
-          field === 'testStatus' &&
-          (value === '' ||
-            Object.values(TestStatus).includes(value as TestStatus))
-        ) {
-          filters.disciplines[disciplineKey].testStatus = value as
-            | ''
-            | TestStatus;
-        }
+    if (
+      field === 'status' &&
+      (value === '' ||
+        Object.values(DisciplineStatus).includes(value as DisciplineStatus))
+    ) {
+      filters.disciplines[disciplineId].status = value as '' | DisciplineStatus;
+    }
 
-        if (field === 'score') {
-          filters.disciplines[disciplineKey].score = value;
-        }
+    if (
+      field === 'testStatus' &&
+      (value === '' || Object.values(TestStatus).includes(value as TestStatus))
+    ) {
+      filters.disciplines[disciplineId].testStatus = value as '' | TestStatus;
+    }
 
-        if (field === 'not') {
-          filters.disciplines[disciplineKey].not = value === 'true';
-        }
-      }
+    if (field === 'score') {
+      filters.disciplines[disciplineId].score = value;
+    }
+
+    if (field === 'not') {
+      filters.disciplines[disciplineId].not = value === 'true';
     }
   }
 
