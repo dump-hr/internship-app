@@ -1,12 +1,12 @@
 import './App.css';
 
+import { MsalProvider } from '@azure/msal-react';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { Toaster } from 'react-hot-toast';
 
-import { Router } from './Router.tsx';
-import { MsalProvider } from '@azure/msal-react';
 import { msalInstance } from './configs/msalInstance.ts';
+import { Router } from './Router.tsx';
 
 export const App = () => {
   return (

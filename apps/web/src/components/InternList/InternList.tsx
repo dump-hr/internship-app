@@ -7,6 +7,7 @@ import {
 import { Button, Chip } from '@mui/material';
 import { DataGrid, GridColDef, GridRenderCellParams } from '@mui/x-data-grid';
 import moment from 'moment';
+import type { FC } from 'react';
 import { Link } from 'wouter';
 
 import { Path } from '../../constants/paths';
@@ -17,7 +18,6 @@ import {
   shortDisciplineLabels,
   testChipProps,
 } from './consts';
-import type { FC } from 'react';
 
 type Props = {
   data: InternForDashboard[] | undefined;

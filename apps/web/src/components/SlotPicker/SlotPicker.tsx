@@ -8,8 +8,8 @@ import {
 import { Slot } from '@internship-app/types';
 import { Box, useMediaQuery } from '@mui/material';
 import moment from 'moment';
-import { useState } from 'react';
 import type { FC } from 'react';
+import { useState } from 'react';
 
 type SlotPickerProps = {
   title: string;

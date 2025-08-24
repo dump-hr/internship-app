@@ -1,7 +1,7 @@
 import { Box, Typography } from '@mui/material';
 import { StaticDatePicker } from '@mui/x-date-pickers/StaticDatePicker';
-import { useState } from 'react';
 import type { FC } from 'react';
+import { useState } from 'react';
 
 export interface MuiDate {
   $D: number;

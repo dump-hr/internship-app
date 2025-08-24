@@ -1,10 +1,26 @@
 import { Question, QuestionType } from '@internship-app/types';
 import { Input, Radio, RadioGroup } from '@mui/joy';
+import classes from '@pages/ApplicationFormPage/index.module.css';
+import { FormValues } from '@pages/index';
+import type { FC } from 'react';
 import { FieldErrors, UseFormRegister, UseFormWatch } from 'react-hook-form';
 
-import { FormValues } from '../../pages/ApplicationFormPage/ApplicationFormPage';
-import classes from '../../pages/ApplicationFormPage/index.module.css';
-import type { FC } from 'react';
+const validateApplicantsAge = (value: unknown) => {
+  const dob = new Date(value as string);
+  if (isNaN(dob.getTime())) return 'Invalid date';
+
+  const today = new Date();
+  let age = today.getFullYear() - dob.getFullYear();
+  const m = today.getMonth() - dob.getMonth();
+  if (m < 0 || (m === 0 && today.getDate() < dob.getDate())) {
+    age--;
+  }
+
+  if (age < 16) return 'Moraš imati bar 16 godina';
+  if (age > 25) return 'Moraš imati ispod 26 godina';
+
+  return true;
+};
 
 type Props = {
   question: Question;
@@ -27,6 +43,11 @@ export const ApplicationFormInputHandler: FC<Props> = ({
     return false;
   };
 
+  const getFieldError = (keyString: string | undefined) => {
+    if (!keyString) return null;
+    return errors[keyString as keyof FormValues];
+  };
+
   const getInputComponent = () => {
     switch (question.type) {
       case QuestionType.Field:
@@ -45,7 +66,7 @@ export const ApplicationFormInputHandler: FC<Props> = ({
             />
 
             {errorMessageExists(question.registerValue) ? (
-              <p className={classes.warningText}>This field is required</p>
+              <p className={classes.warningText}>Ovo polje je obvezno</p>
             ) : (
               <div className={classes.warningTextPlaceholder}></div>
             )}
@@ -67,13 +88,15 @@ export const ApplicationFormInputHandler: FC<Props> = ({
             />
 
             {errorMessageExists(question.registerValue) ? (
-              <p className={classes.warningText}>This field is required</p>
+              <p className={classes.warningText}>Ovo polje je obvezno</p>
             ) : (
               <div className={classes.warningTextPlaceholder}></div>
             )}
           </div>
         );
-      case QuestionType.Date:
+      case QuestionType.Date: {
+        const dateError = getFieldError(question.registerValue);
+
         return (
           <div className={classes.formQuestionWrapper}>
             <label className={classes.marginBottom30px} htmlFor={question.id}>
@@ -85,16 +108,23 @@ export const ApplicationFormInputHandler: FC<Props> = ({
               placeholder="Your answer"
               {...register(question.registerValue as keyof FormValues, {
                 required: question.required,
+                validate: (value: unknown) => {
+                  return validateApplicantsAge(value);
+                },
               })}
             />
 
-            {errorMessageExists(question.registerValue) ? (
-              <p className={classes.warningText}>This field is required</p>
+            {dateError ? (
+              <p className={classes.warningText}>
+                {dateError.message || 'Ovo polje je obvezno'}
+              </p>
             ) : (
               <div className={classes.warningTextPlaceholder}></div>
             )}
           </div>
         );
+      }
+
       case QuestionType.Radio: {
         const watchValue = watch(question.registerValue as keyof FormValues);
 
@@ -118,7 +148,7 @@ export const ApplicationFormInputHandler: FC<Props> = ({
             </RadioGroup>
 
             {errorMessageExists(question.registerValue) ? (
-              <p className={classes.warningText}>This field is required</p>
+              <p className={classes.warningText}>Ovo polje je obvezno</p>
             ) : (
               <div className={classes.warningTextPlaceholder}></div>
             )}

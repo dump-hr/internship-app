@@ -5,8 +5,8 @@ import {
   OutlinedInput,
   Select,
 } from '@mui/material';
-import { useEffect, useState } from 'react';
 import type { FC } from 'react';
+import { useEffect, useState } from 'react';
 
 import styles from './index.module.css';
 

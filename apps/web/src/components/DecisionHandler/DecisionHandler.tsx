@@ -9,8 +9,8 @@ import {
   QuestionType,
 } from '@internship-app/types';
 import { Box, Button, Typography } from '@mui/material';
-import { FieldValues, useForm } from 'react-hook-form';
 import type { FC } from 'react';
+import { FieldValues, useForm } from 'react-hook-form';
 
 type DecisionHandlerProps = {
   intern: Intern;

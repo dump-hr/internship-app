@@ -1,9 +1,9 @@
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { Discipline } from '@internship-app/types';
+import type { FC } from 'react';
 
 import { disciplineLabel } from '../constants/internConstants';
-import type { FC } from 'react';
 
 type Props = {
   discipline: Discipline;

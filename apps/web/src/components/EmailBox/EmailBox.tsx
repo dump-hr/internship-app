@@ -1,5 +1,4 @@
 import { Box, Button, Textarea } from '@mui/joy';
-import React from 'react';
 import type { FC } from 'react';
 
 interface Props {

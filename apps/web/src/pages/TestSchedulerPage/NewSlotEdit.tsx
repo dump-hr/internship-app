@@ -1,9 +1,9 @@
 import { Box, Button, InputLabel, TextField, Typography } from '@mui/material';
 import moment from 'moment';
+import type { FC } from 'react';
 import { ChangeEvent } from 'react';
 
 import { TestSlotCard } from './types';
-import type { FC } from 'react';
 
 type NewSlotEditProps = {
   slot: TestSlotCard;

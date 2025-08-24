@@ -1,10 +1,10 @@
 import { useApplyBoardAction } from '@api/index';
 import { BoardAction, BoardActionRequest } from '@internship-app/types';
+import type { FC } from 'react';
 import toast from 'react-hot-toast';
 
 import Actions from '../Actions/Actions';
 import { options } from './options';
-import type { FC } from 'react';
 
 type BoardActionProps = {
   internIds: string[];

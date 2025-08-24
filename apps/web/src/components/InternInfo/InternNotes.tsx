@@ -1,8 +1,8 @@
 import { useCreateNote } from '@api/index';
 import { Intern } from '@internship-app/types';
 import { Button, TextField } from '@mui/material';
-import { useState } from 'react';
 import type { FC } from 'react';
+import { useState } from 'react';
 
 import styles from './index.module.css';
 

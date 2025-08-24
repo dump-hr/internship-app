@@ -6,10 +6,10 @@ import {
 } from '@dnd-kit/sortable';
 import { Discipline } from '@internship-app/types';
 import clsx from 'clsx';
+import type { FC } from 'react';
 
 import classes from '../pages/ApplicationFormPage/index.module.css';
 import { SortableDiscipline } from './SortableDiscipline';
-import type { FC } from 'react';
 
 type Props = {
   internDisciplines: Discipline[];

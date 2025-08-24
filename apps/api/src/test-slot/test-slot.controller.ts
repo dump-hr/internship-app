@@ -36,7 +36,6 @@ export class TestSlotController {
   ) {}
 
   @Get()
-  @UseGuards(MemberGuard)
   async getAll() {
     const allSlots = await this.testSlotService.getAll();
     const testSlotsDto: TestSlotPreviewDto[] = allSlots.map((ts) => ({
@@ -92,7 +91,6 @@ export class TestSlotController {
   }
 
   @Get('available/:discipline/:internId')
-  @UseGuards(MemberGuard)
   async getAvailableSlots(
     @Param('internId') internId: string,
     @Param('discipline') discipline: Discipline,
@@ -106,7 +104,6 @@ export class TestSlotController {
   }
 
   @Patch('schedule/:id')
-  @UseGuards(AdminGuard)
   async scheduleTest(
     @Param('id') slotId: string,
     @Body() { internId }: ScheduleTestRequest,
