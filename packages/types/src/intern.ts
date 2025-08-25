@@ -1,4 +1,5 @@
 import { Json } from './json';
+import { Question } from './question';
 
 export enum Discipline {
   Development = 'Development',
@@ -226,4 +227,23 @@ export type InternDecisionRequest = {
 export type CreateNoteRequest = {
   internId: string;
   note: string;
+};
+
+export type CriteriaSection = {
+  id: string;
+  questions: Question[];
+};
+
+export type DisciplineCriteria = {
+  discipline?: Discipline;
+  status?: DisciplineStatus;
+  testStatus?: TestStatus;
+  score?: number;
+  not?: boolean;
+};
+
+export type MainCriteria = {
+  name?: string;
+  status?: InternStatus;
+  interviewStatus?: InterviewStatus;
 };
