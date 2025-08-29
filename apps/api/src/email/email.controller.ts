@@ -1,6 +1,15 @@
-import { Body, Controller, Post, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  Res,
+  UseGuards,
+} from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { AdminLogAction } from '@prisma/client';
+import { Response } from 'express';
 import { MemberGuard } from 'src/auth/azure.guard';
 import { LoggerService } from 'src/logger/logger.service';
 
@@ -32,5 +41,22 @@ export class EmailController {
   async makeEmails(@Body() { emails, text }: EmailsDto) {
     const templates = await this.emailService.makeEmail(emails, text);
     return templates;
+  }
+
+  @Get('image')
+  async getImage(@Param('emailId') emailId: string, @Res() res: Response) {
+    await this.emailService.updateIsSeen(emailId);
+
+    const pixel: Buffer = Buffer.from(
+      'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwADfgH+WBwLfwAAAABJRU5ErkJggg==',
+      'base64',
+    );
+
+    res.writeHead(200, {
+      'Content-Type': 'image/png',
+      'Content-Length': pixel.length,
+    });
+
+    res.end(pixel);
   }
 }

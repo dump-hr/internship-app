@@ -43,6 +43,7 @@ model Intern {
   createdAt         DateTime           @default(now())
   updatedAt         DateTime           @updatedAt
   logs              InternLog[]
+  Email             Email[]
 }
 
 model InternDiscipline {
@@ -152,6 +153,15 @@ model InterviewQuestion {
   options   String[]
   disabled  Boolean          @default(false)
   required  Boolean          @default(false)
+}
+
+model Email {
+  id             String  @id @default(uuid())
+  subject        Json
+  body           Json
+  isSeen         Boolean @default(false)
+  internId       String
+  emailRecipient Intern  @relation(fields: [internId], references: [id])
 }
 
 enum QuestionCategory {

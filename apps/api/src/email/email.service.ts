@@ -35,15 +35,26 @@ export class EmailService {
       },
     });
 
+    const createdEmails = await this.createEmailsForInterns(
+      interns,
+      subject,
+      text,
+    );
+
     const template = nunjucks.compile(text);
 
     return Promise.allSettled(
       interns.map((intern) => {
+        const emailId = createdEmails.find((email) => email.id === intern.id);
+
+        const trackImage = `<img src="https://yourapp.com/track/open?emailId=${emailId}" width="1" height="1" style="display:none;" />`;
+
         return this.postmark.sendEmail({
           From: 'info@dump.hr',
           To: intern.email,
           Subject: subject,
           TextBody: template.render({ intern }),
+          HtmlBody: `${text}${trackImage}`,
           MessageStream: 'outbound',
         });
       }),
@@ -79,5 +90,33 @@ export class EmailService {
     const template = nunjucks.compile(text);
 
     return interns.map((intern) => template.render({ intern }));
+  }
+
+  async createEmailsForInterns(
+    interns: { id: string; email: string }[],
+    subject: string,
+    text: string,
+  ) {
+    return await Promise.all(
+      interns.map((intern) =>
+        this.prisma.email.create({
+          data: {
+            internId: intern.id,
+            subject: { subject },
+            body: { text },
+            isSeen: false,
+          },
+        }),
+      ),
+    );
+  }
+
+  async updateIsSeen(emailId: string) {
+    const updated = await this.prisma.email.update({
+      where: { id: emailId },
+      data: { isSeen: true },
+    });
+
+    return updated.isSeen;
   }
 }
