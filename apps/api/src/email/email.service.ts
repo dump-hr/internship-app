@@ -80,4 +80,13 @@ export class EmailService {
 
     return interns.map((intern) => template.render({ intern }));
   }
+
+  async updateIsSeen(emailId: string) {
+    const updated = await this.prisma.email.update({
+      where: { id: emailId },
+      data: { isSeen: true },
+    });
+
+    return updated.isSeen;
+  }
 }
