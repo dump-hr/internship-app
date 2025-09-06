@@ -10,10 +10,14 @@ import * as postmark from 'postmark';
 import { PrismaService } from 'src/prisma.service';
 
 import { CreateInterviewSlotDto } from './dto/createInterviewSlot.dto';
+import { EmailService } from 'src/email/email.service';
 
 @Injectable()
 export class InterviewSlotService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly emailService: EmailService,
+  ) {}
 
   private postmark = new postmark.ServerClient(process.env.POSTMARK_API_TOKEN);
 
@@ -259,11 +263,21 @@ export class InterviewSlotService {
       where: { id: internId },
     });
 
+    const data = [{ id: intern.id, email: intern.email }];
+
+    const createdEmails = await this.emailService.createEmailsForInterns(
+      data,
+      'Uspješno biranje termina za DUMP Internship intervju',
+      'Paaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
+    );
+    const emailId = createdEmails.find((email) => email.id === intern.id);
+    const trackImage = `<img src="https://${process.env.APP_URL}/api/email/image?emailId=${emailId}" width="1" height="1" style="display:none;" />`;
+
     this.postmark.sendEmail({
       From: 'info@dump.hr',
       To: intern.email,
       Subject: 'Uspješno biranje termina za DUMP Internship intervju',
-      TextBody: `Pozdrav ${intern.firstName},
+      HtmlBody: `Pozdrav ${intern.firstName},
     
     biranje termina intervjua je uspješno provedeno! Termin svog intervjua možeš vidjeti na status stranici: https://internship.dump.hr/status/${intern.id}
     U slučaju da ipak ne možeš doći na odabrani termin, javi nam se na vrijeme na info@dump.hr
@@ -275,7 +289,7 @@ export class InterviewSlotService {
     Vidimo se!
     
     DUMP Udruga mladih programera
-    dump.hr`,
+    dump.hr ${trackImage}`,
       MessageStream: 'outbound',
     });
 
