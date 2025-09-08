@@ -270,8 +270,11 @@ export class InterviewSlotService {
       'Uspješno biranje termina za DUMP Internship intervju',
       'Paaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
     );
-    const emailId = createdEmails.find((email) => email.id === intern.id);
-    const trackImage = `<img src="https://${process.env.APP_URL}/api/email/image?emailId=${emailId}" width="1" height="1" style="display:none;" />`;
+    const emailId = createdEmails.find(
+      (email) => email.internId === intern.id,
+    ).id;
+    console.log('Email iddd:', emailId);
+    const trackImage = `<img src="https://internship.dump.hr/api/email/image?emailId=${emailId}"  width="200" height="200" />`;
 
     this.postmark.sendEmail({
       From: 'info@dump.hr',
