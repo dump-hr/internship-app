@@ -40,7 +40,6 @@ export class EmailService {
       subject,
       text,
     );
-    console.log('created emails: ', createdEmails);
 
     const template = nunjucks.compile(text);
 
@@ -48,7 +47,7 @@ export class EmailService {
       interns.map((intern) => {
         const emailId = createdEmails.find((email) => email.id === intern.id);
 
-        const trackImage = `<img src="/api/email/image?emailId=${emailId}" width="1" height="1" style="display:none;" />`;
+        const trackImage = `<img src="https://internship.dump.hr/api/email/image?emailId=${emailId}" width="1" height="1" style="display:none;" />`;
 
         return this.postmark.sendEmail({
           From: 'info@dump.hr',

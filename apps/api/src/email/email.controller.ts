@@ -2,8 +2,8 @@ import {
   Body,
   Controller,
   Get,
-  Param,
   Post,
+  Query,
   Res,
   UseGuards,
 } from '@nestjs/common';
@@ -44,10 +44,8 @@ export class EmailController {
   }
 
   @Get('image')
-  async getImage(@Param('emailId') emailId: string, @Res() res: Response) {
-    console.log('Controller image, ', emailId);
+  async getImage(@Query('emailId') emailId: string, @Res() res: Response) {
     await this.emailService.updateIsSeen(emailId);
-    console.log('Controller image, ', emailId);
 
     const pixel: Buffer = Buffer.from(
       'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwADfgH+WBwLfwAAAABJRU5ErkJggg==',

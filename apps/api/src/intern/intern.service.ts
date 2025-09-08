@@ -22,10 +22,14 @@ import { PrismaService } from 'src/prisma.service';
 
 import * as disposableEmailBlocklist from './disposable-email-blocklist.json';
 import { CreateInternDto } from './dto/createIntern.dto';
+import { EmailService } from 'src/email/email.service';
 
 @Injectable()
 export class InternService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly emailService: EmailService,
+  ) {}
 
   private s3 = new S3Client({
     credentials: {
@@ -238,11 +242,28 @@ export class InternService {
     if (internToCreate.disciplines.includes(Discipline.Development))
       fullGeneralText += `\n\n${devFormAdditionalText}`;
 
+    const intern = await this.prisma.intern.findUnique({
+      where: { id: newIntern.id },
+    });
+
+    const data = [{ id: intern.id, email: intern.email }];
+
+    const createdEmails = await this.emailService.createEmailsForInterns(
+      data,
+      'Uspješno biranje termina za DUMP Internship intervju',
+      `Pozdrav ${intern.firstName} intern id: ${intern.id}...`,
+    );
+    const emailId = createdEmails.find(
+      (email) => email.internId === intern.id,
+    ).id;
+
+    const trackImage = `<img src="https://internship.dump.hr/api/email/image?emailId=${emailId}"  width="1" height="1" style="display:none" />`;
+
     this.postmark.sendEmail({
       From: 'info@dump.hr',
       To: internToCreate.email,
       Subject: 'Prijava na DUMP Internship',
-      TextBody: `${fullGeneralText}\n\n${generalTextEnding}`,
+      TextBody: `${fullGeneralText}\n\n${generalTextEnding} \n${trackImage}`,
       MessageStream: 'outbound',
     });
 
