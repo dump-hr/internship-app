@@ -268,13 +268,13 @@ export class InterviewSlotService {
     const createdEmails = await this.emailService.createEmailsForInterns(
       data,
       'Uspješno biranje termina za DUMP Internship intervju',
-      `Pozdrav ${intern.firstName} intern id: ${intern.id}...`,
+      `Pozdrav ${intern.firstName} ${intern.lastName} intern id: ${intern.id}...`,
     );
     const emailId = createdEmails.find(
       (email) => email.internId === intern.id,
     ).id;
 
-    const trackImage = `<img src="https://internship.dump.hr/api/email/image?emailId=${emailId}"  width="1" height="1" style="display:none" />`;
+    const trackImage = `<img src="https://internship.dump.hr/api/email/image?emailId=${emailId}" width="1" height="1" style="display:none" />`;
 
     const emailText = `Pozdrav ${intern.firstName},
     
@@ -294,7 +294,7 @@ export class InterviewSlotService {
       From: 'info@dump.hr',
       To: intern.email,
       Subject: 'Uspješno biranje termina za DUMP Internship intervju',
-      TextBody: emailText,
+      HtmlBody: emailText,
       MessageStream: 'outbound',
     });
 

@@ -202,7 +202,7 @@ export class TestSlotService {
     const createdEmails = await this.emailService.createEmailsForInterns(
       data,
       'Uspješno biranje termina za DUMP Internship inicijalni ispit',
-      `Pozdrav ${intern.firstName} intern id: ${intern.id}...`,
+      `Pozdrav ${intern.firstName} ${intern.lastName} intern id: ${intern.id}...`,
     );
     const emailId = createdEmails.find(
       (email) => email.internId === intern.id,
@@ -214,7 +214,7 @@ export class TestSlotService {
       From: 'info@dump.hr',
       To: intern.email,
       Subject: 'Uspješno biranje termina za DUMP Internship inicijalni ispit',
-      TextBody: `Pozdrav ${intern.firstName},
+      HtmlBody: `Pozdrav ${intern.firstName},
     biranje termina inicijalnog dev testa je uspješno provedeno! Termin svog ispita možeš vidjeti na status stranici: https://internship.dump.hr/status/${intern.id}
     U slučaju da ne možeš doći na odabrani termin, javi nam se na vrijeme na info@dump.hr
     

@@ -212,6 +212,21 @@ export class InternService {
       },
     });
 
+    const intern = await this.prisma.intern.findUnique({
+      where: { id: newIntern.id },
+    });
+
+    const data = [{ id: intern.id, email: intern.email }];
+
+    const createdEmails = await this.emailService.createEmailsForInterns(
+      data,
+      'Prijava na DUMP Internship',
+      `Pozdrav ${intern.firstName} ${intern.lastName} intern id: ${intern.id}...`,
+    );
+    const emailId = createdEmails.find(
+      (email) => email.internId === intern.id,
+    ).id;
+
     const generalTextBody = `Pozdrav ${internToCreate.firstName},
 
     Hvala na prijavi na DUMP Internship 2024. Uskoro ćemo te obavijestiti o sljedećim koracima prijave.
@@ -229,10 +244,12 @@ export class InternService {
 
     Link: https://bit.ly/primjer-inicijalnog`;
 
+    const trackImage = `<img src="https://internship.dump.hr/api/email/image?emailId=${emailId}" width="1" height="1" style="display:none" />`;
+
     const generalTextEnding = `Lijep pozdrav,
     
     DUMP Udruga mladih programera
-    dump.hr`;
+    dump.hr ${trackImage}`;
 
     let fullGeneralText = generalTextBody;
 
@@ -242,28 +259,11 @@ export class InternService {
     if (internToCreate.disciplines.includes(Discipline.Development))
       fullGeneralText += `\n\n${devFormAdditionalText}`;
 
-    const intern = await this.prisma.intern.findUnique({
-      where: { id: newIntern.id },
-    });
-
-    const data = [{ id: intern.id, email: intern.email }];
-
-    const createdEmails = await this.emailService.createEmailsForInterns(
-      data,
-      'Uspješno biranje termina za DUMP Internship intervju',
-      `Pozdrav ${intern.firstName} intern id: ${intern.id}...`,
-    );
-    const emailId = createdEmails.find(
-      (email) => email.internId === intern.id,
-    ).id;
-
-    const trackImage = `<img src="https://internship.dump.hr/api/email/image?emailId=${emailId}"  width="1" height="1" style="display:none" />`;
-
     this.postmark.sendEmail({
       From: 'info@dump.hr',
       To: internToCreate.email,
       Subject: 'Prijava na DUMP Internship',
-      TextBody: `${fullGeneralText}\n\n${generalTextEnding} \n${trackImage}`,
+      HtmlBody: `${fullGeneralText}\n\n${generalTextEnding}`,
       MessageStream: 'outbound',
     });
 
