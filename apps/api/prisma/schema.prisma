@@ -156,12 +156,14 @@ model InterviewQuestion {
 }
 
 model Email {
-  id             String  @id @default(uuid())
+  id             String   @id @default(uuid())
   subject        Json
   body           Json
-  isSeen         Boolean @default(false)
+  isSeen         Boolean  @default(false)
   internId       String
-  emailRecipient Intern  @relation(fields: [internId], references: [id])
+  emailRecipient Intern   @relation(fields: [internId], references: [id])
+  createdAt      DateTime @default(now())
+  lastUpdatedAt  DateTime @updatedAt
 }
 
 enum QuestionCategory {

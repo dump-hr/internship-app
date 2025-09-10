@@ -112,11 +112,17 @@ export class EmailService {
   }
 
   async updateIsSeen(emailId: string) {
-    const updated = await this.prisma.email.update({
+    const email = await this.prisma.email.findUnique({
       where: { id: emailId },
-      data: { isSeen: true },
     });
 
-    return updated.isSeen;
+    if (!email) throw new Error('Email not found');
+
+    if (!email.isSeen) {
+      await this.prisma.email.update({
+        where: { id: emailId },
+        data: { isSeen: true },
+      });
+    }
   }
 }
