@@ -45,7 +45,9 @@ export class EmailService {
 
     return Promise.allSettled(
       interns.map((intern) => {
-        const emailId = createdEmails.find((email) => email.id === intern.id);
+        const emailId = createdEmails.find(
+          (email) => email.internId === intern.id,
+        ).id;
 
         const trackImage = `<img src="https://internship.dump.hr/api/email/image?emailId=${emailId}" width="1" height="1" style="display:none;" />`;
 
@@ -53,7 +55,7 @@ export class EmailService {
           From: 'info@dump.hr',
           To: intern.email,
           Subject: subject,
-          HtmlBody: `${template.render({ intern })} ${text}${trackImage}`,
+          HtmlBody: `${template.render({ intern })} ${text} ${trackImage}`,
           MessageStream: 'outbound',
         });
       }),
