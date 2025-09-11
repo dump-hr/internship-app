@@ -278,15 +278,6 @@ async function main() {
     },
   });
 
-  await prisma.admin.createMany({
-    data: [
-      {
-        email: 'admin@dump.hr',
-        password: await bcrypt.hash('dump.1950', 10),
-      },
-    ],
-  });
-
   await prisma.interviewQuestion.createMany({
     data: [
       {
@@ -632,6 +623,10 @@ async function main() {
         category: QuestionCategory.Final,
       },
     ],
+  });
+
+  await prisma.internshipApplication.create({
+    data: { isOpened: false },
   });
 }
 

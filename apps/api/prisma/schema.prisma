@@ -11,14 +11,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Admin {
-  id        String   @id @default(uuid())
-  email     String   @unique
-  password  String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
 model Interviewer {
   id          String                         @id @default(uuid())
   name        String
@@ -164,6 +156,11 @@ model Email {
   emailRecipient Intern   @relation(fields: [internId], references: [id])
   createdAt      DateTime @default(now())
   lastUpdatedAt  DateTime @updatedAt
+}
+
+model InternshipApplicationStatus {
+  id       Int     @id @default(autoincrement())
+  isOpened Boolean @default(false)
 }
 
 enum QuestionCategory {
