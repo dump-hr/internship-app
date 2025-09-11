@@ -3,7 +3,6 @@ import { useMutation } from 'react-query';
 import toast from 'react-hot-toast';
 
 const changeInternshipApplicationStatus = (newStatus: boolean) => {
-  console.log('newstatsu', newStatus);
   return api.patch<boolean, never>('/internship-application-status/update', {
     isOpened: newStatus,
   });

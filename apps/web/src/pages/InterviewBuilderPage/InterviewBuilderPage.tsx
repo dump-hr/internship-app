@@ -25,7 +25,9 @@ export const InterviewBuilderPage = () => {
           <h2>
             Internship Application Status: {isOpened ? 'Otvorene' : 'Zatvorene'}
           </h2>
-          <Switch checked={isOpened} onChange={handleChange} />
+          {isOpened !== undefined && (
+            <Switch checked={isOpened} onChange={handleChange} />
+          )}
         </div>
         <h1>Interview Questions Builder</h1>
         <InterviewQuestions />
