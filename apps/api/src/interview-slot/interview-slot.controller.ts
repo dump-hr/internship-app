@@ -16,6 +16,7 @@ import { LoggerService } from 'src/logger/logger.service';
 
 import { CreateInterviewSlotDto } from './dto/createInterviewSlot.dto';
 import { InterviewSlotService } from './interview-slot.service';
+import { GraphService } from './graph.service';
 
 @Controller('interview-slot')
 @ApiTags('interview-slot')
@@ -23,6 +24,7 @@ export class InterviewSlotController {
   constructor(
     private readonly interviewSlotService: InterviewSlotService,
     private readonly loggerService: LoggerService,
+    private readonly graphService: GraphService,
   ) {}
 
   @Get()
@@ -75,7 +77,30 @@ export class InterviewSlotController {
     @Param('slotId') slotId: string,
     @Body() { internId }: ScheduleInterviewRequest,
   ) {
-    return await this.interviewSlotService.scheduleInterview(slotId, internId);
+    const interview = await this.interviewSlotService.scheduleInterview(
+      slotId,
+      internId,
+    );
+    console.log('creating event', interview);
+
+    await this.graphService.createEvent({
+      subject: `Intervju s ${interview.firstName} ${interview.lastName}`,
+      start: interview.interviewSlot.start.toISOString(),
+      end: interview.interviewSlot.end.toISOString(),
+      roomEmail: process.env.DUMP_OFFICE_EMAIL,
+      roomName: 'Ured',
+      attendees: interview.interviewSlot.interviewers
+        .filter((i) => !!i.interviewer.email)
+        .map((interviewer) => ({
+          emailAddress: {
+            address: interviewer.interviewer.email,
+            name: interviewer.interviewer.name,
+          },
+          type: 'required',
+        })),
+    });
+
+    return interview;
   }
 
   @Patch('/answers/:slotId')

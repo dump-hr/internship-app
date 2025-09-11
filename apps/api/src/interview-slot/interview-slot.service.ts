@@ -308,6 +308,13 @@ export class InterviewSlotService {
           },
         },
       },
+      include: {
+        interviewSlot: {
+          include: {
+            interviewers: { include: { interviewer: true } },
+          },
+        },
+      },
     });
   }
 
