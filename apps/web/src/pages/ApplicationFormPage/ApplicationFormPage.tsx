@@ -1,4 +1,4 @@
-import { usePostIntern } from '@api/index';
+import { useGetInternshipApplicationStatus, usePostIntern } from '@api/index';
 import {
   ApplicationFormInputHandler,
   Logo,
@@ -38,10 +38,9 @@ export type FormValues = {
 const disciplineEnumKeys = Object.keys(Discipline);
 const disciplineEnumValues = Object.values(Discipline);
 
-const applicationsClosed = true;
-
 export const ApplicationFormPage = () => {
   const [internDisciplines, setInternDisciplines] = useState<Discipline[]>([]);
+  const { data: isOpened } = useGetInternshipApplicationStatus();
 
   const createIntern = usePostIntern();
 
@@ -116,7 +115,7 @@ export const ApplicationFormPage = () => {
     setValue('disciplines', updatedDisciplines, { shouldValidate: true });
   };
 
-  if (applicationsClosed) {
+  if (!isOpened) {
     return (
       <div className={classes.applicationFormPageWrapper}>
         <div className={classes.applicationFormIntroSection}>

@@ -625,7 +625,7 @@ async function main() {
     ],
   });
 
-  await prisma.internshipApplication.create({
+  await prisma.internshipApplicationStatus.create({
     data: { isOpened: false },
   });
 }
