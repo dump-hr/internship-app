@@ -59,7 +59,7 @@ export class InterviewSlotService {
     const { start, end } = interviewSlotDto;
     const interviewSlots = [];
 
-    const slotDuration = 15 * 60 * 1000;
+    const slotDuration = 20 * 60 * 1000;
 
     try {
       await this.prisma.$transaction(async (prisma) => {
