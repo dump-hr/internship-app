@@ -81,14 +81,13 @@ export class InterviewSlotController {
       slotId,
       internId,
     );
-    console.log('creating event', interview);
 
     await this.graphService.createEvent({
       subject: `Intervju s ${interview.firstName} ${interview.lastName}`,
       start: interview.interviewSlot.start.toISOString(),
       end: interview.interviewSlot.end.toISOString(),
       roomEmail: process.env.DUMP_OFFICE_EMAIL,
-      roomName: 'Ured',
+      roomName: 'DUMP Ured',
       attendees: interview.interviewSlot.interviewers
         .filter((i) => !!i.interviewer.email)
         .map((interviewer) => ({

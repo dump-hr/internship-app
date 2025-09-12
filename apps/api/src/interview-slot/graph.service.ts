@@ -34,20 +34,35 @@ export class GraphService {
   }
 
   async createEvent(eventData: any) {
-    const token = await this.getAppAccessToken();
-
-    await axios.post(
-      `https://graph.microsoft.com/v1.0/users/${process.env.DUMP_OFFICE_EMAIL}/events`,
-      {
-        subject: eventData.subject,
-        start: { dateTime: eventData.start, timeZone: eventData.timeZone },
-        end: { dateTime: eventData.end, timeZone: eventData.timeZone },
-        attendees: eventData.attendees,
-        location: { displayName: eventData.roomName },
-      },
-      {
-        headers: { Authorization: `Bearer ${token}` },
-      },
-    );
+    try {
+      const token = await this.getAppAccessToken();
+      await axios.post(
+        `https://graph.microsoft.com/v1.0/users/${process.env.DUMP_ORGANIZER_EMAIL}/events`,
+        {
+          subject: eventData.subject,
+          start: { dateTime: eventData.start, timeZone: 'UTC' },
+          end: { dateTime: eventData.end, timeZone: 'UTC' },
+          attendees: [
+            ...eventData.attendees,
+            {
+              emailAddress: {
+                address: process.env.DUMP_OFFICE_EMAIL,
+                name: eventData.roomName,
+              },
+              type: 'resource',
+            },
+          ],
+        },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        },
+      );
+    } catch (err: any) {
+      console.error(
+        'Failed to create outlook event:',
+        err.response?.data || err.message,
+      );
+      throw err;
+    }
   }
 }
