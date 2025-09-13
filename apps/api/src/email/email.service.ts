@@ -35,10 +35,8 @@ export class EmailService {
       },
     });
 
-    const createdEmails = await this.createEmailsForInterns(
-      interns,
-      subject,
-      text,
+    const createdEmails = await Promise.all(
+      interns.map((i) => this.createEmailForIntern(i, subject, text)),
     );
 
     const template = nunjucks.compile(text);
@@ -49,7 +47,7 @@ export class EmailService {
           (email) => email.internId === intern.id,
         ).id;
 
-        const trackImage = `<img src="https://internship.dump.hr/api/email/image?emailId=${emailId}" width="1" height="1" style="display:none;" />`;
+        const trackImage = `<img src="https://internship.dump.hr/api/email/image?emailId=${emailId}" width="1" height="1" style="display:none" />`;
 
         return this.postmark.sendEmail({
           From: 'info@dump.hr',
@@ -93,24 +91,19 @@ export class EmailService {
     return interns.map((intern) => template.render({ intern }));
   }
 
-  async createEmailsForInterns(
-    interns: { id: string; email: string }[],
+  async createEmailForIntern(
+    intern: { id: string; email: string },
     subject: string,
     text: string,
   ) {
-    console.log('interns: ', interns);
-    return await Promise.all(
-      interns.map((intern) =>
-        this.prisma.email.create({
-          data: {
-            internId: intern.id,
-            subject: { subject },
-            body: { text },
-            isSeen: false,
-          },
-        }),
-      ),
-    );
+    return await this.prisma.email.create({
+      data: {
+        internId: intern.id,
+        subject: subject,
+        body: text,
+        isSeen: false,
+      },
+    });
   }
 
   async updateIsSeen(emailId: string) {
