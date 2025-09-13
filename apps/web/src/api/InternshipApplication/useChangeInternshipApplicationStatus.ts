@@ -1,5 +1,5 @@
 import { api } from '@api/base';
-import { useMutation } from 'react-query';
+import { useMutation, useQueryClient } from 'react-query';
 import toast from 'react-hot-toast';
 
 const changeInternshipApplicationStatus = (newStatus: boolean) => {
@@ -9,11 +9,16 @@ const changeInternshipApplicationStatus = (newStatus: boolean) => {
 };
 
 export const useChangeInternshipApplicationStatus = () => {
+  const queryClient = useQueryClient();
   return useMutation({
     mutationKey: ['internship-application-status'],
     mutationFn: changeInternshipApplicationStatus,
     onSuccess: () => {
+      queryClient.invalidateQueries(['internship-application-status']);
       toast.success('Uspješno promijenjen status prijava');
+    },
+    onError: (error: string) => {
+      toast.error(`Pogreška prilikom mijenjanja statusa prijava: ${error}`);
     },
   });
 };
