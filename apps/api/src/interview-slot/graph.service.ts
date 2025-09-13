@@ -1,5 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import axios from 'axios';
+import {
+  GRAPH_DEFAULT_PATH,
+  GRAPH_USERS_PATH,
+  SSO_LOGIN_PATH,
+} from 'src/constants/index';
 
 @Injectable()
 export class GraphService {
@@ -10,18 +15,14 @@ export class GraphService {
       const params = new URLSearchParams();
       params.append('client_id', process.env.AZURE_CLIENT_ID);
       params.append('client_secret', process.env.AZURE_CLIENT_SECRET);
-      params.append('scope', 'https://graph.microsoft.com/.default');
+      params.append('scope', GRAPH_DEFAULT_PATH);
       params.append('grant_type', 'client_credentials');
 
-      console.log('Requesting token with params:', params.toString());
-
       const response = await axios.post(
-        `https://login.microsoftonline.com/${this.tenantId}/oauth2/v2.0/token`,
+        `${SSO_LOGIN_PATH}/${this.tenantId}/oauth2/v2.0/token`,
         params.toString(),
         { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } },
       );
-
-      console.log('Token response:', response.data);
 
       return response.data.access_token;
     } catch (err: any) {
@@ -37,7 +38,7 @@ export class GraphService {
     try {
       const token = await this.getAppAccessToken();
       await axios.post(
-        `https://graph.microsoft.com/v1.0/users/${process.env.DUMP_ORGANIZER_EMAIL}/events`,
+        `${GRAPH_USERS_PATH}/${process.env.DUMP_ORGANIZER_EMAIL}/events`,
         {
           subject: eventData.subject,
           start: { dateTime: eventData.start, timeZone: 'UTC' },
