@@ -13,6 +13,7 @@ import { InterviewerModule } from './interviewer/interviewer.module';
 import { LoggerModule } from './logger/logger.module';
 import { PrismaService } from './prisma.service';
 import { TestSlotModule } from './test-slot/test-slot.module';
+import { InternshipApplicationStatusModule } from './internship-application-status/internship-application-status.module';
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import { TestSlotModule } from './test-slot/test-slot.module';
     TestSlotModule,
     InterviewerModule,
     QuestionModule,
+    InternshipApplicationStatusModule,
   ],
   controllers: [AppController /* , AuthController */],
   providers: [AppService, PrismaService],

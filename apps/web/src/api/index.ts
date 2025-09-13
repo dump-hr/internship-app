@@ -42,3 +42,5 @@ export * from './TestSlot/useSubmitTestSlot';
 export * from './TestSlot/useUpdateTestSlot';
 export * from './useFetchAdminLogs';
 export * from './useSendEmails';
+export * from './InternshipApplication/useGetInternshipApplicationStatus';
+export * from './InternshipApplication/useChangeInternshipApplicationStatus';

@@ -624,6 +624,10 @@ async function main() {
       },
     ],
   });
+
+  await prisma.internshipApplicationStatus.create({
+    data: { isOpened: false },
+  });
 }
 
 main()
