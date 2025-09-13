@@ -7,17 +7,17 @@ import { JwtAuthGuard } from './jwt-auth-guard';
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  @Post('login')
-  async login(@Body() { email, password }) {
-    const accessToken = await this.authService.adminPasswordLogin(
-      email,
-      password,
-    );
+  // @Post('login')
+  // async login(@Body() { email, password }) {
+  //   const accessToken = await this.authService.adminPasswordLogin(
+  //     email,
+  //     password,
+  //   );
 
-    return {
-      access_token: accessToken,
-    };
-  }
+  //   return {
+  //     access_token: accessToken,
+  //   };
+  // }
 
   @UseGuards(JwtAuthGuard)
   @Get('whoami')

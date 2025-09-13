@@ -35,15 +35,25 @@ export class EmailService {
       },
     });
 
+    const createdEmails = await Promise.all(
+      interns.map((i) => this.createEmailForIntern(i, subject, text)),
+    );
+
     const template = nunjucks.compile(text);
 
-    return Promise.all(
+    return Promise.allSettled(
       interns.map((intern) => {
+        const emailId = createdEmails.find(
+          (email) => email.internId === intern.id,
+        ).id;
+
+        const trackImage = `<img src="https://internship.dump.hr/api/email/image?emailId=${emailId}" width="1" height="1" style="display:none" />`;
+
         return this.postmark.sendEmail({
           From: 'info@dump.hr',
           To: intern.email,
           Subject: subject,
-          TextBody: template.render({ intern }),
+          HtmlBody: `${template.render({ intern })} ${text} ${trackImage}`,
           MessageStream: 'outbound',
         });
       }),
@@ -81,12 +91,33 @@ export class EmailService {
     return interns.map((intern) => template.render({ intern }));
   }
 
+  async createEmailForIntern(
+    intern: { id: string; email: string },
+    subject: string,
+    text: string,
+  ) {
+    return await this.prisma.email.create({
+      data: {
+        internId: intern.id,
+        subject: subject,
+        body: text,
+        isSeen: false,
+      },
+    });
+  }
+
   async updateIsSeen(emailId: string) {
-    const updated = await this.prisma.email.update({
+    const email = await this.prisma.email.findUnique({
       where: { id: emailId },
-      data: { isSeen: true },
     });
 
-    return updated.isSeen;
+    if (!email) throw new Error('Email not found');
+
+    if (!email.isSeen) {
+      await this.prisma.email.update({
+        where: { id: emailId },
+        data: { isSeen: true },
+      });
+    }
   }
 }
