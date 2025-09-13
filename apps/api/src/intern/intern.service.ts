@@ -216,16 +216,14 @@ export class InternService {
       where: { id: newIntern.id },
     });
 
-    const data = [{ id: intern.id, email: intern.email }];
+    const data = { id: intern.id, email: intern.email };
 
-    const createdEmails = await this.emailService.createEmailsForInterns(
+    const createdEmails = await this.emailService.createEmailForIntern(
       data,
       'Prijava na DUMP Internship',
       `Pozdrav ${intern.firstName} ${intern.lastName} intern id: ${intern.id}...`,
     );
-    const emailId = createdEmails.find(
-      (email) => email.internId === intern.id,
-    ).id;
+    const emailId = createdEmails.id;
 
     const generalTextBody = `Pozdrav ${internToCreate.firstName},
 

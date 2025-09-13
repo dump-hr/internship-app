@@ -263,16 +263,14 @@ export class InterviewSlotService {
       where: { id: internId },
     });
 
-    const data = [{ id: intern.id, email: intern.email }];
+    const internData = { id: intern.id, email: intern.email };
 
-    const createdEmails = await this.emailService.createEmailsForInterns(
-      data,
+    const createdEmail = await this.emailService.createEmailForIntern(
+      internData,
       'Uspješno biranje termina za DUMP Internship intervju',
       `Pozdrav ${intern.firstName} ${intern.lastName} intern id: ${intern.id}...`,
     );
-    const emailId = createdEmails.find(
-      (email) => email.internId === intern.id,
-    ).id;
+    const emailId = createdEmail.id;
 
     const trackImage = `<img src="https://internship.dump.hr/api/email/image?emailId=${emailId}" width="1" height="1" style="display:none" />`;
 

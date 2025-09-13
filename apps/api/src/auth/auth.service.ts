@@ -10,37 +10,37 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async adminPasswordLogin(email: string, password: string) {
-    if (!email) {
-      throw new BadRequestException('Email is required');
-    }
+  // async adminPasswordLogin(email: string, password: string) {
+  //   if (!email) {
+  //     throw new BadRequestException('Email is required');
+  //   }
 
-    if (!password) {
-      throw new BadRequestException('Password is required');
-    }
+  //   if (!password) {
+  //     throw new BadRequestException('Password is required');
+  //   }
 
-    const admin = await this.prismaService.admin.findUnique({
-      where: {
-        email,
-      },
-    });
+  //   const admin = await this.prismaService.admin.findUnique({
+  //     where: {
+  //       email,
+  //     },
+  //   });
 
-    if (!admin) {
-      throw new BadRequestException('User not found');
-    }
+  //   if (!admin) {
+  //     throw new BadRequestException('User not found');
+  //   }
 
-    const passwordMatch = await bcrypt.compare(password, admin.password);
+  //   const passwordMatch = await bcrypt.compare(password, admin.password);
 
-    if (!passwordMatch) {
-      throw new BadRequestException('Invalid credentials');
-    }
+  //   if (!passwordMatch) {
+  //     throw new BadRequestException('Invalid credentials');
+  //   }
 
-    const accessToken = this.jwtService.sign({
-      id: admin.id,
-      email: admin.email,
-      role: 'admin',
-    });
+  //   const accessToken = this.jwtService.sign({
+  //     id: admin.id,
+  //     email: admin.email,
+  //     role: 'admin',
+  //   });
 
-    return accessToken;
-  }
+  //   return accessToken;
+  // }
 }
