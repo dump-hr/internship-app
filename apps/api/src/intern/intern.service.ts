@@ -23,7 +23,6 @@ import { PrismaService } from 'src/prisma.service';
 import * as disposableEmailBlocklist from './disposable-email-blocklist.json';
 import { CreateInternDto } from './dto/createIntern.dto';
 import { EmailService } from 'src/email/email.service';
-
 @Injectable()
 export class InternService {
   constructor(
@@ -261,7 +260,44 @@ export class InternService {
       From: 'info@dump.hr',
       To: internToCreate.email,
       Subject: 'Prijava na DUMP Internship',
-      HtmlBody: `${fullGeneralText}\n\n${generalTextEnding}`,
+      HtmlBody: `
+  <!DOCTYPE html>
+  <html lang="hr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DUMP Internship 2025</title>
+  </head>
+  <body style="margin:0; padding:0; background-color:#f4f4f4; font-family:Arial, sans-serif;">
+    <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr>
+        <td align="center" style="padding:20px 0;">
+          <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="600" style="background:#ffffff; border-radius:8px; box-shadow:0 2px 6px rgba(0,0,0,0.1); overflow:hidden;">
+            <tr>
+              <td align="center" style="padding:20px;">
+                <img src="http://localhost:3000/logo/dump.png" alt="DUMP Logo" width="180" />
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:30px; color:#333333; font-size:16px; line-height:1.5;">
+                ${fullGeneralText.replace(/\n/g, '<br/>')}
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:20px; background:#f9f9f9; color:#555555; font-size:14px; line-height:1.4; text-align:center;">
+                Lijep pozdrav,<br/><br/>
+                <strong>DUMP Udruga mladih programera</strong><br/>
+                <a href="https://dump.hr" style="color:#007BFF; text-decoration:none;">dump.hr</a>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+    ${trackImage}
+  </body>
+  </html>
+  `,
       MessageStream: 'outbound',
     });
 

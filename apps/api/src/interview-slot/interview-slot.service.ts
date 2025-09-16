@@ -270,29 +270,74 @@ export class InterviewSlotService {
       'Uspješno biranje termina za DUMP Internship intervju',
       `Pozdrav ${intern.firstName} ${intern.lastName} intern id: ${intern.id}...`,
     );
+
     const emailId = createdEmail.id;
 
     const trackImage = `<img src="https://internship.dump.hr/api/email/image?emailId=${emailId}" width="1" height="1" style="display:none" />`;
 
-    const emailText = `Pozdrav ${intern.firstName},
-    
-    biranje termina intervjua je uspješno provedeno! Termin svog intervjua možeš vidjeti na status stranici: https://internship.dump.hr/status/${intern.id}
-    U slučaju da ipak ne možeš doći na odabrani termin, javi nam se na vrijeme na info@dump.hr
-    
-    Podsjećamo, tvoj intervju će se održati u odabranom terminu u našem uredu (prostorija A223) na FESB-u (Ruđera Boškovića 32).
-    
-    Naš ured ćeš pronaći tako da kad uđeš kroz glavna vrata FESB-a skreneš desno do kraja hodnika (put referade) dok ne dođeš do stepenica koje su s lijeve strane. Popneš se stepenicama na prvi kat i skreneš lijevo. Nastaviš hodnikom do kraja i s desne strane vidjet ćeš vrata našeg ureda (A223).
-    
-    Vidimo se!
-    
-    DUMP Udruga mladih programera
-    dump.hr ${trackImage}`;
+    const emailText = `
+Pozdrav ${intern.firstName},<br/><br/>
+
+biranje termina intervjua je uspješno provedeno!<br/>
+Termin svog intervjua možeš vidjeti na status stranici:<br/>
+<a href="https://internship.dump.hr/status/${intern.id}" style="color:#007BFF; text-decoration:none;">https://internship.dump.hr/status/${intern.id}</a><br/><br/>
+
+U slučaju da ipak ne možeš doći na odabrani termin, javi nam se na vrijeme na 
+<a href="mailto:info@dump.hr" style="color:#007BFF; text-decoration:none;">info@dump.hr</a>.<br/><br/>
+
+<b>Podsjećamo:</b><br/>
+Tvoj intervju će se održati u odabranom terminu u našem uredu (prostorija <b>A223</b>) na FESB-u (Ruđera Boškovića 32).<br/><br/>
+
+<b>Kako doći:</b><br/>
+Kad uđeš kroz glavna vrata FESB-a skreni desno do kraja hodnika (put referade) dok ne dođeš do stepenica s lijeve strane. 
+Popni se na prvi kat, skreni lijevo i nastavi hodnikom do kraja – s desne strane vidjet ćeš vrata našeg ureda (A223).<br/><br/>
+
+Vidimo se!
+`;
 
     this.postmark.sendEmail({
       From: 'info@dump.hr',
       To: intern.email,
       Subject: 'Uspješno biranje termina za DUMP Internship intervju',
-      HtmlBody: emailText,
+      HtmlBody: `
+  <!DOCTYPE html>
+  <html lang="hr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DUMP Internship</title>
+  </head>
+  <body style="margin:0; padding:0; background-color:#f4f4f4; font-family:Arial, sans-serif;">
+    <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr>
+        <td align="center" style="padding:20px 0;">
+          <!-- Container -->
+          <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="600" style="background:#ffffff; border-radius:8px; box-shadow:0 2px 6px rgba(0,0,0,0.1); overflow:hidden;">
+            <tr>
+              <td align="center" style="padding:20px;">
+                <img src="https://via.placeholder.com/180x60?text=DUMP+Logo" alt="DUMP Logo" style="max-width:180px; height:auto;" />
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:30px; color:#333333; font-size:16px; line-height:1.5;">
+                ${emailText}
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:20px; background:#f9f9f9; color:#555555; font-size:14px; line-height:1.4; text-align:center;">
+                Lijep pozdrav,<br/><br/>
+                <strong>DUMP Udruga mladih programera</strong><br/>
+                <a href="https://dump.hr" style="color:#007BFF; text-decoration:none;">dump.hr</a>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+    ${trackImage}
+  </body>
+  </html>
+  `,
       MessageStream: 'outbound',
     });
 
