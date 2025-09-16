@@ -1,12 +1,12 @@
 import { Module } from '@nestjs/common';
+import { EmailModule } from 'src/email/email.module';
+import { EmailService } from 'src/email/email.service';
 import { LoggerService } from 'src/logger/logger.service';
 import { PrismaService } from 'src/prisma.service';
 
+import { MicrosoftGraphService } from './graph.service';
 import { InterviewSlotController } from './interview-slot.controller';
 import { InterviewSlotService } from './interview-slot.service';
-import { EmailService } from 'src/email/email.service';
-import { EmailModule } from 'src/email/email.module';
-import { GraphService } from './graph.service';
 
 @Module({
   imports: [EmailModule],
@@ -15,7 +15,7 @@ import { GraphService } from './graph.service';
     InterviewSlotService,
     LoggerService,
     EmailService,
-    GraphService,
+    MicrosoftGraphService,
     PrismaService,
   ],
 })

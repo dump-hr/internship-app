@@ -7,10 +7,10 @@ import {
 } from '@nestjs/common';
 import { Discipline, InterviewStatus, Prisma } from '@prisma/client';
 import * as postmark from 'postmark';
+import { EmailService } from 'src/email/email.service';
 import { PrismaService } from 'src/prisma.service';
 
 import { CreateInterviewSlotDto } from './dto/createInterviewSlot.dto';
-import { EmailService } from 'src/email/email.service';
 
 @Injectable()
 export class InterviewSlotService {

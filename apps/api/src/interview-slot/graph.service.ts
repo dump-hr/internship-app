@@ -7,7 +7,7 @@ import {
 } from 'src/constants/index';
 
 @Injectable()
-export class GraphService {
+export class MicrosoftGraphService {
   private tenantId = process.env.AZURE_TENANT_ID;
 
   async getAppAccessToken(): Promise<string> {

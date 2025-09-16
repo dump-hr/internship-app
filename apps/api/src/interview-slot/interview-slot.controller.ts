@@ -15,8 +15,8 @@ import { AdminGuard, MemberGuard } from 'src/auth/azure.guard';
 import { LoggerService } from 'src/logger/logger.service';
 
 import { CreateInterviewSlotDto } from './dto/createInterviewSlot.dto';
+import { MicrosoftGraphService } from './graph.service';
 import { InterviewSlotService } from './interview-slot.service';
-import { GraphService } from './graph.service';
 
 @Controller('interview-slot')
 @ApiTags('interview-slot')
@@ -24,7 +24,7 @@ export class InterviewSlotController {
   constructor(
     private readonly interviewSlotService: InterviewSlotService,
     private readonly loggerService: LoggerService,
-    private readonly graphService: GraphService,
+    private readonly microsoftGraphService: MicrosoftGraphService,
   ) {}
 
   @Get()
@@ -82,7 +82,7 @@ export class InterviewSlotController {
       internId,
     );
 
-    await this.graphService.createEvent({
+    await this.microsoftGraphService.createEvent({
       subject: `Intervju s ${interview.firstName} ${interview.lastName}`,
       start: interview.interviewSlot.start.toISOString(),
       end: interview.interviewSlot.end.toISOString(),

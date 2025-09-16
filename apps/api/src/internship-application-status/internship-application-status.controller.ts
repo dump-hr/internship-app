@@ -1,8 +1,9 @@
-import { Controller, Get, Body, Patch, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Patch, UseGuards } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { InternshipApplicationStatusService } from './internship-application-status.service';
 import { AdminGuard } from 'src/auth/azure.guard';
+
 import { UpdateStatusDto } from './dto/updateStatus.dto';
+import { InternshipApplicationStatusService } from './internship-application-status.service';
 
 @Controller('internship-application-status')
 @ApiTags('internship-application-status')
