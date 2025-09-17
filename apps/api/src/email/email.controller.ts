@@ -16,6 +16,8 @@ import { LoggerService } from 'src/logger/logger.service';
 import { EmailsDto } from './dto/emails.dto';
 import { EmailsSendDto } from './dto/emailsSend.dto';
 import { EmailService } from './email.service';
+import { join } from 'path';
+import * as fs from 'fs';
 
 @Controller('email')
 @ApiTags('email')
@@ -58,5 +60,15 @@ export class EmailController {
     });
 
     res.end(pixel);
+  }
+
+  @Get('logo')
+  async getImageLogo(@Res() res: Response) {
+    const imagePath = join(__dirname, '..', 'logo', 'dump-logo.png');
+    console.log(imagePath);
+    res.setHeader('Content-Type', 'image/png');
+
+    const stream = fs.createReadStream(imagePath);
+    stream.pipe(res);
   }
 }

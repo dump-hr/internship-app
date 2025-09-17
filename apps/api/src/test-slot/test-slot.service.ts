@@ -212,19 +212,72 @@ export class TestSlotService {
       From: 'info@dump.hr',
       To: intern.email,
       Subject: 'Uspješno biranje termina za DUMP Internship inicijalni ispit',
-      HtmlBody: `Pozdrav ${intern.firstName},
-    biranje termina inicijalnog dev testa je uspješno provedeno! Termin svog ispita možeš vidjeti na status stranici: https://internship.dump.hr/status/${intern.id}
-    U slučaju da ne možeš doći na odabrani termin, javi nam se na vrijeme na info@dump.hr
-    
-    Također, podsjećamo da će se ispit održati u jednom od računalnih laboratorija FESB-a. Potrebno je doći 10 minuta prije odabranog termina u atrij fakulteta, nakon čega ćemo te uputiti u učionicu u kojoj tipkaš ispit. Ispit rješavaš na našem računalu u jednom od ponuđenih jezika (JavaScript, Python, C#, C++, C, Java, Go). Sastoji se od četiri zadatka za koje imaš 100 minuta.
-    
-    Primjer ispita možeš vidjeti na sljedećem linku: https://bit.ly/inicijalni-primjer
-    
-    Tvoj rezultat testa poslat ćemo ti najkasnije tri dana nakon odabranog termina. U slučaju položenog ispita, dobit ćeš link za biranje termina intervjua.
-    
-    Sretno i vidimo se!
-    
-    DUMP Udruga mladih programera ${trackImage}`,
+      HtmlBody: `
+  <!DOCTYPE html>
+  <html lang="hr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DUMP Internship</title>
+  </head>
+  <body style="margin:0; padding:0; background-color:#f4f4f4; font-family:Arial, sans-serif;">
+    <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr>
+        <td align="center" style="padding:20px 0;">
+          <!-- Container -->
+          <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="600" style="background:#ffffff; border-radius:8px; box-shadow:0 2px 6px rgba(0,0,0,0.1); overflow:hidden;">
+            <tr>
+              <td align="center" style="padding:20px;">
+                <!-- LOGO Placeholder -->
+                <img src="https://internship.dump.hr/api/email/image/logo" alt="DUMP Logo" width="180" />
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:30px; color:#333333; font-size:16px; line-height:1.5;">
+                Pozdrav ${intern.firstName},<br/><br/>
+
+                Biranje termina inicijalnog dev testa je <b>uspješno provedeno!</b><br/>
+                Termin svog ispita možeš vidjeti na status stranici:<br/>
+                <a href="https://internship.dump.hr/status/${intern.id}" style="color:#007BFF; text-decoration:none;">
+                  https://internship.dump.hr/status/${intern.id}
+                </a><br/><br/>
+
+                U slučaju da ne možeš doći na odabrani termin, javi nam se na vrijeme na 
+                <a href="mailto:info@dump.hr" style="color:#007BFF; text-decoration:none;">info@dump.hr</a>.<br/><br/>
+
+                <b>Detalji ispita:</b><br/>
+                • Ispit će se održati u jednom od računalnih laboratorija FESB-a.<br/>
+                • Dođi <b>10 minuta ranije</b> u atrij fakulteta, nakon čega ćemo te uputiti u učionicu.<br/>
+                • Rješavaš na našem računalu u jednom od ponuđenih jezika:<br/>
+                  JavaScript, Python, C#, C++, C, Java, Go.<br/>
+                • Ispit sadrži 4 zadatka i traje <b>100 minuta</b>.<br/><br/>
+
+                Primjer ispita možeš vidjeti ovdje:<br/>
+                <a href="https://bit.ly/inicijalni-primjer" style="color:#007BFF; text-decoration:none;">
+                  https://bit.ly/inicijalni-primjer
+                </a><br/><br/>
+
+                Tvoj rezultat testa poslat ćemo ti <b>najkasnije tri dana</b> nakon odabranog termina.  
+                Ako položiš, dobit ćeš link za biranje termina intervjua.<br/><br/>
+
+                <b>Sretno i vidimo se!</b>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:20px; background:#f9f9f9; color:#555555; font-size:14px; line-height:1.4; text-align:center;">
+                Lijep pozdrav,<br/><br/>
+                <strong>DUMP Udruga mladih programera</strong><br/>
+                <a href="https://dump.hr" style="color:#007BFF; text-decoration:none;">dump.hr</a>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+    ${trackImage}
+  </body>
+  </html>
+  `,
       MessageStream: 'outbound',
     });
 
