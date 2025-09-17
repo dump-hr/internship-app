@@ -18,7 +18,6 @@ import {
   TestStatus,
 } from '@prisma/client';
 import * as postmark from 'postmark';
-import { EmailService } from 'src/email/email.service';
 import { PrismaService } from 'src/prisma.service';
 
 import * as disposableEmailBlocklist from './disposable-email-blocklist.json';
