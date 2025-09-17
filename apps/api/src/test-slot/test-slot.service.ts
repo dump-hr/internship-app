@@ -229,7 +229,7 @@ export class TestSlotService {
             <tr>
               <td align="center" style="padding:20px;">
                 <!-- LOGO Placeholder -->
-                <img src="https://via.placeholder.com/180x60?text=DUMP+Logo" alt="DUMP Logo" style="max-width:180px; height:auto;" />
+                <img src="https://internship.dump.hr/api/email/image/logo" alt="DUMP Logo" width="180" />
               </td>
             </tr>
             <tr>

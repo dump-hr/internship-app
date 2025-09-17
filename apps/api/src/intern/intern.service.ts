@@ -275,7 +275,7 @@ export class InternService {
           <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="600" style="background:#ffffff; border-radius:8px; box-shadow:0 2px 6px rgba(0,0,0,0.1); overflow:hidden;">
             <tr>
               <td align="center" style="padding:20px;">
-                <img src="http://localhost:3000/logo/dump.png" alt="DUMP Logo" width="180" />
+                <img src="https://internship.dump.hr/api/email/image/logo" alt="DUMP Logo" width="180" />
               </td>
             </tr>
             <tr>
