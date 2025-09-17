@@ -4,6 +4,7 @@ import {
   DecisionHandler,
   InternActions,
   InternInfo,
+  OldInternData,
 } from '@components/index';
 import { Path } from '@constants/index';
 import { useRoute } from 'wouter';
@@ -24,6 +25,13 @@ export const InternInfoPage = () => {
   return (
     <AdminPage>
       <InternInfo intern={intern!} />
+      <OldInternData
+        internData={{
+          name: intern.firstName,
+          surname: intern.lastName,
+          email: intern.email,
+        }}
+      />
       <InternActions intern={intern} />
       <DecisionHandler intern={intern} />
     </AdminPage>

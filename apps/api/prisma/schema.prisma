@@ -164,15 +164,15 @@ model InternshipApplicationStatus {
 }
 
 model OldInternResult {
-  id             String  @id @default(uuid())
-  first_name     String
-  last_name      String
-  email          String
-  discipline     String?
-  test_score     Int?
+  id              String   @id @default(uuid())
+  first_name      String
+  last_name       String
+  email           String
+  applicationYear DateTime
+  discipline      String?
+  test_score      Int?
   interview_score Int?
 }
-
 
 enum QuestionCategory {
   General

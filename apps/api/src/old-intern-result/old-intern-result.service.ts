@@ -7,13 +7,16 @@ export class OldInternResultService {
   constructor(private readonly prisma: PrismaService) {}
 
   findOne(findDto: FindDto) {
-    return this.prisma.oldInternResult.findFirst({
+    return this.prisma.oldInternResult.findMany({
       where: {
         OR: [
           {
-            AND: [{ first_name: findDto.name }, { last_name: findDto.surname }],
+            AND: [
+              { first_name: { equals: findDto.name, mode: 'insensitive' } },
+              { last_name: { equals: findDto.surname, mode: 'insensitive' } },
+            ],
           },
-          { email: findDto.email },
+          { email: { equals: findDto.email, mode: 'insensitive' } },
         ],
       },
     });

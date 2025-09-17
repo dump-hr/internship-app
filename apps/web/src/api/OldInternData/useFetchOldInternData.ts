@@ -6,23 +6,28 @@ interface OldInternResult {
   first_name: string;
   last_name: string;
   email: string;
+  applicationYear: Date;
   discipline?: string | null;
   test_score?: number | null;
   interview_score?: number | null;
 }
 
 interface FindDto {
-  name?: string;
-  surname?: string;
-  email?: string;
+  name: string;
+  surname: string;
+  email: string;
 }
 
 const fetchOldInternData = (params: FindDto) => {
-  return api.get<FindDto, OldInternResult>('/old-intern-result', { params });
+  const response = api.get<FindDto, OldInternResult[]>('/old-intern-result', {
+    params,
+  });
+
+  return response;
 };
-export const useFetchOldInternData = () => {
+export const useFetchOldInternData = (params: FindDto) => {
   return useQuery({
-    queryFn: () => fetchOldInternData,
+    queryFn: () => fetchOldInternData(params),
     queryKey: ['old-intern-data'],
   });
 };
