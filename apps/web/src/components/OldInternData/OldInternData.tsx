@@ -31,7 +31,9 @@ export const OldInternData = ({ internData }: { internData: Props }) => {
             Područje: {intern.discipline}, bodovi na testu:{' '}
             {intern.test_score ?? 'N/A'}, bodovi na intervjuu:{' '}
             {intern.interview_score ?? 'N/A'}, godina prijave:{' '}
-            {intern.applicationYear?.getFullYear() ?? ''}
+            {intern.applicationYear
+              ? new Date(intern.applicationYear).getFullYear()
+              : ''}
           </p>
         </section>
       ))}

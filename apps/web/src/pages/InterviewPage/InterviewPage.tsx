@@ -4,7 +4,12 @@ import {
   useSetImage,
   useSetInterview,
 } from '@api/index';
-import { AdminPage, ConfirmDialog, IntervieweeInfo } from '@components/index';
+import {
+  AdminPage,
+  ConfirmDialog,
+  IntervieweeInfo,
+  OldInternData,
+} from '@components/index';
 import MultistepForm from '@components/MultistepForm/MultistepForm.tsx';
 import { Intern, InterviewStatus, QuestionType } from '@internship-app/types';
 import { Question } from '@internship-app/types/';
@@ -149,6 +154,13 @@ export const InterviewPage = () => {
         image={intern.image || ''}
         setImage={handleSetImage}
         intern={intern}
+      />
+      <OldInternData
+        internData={{
+          name: intern.firstName,
+          surname: intern.lastName,
+          email: intern.email,
+        }}
       />
       <MultistepForm
         form={form}
