@@ -65,7 +65,16 @@ export class EmailController {
   @Get('logo')
   async getImageLogo(@Res() res: Response) {
     const imagePath = join(__dirname, 'logo', 'dump-logo-internship.png');
-    if (fs.existsSync(imagePath)) res.sendFile(imagePath);
-    else res.status(404).send(`File not found: ${imagePath}`);
+
+    if (fs.existsSync(imagePath)) {
+      res.sendFile(imagePath, {
+        headers: {
+          'Content-Type': 'image/png',
+          'Cache-Control': 'public, max-age=86400',
+        },
+      });
+    } else {
+      res.status(404).send('File not found');
+    }
   }
 }
