@@ -64,11 +64,8 @@ export class EmailController {
 
   @Get('logo')
   async getImageLogo(@Res() res: Response) {
-    const imagePath = join(__dirname, '..', 'logo', 'dump-logo.png');
-    console.log(imagePath);
-    res.setHeader('Content-Type', 'image/png');
-
-    const stream = fs.createReadStream(imagePath);
-    stream.pipe(res);
+    const imagePath = join(__dirname, 'logo', 'dump-logo-internship.png');
+    if (fs.existsSync(imagePath)) res.sendFile(imagePath);
+    else res.status(404).send(`File not found: ${imagePath}`);
   }
 }
