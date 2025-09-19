@@ -44,3 +44,4 @@ export * from './useFetchAdminLogs';
 export * from './useSendEmails';
 export * from './InternshipApplication/useGetInternshipApplicationStatus';
 export * from './InternshipApplication/useChangeInternshipApplicationStatus';
+export * from './OldInternData/useFetchOldInternData';
