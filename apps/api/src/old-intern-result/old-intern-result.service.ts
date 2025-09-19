@@ -19,7 +19,7 @@ export class OldInternResultService {
           { email: { equals: findDto.email, mode: 'insensitive' } },
         ],
       },
-      orderBy: { applicationYear: 'desc' },
+      orderBy: { applicationDate: 'desc' },
     });
   }
 }
