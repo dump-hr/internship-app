@@ -64,7 +64,15 @@ export class EmailController {
 
   @Get('logo')
   async getImageLogo(@Res() res: Response) {
-    const imagePath = join(__dirname, 'logo', 'dump-logo-internship.png');
+    const imagePath = join(
+      process.cwd(),
+      'apps',
+      'api',
+      'dist',
+      'logo',
+      'dump-logo-internship.png',
+    );
+
     console.log('ImagePath: ', imagePath);
 
     if (fs.existsSync(imagePath)) {
