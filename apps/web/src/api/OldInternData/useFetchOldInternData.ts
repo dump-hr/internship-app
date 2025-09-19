@@ -3,10 +3,10 @@ import { useQuery } from 'react-query';
 
 interface OldInternResult {
   id: string;
-  first_name: string;
-  last_name: string;
+  firstName: string;
+  lastName: string;
   email: string;
-  applicationYear: Date;
+  applicationDate: Date;
   discipline?: string | null;
   test_score?: number | null;
   interview_score?: number | null;

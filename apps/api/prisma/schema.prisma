@@ -165,10 +165,10 @@ model InternshipApplicationStatus {
 
 model OldInternResult {
   id              String   @id @default(uuid())
-  first_name      String
-  last_name       String
+  firstName       String
+  lastName        String
   email           String
-  applicationYear DateTime
+  applicationDate DateTime
   discipline      String?
   test_score      Int?
   interview_score Int?

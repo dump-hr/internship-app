@@ -12,8 +12,8 @@ export class OldInternResultService {
         OR: [
           {
             AND: [
-              { first_name: { equals: findDto.name, mode: 'insensitive' } },
-              { last_name: { equals: findDto.surname, mode: 'insensitive' } },
+              { firstName: { equals: findDto.name, mode: 'insensitive' } },
+              { lastName: { equals: findDto.surname, mode: 'insensitive' } },
             ],
           },
           { email: { equals: findDto.email, mode: 'insensitive' } },

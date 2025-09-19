@@ -24,15 +24,15 @@ export const OldInternData = ({ internData }: { internData: Props }) => {
         <section key={index}>
           <h3 style={{ marginTop: '50px' }}>
             <em>
-              {intern.first_name} {intern.last_name} ({intern.email})
+              {intern.firstName} {intern.lastName} ({intern.email})
             </em>
           </h3>
           <p style={{ marginBottom: '50px' }}>
             Područje: {intern.discipline}, bodovi na testu:{' '}
             {intern.test_score ?? 'N/A'}, bodovi na intervjuu:{' '}
             {intern.interview_score ?? 'N/A'}, godina prijave:{' '}
-            {intern.applicationYear
-              ? new Date(intern.applicationYear).getFullYear()
+            {intern.applicationDate
+              ? new Date(intern.applicationDate).getFullYear()
               : ''}
           </p>
         </section>
