@@ -163,6 +163,17 @@ model InternshipApplicationStatus {
   isOpened Boolean @default(false)
 }
 
+model OldInternResult {
+  id              String   @id @default(uuid())
+  firstName       String
+  lastName        String
+  email           String
+  applicationDate DateTime
+  discipline      String?
+  test_score      Int?
+  interview_score Int?
+}
+
 enum QuestionCategory {
   General
   Personal
