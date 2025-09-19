@@ -1,4 +1,5 @@
 import { useFetchOldInternData } from '@api/index';
+import styles from './OldInternData.module.css';
 
 interface Props {
   name: string;
@@ -11,7 +12,7 @@ export const OldInternData = ({ internData }: { internData: Props }) => {
 
   if (!data || data.length === 0) {
     return (
-      <div style={{ margin: '50px 0' }}>
+      <div className={styles.noData}>
         Nije pronađena prijašnja prijava interna
       </div>
     );
@@ -22,12 +23,12 @@ export const OldInternData = ({ internData }: { internData: Props }) => {
       <h2>Mogući postojeći interni: </h2>
       {data.map((intern, index) => (
         <section key={index}>
-          <h3 style={{ marginTop: '50px' }}>
+          <h3 className={styles.internTitle}>
             <em>
               {intern.firstName} {intern.lastName} ({intern.email})
             </em>
           </h3>
-          <p style={{ marginBottom: '50px' }}>
+          <p className={styles.internDetails}>
             Područje: {intern.discipline}, bodovi na testu:{' '}
             {intern.test_score ?? 'N/A'}, bodovi na intervjuu:{' '}
             {intern.interview_score ?? 'N/A'}, godina prijave:{' '}
