@@ -206,8 +206,6 @@ export class TestSlotService {
     );
     const emailId = createdEmail.id;
 
-    const trackImage = `<img src="https://internship.dump.hr/api/email/image?emailId=${emailId}" width="1" height="1" style="display:none" />`;
-
     await this.postmark.sendEmail({
       From: 'info@dump.hr',
       To: intern.email,
@@ -224,12 +222,10 @@ export class TestSlotService {
     <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%">
       <tr>
         <td align="center" style="padding:20px 0;">
-          <!-- Container -->
           <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="600" style="background:#ffffff; border-radius:8px; box-shadow:0 2px 6px rgba(0,0,0,0.1); overflow:hidden;">
             <tr>
               <td align="center" style="padding:20px;">
-                <!-- LOGO Placeholder -->
-                <img src="https://internship.dump.hr/api/email/logo" alt="DUMP Logo" width="180" />
+                <img src="https://internship.dump.hr/api/email/logo?emailId=${emailId}" alt="DUMP Logo" width="180" />
               </td>
             </tr>
             <tr>
@@ -274,7 +270,6 @@ export class TestSlotService {
         </td>
       </tr>
     </table>
-    ${trackImage}
   </body>
   </html>
   `,

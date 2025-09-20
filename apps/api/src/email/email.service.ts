@@ -47,7 +47,7 @@ export class EmailService {
           (email) => email.internId === intern.id,
         ).id;
 
-        const trackImage = `<img src="https://internship.dump.hr/api/email/image?emailId=${emailId}" width="1" height="1" style="display:none" />`;
+        const trackImage = `<img src="https://internship.dump.hr/api/email/logo?emailId=${emailId}" width="1" height="1" style="display:none" />`;
 
         return this.postmark.sendEmail({
           From: 'info@dump.hr',

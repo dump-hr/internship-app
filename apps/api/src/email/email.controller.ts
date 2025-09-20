@@ -45,25 +45,10 @@ export class EmailController {
     return templates;
   }
 
-  @Get('image')
-  async getImage(@Query('emailId') emailId: string, @Res() res: Response) {
+  @Get('logo')
+  async getImageLogo(@Query('emailId') emailId: string, @Res() res: Response) {
     await this.emailService.updateIsSeen(emailId);
 
-    const pixel: Buffer = Buffer.from(
-      'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwADfgH+WBwLfwAAAABJRU5ErkJggg==',
-      'base64',
-    );
-
-    res.writeHead(200, {
-      'Content-Type': 'image/png',
-      'Content-Length': pixel.length,
-    });
-
-    res.end(pixel);
-  }
-
-  @Get('logo')
-  async getImageLogo(@Res() res: Response) {
     const imagePath = join(
       process.cwd(),
       'apps',

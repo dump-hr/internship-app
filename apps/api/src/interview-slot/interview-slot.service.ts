@@ -273,27 +273,25 @@ export class InterviewSlotService {
 
     const emailId = createdEmail.id;
 
-    const trackImage = `<img src="https://internship.dump.hr/api/email/image?emailId=${emailId}" width="1" height="1" style="display:none" />`;
-
     const emailText = `
-Pozdrav ${intern.firstName},<br/><br/>
+    Pozdrav ${intern.firstName},<br/><br/>
 
-biranje termina intervjua je uspješno provedeno!<br/>
-Termin svog intervjua možeš vidjeti na status stranici:<br/>
-<a href="https://internship.dump.hr/status/${intern.id}" style="color:#007BFF; text-decoration:none;">https://internship.dump.hr/status/${intern.id}</a><br/><br/>
+    biranje termina intervjua je uspješno provedeno!<br/>
+    Termin svog intervjua možeš vidjeti na status stranici:<br/>
+    <a href="https://internship.dump.hr/status/${intern.id}" style="color:#007BFF; text-decoration:none;">https://internship.dump.hr/status/${intern.id}</a><br/><br/>
 
-U slučaju da ipak ne možeš doći na odabrani termin, javi nam se na vrijeme na 
-<a href="mailto:info@dump.hr" style="color:#007BFF; text-decoration:none;">info@dump.hr</a>.<br/><br/>
+    U slučaju da ipak ne možeš doći na odabrani termin, javi nam se na vrijeme na 
+    <a href="mailto:info@dump.hr" style="color:#007BFF; text-decoration:none;">info@dump.hr</a>.<br/><br/>
 
-<b>Podsjećamo:</b><br/>
-Tvoj intervju će se održati u odabranom terminu u našem uredu (prostorija <b>A223</b>) na FESB-u (Ruđera Boškovića 32).<br/><br/>
+    <b>Podsjećamo:</b><br/>
+    Tvoj intervju će se održati u odabranom terminu u našem uredu (prostorija <b>A223</b>) na FESB-u (Ruđera Boškovića 32).<br/><br/>
 
-<b>Kako doći:</b><br/>
-Kad uđeš kroz glavna vrata FESB-a skreni desno do kraja hodnika (put referade) dok ne dođeš do stepenica s lijeve strane. 
-Popni se na prvi kat, skreni lijevo i nastavi hodnikom do kraja – s desne strane vidjet ćeš vrata našeg ureda (A223).<br/><br/>
+    <b>Kako doći:</b><br/>
+    Kad uđeš kroz glavna vrata FESB-a skreni desno do kraja hodnika (put referade) dok ne dođeš do stepenica s lijeve strane. 
+    Popni se na prvi kat, skreni lijevo i nastavi hodnikom do kraja – s desne strane vidjet ćeš vrata našeg ureda (A223).<br/><br/>
 
-Vidimo se!
-`;
+    Vidimo se!
+    `;
 
     this.postmark.sendEmail({
       From: 'info@dump.hr',
@@ -311,11 +309,10 @@ Vidimo se!
     <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%">
       <tr>
         <td align="center" style="padding:20px 0;">
-          <!-- Container -->
           <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="600" style="background:#ffffff; border-radius:8px; box-shadow:0 2px 6px rgba(0,0,0,0.1); overflow:hidden;">
             <tr>
               <td align="center" style="padding:20px;">
-                <img src="https://internship.dump.hr/api/email/logo" alt="DUMP Logo" width="180" />
+                <img src="https://internship.dump.hr/api/email/logo?emailId=${emailId}" alt="DUMP Logo" width="180" />
               </td>
             </tr>
             <tr>
@@ -334,7 +331,6 @@ Vidimo se!
         </td>
       </tr>
     </table>
-    ${trackImage}
   </body>
   </html>
   `,
