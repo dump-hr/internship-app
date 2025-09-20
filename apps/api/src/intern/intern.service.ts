@@ -242,13 +242,6 @@ export class InternService {
 
     Link: https://bit.ly/primjer-inicijalnog`;
 
-    const trackImage = `<img src="https://internship.dump.hr/api/email/image?emailId=${emailId}" width="1" height="1" style="display:none" />`;
-
-    const generalTextEnding = `Lijep pozdrav,
-    
-    DUMP Udruga mladih programera
-    dump.hr ${trackImage}`;
-
     let fullGeneralText = generalTextBody;
 
     if (internToCreate.disciplines.includes(Discipline.Marketing))
@@ -276,7 +269,7 @@ export class InternService {
           <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="600" style="background:#ffffff; border-radius:8px; box-shadow:0 2px 6px rgba(0,0,0,0.1); overflow:hidden;">
             <tr>
               <td align="center" style="padding:20px;">
-                <img src="https://internship.dump.hr/api/email/logo" alt="DUMP Logo" width="180" />
+                <img src="https://internship.dump.hr/api/email/logo?emailId=${emailId}" alt="DUMP Logo" width="180" />
               </td>
             </tr>
             <tr>
@@ -295,7 +288,6 @@ export class InternService {
         </td>
       </tr>
     </table>
-    ${trackImage}
   </body>
   </html>
   `,
