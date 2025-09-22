@@ -155,7 +155,7 @@ model Email {
   internId       String
   emailRecipient Intern   @relation(fields: [internId], references: [id])
   createdAt      DateTime @default(now())
-  lastUpdatedAt  DateTime @updatedAt
+  updatedAt      DateTime @updatedAt
 }
 
 model InternshipApplicationStatus {
