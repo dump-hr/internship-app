@@ -53,7 +53,7 @@ export class EmailService {
           From: 'info@dump.hr',
           To: intern.email,
           Subject: subject,
-          HtmlBody: `${template.render({ intern })} ${text} ${trackImage}`,
+          HtmlBody: `${template.render({ intern })} ${trackImage}`,
           MessageStream: 'outbound',
         });
       }),
