@@ -227,7 +227,7 @@ export class InternService {
 
     const generalTextBody = `Pozdrav ${internToCreate.firstName},
 
-    Hvala na prijavi na DUMP Internship 2024. Uskoro ćemo te obavijestiti o sljedećim koracima prijave.
+    Hvala na prijavi na DUMP Internship 2025. Uskoro ćemo te obavijestiti o sljedećim koracima prijave.
     Ako imaš pitanja oko internshipa ili procesa prijave slobodno nam se javi na info@dump.hr
     
     U svakom trenutku možeš provjeriti status svoje prijave na https://internship.dump.hr/status/${newIntern.id}`;
@@ -240,7 +240,7 @@ export class InternService {
     const devFormAdditionalText = `U nastavku se nalazi link na primjer prošlogodišnjeg ispita za smjer programiranja na DUMP Internshipu.
     Zadatke možeš rješavati u jednom od sljedećih jezika: JavaScript, Python, C#, C++, C, Java, Go, a za rješavanje je predviđeno 90 minuta.
 
-    Link: https://bit.ly/primjer-inicijalnog`;
+    Link: https://bit.ly/primjer-inicijalnog-2025`;
 
     let fullGeneralText = generalTextBody;
 
