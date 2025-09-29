@@ -155,12 +155,23 @@ model Email {
   internId       String
   emailRecipient Intern   @relation(fields: [internId], references: [id])
   createdAt      DateTime @default(now())
-  lastUpdatedAt  DateTime @updatedAt
+  updatedAt      DateTime @updatedAt
 }
 
 model InternshipApplicationStatus {
   id       Int     @id @default(autoincrement())
   isOpened Boolean @default(false)
+}
+
+model OldInternResult {
+  id              String   @id @default(uuid())
+  firstName       String
+  lastName        String
+  email           String
+  applicationDate DateTime
+  discipline      String?
+  test_score      Int?
+  interview_score Int?
 }
 
 enum QuestionCategory {
