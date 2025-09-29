@@ -242,7 +242,7 @@ export class InternService {
 
     Link: https://bit.ly/primjer-inicijalnog-2025`;
 
-    const designFormAdditionalText = `U nastavku se nalazi link na upute za izradu moodboarda, koji je obvezno izrdaiti za smjer dizajna na DUMP Internshipu.
+    const designFormAdditionalText = `U nastavku se nalazi link na upute za izradu moodboarda, koji je obvezno izraditi za smjer dizajna na DUMP Internshipu.
     
     Link: https://bit.ly/designMoodboard`;
 
