@@ -242,6 +242,10 @@ export class InternService {
 
     Link: https://bit.ly/primjer-inicijalnog-2025`;
 
+    const designFormAdditionalText = `U nastavku se nalazi link na upute za izradu moodboarda, koji je obvezno izrdaiti za smjer dizajna na DUMP Internshipu.
+    
+    Link: https://bit.ly/designMoodboard`;
+
     let fullGeneralText = generalTextBody;
 
     if (internToCreate.disciplines.includes(Discipline.Marketing))
@@ -249,6 +253,9 @@ export class InternService {
 
     if (internToCreate.disciplines.includes(Discipline.Development))
       fullGeneralText += `\n\n${devFormAdditionalText}`;
+
+    if (internToCreate.disciplines.includes(Discipline.Design))
+      fullGeneralText += `\n\n${designFormAdditionalText}`;
 
     this.postmark.sendEmail({
       From: 'info@dump.hr',
