@@ -35,7 +35,7 @@ body {
   border-radius: 8px;
   border: none;
   cursor: pointer;
-  font-family: 'Fuse V.2 Display';
+  font-family: 'FuseV2Display-ExtraBold', sans-serif;
   font-style: normal;
   font-weight: 800;
   font-size: 16px;
@@ -99,6 +99,7 @@ input {
 }
 
 .submitButton {
+  font-family: FuseV2Display-Regular !important;
   width: 161px !important;
   height: 44px !important;
   border-radius: 8px !important;

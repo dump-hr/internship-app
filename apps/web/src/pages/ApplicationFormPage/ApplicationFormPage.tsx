@@ -116,7 +116,6 @@ export const ApplicationFormPage = () => {
   };
 
   const handleClick = () => {
-    console.log(Path.DUMP_Internship_Subscribe);
     window.location.replace(Path.DUMP_Internship_Subscribe);
   };
 
