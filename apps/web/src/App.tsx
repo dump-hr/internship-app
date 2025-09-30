@@ -1,5 +1,4 @@
 import './App.css';
-import './index.css';
 
 import { MsalProvider } from '@azure/msal-react';
 import { LocalizationProvider } from '@mui/x-date-pickers';
