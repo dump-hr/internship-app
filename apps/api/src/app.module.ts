@@ -19,14 +19,16 @@ import { TestSlotModule } from './test-slot/test-slot.module';
 @Module({
   imports: [
     ServeStaticModule.forRoot({
-      rootPath: join(__dirname, '..', '..', '..', 'web', 'dist', 'assets'),
-      serveRoot: '/assets',
-      exclude: ['/api/(.*)'],
-    }),
-
-    ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', '..', '..', 'web', 'dist'),
+      serveRoot: '/',
       exclude: ['/api/(.*)'],
+      serveStaticOptions: {
+        setHeaders: (res, path) => {
+          if (path.endsWith('.css')) res.setHeader('Content-Type', 'text/css');
+          if (path.endsWith('.js'))
+            res.setHeader('Content-Type', 'application/javascript');
+        },
+      },
     }),
     LoggerModule,
     InternModule,
