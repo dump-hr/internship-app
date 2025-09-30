@@ -1,5 +1,4 @@
 export enum Path {
-  DUMP_Internship_Subscribe = 'https://dump.hr/internship?section=subscribe_form',
   Home = '/',
   ApplicationForm = '/application-form',
   ScheduleInterview = '/schedule-interview/:internId',

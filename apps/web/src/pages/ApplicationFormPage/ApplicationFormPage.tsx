@@ -4,7 +4,7 @@ import {
   Logo,
   SortableDisciplinesContainer,
 } from '@components/index';
-import { disciplineLabel, Path } from '@constants/index';
+import { disciplineLabel } from '@constants/index';
 import {
   Discipline,
   EducationOrEmploymentStatus,
@@ -115,25 +115,20 @@ export const ApplicationFormPage = () => {
     setValue('disciplines', updatedDisciplines, { shouldValidate: true });
   };
 
-  const handleClick = () => {
-    window.location.replace(Path.DUMP_Internship_Subscribe);
-  };
-
   if (!isOpened) {
     return (
       <div className={classes.applicationFormPageWrapper}>
         <div className={classes.applicationFormIntroSection}>
           <Logo />
-          <p className={classes.applicationDescription}>
-            PRIJAVI SE NA NEWSLETTER I BUDI U TOKU
-          </p>
-          <h1 className={classes.applicationFormTitle}>
-            Prijave za Internship su{' '}
-            <span className={classes.redText}>zatvorene.</span>
-          </h1>
-          <button onClick={handleClick} className={classes.subscribeButton}>
-            Primi obavijest o idućem Internshipu
-          </button>
+          <h1 className={classes.applicationFormTitle}>Postani dumpovac!</h1>
+          <img
+            className={classes.applicationFormWelcomeImage}
+            src={formWelcomeImage}
+            alt="form-welcome-image"
+          />
+        </div>
+        <div className={classes.applicationForm}>
+          <h2 className={classes.applicationFormSubtitle}>Prijave zatvorene</h2>
         </div>
       </div>
     );
