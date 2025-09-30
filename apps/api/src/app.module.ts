@@ -28,6 +28,7 @@ import { TestSlotModule } from './test-slot/test-slot.module';
             const ext = extname(path);
             if (ext === '.js') {
               res.setHeader('Content-Type', 'application/javascript');
+              res.setHeader('Cache-Control', 'no-store');
             }
           },
         },
