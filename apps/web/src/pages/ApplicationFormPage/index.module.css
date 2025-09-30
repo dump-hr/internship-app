@@ -2,12 +2,6 @@
   box-sizing: border-box;
 }
 
-body {
-  margin: 0;
-  background-color: white;
-  font-family: 'FuseV2Display-Regular', sans-serif;
-}
-
 .applicationFormPageWrapper {
   display: flex;
   margin-top: 80px;
