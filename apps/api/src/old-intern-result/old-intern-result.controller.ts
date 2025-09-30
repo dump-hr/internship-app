@@ -1,7 +1,8 @@
 import { Controller, Get, Query } from '@nestjs/common';
-import { OldInternResultService } from './old-intern-result.service';
-import { FindDto } from './dto/find.dto';
 import { ApiTags } from '@nestjs/swagger';
+
+import { FindDto } from './dto/find.dto';
+import { OldInternResultService } from './old-intern-result.service';
 
 @Controller('old-intern-result')
 @ApiTags('old-intern-result')
