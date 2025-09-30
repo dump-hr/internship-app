@@ -1,24 +1,24 @@
 @font-face {
   font-family: FuseV2Display-Regular;
-  src: url('./assets/fonts/FuseV.2Display-Book.woff2');
+  src: url('/fonts/FuseV.2Display-Book.woff2') format('woff2');
 }
 @font-face {
   font-family: FuseV2Display-Italic;
-  src: url('./assets/fonts/FuseV.2Display-BookItalic.woff2');
+  src: url('/fonts/FuseV.2Display-BookItalic.woff2') format('woff2');
 }
 @font-face {
   font-family: FuseV2Display-ExtraBold;
-  src: url('./assets/fonts/FuseV.2Display-ExtraBold.woff2');
+  src: url('/fonts/FuseV.2Display-ExtraBold.woff2') format('woff2');
 }
 @font-face {
   font-family: FuseV2Display-ExtraBold-Italic;
-  src: url('./assets/fonts/FuseV.2Display-ExtraBoldItalic.woff2');
+  src: url('/fonts/FuseV.2Display-ExtraBoldItalic.woff2') format('woff2');
 }
 @font-face {
   font-family: FuseV2Text-Regular;
-  src: url('./assets/fonts/FuseV.2Text-Book.woff2');
+  src: url('/fonts/FuseV.2Text-Book.woff2') format('woff2');
 }
 @font-face {
   font-family: FuseV2Text-Italic;
-  src: url('./assets/fonts/FuseV.2Text-BookItalic.woff2');
+  src: url('/fonts/FuseV.2Text-BookItalic.woff2') format('woff2');
 }

@@ -1,6 +1,6 @@
 import { api } from '@api/base';
-import { useMutation, useQueryClient } from 'react-query';
 import toast from 'react-hot-toast';
+import { useMutation, useQueryClient } from 'react-query';
 
 const changeInternshipApplicationStatus = (newStatus: boolean) => {
   return api.patch<boolean, never>('/internship-application-status/update', {

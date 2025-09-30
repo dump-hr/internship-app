@@ -10,14 +10,14 @@ import {
 import { ApiTags } from '@nestjs/swagger';
 import { AdminLogAction } from '@prisma/client';
 import { Response } from 'express';
+import * as fs from 'fs';
+import { join } from 'path';
 import { MemberGuard } from 'src/auth/azure.guard';
 import { LoggerService } from 'src/logger/logger.service';
 
 import { EmailsDto } from './dto/emails.dto';
 import { EmailsSendDto } from './dto/emailsSend.dto';
 import { EmailService } from './email.service';
-import { join } from 'path';
-import * as fs from 'fs';
 
 @Controller('email')
 @ApiTags('email')
