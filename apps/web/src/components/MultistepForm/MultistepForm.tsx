@@ -1,5 +1,5 @@
 import { useFetchAllInterviewQuestions } from '@api/index';
-import { Question } from '@internship-app/types';
+import { Intern, Question } from '@internship-app/types';
 import { Box, Button, Step, StepLabel, Stepper } from '@mui/material';
 import type { FC } from 'react';
 import { useState } from 'react';
@@ -19,6 +19,7 @@ type MultistepFormProps<T, FH> = {
   form: FH;
   onSubmit: () => void;
   InputHandler: FC<HandlerProps<FH>>;
+  intern: Intern;
 };
 
 const MultistepForm = <T, FH>({
@@ -26,6 +27,7 @@ const MultistepForm = <T, FH>({
   form,
   onSubmit,
   InputHandler,
+  intern,
 }: MultistepFormProps<T, FH>) => {
   const [currentStep, setCurrentStep] = useState(0);
   const currentCategory = steps[currentStep].category;
@@ -46,7 +48,28 @@ const MultistepForm = <T, FH>({
           interviewQuestions.data
             .filter((q) => q.category === currentCategory && !q.disabled)
             .sort((a, b) => (a.position ?? 0) - (b.position ?? 0))
-            .map((q) => <InputHandler form={form} question={q} key={q.id} />)}
+            .map((q) => {
+              if (q.question?.includes('Intervjuer1')) {
+                q.question.replace(
+                  'Intervjuer1',
+                  intern.interviewSlot?.interviewers[0].interviewer.name ??
+                    'Intervjuer1',
+                );
+                console.log(
+                  '1',
+                  intern.interviewSlot?.interviewers[0].interviewer.name,
+                );
+              }
+
+              if (q.question?.includes('Intervjuer2')) {
+                q.question.replace(
+                  'Intervjuer2',
+                  intern.interviewSlot?.interviewers[1].interviewer.name ??
+                    'Intervjuer2',
+                );
+              }
+              return <InputHandler form={form} question={q} key={q.id} />;
+            })}
       </Box>
 
       <Box>

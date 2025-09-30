@@ -169,6 +169,7 @@ export const InterviewPage = () => {
         )}
         onSubmit={() => setDialogOpen(true)}
         InputHandler={InterviewQuestionHandler}
+        intern={intern}
       />
       <ConfirmDialog
         open={dialogOpen}
