@@ -58,8 +58,6 @@ export class EmailController {
       'dump-logo-internship.png',
     );
 
-    console.log('ImagePath: ', imagePath);
-
     if (fs.existsSync(imagePath)) {
       res.sendFile(imagePath, {
         headers: {

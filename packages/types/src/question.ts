@@ -27,6 +27,7 @@ export type Question = {
   registerValue?: any;
   category?: QuestionCategory;
   disabled?: boolean;
+  position?: number;
 } & (
   | { type: QuestionType.Field }
   | { type: QuestionType.TextArea }
