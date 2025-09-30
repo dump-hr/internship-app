@@ -45,6 +45,7 @@ const MultistepForm = <T, FH>({
         {interviewQuestions.data &&
           interviewQuestions.data
             .filter((q) => q.category === currentCategory && !q.disabled)
+            .sort((a, b) => (a.position ?? 0) - (b.position ?? 0))
             .map((q) => <InputHandler form={form} question={q} key={q.id} />)}
       </Box>
 
