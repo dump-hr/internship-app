@@ -1,6 +1,7 @@
-import { PrismaService } from 'src/prisma.service';
-import { FindDto } from './dto/find.dto';
 import { Injectable } from '@nestjs/common';
+import { PrismaService } from 'src/prisma.service';
+
+import { FindDto } from './dto/find.dto';
 
 @Injectable()
 export class OldInternResultService {

@@ -1,10 +1,11 @@
-import { InterviewQuestions, LogoHeader } from '@components/index';
-import classes from './index.module.css';
 import {
   useChangeInternshipApplicationStatus,
   useGetInternshipApplicationStatus,
 } from '@api/index';
+import { InterviewQuestions, LogoHeader } from '@components/index';
 import { Switch } from '@mui/material';
+
+import classes from './index.module.css';
 
 export const InterviewBuilderPage = () => {
   const { mutateAsync } = useChangeInternshipApplicationStatus();
