@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ServeStaticModule } from '@nestjs/serve-static';
-import { extname, join } from 'path';
+import { join } from 'path';
 
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -12,31 +12,16 @@ import { QuestionModule } from './interview-question/interview-question.module';
 import { InterviewSlotModule } from './interview-slot/interview-slot.module';
 import { InterviewerModule } from './interviewer/interviewer.module';
 import { LoggerModule } from './logger/logger.module';
-import { OldInternResultModule } from './old-intern-result/old-intern-result.module';
 import { PrismaService } from './prisma.service';
 import { TestSlotModule } from './test-slot/test-slot.module';
+import { OldInternResultModule } from './old-intern-result/old-intern-result.module';
 
 @Module({
   imports: [
-    ServeStaticModule.forRoot(
-      {
-        rootPath: join(__dirname, '..', '..', '..', 'web', 'dist', 'assets'),
-        serveRoot: '/assets', // available at https://yourdomain.com/assets/...
-        exclude: ['/api/(.*)'], // API routes skip this
-        serveStaticOptions: {
-          setHeaders: (res, path) => {
-            const ext = extname(path);
-            if (ext === '.js') {
-              res.setHeader('Content-Type', 'application/javascript');
-            }
-          },
-        },
-      },
-      {
-        rootPath: join(__dirname, '..', '..', '..', 'web', 'dist'),
-        exclude: ['/api/(.*)', '/assets/(.*)'], // don’t override API or assets
-      },
-    ),
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', '..', '..', 'web', 'dist'),
+      exclude: ['/api/(.*)'],
+    }),
     LoggerModule,
     InternModule,
     EmailModule,
@@ -49,7 +34,7 @@ import { TestSlotModule } from './test-slot/test-slot.module';
     InternshipApplicationStatusModule,
     OldInternResultModule,
   ],
-  controllers: [AppController /* , AuthController */],
+  controllers: [AppController],
   providers: [AppService, PrismaService],
 })
 export class AppModule {}
