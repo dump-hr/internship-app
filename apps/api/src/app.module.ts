@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ServeStaticModule } from '@nestjs/serve-static';
-import { join } from 'path';
+import { extname, join } from 'path';
 
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -18,10 +18,26 @@ import { OldInternResultModule } from './old-intern-result/old-intern-result.mod
 
 @Module({
   imports: [
-    ServeStaticModule.forRoot({
-      rootPath: join(__dirname, '..', '..', '..', 'web', 'dist'),
-      exclude: ['/api/(.*)'],
-    }),
+    ServeStaticModule.forRoot(
+      {
+        rootPath: join(__dirname, '..', '..', '..', 'web', 'dist', 'assets'),
+        serveRoot: '/assets', // available at https://yourdomain.com/assets/...
+        exclude: ['/api/(.*)'], // API routes skip this
+        serveStaticOptions: {
+          setHeaders: (res, path) => {
+            const ext = extname(path);
+            if (ext === '.js') {
+              res.setHeader('Content-Type', 'application/javascript');
+              res.setHeader('Cache-Control', 'no-store');
+            }
+          },
+        },
+      },
+      {
+        rootPath: join(__dirname, '..', '..', '..', 'web', 'dist'),
+        exclude: ['/api/(.*)', '/assets/(.*)'], // don’t override API or assets
+      },
+    ),
     LoggerModule,
     InternModule,
     EmailModule,
