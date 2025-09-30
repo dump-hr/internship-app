@@ -19,6 +19,12 @@ import { TestSlotModule } from './test-slot/test-slot.module';
 @Module({
   imports: [
     ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', '..', '..', 'web', 'dist', 'assets'),
+      serveRoot: '/assets',
+      exclude: ['/api/(.*)'],
+    }),
+
+    ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', '..', '..', 'web', 'dist'),
       exclude: ['/api/(.*)'],
     }),
