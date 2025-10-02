@@ -268,7 +268,9 @@ export class InternService {
     if (internToCreate.disciplines.includes(Discipline.Design))
       fullGeneralText += `\n\n${designFormAdditionalText}`;
 
+    let isSent = false;
     try {
+      this.logger.log('Creating payload');
       const postmarkPayload = {
         From: 'info@dump.hr',
         To: internToCreate.email,
@@ -313,10 +315,17 @@ export class InternService {
         MessageStream: 'outbound',
       };
 
+      this.logger.log(
+        'Starting with sendWithRetry, payload: ',
+        postmarkPayload,
+      );
+
       const result = await this.sendWithRetry(postmarkPayload);
       this.logger.log(
         `Registration email sent for internId=${newIntern.id} email=${internToCreate.email} postmarkMessageId=${result.response?.MessageID}`,
       );
+
+      isSent = true;
     } catch (error) {
       // We intentionally do NOT fail the intern creation if email sending fails.
       this.logger.error(
@@ -325,7 +334,14 @@ export class InternService {
         } email=${internToCreate.email}: ${(error as any)?.message}`,
         (error as any)?.stack,
       );
+      console.log(
+        `Registration email FAILED after retries for internId=${
+          newIntern.id
+        } email=${internToCreate.email}: ${(error as any)?.message}`,
+      );
     }
+
+    console.log(`Returning intern ${newIntern}, is sent: ${isSent}`);
 
     return newIntern;
   }
