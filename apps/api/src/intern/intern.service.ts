@@ -10,6 +10,7 @@ import {
   BadRequestException,
   Injectable,
   InternalServerErrorException,
+  Logger,
 } from '@nestjs/common';
 import {
   Discipline,
@@ -24,12 +25,22 @@ import { PrismaService } from 'src/prisma.service';
 import * as disposableEmailBlocklist from './disposable-email-blocklist.json';
 import { CreateInternDto } from './dto/createIntern.dto';
 
+type SendEmailPayload = {
+  From: string;
+  To: string;
+  Subject: string;
+  HtmlBody: string;
+  MessageStream: string;
+};
+
 @Injectable()
 export class InternService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly emailService: EmailService,
   ) {}
+
+  private readonly logger = new Logger(InternService.name);
 
   private s3 = new S3Client({
     credentials: {
@@ -258,7 +269,7 @@ export class InternService {
       fullGeneralText += `\n\n${designFormAdditionalText}`;
 
     try {
-      const postmarkResponse = await this.postmark.sendEmail({
+      const postmarkPayload = {
         From: 'info@dump.hr',
         To: internToCreate.email,
         Subject: 'Prijava na DUMP Internship',
@@ -300,14 +311,66 @@ export class InternService {
   </html>
   `,
         MessageStream: 'outbound',
-      });
+      };
 
-      console.log('Postmark response: ', postmarkResponse);
+      const result = await this.sendWithRetry(postmarkPayload);
+      this.logger.log(
+        `Registration email sent for internId=${newIntern.id} email=${internToCreate.email} postmarkMessageId=${result.response?.MessageID}`,
+      );
     } catch (error) {
-      console.log('Postmark error:', error);
+      // We intentionally do NOT fail the intern creation if email sending fails.
+      this.logger.error(
+        `Registration email FAILED after retries for internId=${
+          newIntern.id
+        } email=${internToCreate.email}: ${(error as any)?.message}`,
+        (error as any)?.stack,
+      );
     }
 
     return newIntern;
+  }
+
+  async sendWithRetry(
+    payload: SendEmailPayload,
+    opts = { retries: 3, baseDelayMs: 500 },
+  ) {
+    let lastError: any;
+    for (let attempt = 1; attempt <= opts.retries; attempt++) {
+      try {
+        const ctrl = new AbortController();
+        const timeout = setTimeout(() => ctrl.abort(), 8000); // 8s timeout
+        const res = await this.postmark.sendEmail({
+          ...payload,
+          MessageStream: 'outbound',
+        });
+        clearTimeout(timeout);
+
+        if (res.ErrorCode && res.ErrorCode !== 0) {
+          throw new Error(
+            `PostmarkError code=${res.ErrorCode} message=${res.Message}`,
+          );
+        }
+        return { status: 'sent', response: res };
+      } catch (err: any) {
+        lastError = err;
+        const transient = /ECONN|ETIMEDOUT|EAI_AGAIN|429|5\\d\\d/.test(
+          String(err.code || err.message),
+        );
+        this.logger.warn(
+          { err, attempt, to: payload.To, transient },
+          'Email send attempt failed',
+        );
+        if (!transient || attempt === opts.retries) {
+          const finalErr = err instanceof Error ? err : new Error(String(err));
+          (finalErr as any).attempts = attempt;
+          (finalErr as any).emailTo = payload.To;
+          throw finalErr; // propagate so caller can log at error level
+        }
+        await new Promise((r) => setTimeout(r, opts.baseDelayMs * attempt));
+      }
+    }
+    // Should not reach here, but throw defensively if it does
+    throw lastError || new Error('Unknown email send failure');
   }
 
   async setInterview(internId: string, data: SetInterviewRequest) {
@@ -323,7 +386,6 @@ export class InternService {
       },
     });
   }
-
   async setImage(internId: string, buffer: Buffer) {
     const key = `intern-images/${internId}-${new Date().getTime()}.png`;
     const command = new PutObjectCommand({
