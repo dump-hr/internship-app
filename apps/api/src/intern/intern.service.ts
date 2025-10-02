@@ -257,11 +257,12 @@ export class InternService {
     if (internToCreate.disciplines.includes(Discipline.Design))
       fullGeneralText += `\n\n${designFormAdditionalText}`;
 
-    this.postmark.sendEmail({
-      From: 'info@dump.hr',
-      To: internToCreate.email,
-      Subject: 'Prijava na DUMP Internship',
-      HtmlBody: `
+    try {
+      const postmarkResponse = this.postmark.sendEmail({
+        From: 'info@dump.hr',
+        To: internToCreate.email,
+        Subject: 'Prijava na DUMP Internship',
+        HtmlBody: `
   <!DOCTYPE html>
   <html lang="hr">
   <head>
@@ -298,8 +299,13 @@ export class InternService {
   </body>
   </html>
   `,
-      MessageStream: 'outbound',
-    });
+        MessageStream: 'outbound',
+      });
+
+      console.log('Postmark response: ', postmarkResponse);
+    } catch (error) {
+      console.log('Postmark error:', error);
+    }
 
     return newIntern;
   }
