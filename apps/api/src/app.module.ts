@@ -12,9 +12,9 @@ import { QuestionModule } from './interview-question/interview-question.module';
 import { InterviewSlotModule } from './interview-slot/interview-slot.module';
 import { InterviewerModule } from './interviewer/interviewer.module';
 import { LoggerModule } from './logger/logger.module';
+import { OldInternResultModule } from './old-intern-result/old-intern-result.module';
 import { PrismaService } from './prisma.service';
 import { TestSlotModule } from './test-slot/test-slot.module';
-import { OldInternResultModule } from './old-intern-result/old-intern-result.module';
 
 @Module({
   imports: [
