@@ -258,7 +258,7 @@ export class InternService {
       fullGeneralText += `\n\n${designFormAdditionalText}`;
 
     try {
-      const postmarkResponse = this.postmark.sendEmail({
+      const postmarkResponse = await this.postmark.sendEmail({
         From: 'info@dump.hr',
         To: internToCreate.email,
         Subject: 'Prijava na DUMP Internship',
