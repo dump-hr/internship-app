@@ -1,6 +1,11 @@
 import { useUpdateTestSlot } from '@api/index';
 import { InputHandler } from '@components/index';
-import { Question, QuestionType, TestSlot } from '@internship-app/types';
+import {
+  Question,
+  QuestionType,
+  TestSlot,
+  UpdateTestSlotRequest,
+} from '@internship-app/types';
 import { Box, Button, Typography } from '@mui/material';
 import moment from 'moment';
 import type { FC } from 'react';
@@ -16,6 +21,14 @@ type TestQuestionBlock = {
   registerId: string;
   id?: string;
   formQuestions: Question[];
+};
+
+type FormTestQuestion = {
+  id?: string;
+  question: string;
+  text: string;
+  order: number;
+  points: number;
 };
 
 const getMainQuestions = (slot: TestSlot): Question[] => [
@@ -157,16 +170,28 @@ export const TestSlotEditForm: FC<TestSlotEditFormProps> = ({
   };
 
   const handleSubmit = form.handleSubmit((data) => {
+    const testQuestions = (
+      Object.values(data.testQuestions || {}) as FormTestQuestion[]
+    ).map((q) => {
+      return {
+        id: q.id,
+        title: q.question,
+        text: q.text,
+        order: q.order,
+        points: q.points,
+      };
+    });
+
     const slotToSend = {
       ...data,
       id: slot.id,
       start: new Date(data.start),
       end: new Date(data.end),
-    } as TestSlot;
-    slotToSend.testQuestions = Object.values(data.testQuestions || {});
+      testQuestions,
+    };
 
     const request = { testSlotId: slot.id, data: slotToSend };
-    updateTestSlot.mutate(request, {
+    updateTestSlot.mutate(request as UpdateTestSlotRequest, {
       onSuccess: close,
     });
   });
