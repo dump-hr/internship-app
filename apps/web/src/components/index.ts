@@ -53,3 +53,4 @@ export * from './TestSlotInfo/SlotInternList';
 export * from './TestSlotInfo/SlotQuestionList';
 export * from './TestSlotInfo/TestSlotInfo';
 export * from './Webcamera/Webcamera';
+export * from './CountDownTimer/CountDownTimer';

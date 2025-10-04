@@ -28,6 +28,8 @@ import {
 } from '../../constants/interviewConstants';
 import { Path } from '../../constants/paths';
 import { getDefaultValues } from './data';
+import { Button } from '@mui/material';
+import CountdownTimer from '@components/CountDownTimer/CountDownTimer';
 
 const mapAnswersToQuestions = (
   answers: FieldValues,
@@ -39,6 +41,7 @@ const mapAnswersToQuestions = (
 };
 
 export const InterviewPage = () => {
+  const [isInterviewStarted, setIsInterviewStarted] = useState<boolean>(false);
   const [, params] = useRoute(Path.Interview);
   const internId = params?.internId;
 
@@ -126,6 +129,19 @@ export const InterviewPage = () => {
     );
   };
 
+  const handleStartInterview = () => {
+    if (
+      !confirm(
+        `Želite li ${
+          isInterviewStarted ? 'zaustaviti' : 'pokrenuti'
+        } intervju?`,
+      )
+    )
+      return;
+
+    setIsInterviewStarted((prev) => !prev);
+  };
+
   if (isFetching) {
     return <LoaderIcon />;
   }
@@ -162,6 +178,25 @@ export const InterviewPage = () => {
           email: intern.email,
         }}
       />
+
+      <Button
+        onClick={handleStartInterview}
+        variant="contained"
+        sx={{
+          color: 'white',
+          px: 3,
+          py: 1.5,
+          mb: 5,
+          '&:hover': {
+            backgroundColor: '#5dade2',
+          },
+        }}
+      >
+        {isInterviewStarted ? 'Zaustavi intervju' : 'Pokreni intervju'}
+      </Button>
+
+      {isInterviewStarted && <CountdownTimer />}
+
       <MultistepForm
         form={form}
         steps={getFilteredInterviewSteps(
