@@ -7,7 +7,7 @@
       when: groups.all|length == 0
 
 - hosts: web
-  remote_user: root # TODO: promini
+  remote_user: admin # TODO: promini
 
   pre_tasks:
     - name: Update apt cache if needed.
@@ -21,9 +21,9 @@
       become: true
       vars:
         docker_users:
-          - root # TODO: promini
+          - admin # TODO: promini
     - role: traefik
     - role: code-runner
       vars:
         docker_image: ghcr.io/dump-hr/code-runner:latest
-        code_runner_domain: code-runner.bdeak.net
+        code_runner_domain: code-runner.dump.hr

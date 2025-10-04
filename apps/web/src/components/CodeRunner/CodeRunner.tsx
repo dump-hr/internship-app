@@ -78,7 +78,7 @@ export const CodeRunner: FC<Props> = ({ code, language }) => {
 
     const pid = nanoid();
 
-    const stdout = new EventSource(`https://code-runner.bdeak.net/run/${pid}`);
+    const stdout = new EventSource(`https://code-runner.dump.hr/run/${pid}`);
 
     stdout.onmessage = ({ data }) => {
       const { event, text } = JSON.parse(data);
