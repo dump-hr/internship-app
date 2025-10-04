@@ -38,7 +38,7 @@ export class MicrosoftGraphService {
     try {
       const token = await this.getAppAccessToken();
       await axios.post(
-        `${GRAPH_USERS_PATH}/${process.env.DUMP_ORGANIZER_EMAIL}/events`,
+        `${GRAPH_USERS_PATH}/event-scheduler@dump.hr/events`,
         {
           subject: eventData.subject,
           start: { dateTime: eventData.start, timeZone: 'UTC' },
