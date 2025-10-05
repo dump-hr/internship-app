@@ -35,7 +35,8 @@ export class EmailService {
       },
     });
 
-    const createdEmails = await Promise.all(
+    /* const createdEmails =  */
+    await Promise.all(
       interns.map((i) => this.createEmailForIntern(i, subject, text)),
     );
 
