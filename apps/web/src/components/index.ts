@@ -14,6 +14,7 @@ export * from './common/MultilineInput/MultilineInput';
 export * from './common/SelectInput/CustomSelectInput';
 export * from './ConfirmDialog/ConfirmDialog';
 export * from './Countdown/Countdown';
+export * from './CountDownTimer/CountDownTimer';
 export * from './CsvFile/CsvFile';
 export * from './DecisionHandler/DecisionHandler';
 export * from './EmailBox/EmailBox';

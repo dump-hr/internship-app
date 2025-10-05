@@ -4,6 +4,7 @@ import {
   useSetImage,
   useSetInterview,
 } from '@api/index';
+import CountdownTimer from '@components/CountDownTimer/CountDownTimer';
 import {
   AdminPage,
   ConfirmDialog,
@@ -14,6 +15,7 @@ import MultistepForm from '@components/MultistepForm/MultistepForm.tsx';
 import { Intern, InterviewStatus, QuestionType } from '@internship-app/types';
 import { Question } from '@internship-app/types/';
 import { Json } from '@internship-app/types/src/json';
+import { Button } from '@mui/material';
 import { InterviewQuestionHandler } from '@pages/index.ts';
 import { useEffect, useState } from 'react';
 import { FieldValues, useForm } from 'react-hook-form';
@@ -39,6 +41,7 @@ const mapAnswersToQuestions = (
 };
 
 export const InterviewPage = () => {
+  const [isInterviewStarted, setIsInterviewStarted] = useState<boolean>(false);
   const [, params] = useRoute(Path.Interview);
   const internId = params?.internId;
 
@@ -126,6 +129,19 @@ export const InterviewPage = () => {
     );
   };
 
+  const handleStartInterview = () => {
+    if (
+      !confirm(
+        `Želite li ${
+          isInterviewStarted ? 'zaustaviti' : 'pokrenuti'
+        } intervju?`,
+      )
+    )
+      return;
+
+    setIsInterviewStarted((prev) => !prev);
+  };
+
   if (isFetching) {
     return <LoaderIcon />;
   }
@@ -162,6 +178,25 @@ export const InterviewPage = () => {
           email: intern.email,
         }}
       />
+
+      <Button
+        onClick={handleStartInterview}
+        variant="contained"
+        sx={{
+          color: 'white',
+          px: 3,
+          py: 1.5,
+          mb: 5,
+          '&:hover': {
+            backgroundColor: '#5dade2',
+          },
+        }}
+      >
+        {isInterviewStarted ? 'Zaustavi intervju' : 'Pokreni intervju'}
+      </Button>
+
+      <CountdownTimer isRunning={isInterviewStarted} />
+
       <MultistepForm
         form={form}
         steps={getFilteredInterviewSteps(
