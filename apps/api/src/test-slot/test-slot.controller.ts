@@ -66,7 +66,7 @@ export class TestSlotController {
   }
 
   @Put(':id')
-  @UseGuards(AdminGuard)
+  @UseGuards(MemberGuard)
   async updateTestSlot(
     @Param('id') testSlotId: string,
     @Body() { data }: UpdateTestSlotRequest,
