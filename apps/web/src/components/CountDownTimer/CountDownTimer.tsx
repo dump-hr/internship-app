@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 
 const INTERVIEW_TIME = 1200;
+const WARNING_TIME = 300;
 
 export default function CountdownTimer({ isRunning }: { isRunning: boolean }) {
   const [seconds, setSeconds] = useState(INTERVIEW_TIME);
@@ -13,7 +14,8 @@ export default function CountdownTimer({ isRunning }: { isRunning: boolean }) {
       toast.success('GOTOVO');
       return;
     }
-    if (seconds === 300) toast.success('Prošlo je 15 minuti. ZAVRŠAVAJ');
+    if (seconds === WARNING_TIME)
+      toast.success('Prošlo je 15 minuti. ZAVRŠAVAJ');
 
     const interval = setInterval(() => {
       setSeconds((prev) => prev - 1);
@@ -25,11 +27,11 @@ export default function CountdownTimer({ isRunning }: { isRunning: boolean }) {
   const progress = (seconds / INTERVIEW_TIME) * 100;
 
   const formatTime = (totalSeconds: number) => {
-    const m = Math.floor(totalSeconds / 60)
+    const minutes = Math.floor(totalSeconds / 60)
       .toString()
       .padStart(2, '0');
-    const s = (totalSeconds % 60).toString().padStart(2, '0');
-    return `${m}:${s}`;
+    const seconds = (totalSeconds % 60).toString().padStart(2, '0');
+    return `${minutes}:${seconds}`;
   };
 
   return (
