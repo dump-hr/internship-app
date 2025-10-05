@@ -1,5 +1,5 @@
+import { Box, LinearProgress, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
-import { Box, Typography, LinearProgress } from '@mui/material';
 import toast from 'react-hot-toast';
 
 const INTERVIEW_TIME = 1200;
@@ -24,7 +24,7 @@ export default function CountdownTimer({ isRunning }: { isRunning: boolean }) {
 
   const progress = (seconds / INTERVIEW_TIME) * 100;
 
-  const formatTime = (totalSeconds: any) => {
+  const formatTime = (totalSeconds: number) => {
     const m = Math.floor(totalSeconds / 60)
       .toString()
       .padStart(2, '0');

@@ -4,6 +4,7 @@ import {
   useSetImage,
   useSetInterview,
 } from '@api/index';
+import CountdownTimer from '@components/CountDownTimer/CountDownTimer';
 import {
   AdminPage,
   ConfirmDialog,
@@ -14,6 +15,7 @@ import MultistepForm from '@components/MultistepForm/MultistepForm.tsx';
 import { Intern, InterviewStatus, QuestionType } from '@internship-app/types';
 import { Question } from '@internship-app/types/';
 import { Json } from '@internship-app/types/src/json';
+import { Button } from '@mui/material';
 import { InterviewQuestionHandler } from '@pages/index.ts';
 import { useEffect, useState } from 'react';
 import { FieldValues, useForm } from 'react-hook-form';
@@ -28,8 +30,6 @@ import {
 } from '../../constants/interviewConstants';
 import { Path } from '../../constants/paths';
 import { getDefaultValues } from './data';
-import { Button } from '@mui/material';
-import CountdownTimer from '@components/CountDownTimer/CountDownTimer';
 
 const mapAnswersToQuestions = (
   answers: FieldValues,
