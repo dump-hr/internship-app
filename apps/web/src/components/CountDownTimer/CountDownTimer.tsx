@@ -2,21 +2,27 @@ import { useEffect, useState } from 'react';
 import { Box, Typography, LinearProgress } from '@mui/material';
 import toast from 'react-hot-toast';
 
-export default function CountdownTimer({ initialSeconds = 1200 }) {
-  const [seconds, setSeconds] = useState(initialSeconds);
+const INTERVIEW_TIME = 10;
+
+export default function CountdownTimer({ isRunning }: { isRunning: boolean }) {
+  const [seconds, setSeconds] = useState(INTERVIEW_TIME);
 
   useEffect(() => {
-    if (seconds <= 0) return;
-    if (seconds === 1195) toast.success('Prošlo je 15 minuti. ZAVRŠAVAJ');
+    if (!isRunning) return;
+    if (seconds <= 0) {
+      toast.success('GOTOVO');
+      return;
+    }
+    if (seconds === 5) toast.success('Prošlo je 15 minuti. ZAVRŠAVAJ');
 
     const interval = setInterval(() => {
       setSeconds((prev) => prev - 1);
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [seconds]);
+  }, [seconds, isRunning]);
 
-  const progress = (seconds / initialSeconds) * 100;
+  const progress = (seconds / INTERVIEW_TIME) * 100;
 
   const formatTime = (totalSeconds: any) => {
     const m = Math.floor(totalSeconds / 60)

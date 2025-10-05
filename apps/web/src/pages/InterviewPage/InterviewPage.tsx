@@ -195,7 +195,7 @@ export const InterviewPage = () => {
         {isInterviewStarted ? 'Zaustavi intervju' : 'Pokreni intervju'}
       </Button>
 
-      {isInterviewStarted && <CountdownTimer />}
+      <CountdownTimer isRunning={isInterviewStarted} />
 
       <MultistepForm
         form={form}
