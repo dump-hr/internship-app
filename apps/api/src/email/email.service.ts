@@ -43,17 +43,17 @@ export class EmailService {
 
     return Promise.allSettled(
       interns.map((intern) => {
-        const emailId = createdEmails.find(
+        /*const emailId = createdEmails.find(
           (email) => email.internId === intern.id,
         ).id;
-
-        const trackImage = `<img src="https://internship.dump.hr/api/email/logo?emailId=${emailId}" width="1" height="1" style="display:none" />`;
+         const trackImage = `<img src="https://internship.dump.hr/api/email/logo?emailId=${emailId}" width="1" height="1" style="display:none" />`; */
 
         return this.postmark.sendEmail({
           From: 'info@dump.hr',
           To: intern.email,
           Subject: subject,
-          HtmlBody: `${template.render({ intern })} ${trackImage}`,
+          /* HtmlBody: `${template.render({ intern })} ${trackImage}`, */
+          TextBody: `${template.render({ intern })}`,
           MessageStream: 'outbound',
         });
       }),
