@@ -65,40 +65,42 @@ export const InternFilter = ({
 
   return (
     <div>
-      <Button
-        onClick={handleSubmit(submitHandler)}
-        variant="contained"
-        color="secondary"
-        disabled={disabled}
-      >
-        Filtriraj
-      </Button>
-      {criteria.map((section, index) => (
-        <Box display="flex" gap="20px" alignItems="center" key={section.id}>
-          {section.questions.map((q) => (
-            <Box
-              minWidth={q.type != QuestionType.Checkbox ? '200px' : ''}
-              key={q.id}
-            >
-              <InputHandler form={form} question={q} />
-            </Box>
-          ))}
-          {index !== 0 && (
-            <Box>
-              <IconButton onClick={() => removeDisciplineSection(section.id)}>
-                <CloseIcon />
-              </IconButton>
-            </Box>
-          )}
-          {criteria.length - 1 === index && (
-            <Box>
-              <IconButton onClick={addDisciplineSection}>
-                <AddIcon />
-              </IconButton>
-            </Box>
-          )}
-        </Box>
-      ))}
+      <form onSubmit={handleSubmit(submitHandler)}>
+        <Button
+          type="submit"
+          variant="contained"
+          color="secondary"
+          disabled={disabled}
+        >
+          Filtriraj
+        </Button>
+        {criteria.map((section, index) => (
+          <Box display="flex" gap="20px" alignItems="center" key={section.id}>
+            {section.questions.map((q) => (
+              <Box
+                minWidth={q.type != QuestionType.Checkbox ? '200px' : ''}
+                key={q.id}
+              >
+                <InputHandler form={form} question={q} />
+              </Box>
+            ))}
+            {index !== 0 && (
+              <Box>
+                <IconButton onClick={() => removeDisciplineSection(section.id)}>
+                  <CloseIcon />
+                </IconButton>
+              </Box>
+            )}
+            {criteria.length - 1 === index && (
+              <Box>
+                <IconButton onClick={addDisciplineSection}>
+                  <AddIcon />
+                </IconButton>
+              </Box>
+            )}
+          </Box>
+        ))}
+      </form>
     </div>
   );
 };
