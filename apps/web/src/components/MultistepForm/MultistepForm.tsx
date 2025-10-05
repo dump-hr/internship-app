@@ -32,7 +32,7 @@ const MultistepForm = <T, FH>({
   const interviewQuestions = useFetchAllInterviewQuestions();
 
   return (
-    <Box>
+    <Box sx={{ marginBottom: '30px' }}>
       <Stepper activeStep={currentStep} nonLinear>
         {steps.map((s, i) => (
           <Step key={i} onClick={() => setCurrentStep(i)}>
@@ -49,7 +49,7 @@ const MultistepForm = <T, FH>({
             .map((q) => <InputHandler form={form} question={q} key={q.id} />)}
       </Box>
 
-      <Box>
+      <Box sx={{ marginTop: '30px' }}>
         <Button
           onClick={() => setCurrentStep((prev) => prev - 1)}
           disabled={currentStep === 0}
