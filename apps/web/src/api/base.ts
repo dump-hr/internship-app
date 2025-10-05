@@ -60,7 +60,7 @@ api.interceptors.response.use(
 );
 
 export const runApi = axios.create({
-  baseURL: 'https://code-runner.bdeak.net/run',
+  baseURL: 'https://code-runner.dump.hr/run',
   timeout: 5000,
   headers: {
     'Content-Type': 'application/json',
