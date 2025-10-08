@@ -104,7 +104,7 @@ export const InterviewPage = () => {
                 (discipline) => discipline.discipline === 'Marketing',
               )),
         )
-        .reduce((acc, curr) => acc + +curr.value, 0);
+        .reduce((acc, curr) => acc + Number(curr.value ?? 1), 0);
 
       setInterview.mutate({ internId, answers, score });
     })();
