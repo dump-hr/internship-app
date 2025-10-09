@@ -133,7 +133,7 @@ export class InterviewSlotService {
       where: {
         internId: null,
         start: {
-          gte: new Date(new Date().getTime() + 4 * 60 * 60 * 1000),
+          gte: new Date(new Date().getTime() + 8 * 60 * 60 * 1000),
         },
         AND: [
           {
