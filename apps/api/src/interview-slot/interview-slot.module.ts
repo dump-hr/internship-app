@@ -14,7 +14,6 @@ import { InterviewSlotService } from './interview-slot.service';
   providers: [
     InterviewSlotService,
     LoggerService,
-    EmailService,
     MicrosoftGraphService,
     PrismaService,
   ],

@@ -15,6 +15,7 @@ import { LoggerModule } from './logger/logger.module';
 import { OldInternResultModule } from './old-intern-result/old-intern-result.module';
 import { PrismaService } from './prisma.service';
 import { TestSlotModule } from './test-slot/test-slot.module';
+import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({
   imports: [
@@ -60,6 +61,7 @@ import { TestSlotModule } from './test-slot/test-slot.module';
     QuestionModule,
     InternshipApplicationStatusModule,
     OldInternResultModule,
+    ScheduleModule.forRoot(),
   ],
   controllers: [AppController],
   providers: [AppService, PrismaService],

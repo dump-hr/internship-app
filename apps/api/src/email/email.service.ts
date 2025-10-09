@@ -2,6 +2,8 @@ import { Injectable } from '@nestjs/common';
 import * as nunjucks from 'nunjucks';
 import * as postmark from 'postmark';
 import { PrismaService } from 'src/prisma.service';
+import { Cron } from '@nestjs/schedule';
+import { Intern } from '@internship-app/types';
 
 @Injectable()
 export class EmailService {
@@ -47,6 +49,7 @@ export class EmailService {
           (email) => email.internId === intern.id,
         ).id;
         const trackImage = `<img src="https://internship.dump.hr/api/email/logo?emailId=${emailId}" width="1" height="1" style="display:none" />`;
+
         return this.postmark.sendEmail({
           From: 'info@dump.hr',
           To: intern.email,
@@ -122,5 +125,62 @@ export class EmailService {
         data: { isSeen: true },
       });
     }
+  }
+
+  @Cron('0 0 8 * * *', { timeZone: 'UTC+2' })
+  async sendInterviewInvitations() {
+    const newInterns: Intern[] = await this.prisma.$queryRaw`
+    SELECT i.email
+    FROM "Intern" i
+    WHERE i."createdAt" >= NOW() - INTERVAL '1 day'
+      AND (
+        (
+          NOT EXISTS (
+            SELECT 1
+            FROM "InternDiscipline" id
+            WHERE id."internId" = i.id
+              AND id."discipline" = 'Development'
+          )
+          AND NOT EXISTS (
+            SELECT 1
+            FROM "InternDiscipline" id
+            WHERE id."internId" = i.id
+              AND id."discipline" <> 'Development'
+              AND id.status <> 'Pending'
+          )
+        )
+        OR
+        (
+          EXISTS (
+            SELECT 1
+            FROM "InternDiscipline" id
+            WHERE id."internId" = i.id
+              AND id."discipline" = 'Development'
+              AND id.status = 'Rejected'
+          )
+          AND (
+            NOT EXISTS (
+              SELECT 1
+              FROM "InternDiscipline" id
+              WHERE id."internId" = i.id
+                AND id."discipline" <> 'Development'
+                AND id.status <> 'Approved'
+            )
+            OR EXISTS (
+            SELECT 1
+              FROM "InternDiscipline" id
+              WHERE id."internId" = i.id
+                AND id."discipline" = 'Development'
+                AND id.status = 'Pending'
+     	)
+     )
+    )
+  );
+`;
+
+    console.log('NEW INTERNS', newInterns);
+    const emails = newInterns.map((intern) => intern.email);
+
+    this.sendEmail(emails, `pozivamo te na intervju...`, 'poziv na intervju');
   }
 }

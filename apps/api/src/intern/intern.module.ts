@@ -5,9 +5,11 @@ import { PrismaService } from 'src/prisma.service';
 
 import { InternController } from './intern.controller';
 import { InternService } from './intern.service';
+import { EmailModule } from 'src/email/email.module';
 
 @Module({
   controllers: [InternController],
-  providers: [InternService, LoggerService, EmailService, PrismaService],
+  providers: [InternService, LoggerService, PrismaService],
+  imports: [EmailModule],
 })
 export class InternModule {}
