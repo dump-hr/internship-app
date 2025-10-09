@@ -93,7 +93,7 @@ export class MicrosoftGraphService {
     try {
       const token = await this.getAppAccessToken();
       const events = await this.getAllEvents();
-      console.log('EVENTS: ', events);
+
       const eventId = events.find(
         (event) =>
           event.subject === `Intervju s ${intern.firstName} ${intern.lastName}`,
