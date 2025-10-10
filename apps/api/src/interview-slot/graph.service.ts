@@ -1,4 +1,3 @@
-import { Intern } from '@internship-app/types';
 import { Injectable } from '@nestjs/common';
 import axios from 'axios';
 import {
@@ -98,6 +97,7 @@ export class MicrosoftGraphService {
         (event) =>
           event.subject === `Intervju s ${intern.firstName} ${intern.lastName}`,
       ).id;
+
       await axios.delete(
         `${GRAPH_USERS_PATH}/event-scheduler@dump.hr/events/${eventId}`,
         {
