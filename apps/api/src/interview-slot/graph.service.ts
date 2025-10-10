@@ -34,6 +34,27 @@ export class MicrosoftGraphService {
     }
   }
 
+  async getAllEvents() {
+    try {
+      const token = await this.getAppAccessToken();
+      const res = await axios.get(
+        `${GRAPH_USERS_PATH}/event-scheduler@dump.hr/events`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        },
+      );
+
+      return res.data.value;
+    } catch (err: any) {
+      console.error(
+        'Failed to get outlook events:',
+        err.response?.data || err.message,
+      );
+
+      throw err;
+    }
+  }
+
   async createEvent(eventData: any) {
     try {
       const token = await this.getAppAccessToken();
@@ -61,6 +82,31 @@ export class MicrosoftGraphService {
     } catch (err: any) {
       console.error(
         'Failed to create outlook event:',
+        err.response?.data || err.message,
+      );
+      throw err;
+    }
+  }
+
+  async deleteEvent(intern: { firstName: string; lastName: string }) {
+    try {
+      const token = await this.getAppAccessToken();
+      const events = await this.getAllEvents();
+
+      const eventId = events.find(
+        (event) =>
+          event.subject === `Intervju s ${intern.firstName} ${intern.lastName}`,
+      ).id;
+
+      await axios.delete(
+        `${GRAPH_USERS_PATH}/event-scheduler@dump.hr/events/${eventId}`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        },
+      );
+    } catch (err: any) {
+      console.error(
+        'Failed to delete outlook event:',
         err.response?.data || err.message,
       );
       throw err;
