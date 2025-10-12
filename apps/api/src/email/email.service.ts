@@ -1,15 +1,14 @@
-import { Injectable } from '@nestjs/common';
-import * as nunjucks from 'nunjucks';
-import * as postmark from 'postmark';
-import { PrismaService } from 'src/prisma.service';
-import { Cron } from '@nestjs/schedule';
 import {
   BoardActionType,
   Intern,
   InterviewStatus,
 } from '@internship-app/types';
+import { Injectable } from '@nestjs/common';
+import { Cron } from '@nestjs/schedule';
+import * as nunjucks from 'nunjucks';
+import * as postmark from 'postmark';
 import { InternService } from 'src/intern/intern.service';
-import { BoardAction } from '@internship-app/types';
+import { PrismaService } from 'src/prisma.service';
 
 @Injectable()
 export class EmailService {

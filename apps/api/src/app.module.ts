@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { ScheduleModule } from '@nestjs/schedule';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { extname, join } from 'path';
 
@@ -15,7 +16,6 @@ import { LoggerModule } from './logger/logger.module';
 import { OldInternResultModule } from './old-intern-result/old-intern-result.module';
 import { PrismaService } from './prisma.service';
 import { TestSlotModule } from './test-slot/test-slot.module';
-import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({
   imports: [
