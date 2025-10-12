@@ -9,8 +9,8 @@ import {
 } from '@internship-app/types';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import moment from 'moment';
-import { steps } from '../../constants/interviewConstants';
 
+import { steps } from '../../constants/interviewConstants';
 import styles from './index.module.css';
 
 interface InternInfoProps {
@@ -148,7 +148,7 @@ export const InternInfo = ({ intern }: InternInfoProps) => {
 
                 if (categoryCompare !== 0) return categoryCompare;
 
-                return a.position! - b.position!;
+                return (a.position ?? 0) - (b.position ?? 0);
               })
               .map((item: Answer) => {
                 if (!item.value) return null;
