@@ -4,10 +4,12 @@ import {
   Intern,
   InternDiscipline,
   Question,
+  QuestionCategory,
   TestStatus,
 } from '@internship-app/types';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import moment from 'moment';
+import { steps } from '../../constants/interviewConstants';
 
 import styles from './index.module.css';
 
@@ -132,34 +134,50 @@ export const InternInfo = ({ intern }: InternInfoProps) => {
           </span>
 
           {Array.isArray(intern.interviewSlot?.answers) &&
-            intern.interviewSlot?.answers.map((item: Answer) => {
-              if (!item.value) return null;
+            intern.interviewSlot?.answers
+              .sort((a: Answer, b: Answer) => {
+                const categoryCompare =
+                  steps.findIndex(
+                    (step: { category: QuestionCategory }) =>
+                      step.category === a.category,
+                  ) -
+                  steps.findIndex(
+                    (step: { category: QuestionCategory }) =>
+                      step.category === b.category,
+                  );
 
-              if (
-                !intern?.internDisciplines?.some(
-                  (discipline) =>
-                    discipline.discipline.toLowerCase() === 'marketing',
-                ) &&
-                item.category === 'Marketing'
-              )
-                return null;
+                if (categoryCompare !== 0) return categoryCompare;
 
-              const formattedValue = Array.isArray(item.value)
-                ? item.value.join(', ')
-                : item.value;
+                return a.position! - b.position!;
+              })
+              .map((item: Answer) => {
+                if (!item.value) return null;
 
-              return (
-                <div
-                  className={item.tick ? styles.tick : styles.atribute}
-                  key={item.id}
-                >
-                  <h3 className={styles.itemTitle}>
-                    {item.question} {!item.tick || '⚠️'}
-                  </h3>
-                  <span>{formattedValue}</span>
-                </div>
-              );
-            })}
+                if (
+                  !intern?.internDisciplines?.some(
+                    (discipline) =>
+                      discipline.discipline.toLowerCase() === 'marketing',
+                  ) &&
+                  item.category === 'Marketing'
+                )
+                  return null;
+
+                const formattedValue = Array.isArray(item.value)
+                  ? item.value.join(', ')
+                  : item.value;
+
+                return (
+                  <div
+                    className={item.tick ? styles.tick : styles.atribute}
+                    key={item.id}
+                  >
+                    <h3 className={styles.itemTitle}>
+                      {item.question} {!item.tick || '⚠️'}
+                    </h3>
+                    <span>{formattedValue}</span>
+                  </div>
+                );
+              })}
         </div>
       )}
     </div>
