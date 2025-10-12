@@ -24,6 +24,7 @@ import { PrismaService } from 'src/prisma.service';
 
 import * as disposableEmailBlocklist from './disposable-email-blocklist.json';
 import { CreateInternDto } from './dto/createIntern.dto';
+import { MicrosoftGraphService } from 'src/interview-slot/graph.service';
 
 type SendEmailPayload = {
   From: string;
@@ -38,6 +39,7 @@ export class InternService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly emailService: EmailService,
+    private readonly microsoftGraphService: MicrosoftGraphService,
   ) {}
 
   private readonly logger = new Logger(InternService.name);
@@ -557,6 +559,20 @@ export class InternService {
             internId: null,
           },
         });
+
+        const interns = await this.prisma.intern.findMany({
+          where: internFilter,
+          select: { firstName: true, lastName: true },
+        });
+
+        await Promise.allSettled(
+          interns.map((intern) =>
+            this.microsoftGraphService.deleteEvent({
+              firstName: intern.firstName,
+              lastName: intern.lastName,
+            }),
+          ),
+        );
 
         return await this.prisma.intern.updateMany({
           where: internFilter,
