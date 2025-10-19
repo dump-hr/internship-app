@@ -4,7 +4,7 @@ import {
   InterviewStatus,
 } from '@internship-app/types';
 import { Injectable } from '@nestjs/common';
-import { Cron } from '@nestjs/schedule';
+import { Cron, CronExpression } from '@nestjs/schedule';
 import * as nunjucks from 'nunjucks';
 import * as postmark from 'postmark';
 import { InternService } from 'src/intern/intern.service';
@@ -135,7 +135,7 @@ export class EmailService {
     }
   }
 
-  @Cron('0 0 8 * * *', { timeZone: 'UTC+2' })
+  @Cron(CronExpression.EVERY_DAY_AT_8AM, { timeZone: 'UTC+2' })
   async sendInterviewInvitations() {
     const newInterns: Intern[] = await this.prisma.$queryRaw`
     select i.email

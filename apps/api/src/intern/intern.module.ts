@@ -5,10 +5,16 @@ import { PrismaService } from 'src/prisma.service';
 
 import { InternController } from './intern.controller';
 import { InternService } from './intern.service';
+import { MicrosoftGraphService } from 'src/interview-slot/graph.service';
 
 @Module({
   controllers: [InternController],
-  providers: [InternService, LoggerService, PrismaService],
   imports: [EmailModule],
+  providers: [
+    InternService,
+    LoggerService,
+    MicrosoftGraphService,
+    PrismaService,
+  ],
 })
 export class InternModule {}
