@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { ScheduleModule } from '@nestjs/schedule';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { extname, join } from 'path';
 
@@ -60,6 +61,7 @@ import { TestSlotModule } from './test-slot/test-slot.module';
     QuestionModule,
     InternshipApplicationStatusModule,
     OldInternResultModule,
+    ScheduleModule.forRoot(),
   ],
   controllers: [AppController],
   providers: [AppService, PrismaService],

@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { EmailService } from 'src/email/email.service';
+import { EmailModule } from 'src/email/email.module';
 import { LoggerService } from 'src/logger/logger.service';
 import { PrismaService } from 'src/prisma.service';
 
@@ -9,10 +9,10 @@ import { MicrosoftGraphService } from 'src/interview-slot/graph.service';
 
 @Module({
   controllers: [InternController],
+  imports: [EmailModule],
   providers: [
     InternService,
     LoggerService,
-    EmailService,
     MicrosoftGraphService,
     PrismaService,
   ],
