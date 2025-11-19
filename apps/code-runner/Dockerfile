@@ -1,4 +1,4 @@
-FROM node:18-alpine AS base
+FROM node:20-alpine AS base
 LABEL org.opencontainers.image.source https://github.com/dump-hr/internship-app
 
 FROM base AS builder
@@ -36,8 +36,12 @@ RUN apk add --no-cache \
       openjdk17 \
       go \
       musl-dev
-RUN apk add --no-cache --repository=http://dl-cdn.alpinelinux.org/alpine/edge/testing/ \
-      dotnet6-sdk
+RUN wget https://packages.microsoft.com/config/alpine/3.18/packages-microsoft-prod.apk \
+    -O packages-microsoft-prod.apk && \
+    apk add --no-cache packages-microsoft-prod.apk && \
+    apk update && \
+    apk add --no-cache dotnet6-sdk
+
 
 # Don't run production as root
 RUN addgroup --system --gid 1001 nestjs
