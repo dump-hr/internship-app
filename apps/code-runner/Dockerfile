@@ -35,13 +35,14 @@ RUN apk add --no-cache \
       python3 \
       openjdk17 \
       go \
-      musl-dev
-RUN wget https://packages.microsoft.com/config/alpine/3.18/packages-microsoft-prod.apk \
-    -O packages-microsoft-prod.apk && \
-    apk add --no-cache packages-microsoft-prod.apk && \
-    apk update && \
-    apk add --no-cache dotnet6-sdk
+      musl-dev \
+      bash \
+      icu-libs
 
+RUN wget https://dot.net/v1/dotnet-install.sh -O dotnet-install.sh \
+      && chmod +x ./dotnet-install.sh \
+      && ./dotnet-install.sh --channel 6.0 --install-dir /usr/share/dotnet \
+      && ln -s /usr/share/dotnet/dotnet /usr/bin/dotnet
 
 # Don't run production as root
 RUN addgroup --system --gid 1001 nestjs
