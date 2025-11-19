@@ -52,16 +52,16 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
-      - name: Build and push code-runner docker image
-        uses: docker/build-push-action@v4
-        with:
-          context: .
-          file: ./apps/code-runner/Dockerfile
-          push: true
-          tags: ghcr.io/dump-hr/code-runner:${{ github.sha }},
-            ghcr.io/dump-hr/code-runner:${{ github.ref_name == 'main' && 'latest' || 'unstable' }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+      # - name: Build and push code-runner docker image
+      #   uses: docker/build-push-action@v4
+      #   with:
+      #     context: .
+      #     file: ./apps/code-runner/Dockerfile
+      #     push: true
+      #     tags: ghcr.io/dump-hr/code-runner:${{ github.sha }},
+      #       ghcr.io/dump-hr/code-runner:${{ github.ref_name == 'main' && 'latest' || 'unstable' }}
+      #     cache-from: type=gha
+      #     cache-to: type=gha,mode=max
 
   ansible_playbook:
     name: Run Ansible playbook

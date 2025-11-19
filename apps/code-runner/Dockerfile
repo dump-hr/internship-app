@@ -39,10 +39,13 @@ RUN apk add --no-cache \
       bash \
       icu-libs
 
-RUN wget https://dot.net/v1/dotnet-install.sh -O dotnet-install.sh \
-      && chmod +x ./dotnet-install.sh \
-      && ./dotnet-install.sh --channel 6.0 --install-dir /usr/share/dotnet \
-      && ln -s /usr/share/dotnet/dotnet /usr/bin/dotnet
+RUN apk add --no-cache --repository=http://dl-cdn.alpinelinux.org/alpine/edge/testing/ \
+      dotnet6-sdk
+
+# RUN wget https://dot.net/v1/dotnet-install.sh -O dotnet-install.sh \
+#     && chmod +x ./dotnet-install.sh \
+#     && ./dotnet-install.sh --channel 6.0 --install-dir /usr/share/dotnet \
+#     && ln -s /usr/share/dotnet/dotnet /usr/bin/dotnet
 
 # Don't run production as root
 RUN addgroup --system --gid 1001 nestjs
